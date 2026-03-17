@@ -13,7 +13,8 @@ export const SHOULDER_CES: JointCesData = {
     },
     protocol: {
         flexion: {
-            inhibit: [ex('sh_inh_flex1', '소흉근 SMR', '마사지 볼을 소흉근(쇄골 아래 가슴 안쪽)에 대고 30-60초 지그시 압박합니다.', '', { tools: '마사지 볼', holdSeconds: 40 }),
+            // [유튜브 영상 추가 팁] 'v=' 뒤의 11자리 ID만 따옴표 안에 넣으세요 (예: '3gkzVyYGZTs')
+            inhibit: [ex('sh_inh_flex1', '소흉근 SMR', '마사지 볼을 소흉근(쇄골 아래 가슴 안쪽)에 대고 30-60초 지그시 압박합니다.', '3gkzVyYGZTs', { tools: '마사지 볼', holdSeconds: 40 }),
             ex('sh_inh_flex2', '전방삼각근 SMR', '마사지 볼로 어깨 앞쪽 삼각근 부위를 천천히 롤링합니다.', '', { tools: '마사지 볼', holdSeconds: 30 })],
             lengthen: [ex('sh_len_flex1', '소흉근 문틀 스트레칭', '문틀에 팔꿈치를 90°로 얹고 앞으로 천천히 기울여 가슴 앞쪽을 늘입니다. 30초 유지.', '', { holdSeconds: 30, sets: 2 }),
             ex('sh_len_flex2', '흉추 신전 스트레칭', '폼롤러를 등 어깨뼈 높이에 놓고 양손을 뒤통수에 받친 채 천천히 뒤로 누워 흉추를 신전합니다.', '', { tools: '폼롤러', holdSeconds: 30 })],

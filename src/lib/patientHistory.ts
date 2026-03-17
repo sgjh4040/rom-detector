@@ -20,8 +20,10 @@ export const savePatient = (patient: Patient): void => {
         const idx = patients.findIndex(p => p.id === patient.id);
         if (idx >= 0) {
             patients[idx] = patient;
+            //기존 환자 정보 업데이트
         } else {
             patients.push(patient);
+            //새 환자 정보 추가
         }
         localStorage.setItem(PATIENTS_KEY, JSON.stringify(patients));
     } catch (error) {

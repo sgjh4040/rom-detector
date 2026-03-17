@@ -5,9 +5,13 @@ interface PatientSelectorProps {
     patients: Patient[];
     patientId?: string;
     isManaging: boolean;
+    //isManaging: 환자 관리 모드인지 여부       
     setIsManaging: (val: boolean) => void;
+    //handleSelectPatient: 환자 선택
     handleSelectPatient: (p: Patient) => void;
+    //handleDeletePatient: 환자 삭제
     handleDeletePatient: (id: string) => void;
+    //handleNewPatient: 새 환자 등록
     handleNewPatient: () => void;
 }
 
@@ -15,6 +19,7 @@ export const PatientSelector: React.FC<PatientSelectorProps> = ({
     patients, patientId, isManaging, setIsManaging,
     handleSelectPatient, handleDeletePatient, handleNewPatient
 }) => {
+    //환자 목록이 없거나, 지금 새 환자 정보를 입력 중이면 이 컴포넌트는 아예 안 보임
     if (patients.length === 0 && !patientId) return null;
 
     return (
@@ -22,6 +27,7 @@ export const PatientSelector: React.FC<PatientSelectorProps> = ({
             <div className="flex justify-between items-center mb-4">
                 <label className="form-label mb-0">환자 관리 및 선택</label>
                 <div className="flex gap-2">
+                    {/* 환자 관리 버튼 */}
                     {patients.length > 0 && (
                         <button type="button" className={`btn btn-small ${isManaging ? 'btn-primary' : 'btn-outline'}`}
                             onClick={() => setIsManaging(!isManaging)}>

@@ -12,6 +12,7 @@ export const Results: React.FC = () => {
     const navigate = useNavigate();
     const session = useMemo(() => loadRomSession(), []);
 
+
     useEffect(() => {
         if (session && session.patientId) {
             savePatient({ id: session.patientId, name: session.patientName, age: session.patientAge, painArea: session.painArea, vasScore: session.vasScore, createdAt: new Date().toISOString() });
