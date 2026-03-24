@@ -43,7 +43,7 @@ export const CesInfo: React.FC = () => {
     }
   }, [activeMovement, selectedMovement]);
 
-  if (!cesData) return <div className="p-8">Data not' found for {selectedJointId}</div>;
+  if (!cesData) return <div className="p-8">Data not found for {selectedJointId}</div>;
 
   return (
     <div className="ces-dashboard page-bg-ces info-mode">

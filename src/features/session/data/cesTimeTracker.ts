@@ -26,6 +26,7 @@ export const loadCesHistory = (): CesHistoryMap => {
     }
 };
 
+// [PRD 2-3] any 금지
 export const saveCesHistory = (history: CesHistoryMap): void => {
     try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
@@ -45,6 +46,7 @@ export const updatePhaseDuration = (stage: CesStage, additionalSeconds: number, 
     saveCesHistory(history);
 };
 
+
 export const getPhasePercentage = (stage: CesStage, sessionCreatedAt?: string, goalSeconds = DEFAULT_GOAL_SECONDS): number => {
     const history = loadCesHistory();
     const key = sessionCreatedAt || 'latest';
@@ -52,6 +54,7 @@ export const getPhasePercentage = (stage: CesStage, sessionCreatedAt?: string, g
     const current = (history[key] as any)[stage] as number;
     return Math.min(100, Math.round((current / goalSeconds) * 100));
 };
+
 
 export const getTotalCompletionPercentage = (sessionCreatedAt?: string, goalSeconds = DEFAULT_GOAL_SECONDS): number => {
     const history = loadCesHistory();
