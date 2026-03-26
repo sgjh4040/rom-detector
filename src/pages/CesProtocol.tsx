@@ -132,11 +132,14 @@ export const CesProtocol: React.FC = () => {
       "케이블",
       "흉추",
       "삼각근",
+      "장요근",
     ];
+    console.log("currentEx:", currentEx);
     const found = keywords.filter((k) => currentEx.name.includes(k));
     return found.length > 0 ? found : ["코어"]; // fallback
   }, [currentEx]);
 
+  console.log("최종 targetMuscles:", targetMuscles);
   return (
     <div className="ces-dashboard page-bg-ces">
       {/* ─── 사이드바 ──────────────────────────────────────── */}

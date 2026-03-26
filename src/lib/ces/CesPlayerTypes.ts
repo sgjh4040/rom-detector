@@ -32,25 +32,25 @@ export interface PhaseMeta {
 export const PHASE_META: Record<CesPhase, PhaseMeta> = {
     Inhibit: {
         label: '억제 (Inhibit)',
-        color: 'rgba(234,179,8,0.85)',    // 노란색
+        color: '#EAB308',    // 노란색
         animation: 'pulse-slow',
         description: '과활성 근육 이완 중',
     },
     Lengthen: {
         label: '신장 (Lengthen)',
-        color: 'rgba(59,130,246,0.85)',   // 파란색
+        color: '#3B82F6',   // 파란색
         animation: 'fade-in',
         description: '짧아진 근육 연장 중',
     },
     Activate: {
         label: '활성화 (Activate)',
-        color: 'rgba(239,68,68,0.85)',    // 빨간색
+        color: '#EF4444',    // 빨간색
         animation: 'heartbeat',
         description: '저활성 근육 강화 중',
     },
     Integrate: {
         label: '통합 (Integrate)',
-        color: 'rgba(34,197,94,0.85)',    // 초록색
+        color: '#22C55E',    // 초록색
         animation: 'glow',
         description: '전신 협응력 강화 중',
     },
