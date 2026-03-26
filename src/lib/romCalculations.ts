@@ -24,6 +24,7 @@ export const calculateSeverity = (measured: number, normal: number): Severity =>
     if (normal === 0) {
         return measured >= ROM_ZERO_TOLERANCE ? '정상' : '심각한제한';
     }
+    //normal ===0 이면 return 으로가 밑에 코드 실행안되고 끝남 
 
     const ratio = measured / normal;
     if (ratio >= ROM_NORMAL_THRESHOLD) return '정상';

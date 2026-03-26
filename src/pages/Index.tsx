@@ -181,42 +181,22 @@ export const Index: React.FC = () => {
             />
 
             <div className="form-group mt-6">
-              <label className="form-label">방향 선택</label>
-              <div className="radio-input">
-                <div className="glass">
-                  <div className="glass-inner"></div>
-                </div>
-                <div className="selector">
-                  {(Object.keys(SIDE_MODE_MAP) as SideMode[]).map((mode) => (
-                    <div key={mode} className="choice">
-                      <div>
-                        <input
-                          type="radio"
-                          name="side-mode"
-                          id={`m-${mode}`}
-                          className="choice-circle"
-                          checked={sideMode === mode}
-                          onChange={() => setSideMode(mode)}
-                        />
-                        <div className="ball"></div>
-                      </div>
-                      <label htmlFor={`m-${mode}`} className="choice-name">
-                        {mode}
-                      </label>
-                    </div>
-                  ))}
-                </div>
+              <label className="form-label mb-3 block">방향 선택</label>
+              <div className="grid grid-cols-3 gap-3">
+                {(Object.keys(SIDE_MODE_MAP) as SideMode[]).map((mode) => {
+                  const selected = sideMode === mode;
+                  return (
+                    <button
+                      key={mode}
+                      type="button"
+                      className={`btn ${selected ? "btn-primary" : "btn-outline"}`}
+                      onClick={() => setSideMode(mode)}
+                    >
+                      {selected ? "✓ " : ""}{mode}
+                    </button>
+                  );
+                })}
               </div>
-              {/* <p
-                style={{
-                  fontSize: "0.6rem",
-                  color: "var(--text-secondary)",
-                  textAlign: "right",
-                  marginTop: "-15px",
-                }}
-              >
-                © 2026 LilaRest
-              </p> */}
             </div>
 
             <JointSelector
