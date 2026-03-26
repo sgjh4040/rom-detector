@@ -16,9 +16,9 @@ export const HistoryItem: React.FC<HistoryItemProps> = ({ session, index, total 
         <div
             className={`neumo-card transition-all duration-300`}
             style={{
-                border: '2px solid rgba(255, 255, 255, 0.8)',
-                padding: '40px',
-                borderRadius: '40px',
+                border: '1px solid rgba(255, 255, 255, 0.8)',
+                padding: '24px 20px',
+                borderRadius: '24px',
                 marginBottom: '10px'
             }}
         >

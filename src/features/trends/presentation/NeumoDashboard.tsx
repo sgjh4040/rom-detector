@@ -22,10 +22,10 @@ export const NeumoDashboard: React.FC<NeumoDashboardProps> = ({
     const integratePercent = getPhasePercentage('integrate', selectedSessionId || undefined);
 
     return (
-        <div className="flex flex-col items-center" style={{ width: '100%', gap: '80px', padding: '20px 0' }}>
+        <div className="flex flex-col items-center" style={{ width: '100%', gap: '32px', padding: '10px 0' }}>
             {/* Session Selector */}
-            <div className="w-full no-scrollbar" style={{ overflowX: 'auto', paddingBottom: '60px', paddingLeft: '20px', paddingRight: '20px' }}>
-                <div style={{ display: 'flex', gap: '30px', justifyContent: 'center', alignItems: 'center', minWidth: 'max-content', padding: '30px 0' }}>
+            <div className="w-full no-scrollbar" style={{ overflowX: 'auto', paddingBottom: '32px', paddingLeft: '16px', paddingRight: '16px' }}>
+                <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', alignItems: 'center', minWidth: 'max-content', padding: '16px 0' }}>
                     {sessions.map((s, i) => (
                         <button
                             key={s.createdAt}
@@ -33,13 +33,13 @@ export const NeumoDashboard: React.FC<NeumoDashboardProps> = ({
                             onClick={() => onSelectSession(s.createdAt)}
                             style={{
                                 color: selectedSessionId === s.createdAt ? 'var(--neumo-accent)' : 'var(--neumo-text)',
-                                minWidth: '180px',
-                                padding: '24px 32px',
-                                fontSize: '1.2rem',
-                                fontWeight: '900',
+                                minWidth: '140px',
+                                padding: '16px 24px',
+                                fontSize: '1rem',
+                                fontWeight: '800',
                                 whiteSpace: 'nowrap',
                                 flexShrink: 0,
-                                margin: '0 15px'
+                                margin: '0 8px'
                             }}
                         >
                             {sessions.length - i}회차 ({new Date(s.createdAt).toLocaleDateString().slice(5).replace(/\.$/, '')})
@@ -50,13 +50,13 @@ export const NeumoDashboard: React.FC<NeumoDashboardProps> = ({
                         onClick={() => onSelectSession('')}
                         style={{
                             color: !selectedSessionId ? 'var(--neumo-accent)' : 'var(--neumo-text)',
-                            minWidth: '180px',
-                            padding: '24px 32px',
-                            fontSize: '1.2rem',
-                            fontWeight: '900',
+                            minWidth: '140px',
+                            padding: '16px 24px',
+                            fontSize: '1rem',
+                            fontWeight: '800',
                             whiteSpace: 'nowrap',
                             flexShrink: 0,
-                            margin: '0 15px'
+                            margin: '0 8px'
                         }}
                     >
                         실시간
@@ -64,24 +64,21 @@ export const NeumoDashboard: React.FC<NeumoDashboardProps> = ({
                 </div>
             </div>
 
-            <h2 className="text-6xl font-black tracking-tighter opacity-95" style={{ marginBottom: '20px', marginTop: '40px', fontSize: '4.5rem' }}>Statistics</h2>
+            <h2 className="text-2xl font-black tracking-tighter opacity-95" style={{ marginBottom: '8px', marginTop: '16px', fontSize: '1.5rem' }}>Statistics</h2>
 
-            <div style={{ padding: '60px 0' }}>
+            <div style={{ padding: '16px 0' }}>
                 <NeumoCircularGauge percentage={totalProgress} />
             </div>
 
             <div style={{
                 display: 'flex',
                 justifyContent: 'center',
-                gap: '40px', // Reduced gap to fit 4 in a row
+                gap: '20px',
                 width: '100%',
-                maxWidth: '1400px', // Increased max-width to accommodate 4 bars
-                flexWrap: 'nowrap', // Force single row
-                padding: '40px 20px',
-                marginTop: '60px',
-                overflowX: 'auto', // Scroll if really necessary on very small screens
-                msOverflowStyle: 'none',
-                scrollbarWidth: 'none'
+                maxWidth: '1200px',
+                flexWrap: 'wrap', // Allow wrapping for mobile
+                padding: '16px 8px',
+                marginTop: '16px'
             }}>
                 <NeumoProgressBar
                     label="Inhibit"

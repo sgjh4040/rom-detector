@@ -32,17 +32,17 @@ export const Trends: React.FC = () => {
     return (
         <div className="bg-full-viewport page-bg-results pb-20 neumo-container" style={{ minHeight: '100vh', padding: '0 20px 80px', overflow: 'visible' }}>
             <div className="container" style={{ maxWidth: '1000px', margin: '0 auto', display: 'flex', flexDirection: 'column', overflow: 'visible' }}>
-                <div className="page-header flex justify-between items-start" style={{ paddingTop: '80px', marginBottom: '80px' }}>
+                <div className="page-header flex justify-between items-start" style={{ paddingTop: '20px', marginBottom: '20px' }}>
                     <div>
-                        <button className="btn btn-outline btn-small mb-4" onClick={() => navigate(-1)} style={{ padding: '8px 20px', borderRadius: '12px' }}>← 뒤로가기</button>
-                        <h1 className="text-5xl font-black tracking-tighter uppercase opacity-90" style={{ fontSize: '3.5rem', marginBottom: '10px' }}>Fitness</h1>
-                        <p className="opacity-70 text-xl font-bold">{patient.patientName} ({patient.patientAge}세)</p>
+                        <button className="btn btn-outline btn-small mb-3" onClick={() => navigate(-1)} style={{ padding: '6px 14px', borderRadius: '8px', fontSize: '0.8rem' }}>← 뒤로가기</button>
+                        <h1 className="text-3xl font-black tracking-tighter uppercase opacity-90" style={{ fontSize: '1.75rem', marginBottom: '4px' }}>Fitness</h1>
+                        <p className="opacity-70 text-base font-bold">{patient.patientName} ({patient.patientAge}세)</p>
                     </div>
                     <NeumoToggle label="Chart" isOn={showCharts} onToggle={() => setShowCharts(!showCharts)} />
                 </div>
 
                 {!showCharts ? (
-                    <div className="neumo-card mb-16" style={{ borderRadius: '50px', padding: '60px' }}>
+                    <div className="neumo-card mb-6" style={{ borderRadius: '24px', padding: '16px' }}>
                         <NeumoDashboard
                             sessions={history}
                             selectedSessionId={selectedSessionId}
@@ -69,9 +69,9 @@ export const Trends: React.FC = () => {
                     </div>
                 )}
 
-                <div className="panel neumo-inset" style={{ borderRadius: '50px', marginTop: '60px', padding: '60px', overflow: 'visible' }}>
-                    <h3 className="text-3xl font-black opacity-85" style={{ marginBottom: '50px', paddingLeft: '10px' }}>평가 히스토리 ({history.length}건)</h3>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '40px' }}>
+                <div className="panel neumo-inset" style={{ borderRadius: '24px', marginTop: '24px', padding: '24px 16px', overflow: 'visible' }}>
+                    <h3 className="text-xl font-black opacity-85" style={{ marginBottom: '20px', paddingLeft: '8px' }}>평가 히스토리 ({history.length}건)</h3>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                         {history.map((s, i) => (
                             <HistoryItem key={s.createdAt} session={s} index={i} total={history.length} />
                         ))}

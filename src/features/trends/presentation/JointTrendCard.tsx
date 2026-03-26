@@ -40,21 +40,21 @@ export const JointTrendCard: React.FC<JointTrendCardProps> = ({ joint, history }
 
     return (
         <div
-            className="neumo-card mb-16 transition-all duration-300"
+            className="neumo-card mb-6 transition-all duration-300"
             style={{
-                borderRadius: '50px',
-                padding: '60px',
+                borderRadius: '20px',
+                padding: '16px',
                 overflow: 'visible',
-                border: '2px solid rgba(255, 255, 255, 0.7)'
+                border: '1px solid rgba(255, 255, 255, 0.7)'
             }}
         >
             <div
                 className="flex justify-between items-center cursor-pointer"
                 onClick={() => setIsExpanded(!isExpanded)}
-                style={{ marginBottom: isExpanded ? '40px' : '0', padding: '10px' }}
+                style={{ marginBottom: isExpanded ? '20px' : '0', padding: '4px' }}
             >
-                <h3 className="text-3xl font-black opacity-95" style={{ letterSpacing: '-0.02em' }}>{joint.name} - 가동범위 추이</h3>
-                <span className={`text-2xl transform transition-transform ${isExpanded ? 'rotate-180' : ''}`} style={{ opacity: 0.6 }}>▼</span>
+                <h3 className="text-xl font-black opacity-95" style={{ letterSpacing: '-0.02em' }}>{joint.name} - 가동범위 추이</h3>
+                <span className={`text-lg transform transition-transform ${isExpanded ? 'rotate-180' : ''}`} style={{ opacity: 0.6 }}>▼</span>
             </div>
 
             {isExpanded && (

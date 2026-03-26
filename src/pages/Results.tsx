@@ -4,14 +4,14 @@ import {
   JOINTS,
   loadRomSession,
   calculateSeverity,
-  EXERCISES,
-  FALLBACK_STRETCHING,
-  FALLBACK_STRENGTHENING,
+  //   EXERCISES,
+  //   FALLBACK_STRETCHING,
+  //   FALLBACK_STRENGTHENING,
   addSessionToHistory,
   getPatientHistory,
   savePatient,
 } from "../lib/romData";
-import { ExerciseCard } from "../components/ExerciseCard";
+// import { ExerciseCard } from "../components/ExerciseCard";
 import { JointSideResult } from "../components/JointSideResult";
 
 export const Results: React.FC = () => {
@@ -62,29 +62,29 @@ export const Results: React.FC = () => {
   const isFirstTime = history.length <= 1;
 
   // 제한된 관절 찾기
-  const jointsWithLimitation = selectedJointIds.filter((jid) =>
-    selectedSides.some((side) => {
-      const joint = JOINTS.find((j) => j.id === jid);
-      return joint?.movements.some((m) => {
-        const measured = session.measurements?.[jid]?.[side]?.[m.id] ?? 0;
-        const severity = m.isQualitative
-          ? measured === 1
-            ? "심각한제한"
-            : "정상"
-          : calculateSeverity(measured, m.normalRange);
-        return severity !== "정상";
-      });
-    }),
-  );
+  // const jointsWithLimitation = selectedJointIds.filter((jid) =>
+  //   selectedSides.some((side) => {
+  //     const joint = JOINTS.find((j) => j.id === jid);
+  //     return joint?.movements.some((m) => {
+  //       const measured = session.measurements?.[jid]?.[side]?.[m.id] ?? 0;
+  //       const severity = m.isQualitative
+  //         ? measured === 1
+  //           ? "심각한제한"
+  //           : "정상"
+  //         : calculateSeverity(measured, m.normalRange);
+  //       return severity !== "정상";
+  //     });
+  //   }),
+  // );
 
-  const exIds =
-    jointsWithLimitation.length > 0 ? jointsWithLimitation : selectedJointIds;
-  const stretches = exIds.flatMap((id) =>
-    (EXERCISES[id] ?? []).filter((e) => e.type === "stretching"),
-  );
-  const strength = exIds.flatMap((id) =>
-    (EXERCISES[id] ?? []).filter((e) => e.type === "strengthening"),
-  );
+  // const exIds =
+  //   jointsWithLimitation.length > 0 ? jointsWithLimitation : selectedJointIds;
+  // const stretches = exIds.flatMap((id) =>
+  //   (EXERCISES[id] ?? []).filter((e) => e.type === "stretching"),
+  // );
+  // const strength = exIds.flatMap((id) =>
+  //   (EXERCISES[id] ?? []).filter((e) => e.type === "strengthening"),
+  // );
 
   let totalLimited = 0,
     totalNormal = 0;
