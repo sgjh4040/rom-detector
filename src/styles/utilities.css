@@ -189,3 +189,19 @@
 .select-none {
     user-select: none;
 }
+
+/* Hide scrollbar but keep functionality */
+.scroll-hide::-webkit-scrollbar {
+    display: none;
+}
+.scroll-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Constrain width in flex/grid layouts */
+.w-constrained {
+    min-width: 0;
+    max-width: 100%;
+}
