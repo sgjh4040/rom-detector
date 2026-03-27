@@ -60,7 +60,10 @@ export const PatientSelector: React.FC<PatientSelectorProps> = ({
       </div>
 
       {patients.length > 0 && !isManaging && (
-        <div className="flex gap-2 overflow-x-auto pb-2 scroll-hide w-constrained">
+        <div
+          className="flex gap-2 overflow-x-auto pb-2"
+          style={{ scrollbarWidth: "none" }}
+        >
           {patients
             .slice(-5)
             .reverse()
