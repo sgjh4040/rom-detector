@@ -62,7 +62,16 @@ export const PatientSelector: React.FC<PatientSelectorProps> = ({
       {patients.length > 0 && !isManaging && (
         <div
           className="flex gap-2 overflow-x-auto pb-2"
-          style={{ scrollbarWidth: "none" }}
+          style={{
+            scrollbarWidth: "none",
+            WebkitOverflowScrolling: "touch",
+            paddingTop: "6px", // 위쪽 그림자 공간
+            paddingBottom: "6px", // 아래쪽 그림자 공간
+            paddingLeft: "4px", // 좌측 그림자 공간
+            paddingRight: "4px", // 우측 그림자 공간
+            marginTop: "-6px", // 패딩 추가로 인한 밀림 보정
+            overflowX: "auto",
+          }}
         >
           {patients
             .slice(-5)
