@@ -6,7 +6,7 @@ import { CesVideoPlayer } from '../core/components/CesVideoPlayer';
 import { CesPlayerController } from '../core/components/CesPlayerController';
 import { BodyAnatomySvg } from '../core/components/BodyAnatomySvg';
 import { MOCK_ROUTINE, PHASE_META } from '../lib/ces/CesPlayerTypes';
-import type { CesRoutine, CesExerciseStep, CesPhase } from '../lib/ces/CesPlayerTypes';
+import type { CesRoutine } from '../lib/ces/CesPlayerTypes';
 
 export const CesPlayerPage: React.FC = () => {
     const navigate = useNavigate();
