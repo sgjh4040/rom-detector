@@ -13,40 +13,75 @@ export const SHOULDER_CES: JointCesData = {
     },
     protocol: {
         flexion: {
-            // [유튜브 영상 추가 팁] 'v=' 뒤의 11자리 ID만 따옴표 안에 넣으세요 (예: '3gkzVyYGZTs')
-            inhibit: [ex('sh_inh_flex1', '소흉근 SMR', '마사지 볼을 소흉근(쇄골 아래 가슴 안쪽)에 대고 30-60초 지그시 압박합니다.', 'Xh1zz52efS0', { tools: '마사지 볼', holdSeconds: 40 }),
-            ex('sh_inh_flex2', '전방삼각근 SMR', '마사지 볼로 어깨 앞쪽 삼각근 부위를 천천히 롤링합니다.', 'etwhCZgKK6I', { tools: '마사지 볼', holdSeconds: 30 })],
-            lengthen: [ex('sh_len_flex1', '소흉근 문틀 스트레칭', '문틀에 팔꿈치를 90°로 얹고 앞으로 천천히 기울여 가슴 앞쪽을 늘입니다. 30초 유지.', '', { holdSeconds: 30, sets: 2 }),
-            ex('sh_len_flex2', '흉추 신전 스트레칭', '폼롤러를 등 어깨뼈 높이에 놓고 양손을 뒤통수에 받친 채 천천히 뒤로 누워 흉추를 신전합니다.', '', { tools: '폼롤러', holdSeconds: 30 })],
-            activate: [ex('sh_act_flex1', 'Y자 하부승모근 활성화', '엎드린 자세에서 양팔을 Y자로 들어 천장 방향으로 올립니다. 2초 유지 후 내립니다.', '', { sets: 3, reps: 12 }),
-            ex('sh_act_flex2', '전거근 활성화 (Push-Up Plus)', '팔굽혀펴기 자세에서 상체를 완전히 올린 뒤 견갑골을 앞으로 더 밀어냅니다.', '', { sets: 3, reps: 10 })],
+            inhibit: [
+                ex('sh_inh_flex1', '대흉근 SMR', '마사지 볼을 대흉근(앞쪽 가슴부위)에 대고 30-60초 지그시 압박합니다.', 'Xh1zz52efS0', { tools: '마사지 볼', holdSeconds: 40 }),
+                ex('sh_inh_flex2', '광배근 SMR', '마사지 볼로 광배근(등 뒤가쪽 부위)에 천천히 롤링합니다.', 'etwhCZgKK6I', { tools: '마사지 볼', holdSeconds: 30 })
+            ],
+            lengthen: [
+                ex('sh_len_flex1', '대흉근 문틀 스트레칭', '문틀에 팔꿈치를 90°로 얹고 앞으로 천천히 기울여 가슴 앞쪽을 늘입니다. 30초 유지.', '', { holdSeconds: 30, sets: 2 }),
+                ex('sh_len_flex2', '흉추 신전 스트레칭', '폼롤러를 등 어깨뼈 높이에 놓고 양손을 뒤통수에 받친 채 천천히 뒤로 누워 흉추를 신전합니다.', '', { tools: '폼롤러', holdSeconds: 30 })
+            ],
+            activate: [
+                ex('sh_act_flex1', '어깨 굽힘 운동 (밴드)', '선 자세에서 밴드를 손에 묶고 팔꿈치를 편상태에서 팔을 귀옆까지 올립니다. .', '', { sets: 3, reps: 12 }),
+                ex('sh_act_flex2', '전거근 활성화 (Push-Up Plus)', '팔굽혀펴기 자세에서 상체를 완전히 올린 뒤 견갑골을 앞으로 더 밀어냅니다.', '', { sets: 3, reps: 10 })
+            ],
         },
         extension: {
-            inhibit: [ex('sh_inh_ext1', '광배근 SMR', '폼롤러를 옆구리~등 아래쪽에 대고 팔을 위로 뻗어 광배근을 롤링합니다.', '', { tools: '폼롤러', holdSeconds: 40 })],
-            lengthen: [ex('sh_len_ext1', '광배근 스트레칭', '문틀이나 기둥을 한 손으로 잡고 반대쪽으로 체중을 실어 옆구리~등을 늘입니다.', '', { holdSeconds: 30, sets: 2 })],
-            activate: [ex('sh_act_ext1', '전방삼각근 밴드 굴곡', '밴드를 발로 밟고 팔을 앞으로 천천히 들어올립니다.', '', { tools: '탄성 밴드', sets: 3, reps: 12 })],
+            inhibit: [
+                ex('sh_inh_ext1', '전방삼각근 SMR', '마사지볼을 어깨 앞쪽부위에 대고 롤링합니다.', '', { tools: '마사지볼', holdSeconds: 40 })
+            ],
+            lengthen: [
+                ex('sh_len_ext1', '전방삼각근 스트레칭', '문틀이나 기둥을 한 손으로 잡고 반대쪽으로 체중을 실어 옆구리~등을 늘입니다.', '', { holdSeconds: 30, sets: 2 })
+            ],
+            activate: [
+                ex('sh_act_ext1', '광배근 밴드 신전', '문고리에 밴드를 걸고 팔꿈치를 편상태에서 팔을 뒤로 보냅니다', '', { tools: '탄성 밴드', sets: 3, reps: 12 })
+            ],
         },
         abduction: {
-            inhibit: [ex('sh_inh_abd1', '상부승모근 SMR', '마사지 볼을 승모근 상단(목~어깨 사이)에 대고 압박합니다.', '', { tools: '마사지 볼', holdSeconds: 40 }),
-            ex('sh_inh_abd2', '견갑거근 SMR', '마사지 볼을 목 옆쪽에 대고 고개를 반대쪽으로 기울여 압박합니다.', '', { tools: '마사지 볼', holdSeconds: 30 })],
-            lengthen: [ex('sh_len_abd1', '상부승모근 스트레칭', '한쪽 손으로 머리를 반대쪽으로 부드럽게 당겨 30초 유지합니다.', '', { holdSeconds: 30, sets: 2 }),
-            ex('sh_len_abd2', '소흉근 코너 스트레칭', '코너 벽에 양팔을 얹고 몸을 앞으로 기울여 가슴을 엽니다.', '', { holdSeconds: 30, sets: 2 })],
-            activate: [ex('sh_act_abd1', 'T자 중부승모근 활성화', '엎드린 자세에서 양팔을 T자로 벌려 천장 방향으로 들어올립니다.', '', { sets: 3, reps: 12 })],
+            inhibit: [
+                ex('sh_inh_abd1', '대흉근 SMR', '마사지 볼을 대흉근(앞쪽 가슴부위)에 대고 30-60초 지그시 압박합니다.', '', { tools: '마사지 볼', holdSeconds: 40 }),
+                ex('sh_inh_abd2', '광배근 SMR', '마사지 볼로 광배근(등 뒤가쪽 부위)에 천천히 롤링합니다.', '', { tools: '마사지 볼', holdSeconds: 30 })
+            ],
+            lengthen: [
+                ex('sh_len_abd1', '대흉근 문틀 스트레칭', '문틀에 팔꿈치를 90°로 얹고 앞으로 천천히 기울여 가슴 앞쪽을 늘입니다. 30초 유지.', '', { holdSeconds: 30, sets: 2 }),
+                ex('sh_len_abd2', '손가락 사다리', '코너 벽에 옆으로 서서 손가락으로 벽을 탑니다.', '', { holdSeconds: 30, sets: 2 })
+            ],
+            activate: [
+                ex('sh_act_abd1', 'Y자 하부승모근 활성화', '엎드린 자세에서 양팔을 Y자로 들어 천장 방향으로 올립니다. 2초 유지 후 내립니다.', '', { sets: 3, reps: 12 })
+            ],
         },
         adduction: {
-            inhibit: [ex('sh_inh_add1', '삼각근 SMR', '반대 손이나 마사지 볼로 삼각근 전체를 부드럽게 압박합니다.', '', { tools: '마사지 볼', holdSeconds: 30 })],
-            lengthen: [ex('sh_len_add1', '수평 내전 스트레칭', '한팔을 가슴 앞으로 뻗고 반대 팔로 30초 당겨줍니다.', '', { holdSeconds: 30, sets: 2 })],
-            activate: [ex('sh_act_add1', '광배근 밴드 풀다운', '밴드를 머리 위에 고정하고 팔꿈치를 옆구리로 당깁니다.', '', { tools: '탄성 밴드', sets: 3, reps: 12 })],
+            inhibit: [
+                ex('sh_inh_add1', '삼각근 SMR', '반대 손이나 마사지 볼로 삼각근 전체를 부드럽게 압박합니다.', '', { tools: '마사지 볼', holdSeconds: 30 })
+            ],
+            lengthen: [
+                ex('sh_len_add1', '측면 삼각근 스트레칭', '한팔을 가슴 앞으로 뻗고 반대 팔로 30초 당겨줍니다.', '', { holdSeconds: 30, sets: 2 })
+            ],
+            activate: [
+                ex('sh_act_add1', '광배근 밴드 풀다운', '밴드를 머리 위에 고정하고 팔꿈치를 옆구리로 당깁니다.', '', { tools: '탄성 밴드', sets: 3, reps: 12 })
+            ],
         },
         internal_rotation: {
-            inhibit: [ex('sh_inh_ir1', '극하근 SMR', '마사지 볼을 어깨뼈 후면(극하와)에 대고 압박합니다.', '', { tools: '마사지 볼', holdSeconds: 40 })],
-            lengthen: [ex('sh_len_ir1', '후방 관절낭 스트레칭 (Cross-Body)', '한팔을 가슴 앞으로 뻗고 반대 손으로 팔꿈치를 잡아 몸 쪽으로 30초 당깁니다.', '', { holdSeconds: 30, sets: 2 })],
-            activate: [ex('sh_act_ir1', '밴드 내회전', '밴드를 고정하고 팔꿈치 90° 상태에서 안쪽으로 천천히 당깁니다.', '', { tools: '탄성 밴드', sets: 3, reps: 15 })],
+            inhibit: [
+                ex('sh_inh_ir1', '극하근 SMR', '마사지 볼을 어깨뼈 후면(극하와)에 대고 압박합니다.', '', { tools: '마사지 볼', holdSeconds: 40 })
+            ],
+            lengthen: [
+                ex('sh_len_ir1', '후방 관절낭 스트레칭 (Cross-Body)', '한팔을 가슴 앞으로 뻗고 반대 손으로 팔꿈치를 잡아 몸 쪽으로 30초 당깁니다.', '', { holdSeconds: 30, sets: 2 })
+            ],
+            activate: [
+                ex('sh_act_ir1', '밴드 내회전', '밴드를 고정하고 팔꿈치 90° 상태에서 안쪽으로 천천히 당깁니다.', '', { tools: '탄성 밴드', sets: 3, reps: 15 })
+            ],
         },
         external_rotation: {
-            inhibit: [ex('sh_inh_er1', '견갑하근 SMR', '마사지 볼로 겨드랑이 앞벽(견갑하근)을 부드럽게 압박합니다.', '', { tools: '마사지 볼', holdSeconds: 30 })],
-            lengthen: [ex('sh_len_er1', '내회전 스트레칭 (수면자 스트레칭)', '옆으로 누운 자세에서 팔꿈치를 90°로 굽히고 반대 손으로 손목을 바닥 쪽으로 20-30초 눌러줍니다.', '', { holdSeconds: 30, sets: 2 })],
-            activate: [ex('sh_act_er1', '밴드 외회전', '팔꿈치를 옆구리에 고정하고 밴드를 바깥쪽으로 천천히 당깁니다.', '', { tools: '탄성 밴드', sets: 3, reps: 15 })],
+            inhibit: [
+                ex('sh_inh_er1', '견갑하근 SMR', '마사지 볼로 겨드랑이 앞벽(견갑하근)을 부드럽게 압박합니다.', '', { tools: '마사지 볼', holdSeconds: 30 })
+            ],
+            lengthen: [
+                ex('sh_len_er1', '외회전 스트레칭(봉)', '봉을 이용해 한쪽손을 옆구리에 붙이고 반대쪽손으로 한쪽손을 밀어 몸 바깥쪽으로 돌아가게 만듭니다.', '', { tools: '봉', holdSeconds: 30, sets: 2 })
+            ],
+            activate: [
+                ex('sh_act_er1', '밴드 외회전', '팔꿈치를 옆구리에 고정하고 밴드를 바깥쪽으로 천천히 당깁니다.', '', { tools: '탄성 밴드', sets: 3, reps: 15 })
+            ],
         },
     },
     integrate: [
