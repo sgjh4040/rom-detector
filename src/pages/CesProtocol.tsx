@@ -40,8 +40,8 @@ export const CesProtocol: React.FC = () => {
     if (timerRunning) {
       timerRef.current = setInterval(() => {
         setSeconds((p) => p + 1);
-        // 1초마다 현재 단계의 시간을 업데이트 (또는 더 큰 단위로 최적화 가능)
-        updatePhaseDuration(activeStage, 1);
+        // 1초마다 실시간(latest) 및 현재 1/2회차 세션(createdAt) 양쪽 모두에 시간 기록
+        updatePhaseDuration(activeStage, 1, session?.createdAt);
       }, 1000);
     } else if (timerRef.current) {
       clearInterval(timerRef.current);

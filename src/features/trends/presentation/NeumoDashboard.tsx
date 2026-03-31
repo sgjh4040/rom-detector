@@ -45,22 +45,6 @@ export const NeumoDashboard: React.FC<NeumoDashboardProps> = ({
                             {sessions.length - i}회차 ({new Date(s.createdAt).toLocaleDateString().slice(5).replace(/\.$/, '')})
                         </button>
                     ))}
-                    <button
-                        className={`neumo-btn ${!selectedSessionId ? 'active' : ''}`}
-                        onClick={() => onSelectSession('')}
-                        style={{
-                            color: !selectedSessionId ? 'var(--neumo-accent)' : 'var(--neumo-text)',
-                            minWidth: '140px',
-                            padding: '16px 24px',
-                            fontSize: '1rem',
-                            fontWeight: '800',
-                            whiteSpace: 'nowrap',
-                            flexShrink: 0,
-                            margin: '0 8px'
-                        }}
-                    >
-                        실시간
-                    </button>
                 </div>
             </div>
 

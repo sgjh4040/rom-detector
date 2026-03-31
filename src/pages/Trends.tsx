@@ -13,10 +13,11 @@ export const Trends: React.FC = () => {
     const [searchParams] = useSearchParams();
     const patientId = searchParams.get('patientId');
     const [showCharts, setShowCharts] = useState(false);
-    const [selectedSessionId, setSelectedSessionId] = useState<string | null>(null);
-
+    
     const history = patientId ? getPatientHistory(patientId) : [];
     const reversedHistory = [...history].reverse(); // 오래된 순
+    
+    const [selectedSessionId, setSelectedSessionId] = useState<string | null>(history.length > 0 ? history[0].createdAt : null);
 
     if (!patientId || history.length === 0) {
         return (

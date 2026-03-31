@@ -38,11 +38,13 @@ export const saveCesHistory = (history: CesHistoryMap): void => {
 export const updatePhaseDuration = (stage: CesStage, additionalSeconds: number, sessionCreatedAt?: string): void => {
     const history = loadCesHistory();
     const key = sessionCreatedAt || 'latest';
+    
     if (!history[key]) {
         history[key] = { inhibit: 0, lengthen: 0, activate: 0, integrate: 0, lastUpdated: new Date().toISOString() };
     }
     (history[key] as any)[stage] += additionalSeconds;
     history[key].lastUpdated = new Date().toISOString();
+    
     saveCesHistory(history);
 };
 
