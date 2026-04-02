@@ -301,13 +301,12 @@ export const CesProtocol: React.FC = () => {
           </select>
           <div className="main-user-info">
             <div>
-              {/*환자 이름 예시, 필요시 데이타 불러오도록 수정*/}
-              <p className="user-name">Richard Armitage</p>
-              <p className="user-meta">DEMO ACCOUNT</p>
+              <p className="user-name">{session?.patientName ?? "환자"}</p>
+              <p className="user-meta">{session?.patientAge ? `${session.patientAge}세` : ""}</p>
             </div>
             <div className="user-avatar">
               <img
-                src="https://api.dicebear.com/7.x/avataaars/svg?seed=Richard"
+                src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${session?.patientName ?? "default"}`}
                 alt="avatar"
                 style={{ width: "100%" }}
               />
