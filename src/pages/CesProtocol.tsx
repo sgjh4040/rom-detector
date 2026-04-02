@@ -214,7 +214,7 @@ export const CesProtocol: React.FC = () => {
 
         {/* 통계: 타이머 + 운동 처방 */}
         <div className="sidebar-stats">
-          <div className="card stat-card-inner">
+          <div className={`card stat-card-inner ${timerRunning ? "is-active" : ""}`}>
             <p className="sub-label">Total Time</p>
             <p className="stat-main-val">{formatTime(seconds)}</p>
             <div className="timer-actions">
