@@ -224,8 +224,8 @@ export const CesProtocol: React.FC = () => {
               >
                 {timerRunning ? "⏸ PAUSE" : "▶ START"}
               </button>
-              <button onClick={resetTimer} className="btn-timer">
-                ↺
+              <button onClick={resetTimer} className="btn-timer btn-reset">
+                <span>↺</span> RESET
               </button>
             </div>
           </div>
@@ -261,10 +261,10 @@ export const CesProtocol: React.FC = () => {
 
         {/* 하단 액션 */}
         <div className="sidebar-actions">
-          <button className="btn-complete" onClick={handleStartPlayer}>
+          <button className="btn-complete is-primary" onClick={handleStartPlayer}>
             Start Player <span>›</span>
           </button>
-          <button className="btn-complete" onClick={() => navigate("/")}>
+          <button className="btn-complete is-success" onClick={() => navigate("/")}>
             Complete Exercise <span>›</span>
           </button>
           <button
