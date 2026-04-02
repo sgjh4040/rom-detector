@@ -121,7 +121,7 @@ export const RomMeasurement: React.FC = () => {
       <header className="rom-header">
         <div>
           <div className="rom-header__label">
-            {side}측 {joint.name}
+            {side} {joint.name}
           </div>
           <div className="rom-header__sub">
             {currentMovIdx + 1} / {totalMovSteps} 동작 측정 중

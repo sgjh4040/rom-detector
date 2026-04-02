@@ -1,59 +1,92 @@
-/* tokens.css — 뉴모피즘(Neumorphism) 디자인 토큰 */
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;0,14..32,800;1,14..32,400&display=swap');
+/* tokens.css — Vitalis Glass (Clinical Sanctuary) 디자인 토큰 */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap');
 
 :root {
-    /* Primary */
-    --primary: #667eea;
-    --primary-dark: #5a6fd6;
-    --primary-light: #dfe3f8;
-    --primary-glow: rgba(102, 126, 234, 0.18);
+    /* ── Primary (Indigo Blue) ──────────────────────────── */
+    --primary: #5C6BC0;
+    --primary-dark: #3F51B5;
+    --primary-light: #C5CAE9;
+    --primary-glow: rgba(92, 107, 192, 0.25);
+    --primary-gradient: linear-gradient(135deg, #5C6BC0, #7986CB);
 
-    /* Semantic */
-    --success: #48bb78;
-    --success-bg: #e6f7ef;
-    --success-text: #276749;
-    --warning: #ecc94b;
-    --warning-bg: #fefcbf;
-    --warning-text: #975a16;
-    --danger: #fc8181;
-    --danger-bg: #fff5f5;
-    --danger-text: #c53030;
+    /* ── Semantic ───────────────────────────────────────── */
+    --success: #4CAF50;
+    --success-bg: rgba(76, 175, 80, 0.08);
+    --success-text: #2E7D32;
+    --warning: #FF9800;
+    --warning-bg: rgba(255, 152, 0, 0.08);
+    --warning-text: #E65100;
+    --danger: #EF5350;
+    --danger-bg: rgba(239, 83, 80, 0.08);
+    --danger-text: #C62828;
 
-    /* Neumorphism Surface */
-    --bg: #e0e5ec;
-    --surface: #e0e5ec;
-    --surface-2: #e8ecf2;
-    --border: transparent;
-    --border-soft: transparent;
+    /* ── Surface & Backgrounds ─────────────────────────── */
+    --bg: #F5F7FA;
+    --bg-gradient: linear-gradient(135deg, #F5F7FA 0%, #E8EDF5 50%, #F0F2F8 100%);
+    --surface: rgba(255, 255, 255, 0.65);
+    --surface-solid: #FFFFFF;
+    --surface-2: rgba(255, 255, 255, 0.45);
+    --surface-dark: rgba(30, 36, 50, 0.85);
 
-    /* Neumorphism Shadows */
-    --shadow-raised: 6px 6px 12px #b8bec7, -6px -6px 12px #ffffff;
-    --shadow-raised-sm: 3px 3px 6px #b8bec7, -3px -3px 6px #ffffff;
-    --shadow-pressed: inset 3px 3px 6px #b8bec7, inset -3px -3px 6px #ffffff;
-    --shadow-pressed-deep: inset 5px 5px 10px #b8bec7, inset -5px -5px 10px #ffffff;
+    /* ── Glassmorphism ─────────────────────────────────── */
+    --glass-bg: rgba(255, 255, 255, 0.55);
+    --glass-bg-strong: rgba(255, 255, 255, 0.75);
+    --glass-blur: blur(16px);
+    --glass-blur-strong: blur(24px);
+    --glass-border: 1px solid rgba(255, 255, 255, 0.4);
+    --glass-border-subtle: 1px solid rgba(255, 255, 255, 0.2);
 
-    /* Legacy aliases (compatibility) */
-    --shadow-sm: var(--shadow-raised-sm);
-    --shadow-md: var(--shadow-raised);
-    --shadow-blue: var(--shadow-raised), 0 4px 15px rgba(102, 126, 234, 0.2);
+    /* ── Shadows ────────────────────────────────────────── */
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.08);
+    --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.1);
+    --shadow-primary: 0 4px 20px rgba(92, 107, 192, 0.25);
+    --shadow-inset: inset 0 2px 4px rgba(0, 0, 0, 0.04);
 
-    /* Text */
-    --text-primary: #2d3748;
-    --text-secondary: #718096;
-    --text-muted: #a0aec0;
+    /* Legacy aliases */
+    --shadow-raised: var(--shadow-md);
+    --shadow-raised-sm: var(--shadow-sm);
+    --shadow-pressed: var(--shadow-inset);
+    --shadow-pressed-deep: inset 0 3px 6px rgba(0, 0, 0, 0.06);
+    --shadow-blue: var(--shadow-primary);
 
-    /* Border-radius */
-    --radius-sm: 10px;
+    /* ── Text ───────────────────────────────────────────── */
+    --text-primary: #1A1F36;
+    --text-secondary: #637381;
+    --text-muted: #9CA3AF;
+    --text-on-primary: #FFFFFF;
+    --text-on-dark: #E8EDF5;
+
+    /* ── Border Radius ──────────────────────────────────── */
+    --radius-sm: 12px;
     --radius-md: 16px;
-    --radius-lg: 22px;
+    --radius-lg: 24px;
+    --radius-xl: 32px;
     --radius-pill: 9999px;
 
-    /* Font */
-    --font: 'Inter', -apple-system, system-ui, sans-serif;
+    /* ── Font ───────────────────────────────────────────── */
+    --font: 'Manrope', -apple-system, system-ui, sans-serif;
 
-    /* Backward-compat aliases */
+    /* ── Spacing ────────────────────────────────────────── */
+    --space-xs: 0.25rem;
+    --space-sm: 0.5rem;
+    --space-md: 1rem;
+    --space-lg: 1.5rem;
+    --space-xl: 2rem;
+    --space-2xl: 3rem;
+
+    /* ── Transitions ────────────────────────────────────── */
+    --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-base: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-spring: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+    /* ── Backward-compat aliases ────────────────────────── */
     --bg-color: var(--bg);
-    --card-bg: var(--surface);
-    --border-color: transparent;
+    --card-bg: var(--glass-bg);
+    --border-color: rgba(255, 255, 255, 0.3);
+    --border: var(--glass-border);
+    --border-soft: var(--glass-border-subtle);
     --secondary: var(--text-primary);
 }

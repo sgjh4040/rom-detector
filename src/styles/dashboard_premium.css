@@ -1,22 +1,24 @@
-/* dashboard_premium.css — CES 대시보드 (다크 뉴모피즘) */
+/* dashboard_premium.css — CES 대시보드 (Vitalis Glass) */
 
 .ces-dashboard {
     display: grid;
     grid-template-columns: 320px 1fr;
     height: 100vh;
-    background: #e0e5ec;
+    background: linear-gradient(135deg, #1A1F36 0%, #252D44 100%);
     overflow: hidden;
 }
 
 .ces-sidebar {
-    background: linear-gradient(160deg, #2a3040 0%, #1a1d24 100%);
+    background: rgba(20, 25, 40, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     color: white;
     display: flex;
     flex-direction: column;
     padding: 1.5rem;
     position: relative;
     overflow-y: auto;
-    box-shadow: 6px 0 16px rgba(0, 0, 0, 0.15);
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .sidebar-logo {
@@ -27,11 +29,11 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.5rem;
-    background: var(--bg);
+    padding: 0.6rem 0.75rem;
+    background: rgba(255, 255, 255, 0.08);
     border-radius: var(--radius-sm);
-    box-shadow: var(--shadow-raised-sm);
-    color: var(--text-primary) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff !important;
 }
 
 .sidebar-logo span {
@@ -41,8 +43,8 @@
 .sidebar-menu-btn {
     width: 24px;
     height: 16px;
-    border-top: 2.5px solid var(--text-secondary);
-    border-bottom: 2.5px solid var(--text-secondary);
+    border-top: 2.5px solid rgba(255, 255, 255, 0.4);
+    border-bottom: 2.5px solid rgba(255, 255, 255, 0.4);
     position: relative;
     cursor: pointer;
 }
@@ -54,7 +56,7 @@
     left: 0;
     right: 0;
     height: 2.5px;
-    background: var(--text-secondary);
+    background: rgba(255, 255, 255, 0.4);
 }
 
 .human-anatomy-box {
@@ -67,8 +69,8 @@
     overflow: hidden;
     position: relative;
     background: rgba(255, 255, 255, 0.03);
-    border-radius: 12px;
-    box-shadow: inset 3px 3px 6px rgba(0, 0, 0, 0.3), inset -3px -3px 6px rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .human-anatomy-img {
@@ -87,28 +89,19 @@
 .muscle-highlight {
     position: absolute;
     padding: 0.3rem 0.6rem;
-    background: rgba(240, 62, 62, 0.9);
+    background: rgba(239, 83, 80, 0.9);
     color: white;
-    border-radius: 4px;
+    border-radius: 6px;
     font-size: 0.65rem;
     font-weight: 800;
-    box-shadow: 0 0 10px rgba(240, 62, 62, 0.5);
-    animation: pulse-red 2s infinite;
+    box-shadow: 0 0 15px rgba(239, 83, 80, 0.4);
+    animation: pulse-glow 2s infinite;
     z-index: 10;
 }
 
-@keyframes pulse-red {
-
-    0%,
-    100% {
-        transform: scale(1);
-        opacity: 0.9;
-    }
-
-    50% {
-        transform: scale(1.05);
-        opacity: 1;
-    }
+@keyframes pulse-glow {
+    0%, 100% { transform: scale(1); opacity: 0.9; }
+    50% { transform: scale(1.05); opacity: 1; }
 }
 
 .sidebar-stats {
@@ -122,9 +115,9 @@
 .sub-label {
     font-size: 0.65rem;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.4);
     font-weight: 700;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.08em;
     margin-bottom: 0.25rem;
 }
 
@@ -132,8 +125,13 @@
     font-size: 1.5rem;
     font-weight: 800;
     line-height: 1.2;
-    color: var(--primary);
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    color: var(--primary-light);
+}
+
+.stat-sub-val {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.7);
 }
 
 .timer-actions {
@@ -146,22 +144,30 @@
     flex: 1;
     padding: 0.5rem;
     border-radius: var(--radius-sm);
-    border: none;
-    font-weight: 800;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    font-weight: 700;
     font-size: 0.7rem;
     cursor: pointer;
-    box-shadow: var(--shadow-raised-sm);
-    background: var(--bg);
-    color: var(--text-secondary);
+    background: rgba(255, 255, 255, 0.06);
+    color: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(8px);
+    transition: all var(--transition-base);
+}
+
+.btn-timer:hover {
+    background: rgba(255, 255, 255, 0.1);
 }
 
 .btn-timer.is-running {
     color: var(--danger);
-    box-shadow: var(--shadow-pressed);
+    background: rgba(239, 83, 80, 0.12);
+    border-color: rgba(239, 83, 80, 0.3);
 }
 
 .btn-timer.primary {
     color: var(--success);
+    background: rgba(76, 175, 80, 0.12);
+    border-color: rgba(76, 175, 80, 0.3);
 }
 
 /* Main Panel Header */
@@ -188,21 +194,21 @@
     width: 44px;
     height: 44px;
     border-radius: 50%;
-    background: var(--bg);
-    box-shadow: var(--shadow-raised-sm);
+    background: var(--glass-bg);
+    box-shadow: var(--shadow-sm);
     border: 2px solid white;
     overflow: hidden;
 }
 
-/* CES Stage Tabs (Dark Neumorphic) */
+/* CES Stage Tabs (Glass Dark) */
 .ces-stage-tabs {
-    background: rgba(0, 0, 0, 0.25);
+    background: rgba(255, 255, 255, 0.04);
     padding: 0.35rem;
-    border-radius: 10px;
+    border-radius: var(--radius-sm);
     display: flex;
     gap: 0.25rem;
     margin-bottom: 1.5rem;
-    box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.3), inset -2px -2px 4px rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .ces-tab-btn {
@@ -211,19 +217,25 @@
     border: none;
     border-radius: 8px;
     padding: 0.6rem 0.25rem;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.4);
     font-size: 0.65rem;
     font-weight: 800;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all var(--transition-base);
     text-transform: uppercase;
     white-space: nowrap;
 }
 
+.ces-tab-btn:hover {
+    color: rgba(255, 255, 255, 0.7);
+    background: rgba(255, 255, 255, 0.05);
+}
+
 .ces-tab-btn.is-active {
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
-    box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3), -3px -3px 6px rgba(255, 255, 255, 0.05);
+    background: rgba(92, 107, 192, 0.2);
+    color: var(--primary-light);
+    border: 1px solid rgba(92, 107, 192, 0.3);
+    box-shadow: 0 2px 8px rgba(92, 107, 192, 0.2);
 }
 
 .sidebar-actions {
@@ -231,57 +243,72 @@
     gap: 0.75rem;
     padding-top: 1.25rem;
     margin-top: auto;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .btn-complete {
     flex: 1;
-    background: var(--bg);
-    color: #2d3748;
-    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    border-radius: var(--radius-sm);
     padding: 0.85rem;
-    font-weight: 800;
+    font-weight: 700;
     font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border: none;
+    border: 1px solid rgba(255, 255, 255, 0.1);
     cursor: pointer;
-    box-shadow: var(--shadow-raised-sm);
+    backdrop-filter: blur(8px);
+    transition: all var(--transition-base);
+}
+
+.btn-complete:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.2);
 }
 
 .btn-close-circle {
     width: 48px;
     height: 48px;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.08);
-    border: none;
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
+    color: rgba(255, 255, 255, 0.7);
     cursor: pointer;
-    box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3), -3px -3px 6px rgba(255, 255, 255, 0.05);
+    transition: all var(--transition-base);
+}
+
+.btn-close-circle:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
 }
 
 .btn-close-circle:active {
-    box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.3), inset -2px -2px 4px rgba(255, 255, 255, 0.05);
+    transform: scale(0.95);
 }
 
 /* CES Main Panel */
 .ces-main {
     padding: 2rem;
     overflow-y: auto;
+    background: var(--bg-gradient);
 }
 
 .muscle-balance-box {
     margin-top: 2rem;
-    background: var(--bg);
+    background: var(--glass-bg-strong);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: var(--glass-border);
     border-radius: var(--radius-lg);
     padding: 1.5rem;
-    box-shadow: var(--shadow-raised);
+    box-shadow: var(--shadow-md);
 }
 
 .balance-grid {
@@ -291,10 +318,13 @@
 }
 
 .balance-card {
-    background: var(--bg);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: var(--glass-border-subtle);
     border-radius: var(--radius-md);
     padding: 1rem;
-    box-shadow: var(--shadow-raised-sm);
+    box-shadow: var(--shadow-sm);
 }
 
 .balance-title {

@@ -1,10 +1,10 @@
-/* rom_immersive.css — ROM 측정 뉴모피즘(Neumorphism) 테마 */
+/* rom_immersive.css — ROM 측정 Vitalis Glass 테마 */
 
 /* ── Page Shell ──────────────────────────────────────── */
 .rom-page {
     min-height: 100vh;
-    background: #e0e5ec;
-    color: #2d3748;
+    background: var(--bg-gradient);
+    color: var(--text-primary);
     font-family: var(--font);
     display: flex;
     flex-direction: column;
@@ -18,6 +18,10 @@
     align-items: center;
     padding: 1.25rem 1.5rem;
     flex-shrink: 0;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-bottom: var(--glass-border-subtle);
 }
 
 .rom-header__label {
@@ -25,12 +29,12 @@
     font-weight: 700;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: #5a7cfa;
+    color: var(--primary);
 }
 
 .rom-header__sub {
     font-size: 0.75rem;
-    color: #8a94a6;
+    color: var(--text-muted);
     margin-top: 0.25rem;
 }
 
@@ -38,29 +42,29 @@
     font-size: 1.5rem;
     font-weight: 300;
     letter-spacing: 0.08em;
-    color: #a0aec0;
+    color: var(--text-muted);
 }
 
-/* ── Progress Line (Neumorphic inset bar) ────────────── */
+/* ── Progress Line (Glass) ───────────────────────────── */
 .rom-progress {
     width: calc(100% - 3rem);
     margin: 0 auto;
-    height: 8px;
-    border-radius: 4px;
-    background: #e0e5ec;
-    box-shadow: inset 3px 3px 6px #b8bec7, inset -3px -3px 6px #ffffff;
+    height: 6px;
+    border-radius: 3px;
+    background: rgba(0, 0, 0, 0.12);
     position: relative;
     flex-shrink: 0;
+    overflow: hidden;
 }
 
 .rom-progress__fill {
     position: absolute;
-    top: 1px;
-    left: 1px;
-    bottom: 1px;
+    top: 0;
+    left: 0;
+    bottom: 0;
     border-radius: 3px;
-    background: linear-gradient(135deg, #667eea, #5a7cfa);
-    box-shadow: 0 0 8px rgba(90, 124, 250, 0.4);
+    background: var(--primary-gradient);
+    box-shadow: 0 0 12px rgba(92, 107, 192, 0.4);
     transition: width 0.5s ease-out;
 }
 
@@ -77,6 +81,19 @@
     width: 100%;
 }
 
+.rom-main__glow {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+}
+
 /* ── Movement Title ──────────────────────────────────── */
 .rom-title {
     text-align: center;
@@ -86,7 +103,7 @@
 .rom-title__name {
     font-size: 1.6rem;
     font-weight: 800;
-    color: #2d3748;
+    color: var(--text-primary);
     letter-spacing: -0.02em;
     margin: 0 0 0.6rem;
 }
@@ -97,36 +114,31 @@
     gap: 0.4rem;
     padding: 0.4rem 1rem;
     border-radius: 999px;
-    background: #e0e5ec;
-    box-shadow: 3px 3px 8px #b8bec7, -3px -3px 8px #ffffff;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: var(--glass-border);
     font-size: 0.8rem;
     font-weight: 600;
-    color: #718096;
+    color: var(--text-secondary);
 }
 
 .rom-title__dot {
     width: 7px;
     height: 7px;
     border-radius: 50%;
-    background: #5a7cfa;
+    background: var(--primary);
     animation: rom-pulse 2s ease-in-out infinite;
 }
 
 .rom-title__dot--normal {
-    background: #48bb78;
+    background: var(--success);
     animation: none;
 }
 
 @keyframes rom-pulse {
-
-    0%,
-    100% {
-        opacity: 0.4;
-    }
-
-    50% {
-        opacity: 1;
-    }
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
 }
 
 /* ── Giant Angle Display ─────────────────────────────── */
@@ -143,24 +155,22 @@
     line-height: 1;
     font-weight: 900;
     letter-spacing: -0.05em;
-    transition: color 0.4s, text-shadow 0.4s;
-    color: #c4cdd9;
+    transition: color 0.4s;
+    color: rgba(0, 0, 0, 0.1);
 }
 
 .rom-angle__value--active {
-    color: #5a7cfa;
-    text-shadow: 4px 4px 12px #b8bec7, -4px -4px 12px #ffffff;
+    color: var(--primary);
 }
 
 .rom-angle__value--normal {
-    color: #48bb78;
-    text-shadow: 4px 4px 12px #b8bec7, -4px -4px 12px #ffffff;
+    color: var(--success);
 }
 
 .rom-angle__unit {
     font-size: 2.2rem;
     font-weight: 700;
-    color: #c4cdd9;
+    color: rgba(0, 0, 0, 0.15);
     margin-left: 0.25rem;
 }
 
@@ -173,14 +183,16 @@
     gap: 0.3rem;
     padding: 0.25rem 0.7rem;
     border-radius: 999px;
-    background: #e0e5ec;
-    box-shadow: 2px 2px 5px #b8bec7, -2px -2px 5px #ffffff;
-    color: #48bb78;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: var(--glass-border);
+    color: var(--success);
     font-size: 0.72rem;
     font-weight: 700;
 }
 
-/* ── Range Slider (Neumorphic groove) ────────────────── */
+/* ── Range Slider (Glass groove) ─────────────────────── */
 .rom-slider {
     width: 100%;
     position: relative;
@@ -190,38 +202,37 @@
 
 .rom-slider input[type=range] {
     width: 100%;
-    height: 10px;
-    border-radius: 5px;
+    height: 8px;
+    border-radius: 4px;
     appearance: none;
     -webkit-appearance: none;
     cursor: pointer;
     outline: none;
-    background: #e0e5ec;
-    box-shadow: inset 3px 3px 6px #b8bec7, inset -3px -3px 6px #ffffff;
+    background: rgba(0, 0, 0, 0.12);
 }
 
 .rom-slider input[type=range]::-webkit-slider-thumb {
     -webkit-appearance: none;
-    width: 34px;
-    height: 34px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
-    background: linear-gradient(145deg, #f0f4f8, #d4dae3);
-    border: none;
-    box-shadow: 5px 5px 10px #b8bec7, -5px -5px 10px #ffffff;
+    background: var(--surface-solid);
+    border: 3px solid var(--primary);
+    box-shadow: 0 2px 10px rgba(92, 107, 192, 0.3);
     cursor: grab;
-    margin-top: -12px;
-    transition: transform 0.15s cubic-bezier(.4, 0, .2, 1), box-shadow 0.15s;
+    margin-top: -11px;
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .rom-slider input[type=range]:active::-webkit-slider-thumb {
     cursor: grabbing;
-    transform: scale(1.12);
-    box-shadow: 3px 3px 6px #b8bec7, -3px -3px 6px #ffffff, 0 0 16px rgba(90, 124, 250, 0.3);
+    transform: scale(1.15);
+    box-shadow: 0 4px 16px rgba(92, 107, 192, 0.4);
 }
 
 .rom-slider input[type=range]::-webkit-slider-runnable-track {
-    height: 10px;
-    border-radius: 5px;
+    height: 8px;
+    border-radius: 4px;
 }
 
 .rom-slider__marker {
@@ -230,7 +241,7 @@
     transform: translate(-50%, -50%);
     width: 2px;
     height: 22px;
-    background: #a0aec0;
+    background: var(--text-muted);
     border-radius: 1px;
     pointer-events: none;
 }
@@ -241,19 +252,21 @@
     padding: 0 0.25rem;
     font-size: 0.72rem;
     font-weight: 700;
-    color: #a0aec0;
+    color: var(--text-muted);
     margin-top: 0.5rem;
 }
 
-/* ── Segmented Control (Neumorphic pills) ────────────── */
+/* ── Segmented Control (Glass pills) ─────────────────── */
 .rom-seg {
     width: 100%;
     display: flex;
-    gap: 8px;
-    padding: 6px;
-    background: #e0e5ec;
-    border-radius: 18px;
-    box-shadow: inset 3px 3px 7px #b8bec7, inset -3px -3px 7px #ffffff;
+    gap: 6px;
+    padding: 5px;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: var(--glass-border);
+    border-radius: var(--radius-md);
     margin-bottom: 1rem;
 }
 
@@ -263,75 +276,83 @@
     font-size: 0.88rem;
     font-weight: 700;
     border: none;
-    border-radius: 13px;
+    border-radius: var(--radius-sm);
     cursor: pointer;
     font-family: var(--font);
-    transition: all 0.25s cubic-bezier(.4, 0, .2, 1);
-    color: #8a94a6;
+    transition: all var(--transition-base);
+    color: var(--text-muted);
     background: transparent;
 }
 
 .rom-seg__btn:hover {
-    color: #4a5568;
+    color: var(--text-secondary);
+    background: rgba(0, 0, 0, 0.02);
 }
 
 .rom-seg__btn--active {
-    color: #5a7cfa;
-    background: #e0e5ec;
-    box-shadow: 4px 4px 8px #b8bec7, -4px -4px 8px #ffffff;
+    color: var(--primary);
+    background: var(--surface-solid);
+    box-shadow: var(--shadow-md);
 }
 
 .rom-seg__btn--normal {
-    color: #48bb78;
-    background: #e0e5ec;
-    box-shadow: 4px 4px 8px #b8bec7, -4px -4px 8px #ffffff;
+    color: var(--success);
+    background: var(--surface-solid);
+    box-shadow: var(--shadow-md);
 }
 
-/* ── Photo Button (Neumorphic raised) ────────────────── */
+/* ── Photo Button (Glass raised) ─────────────────────── */
 .rom-photo-btn {
     width: 100%;
     padding: 1rem;
     font-size: 0.9rem;
     font-weight: 700;
-    border: none;
-    border-radius: 16px;
+    border: var(--glass-border);
+    border-radius: var(--radius-md);
     cursor: pointer;
     font-family: var(--font);
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 0.6rem;
-    transition: all 0.25s;
-    color: #718096;
-    background: #e0e5ec;
-    box-shadow: 5px 5px 10px #b8bec7, -5px -5px 10px #ffffff;
+    transition: all var(--transition-base);
+    color: var(--text-secondary);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    box-shadow: var(--shadow-sm);
 }
 
 .rom-photo-btn:hover {
-    box-shadow: 3px 3px 6px #b8bec7, -3px -3px 6px #ffffff;
+    background: var(--glass-bg-strong);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
 }
 
 .rom-photo-btn:active {
-    box-shadow: inset 3px 3px 6px #b8bec7, inset -3px -3px 6px #ffffff;
+    transform: translateY(0);
 }
 
 .rom-photo-btn--open {
     color: #fff;
-    background: linear-gradient(135deg, #667eea, #5a7cfa);
-    box-shadow: 5px 5px 10px #b8bec7, -5px -5px 10px #ffffff, 0 4px 15px rgba(90, 124, 250, 0.3);
+    background: var(--primary-gradient);
+    border: none;
+    box-shadow: var(--shadow-primary);
 }
 
 .rom-photo-btn--open:hover {
-    box-shadow: 3px 3px 6px #b8bec7, -3px -3px 6px #ffffff, 0 2px 8px rgba(90, 124, 250, 0.2);
+    box-shadow: 0 6px 24px rgba(92, 107, 192, 0.35);
 }
 
 .rom-photo-wrap {
     width: 100%;
     margin-top: 1rem;
-    background: #e0e5ec;
-    border-radius: 16px;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: var(--glass-border);
+    border-radius: var(--radius-md);
     overflow: hidden;
-    box-shadow: inset 3px 3px 6px #b8bec7, inset -3px -3px 6px #ffffff;
     padding: 0.5rem;
 }
 
@@ -343,9 +364,11 @@
     right: 0;
     padding: 1rem 1.5rem calc(1rem + env(safe-area-inset-bottom, 0px));
     z-index: 20;
-    background: #e0e5ec;
-    border-top: none;
-    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.04);
+    background: var(--glass-bg-strong);
+    backdrop-filter: var(--glass-blur-strong);
+    -webkit-backdrop-filter: var(--glass-blur-strong);
+    border-top: var(--glass-border);
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.06);
 }
 
 .rom-footer__inner {
@@ -357,49 +380,52 @@
 
 .rom-footer__prev {
     padding: 1rem 1.5rem;
-    background: #e0e5ec;
-    border: none;
-    border-radius: 14px;
-    color: #8a94a6;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: var(--glass-border);
+    border-radius: var(--radius-md);
+    color: var(--text-muted);
     font-size: 0.95rem;
     font-weight: 700;
     cursor: pointer;
     font-family: var(--font);
-    transition: all 0.25s;
-    box-shadow: 4px 4px 8px #b8bec7, -4px -4px 8px #ffffff;
+    transition: all var(--transition-base);
+    box-shadow: var(--shadow-sm);
 }
 
 .rom-footer__prev:hover {
-    color: #4a5568;
-    box-shadow: 3px 3px 5px #b8bec7, -3px -3px 5px #ffffff;
+    color: var(--text-primary);
+    background: var(--glass-bg-strong);
+    box-shadow: var(--shadow-md);
 }
 
 .rom-footer__prev:active {
-    box-shadow: inset 3px 3px 5px #b8bec7, inset -3px -3px 5px #ffffff;
+    transform: scale(0.98);
 }
 
 .rom-footer__next {
     flex: 1;
     padding: 1rem;
-    background: linear-gradient(135deg, #667eea, #5a7cfa);
+    background: var(--primary-gradient);
     border: none;
-    border-radius: 14px;
+    border-radius: var(--radius-md);
     color: #fff;
     font-size: 1rem;
     font-weight: 800;
     cursor: pointer;
     font-family: var(--font);
-    transition: all 0.25s;
+    transition: all var(--transition-base);
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    box-shadow: 5px 5px 12px #b8bec7, -5px -5px 12px #ffffff, 0 4px 15px rgba(90, 124, 250, 0.25);
+    box-shadow: var(--shadow-primary);
 }
 
 .rom-footer__next:hover {
-    transform: translateY(-1px);
-    box-shadow: 5px 5px 12px #b8bec7, -5px -5px 12px #ffffff, 0 6px 20px rgba(90, 124, 250, 0.35);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(92, 107, 192, 0.35);
 }
 
 .rom-footer__next:active {

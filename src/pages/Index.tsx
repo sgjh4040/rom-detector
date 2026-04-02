@@ -9,6 +9,7 @@ import type { Side, Patient } from "../lib/romData";
 import { PatientSelector } from "../components/PatientSelector";
 import { PainAssessment } from "../components/PainAssessment";
 import { JointSelector } from "../components/JointSelector";
+import { AppLayout } from "../components/AppLayout";
 
 type SideMode = "좌측만" | "우측만" | "양쪽";
 const SIDE_MODE_MAP: Record<SideMode, Side[]> = {
@@ -116,6 +117,7 @@ export const Index: React.FC = () => {
   //밑으로는 보여주는 부분
 
   return (
+    <AppLayout patientId={patientId}>
     <div className="bg-full-viewport page-bg-home">
       <div className="container pb-10">
         <div className="page-header">
@@ -211,26 +213,18 @@ export const Index: React.FC = () => {
               }
             />
 
-            <div className="grid grid-cols-2 gap-4 mt-4">
+            <div className="mt-4">
               <button
                 type="submit"
                 className="btn btn-primary btn-large w-full"
               >
                 측정 시작하기 ({totalSteps}단계)
               </button>
-              {patientId && (
-                <button
-                  type="button"
-                  className="btn btn-outline btn-large w-full"
-                  onClick={() => navigate(`/trends?patientId=${patientId}`)}
-                >
-                  📈 추이 보기
-                </button>
-              )}
             </div>
           </form>
         </div>
       </div>
     </div>
+    </AppLayout>
   );
 };

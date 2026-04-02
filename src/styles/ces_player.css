@@ -1,54 +1,57 @@
-/* ces_player.css — NTC 플레이어 뉴모피즘 전용 (PRD 4-0: 200줄 이하) */
+/* ces_player.css — CES 플레이어 Vitalis Glass */
 
 /* ── 플레이어 그리드 레이아웃 ───────────────────────────── */
 .ces-player {
     display: grid;
     grid-template-columns: 1fr 380px 260px;
     grid-template-rows: 100vh;
-    background: var(--bg);
+    background: var(--bg-gradient);
     overflow: hidden;
 }
 
 .ces-player-video {
-    background: #1a1d24;
+    background: linear-gradient(135deg, #1A1F36, #252D44);
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 1.5rem;
     overflow: hidden;
-    box-shadow: inset 3px 3px 8px rgba(0, 0, 0, 0.3), inset -3px -3px 8px rgba(60, 60, 60, 0.1);
 }
 
 .ces-player-ctrl {
-    background: var(--bg);
+    background: var(--glass-bg-strong);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
     padding: 2rem 1.75rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    border-left: none;
-    border-right: none;
+    border-left: var(--glass-border);
+    border-right: var(--glass-border);
     overflow-y: auto;
-    box-shadow: -4px 0 12px rgba(0, 0, 0, 0.04), 4px 0 12px rgba(0, 0, 0, 0.04);
 }
 
 .ces-player-anatomy {
-    background: var(--bg);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
     padding: 1.25rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     overflow-y: auto;
+    border-left: var(--glass-border-subtle);
 }
 
-/* ── 완료 화면 (Neumorphic Celebration) ─────────────────── */
+/* ── 완료 화면 ─────────────────────────────────────────── */
 .ces-player-finish {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     height: 100vh;
-    background: var(--bg);
+    background: var(--bg-gradient);
     color: var(--text-primary);
     gap: 1.5rem;
     text-align: center;
@@ -102,8 +105,7 @@
     margin-top: 0.75rem;
     height: 6px;
     border-radius: var(--radius-pill);
-    background: rgba(255, 255, 255, 0.05);
-    box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.4);
+    background: rgba(255, 255, 255, 0.08);
     overflow: hidden;
 }
 
@@ -111,7 +113,7 @@
     height: 100%;
     border-radius: var(--radius-pill);
     transition: width 0.5s ease;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.1);
 }
 
 .progress-meta {
@@ -133,66 +135,25 @@
 
 /* ── CES 페이즈 애니메이션 키프레임 ─────────────────────── */
 @keyframes pulse-slow {
-
-    0%,
-    100% {
-        opacity: 0.7;
-        transform: scale(1);
-    }
-
-    50% {
-        opacity: 1;
-        transform: scale(1.04);
-    }
+    0%, 100% { opacity: 0.7; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.04); }
 }
 
 @keyframes fade-in {
-    0% {
-        opacity: 0.35;
-    }
-
-    60% {
-        opacity: 1;
-    }
-
-    100% {
-        opacity: 0.6;
-    }
+    0% { opacity: 0.35; }
+    60% { opacity: 1; }
+    100% { opacity: 0.6; }
 }
 
 @keyframes heartbeat {
-
-    0%,
-    70%,
-    100% {
-        opacity: 0.5;
-        transform: scale(1);
-    }
-
-    14%,
-    42% {
-        opacity: 1;
-        transform: scale(1.06);
-    }
-
-    28% {
-        opacity: 0.7;
-        transform: scale(1);
-    }
+    0%, 70%, 100% { opacity: 0.5; transform: scale(1); }
+    14%, 42% { opacity: 1; transform: scale(1.06); }
+    28% { opacity: 0.7; transform: scale(1); }
 }
 
 @keyframes glow {
-
-    0%,
-    100% {
-        opacity: 0.75;
-        filter: brightness(1);
-    }
-
-    50% {
-        opacity: 1;
-        filter: brightness(1.2);
-    }
+    0%, 100% { opacity: 0.75; filter: brightness(1); }
+    50% { opacity: 1; filter: brightness(1.2); }
 }
 
 /* ── 반응형 ────────────────────────────────────────────── */

@@ -1,7 +1,7 @@
-/* ces_exercise.css — CES 메인 패널 뉴모피즘 스타일 */
+/* ces_exercise.css — CES 메인 패널 Vitalis Glass */
 
 .ces-main {
-    background: var(--bg);
+    background: var(--bg-gradient);
     display: flex;
     flex-direction: column;
     padding: 2.5rem;
@@ -15,7 +15,7 @@
 .main-title {
     font-size: 1.7rem;
     font-weight: 800;
-    color: var(--primary);
+    color: var(--text-primary);
 }
 
 .main-subtitle {
@@ -24,7 +24,7 @@
     margin-top: 0.25rem;
 }
 
-/* 운동 썸네일 리스트 (Neumorphic Cards) */
+/* 운동 썸네일 리스트 (Glass Cards) */
 .ex-tray {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -34,6 +34,11 @@
 
 .ex-tray-item {
     cursor: pointer;
+    transition: transform var(--transition-base);
+}
+
+.ex-tray-item:hover {
+    transform: translateY(-2px);
 }
 
 .ex-tray-thumb {
@@ -42,13 +47,17 @@
     overflow: hidden;
     margin-bottom: 0.75rem;
     position: relative;
-    background: var(--bg);
-    box-shadow: var(--shadow-raised-sm);
-    transition: all 0.2s;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: var(--glass-border-subtle);
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition-base);
 }
 
 .ex-tray-thumb.is-active {
-    box-shadow: var(--shadow-pressed), 0 0 0 2px var(--primary);
+    border: 2px solid var(--primary);
+    box-shadow: var(--shadow-primary);
 }
 
 .play-overlay {
@@ -58,14 +67,16 @@
     transform: translate(-50%, -50%);
     width: 40px;
     height: 40px;
-    background: var(--bg);
+    background: var(--glass-bg-strong);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     color: var(--primary);
     font-size: 1.2rem;
-    box-shadow: var(--shadow-raised-sm);
+    box-shadow: var(--shadow-md);
 }
 
 .ex-meta-top {
@@ -105,8 +116,11 @@
     margin-top: 2.5rem;
     padding: 1.5rem;
     border-radius: var(--radius-lg);
-    background: var(--bg);
-    box-shadow: var(--shadow-raised);
+    background: var(--glass-bg-strong);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: var(--glass-border);
+    box-shadow: var(--shadow-md);
 }
 
 .balance-grid {
@@ -118,8 +132,11 @@
 .balance-card {
     padding: 1.25rem;
     border-radius: var(--radius-md);
-    background: var(--bg);
-    box-shadow: var(--shadow-raised-sm);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: var(--glass-border-subtle);
+    box-shadow: var(--shadow-sm);
 }
 
 .balance-title {

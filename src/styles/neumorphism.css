@@ -1,57 +1,76 @@
-:root {
-    --neumo-bg: #e0e5ec;
-    --neumo-shadow-dark: #a3b1c6;
-    --neumo-shadow-light: #ffffff;
-    --neumo-accent: #6d5dfc;
-    --neumo-accent-light: #8e84ff;
-    --neumo-text: #44475a;
+/* neumorphism.css → glassmorphism.css — 글래스 유틸리티 */
 
-    /* Gradient Presets */
-    --grad-relax: linear-gradient(135deg, #72c6ef 0%, #004e92 100%);
-    --grad-cardio: linear-gradient(135deg, #5ee7df 0%, #b490ca 100%);
-    --grad-strength: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
-    --grad-stretch: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+/* ── Glass Cards ─────────────────────────────────────── */
+.neumo-card,
+.glass-card {
+    background: var(--glass-bg-strong);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: var(--glass-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    transition: all var(--transition-base);
 }
 
-.neumo-container {
-    background: var(--neumo-bg);
-    min-height: 100vh;
-    color: var(--neumo-text);
-    font-family: 'Inter', sans-serif;
+.neumo-card:hover,
+.glass-card:hover {
+    box-shadow: var(--shadow-lg);
 }
 
-.neumo-card {
-    background: var(--neumo-bg);
-    border-radius: 40px;
-    box-shadow: 12px 12px 24px var(--neumo-shadow-dark),
-        -12px -12px 24px var(--neumo-shadow-light);
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    overflow: visible !important;
+/* ── Glass Inset ─────────────────────────────────────── */
+.neumo-inset,
+.glass-inset {
+    background: var(--surface-2);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: var(--glass-border-subtle);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-inset);
 }
 
-.neumo-inset {
-    background: var(--neumo-bg);
-    border-radius: 24px;
-    box-shadow: inset 8px 8px 16px var(--neumo-shadow-dark),
-        inset -8px -8px 16px var(--neumo-shadow-light);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    overflow: visible !important;
+/* ── Glass Container ─────────────────────────────────── */
+.neumo-container,
+.glass-container {
+    background: transparent;
 }
 
-.neumo-btn {
-    background: var(--neumo-bg);
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    border-radius: 20px;
-    box-shadow: 6px 6px 12px var(--neumo-shadow-dark),
-        -6px -6px 12px var(--neumo-shadow-light);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+/* ── Stat Card Inner ─────────────────────────────────── */
+.stat-card-inner {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: var(--glass-border);
+    border-radius: var(--radius-md);
+    padding: 1rem;
+    box-shadow: var(--shadow-sm);
+}
+
+/* ── Panel ───────────────────────────────────────────── */
+.panel {
+    background: var(--glass-bg-strong);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: var(--glass-border);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem;
+    box-shadow: var(--shadow-md);
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.panel.clickable {
     cursor: pointer;
-    font-weight: 600;
+    transition: all var(--transition-base);
 }
 
-.neumo-btn:active,
-.neumo-btn.active {
-    box-shadow: inset 4px 4px 8px var(--neumo-shadow-dark),
-        inset -4px -4px 8px var(--neumo-shadow-light);
-    transform: scale(0.98);
+.panel.clickable:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary);
 }

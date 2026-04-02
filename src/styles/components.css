@@ -1,13 +1,20 @@
-/* components.css — 뉴모피즘 카드, 버튼, 폼, 배지 */
+/* components.css — Vitalis Glass 카드, 버튼, 폼, 배지 */
 
-/* ── Card (Neumorphic Raised) ────────────────────────── */
+/* ── Card (Glassmorphism) ────────────────────────────── */
 .card {
-    background: var(--bg);
+    background: var(--glass-bg-strong);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: var(--glass-border);
     border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-raised);
+    box-shadow: var(--shadow-md);
     padding: 1.5rem;
     margin-bottom: 1.25rem;
-    border: none;
+    transition: box-shadow var(--transition-base), transform var(--transition-base);
+}
+
+.card:hover {
+    box-shadow: var(--shadow-lg);
 }
 
 /* ── Buttons ─────────────────────────────────────────── */
@@ -16,64 +23,86 @@
     align-items: center;
     justify-content: center;
     gap: 0.4rem;
-    padding: 0.5rem 1rem;
+    padding: 0.6rem 1.25rem;
     min-height: 44px;
     font-size: 0.9rem;
     font-weight: 600;
     border: none;
     border-radius: var(--radius-sm);
     cursor: pointer;
-    transition: all 0.2s cubic-bezier(.4, 0, .2, 1);
+    transition: all var(--transition-base);
     font-family: var(--font);
     user-select: none;
     white-space: nowrap;
+    letter-spacing: 0.01em;
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, #667eea, #5a6fd6);
-    color: #fff;
+    background: var(--primary-gradient);
+    color: var(--text-on-primary);
     border-radius: var(--radius-pill);
-    box-shadow: var(--shadow-raised), 0 4px 12px rgba(102, 126, 234, 0.25);
+    box-shadow: var(--shadow-primary);
 }
 
 .btn-primary:hover {
-    transform: translateY(-1px);
-    box-shadow: var(--shadow-raised), 0 6px 18px rgba(102, 126, 234, 0.35);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(92, 107, 192, 0.35);
 }
 
 .btn-primary:active {
     transform: translateY(0);
-    box-shadow: var(--shadow-raised-sm), 0 2px 6px rgba(102, 126, 234, 0.2);
+    box-shadow: 0 2px 8px rgba(92, 107, 192, 0.2);
 }
 
 .btn-secondary {
-    background: var(--bg);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
     color: var(--primary);
+    border: var(--glass-border);
     border-radius: var(--radius-pill);
-    box-shadow: var(--shadow-raised-sm);
+    box-shadow: var(--shadow-sm);
 }
 
 .btn-secondary:hover {
-    box-shadow: var(--shadow-raised);
+    background: var(--glass-bg-strong);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
 }
 
 .btn-secondary:active {
-    box-shadow: var(--shadow-pressed);
+    transform: translateY(0);
 }
 
 .btn-outline {
-    background: var(--bg);
-    border: none;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid rgba(0, 0, 0, 0.08);
     color: var(--text-primary);
-    box-shadow: var(--shadow-raised-sm);
+    box-shadow: var(--shadow-sm);
 }
 
 .btn-outline:hover {
-    box-shadow: var(--shadow-raised);
+    background: var(--glass-bg-strong);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
 }
 
 .btn-outline:active {
-    box-shadow: var(--shadow-pressed);
+    transform: translateY(0);
+}
+
+.btn-large {
+    padding: 0.85rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.btn-small {
+    padding: 0.35rem 0.75rem;
+    font-size: 0.8rem;
+    min-height: 32px;
 }
 
 /* ── Form ────────────────────────────────────────────── */
@@ -88,32 +117,40 @@
     color: var(--text-secondary);
     margin-bottom: 0.5rem;
     text-transform: uppercase;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.05em;
 }
 
 .form-input,
 .form-select {
     width: 100%;
     padding: 0.85rem 1rem;
-    border: none;
+    border: 1px solid rgba(0, 0, 0, 0.08);
     border-radius: var(--radius-md);
     font-family: var(--font);
     font-size: 1rem;
-    background: var(--bg);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
     color: var(--text-primary);
-    transition: box-shadow 0.2s;
+    transition: all var(--transition-base);
     appearance: none;
     min-height: 44px;
-    box-shadow: var(--shadow-pressed);
+    box-shadow: var(--shadow-inset);
+}
+
+.form-input::placeholder {
+    color: var(--text-muted);
 }
 
 .form-input:focus,
 .form-select:focus {
     outline: none;
-    box-shadow: var(--shadow-pressed-deep), 0 0 0 2px var(--primary-glow);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-glow), var(--shadow-inset);
+    background: var(--glass-bg-strong);
 }
 
-/* ── Badges (Neumorphic micro-raised) ────────────────── */
+/* ── Badges ──────────────────────────────────────────── */
 .badge {
     display: inline-flex;
     align-items: center;
@@ -122,30 +159,37 @@
     font-size: 0.75rem;
     font-weight: 700;
     letter-spacing: 0.02em;
-    box-shadow: var(--shadow-raised-sm);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
 
 .badge-success {
     background: var(--success-bg);
     color: var(--success-text);
+    border: 1px solid rgba(76, 175, 80, 0.15);
 }
 
 .badge-warning {
     background: var(--warning-bg);
     color: var(--warning-text);
+    border: 1px solid rgba(255, 152, 0, 0.15);
 }
 
 .badge-danger {
     background: var(--danger-bg);
     color: var(--danger-text);
+    border: 1px solid rgba(239, 83, 80, 0.15);
 }
 
 .badge-outline {
-    background: var(--bg);
+    background: var(--glass-bg);
     color: var(--text-secondary);
+    border: 1px solid rgba(0, 0, 0, 0.06);
 }
 
-.badge-blue {
-    background: var(--primary-light);
+.badge-blue,
+.badge-primary {
+    background: rgba(92, 107, 192, 0.1);
     color: var(--primary);
+    border: 1px solid rgba(92, 107, 192, 0.15);
 }
