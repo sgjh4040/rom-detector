@@ -126,7 +126,7 @@ export const JointSideResult: React.FC<JointSideResultProps> = ({
                                                     {/* 상단 팝오버 텍스트 */}
                                                     <div style={{
                                                         position: 'absolute',
-                                                        top: '-26px',
+                                                        bottom: 'calc(100% + 6px)',
                                                         left: '50%',
                                                         transform: 'translateX(-50%)',
                                                         fontWeight: 900,
@@ -135,7 +135,8 @@ export const JointSideResult: React.FC<JointSideResultProps> = ({
                                                         background: 'rgba(255,255,255,0.9)',
                                                         padding: '2px 6px',
                                                         borderRadius: '6px',
-                                                        boxShadow: '0 1px 3px rgba(0,0,0,0.05)'
+                                                        boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+                                                        whiteSpace: 'nowrap'
                                                     }}>
                                                         {res.measured}°
                                                     </div>
