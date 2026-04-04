@@ -10,6 +10,7 @@ import { PatientSelector } from "../components/PatientSelector";
 import { PainAssessment } from "../components/PainAssessment";
 import { JointSelector } from "../components/JointSelector";
 import { AppLayout } from "../components/AppLayout";
+import { Settings } from "lucide-react";
 
 type SideMode = "좌측만" | "우측만" | "양쪽";
 const SIDE_MODE_MAP: Record<SideMode, Side[]> = {
@@ -118,113 +119,113 @@ export const Index: React.FC = () => {
 
   return (
     <AppLayout patientId={patientId}>
-    <div className="bg-full-viewport page-bg-home">
-      <div className="container pb-10">
-        <div className="page-header">
-          {/* 세팅 페이지로 가는 버튼 */}
-          {/* <button
+      <div className="bg-full-viewport page-bg-home">
+        <div className="container pb-10">
+          <div className="page-header">
+            {/* 세팅 페이지로 가는 버튼 */}
+            {/* <button
             onClick={() => navigate("/cesinfo")}
             className="btn-settings-top mr-12"
             style={{ marginRight: "40px" }}
           >
             📚
           </button> */}
-          <button
-            onClick={() => navigate("/settings")}
-            className="btn-settings-top"
-          >
-            ⚙️
-          </button>
-          <h1>ROM 측정 시스템</h1>
-          <p>평가 및 재활 처방</p>
-        </div>
+            <button
+              onClick={() => navigate("/settings")}
+              className="btn-settings-top flex items-center justify-center"
+            >
+              <Settings size={22} className="text-gray-600" />
+            </button>
+            <h1>ROM 측정 시스템</h1>
+            <p>평가 및 재활 처방</p>
+          </div>
 
-        <div className="card">
-          {/* 기존 환자 선택 또는 새 환자 등록, componets 에 있음 */}
-          <PatientSelector
-            patients={patients}
-            patientId={patientId}
-            isManaging={isManaging}
-            setIsManaging={setIsManaging}
-            handleSelectPatient={handleSelectPatient}
-            handleDeletePatient={handleDeletePatient}
-            handleNewPatient={handleNewPatient}
-          />
-
-          <form onSubmit={handleSubmit}>
-            <div className="grid grid-cols-2 gap-4 mb-4">
-              <div className="form-group">
-                <label className="form-label">이름</label>
-                <input
-                  type="text"
-                  className="form-input"
-                  placeholder="성함"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                />
-              </div>
-              <div className="form-group">
-                <label className="form-label">나이</label>
-                <input
-                  type="number"
-                  className="form-input"
-                  placeholder="세"
-                  value={age}
-                  onChange={(e) => setAge(e.target.value)}
-                />
-              </div>
-            </div>
-
-            <PainAssessment
-              painArea={painArea}
-              setPainArea={setPainArea}
-              vasScore={vasScore}
-              setVasScore={setVasScore}
+          <div className="card">
+            {/* 기존 환자 선택 또는 새 환자 등록, componets 에 있음 */}
+            <PatientSelector
+              patients={patients}
+              patientId={patientId}
+              isManaging={isManaging}
+              setIsManaging={setIsManaging}
+              handleSelectPatient={handleSelectPatient}
+              handleDeletePatient={handleDeletePatient}
+              handleNewPatient={handleNewPatient}
             />
 
-            <div className="form-group mt-6">
-              <label className="form-label mb-3 block">방향 선택</label>
-              <div className="grid grid-cols-3 gap-3">
-                {(Object.keys(SIDE_MODE_MAP) as SideMode[]).map((mode) => {
-                  const selected = sideMode === mode;
-                  return (
-                    <button
-                      key={mode}
-                      type="button"
-                      className={`btn ${selected ? "btn-primary" : "btn-outline"}`}
-                      onClick={() => setSideMode(mode)}
-                    >
-                      {selected ? "✓ " : ""}
-                      {mode}
-                    </button>
-                  );
-                })}
+            <form onSubmit={handleSubmit}>
+              <div className="grid grid-cols-2 gap-4 mb-4">
+                <div className="form-group">
+                  <label className="form-label">이름</label>
+                  <input
+                    type="text"
+                    className="form-input"
+                    placeholder="성함"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                  />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">나이</label>
+                  <input
+                    type="number"
+                    className="form-input"
+                    placeholder="세"
+                    value={age}
+                    onChange={(e) => setAge(e.target.value)}
+                  />
+                </div>
               </div>
-            </div>
 
-            <JointSelector
-              selectedJointIds={selectedJointIds}
-              toggleJoint={(id) =>
-                setSelectedJointIds((prev) =>
-                  prev.includes(id)
-                    ? prev.filter((i) => i !== id)
-                    : [...prev, id],
-                )
-              }
-            />
+              <PainAssessment
+                painArea={painArea}
+                setPainArea={setPainArea}
+                vasScore={vasScore}
+                setVasScore={setVasScore}
+              />
 
-            <div className="mt-4">
-              <button
-                type="submit"
-                className="btn btn-primary btn-large w-full"
-              >
-                측정 시작하기 ({totalSteps}단계)
-              </button>
-            </div>
-          </form>
+              <div className="form-group mt-6">
+                <label className="form-label mb-3 block">방향 선택</label>
+                <div className="grid grid-cols-3 gap-3">
+                  {(Object.keys(SIDE_MODE_MAP) as SideMode[]).map((mode) => {
+                    const selected = sideMode === mode;
+                    return (
+                      <button
+                        key={mode}
+                        type="button"
+                        className={`btn ${selected ? "btn-primary" : "btn-outline"}`}
+                        onClick={() => setSideMode(mode)}
+                      >
+                        {selected ? "✓ " : ""}
+                        {mode}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <JointSelector
+                selectedJointIds={selectedJointIds}
+                toggleJoint={(id) =>
+                  setSelectedJointIds((prev) =>
+                    prev.includes(id)
+                      ? prev.filter((i) => i !== id)
+                      : [...prev, id],
+                  )
+                }
+              />
+
+              <div className="mt-4">
+                <button
+                  type="submit"
+                  className="btn btn-primary btn-large w-full"
+                >
+                  측정 시작하기 ({totalSteps}단계)
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
     </AppLayout>
   );
 };

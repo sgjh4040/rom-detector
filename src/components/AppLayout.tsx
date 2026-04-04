@@ -1,9 +1,10 @@
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { Home, Settings, TrendingUp } from "lucide-react";
 
 const NAV_ITEMS = [
-  { path: "/", icon: "🏠", label: "홈" },
-  { path: "/settings", icon: "⚙️", label: "설정" },
+  { path: "/", icon: <Home size={20} />, label: "홈" },
+  { path: "/settings", icon: <Settings size={20} />, label: "설정" },
 ];
 
 interface AppLayoutProps {
@@ -11,20 +12,27 @@ interface AppLayoutProps {
   patientId?: string;
 }
 
-export const AppLayout: React.FC<AppLayoutProps> = ({ children, patientId }) => {
+export const AppLayout: React.FC<AppLayoutProps> = ({
+  children,
+  patientId,
+}) => {
   const navigate = useNavigate();
   const location = useLocation();
   const currentPath = location.pathname;
 
   const trendsItem = patientId
-    ? { path: `/trends?patientId=${patientId}`, icon: "📈", label: "측정기록" }
+    ? { path: `/trends?patientId=${patientId}`, icon: <TrendingUp size={20} />, label: "측정기록" }
     : null;
 
   const allNavItems = trendsItem
     ? [NAV_ITEMS[0], trendsItem, NAV_ITEMS[1]]
     : NAV_ITEMS;
 
-  const renderNavItem = (item: { path: string; icon: string; label: string }) => (
+  const renderNavItem = (item: {
+    path: string;
+    icon: React.ReactNode;
+    label: string;
+  }) => (
     <button
       key={item.path}
       className={`nav-item ${currentPath === item.path.split("?")[0] ? "active" : ""}`}
@@ -47,9 +55,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children, patientId }) => 
       <div className="app-main-with-sidebar">{children}</div>
 
       {/* Mobile Bottom NavBar */}
-      <nav className="app-bottom-nav">
-        {allNavItems.map(renderNavItem)}
-      </nav>
+      <nav className="app-bottom-nav">{allNavItems.map(renderNavItem)}</nav>
     </>
   );
 };

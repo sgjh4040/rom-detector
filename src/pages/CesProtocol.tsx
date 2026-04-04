@@ -12,6 +12,7 @@ import { analyzeMuscles } from "../lib/muscleAnalysis";
 import { CesExercisePlayer } from "../core/components/CesExercisePlayer";
 import { BodyAnatomySvg } from "../core/components/BodyAnatomySvg";
 import { getExMeta, formatTime } from "../core/utils/cesProtocolHelpers";
+import { Play, Pause, RotateCcw, AlertTriangle, CheckCircle } from "lucide-react";
 import { updatePhaseDuration } from "../features/session/data/cesTimeTracker";
 import type { CesStage } from "../lib/ces/cesTypes";
 import type { CesPhase } from "../lib/ces/CesPlayerTypes";
@@ -214,18 +215,20 @@ export const CesProtocol: React.FC = () => {
 
         {/* 통계: 타이머 + 운동 처방 */}
         <div className="sidebar-stats">
-          <div className={`card stat-card-inner ${timerRunning ? "is-active" : ""}`}>
+          <div
+            className={`card stat-card-inner ${timerRunning ? "is-active" : ""}`}
+          >
             <p className="sub-label">Total Time</p>
             <p className="stat-main-val">{formatTime(seconds)}</p>
             <div className="timer-actions">
               <button
                 onClick={toggleTimer}
-                className={`btn-timer ${timerRunning ? "is-running" : "primary"}`}
+                className={`btn-timer flex justify-center items-center gap-1 ${timerRunning ? "is-running" : "primary"}`}
               >
-                {timerRunning ? "⏸ PAUSE" : "▶ START"}
+                {timerRunning ? <><Pause size={14} /> PAUSE</> : <><Play size={14} /> START</>}
               </button>
-              <button onClick={resetTimer} className="btn-timer btn-reset">
-                <span>↺</span> RESET
+              <button onClick={resetTimer} className="btn-timer btn-reset flex justify-center items-center gap-1">
+                <RotateCcw size={14} /> RESET
               </button>
             </div>
           </div>
@@ -261,10 +264,16 @@ export const CesProtocol: React.FC = () => {
 
         {/* 하단 액션 */}
         <div className="sidebar-actions">
-          <button className="btn-complete is-primary" onClick={handleStartPlayer}>
+          <button
+            className="btn-complete is-primary"
+            onClick={handleStartPlayer}
+          >
             Start Player <span>›</span>
           </button>
-          <button className="btn-complete is-success" onClick={() => navigate("/")}>
+          <button
+            className="btn-complete is-success"
+            onClick={() => navigate("/")}
+          >
             Complete Exercise <span>›</span>
           </button>
           <button
@@ -302,7 +311,9 @@ export const CesProtocol: React.FC = () => {
           <div className="main-user-info">
             <div>
               <p className="user-name">{session?.patientName ?? "환자"}</p>
-              <p className="user-meta">{session?.patientAge ? `${session.patientAge}세` : ""}</p>
+              <p className="user-meta">
+                {session?.patientAge ? `${session.patientAge}세` : ""}
+              </p>
             </div>
             <div className="user-avatar">
               <img
@@ -331,8 +342,8 @@ export const CesProtocol: React.FC = () => {
           </h3>
           <div className="balance-grid">
             <div className="balance-card">
-              <p className="balance-title" style={{ color: "var(--danger)" }}>
-                🔴 Overactive (뭉친 근육)
+              <p className="balance-title flex items-center gap-1" style={{ color: "var(--danger)" }}>
+                <AlertTriangle size={18} /> Overactive (뭉친 근육)
               </p>
               <div className="flex flex-wrap gap-2">
                 {analysis.overactiveMuscles.map((m) => (
@@ -353,8 +364,8 @@ export const CesProtocol: React.FC = () => {
               </div>
             </div>
             <div className="balance-card">
-              <p className="balance-title" style={{ color: "var(--success)" }}>
-                🟢 Underactive (약한 근육)
+              <p className="balance-title flex items-center gap-1" style={{ color: "var(--success)" }}>
+                <CheckCircle size={18} /> Underactive (약한 근육)
               </p>
               <div className="flex flex-wrap gap-2">
                 {analysis.underactiveMuscles.map((m) => (

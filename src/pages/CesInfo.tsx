@@ -3,25 +3,30 @@ import { useNavigate } from "react-router-dom";
 import { ALL_CES_DATA } from "../lib/ces";
 import { JOINTS } from "../lib/romData";
 import type { CesStage } from "../lib/ces/cesTypes";
+import { 
+  CircleSlash, Accessibility, Activity, CheckCircle2,
+  User, Crosshair, Watch, Footprints, MoveVertical,
+  Brain, Wrench, Timer, Repeat, Hash, PlayCircle
+} from "lucide-react";
 
 const STAGE_LABELS: Record<
   CesStage,
-  { label: string; icon: string; color: string }
+  { label: string; icon: React.ReactNode; color: string }
 > = {
-  inhibit: { label: "Inhibit (억제)", icon: "🔴", color: "var(--danger)" },
-  lengthen: { label: "Lengthen (신장)", icon: "🟠", color: "var(--warning)" },
-  activate: { label: "Activate (활성화)", icon: "🟢", color: "var(--success)" },
-  integrate: { label: "Integrate (통합)", icon: "🔵", color: "var(--primary)" },
+  inhibit: { label: "Inhibit (억제)", icon: <CircleSlash size={18} color="currentColor" />, color: "var(--danger)" },
+  lengthen: { label: "Lengthen (신장)", icon: <Accessibility size={18} color="currentColor" />, color: "var(--warning)" },
+  activate: { label: "Activate (활성화)", icon: <CheckCircle2 size={18} color="currentColor" />, color: "var(--success)" },
+  integrate: { label: "Integrate (통합)", icon: <Activity size={18} color="currentColor" />, color: "var(--primary)" },
 };
 
-const JOINT_ICONS: Record<string, string> = {
-  shoulder: "👕",
-  elbow: "💪",
-  wrist: "⌚",
-  hip: "👖",
-  knee: "🦵",
-  ankle: "🦶",
-  waist: "🧍",
+const JOINT_ICONS: Record<string, React.ReactNode> = {
+  shoulder: <User size={18} />,
+  elbow: <Crosshair size={18} />,
+  wrist: <Watch size={18} />,
+  hip: <Activity size={18} />,
+  knee: <Footprints size={18} />,
+  ankle: <Footprints size={18} />,
+  waist: <MoveVertical size={18} />,
 };
 
 const UPPER_BODY = ["shoulder", "elbow", "wrist", "waist"];
@@ -133,7 +138,7 @@ export const CesInfo: React.FC = () => {
             <div className="lg:col-span-4 space-y-6">
               <section className="card muscle-map-card p-6 h-full">
                 <h3 className="section-title mb-4 flex items-center gap-2">
-                  <span className="icon">🧠</span> Muscle Map
+                  <span className="icon text-primary"><Brain size={24} /></span> Muscle Map
                 </h3>
                 <div className="space-y-6">
                   <div>
@@ -202,28 +207,28 @@ export const CesInfo: React.FC = () => {
                           </p>
                           <div className="ex-meta flex flex-wrap gap-3">
                             {ex.tools && (
-                              <span className="meta-tag">🛠 {ex.tools}</span>
+                              <span className="meta-tag flex items-center gap-1"><Wrench size={12} /> {ex.tools}</span>
                             )}
                             {ex.holdSeconds && (
-                              <span className="meta-tag">
-                                ⏱ {ex.holdSeconds}s
+                              <span className="meta-tag flex items-center gap-1">
+                                <Timer size={12} /> {ex.holdSeconds}s
                               </span>
                             )}
                             {ex.sets && (
-                              <span className="meta-tag">
-                                🔄 {ex.sets} Sets
+                              <span className="meta-tag flex items-center gap-1">
+                                <Repeat size={12} /> {ex.sets} Sets
                               </span>
                             )}
                             {ex.reps && (
-                              <span className="meta-tag">
-                                🔢 {ex.reps} Reps
+                              <span className="meta-tag flex items-center gap-1">
+                                <Hash size={12} /> {ex.reps} Reps
                               </span>
                             )}
                           </div>
                         </div>
                         {ex.youtubeId && (
                           <div className="yt-indicator text-red-500 animate-pulse">
-                            ▶
+                            <PlayCircle size={24} />
                           </div>
                         )}
                       </div>
@@ -238,7 +243,7 @@ export const CesInfo: React.FC = () => {
         {/* --- Integration Section (Full Width) --- */}
         <section className="card integrate-section p-6 mt-8">
           <h3 className="section-title mb-6 flex items-center gap-2">
-            <span className="icon">🔵</span> Integration (통합 운동)
+            <span className="icon text-primary"><Activity size={24} /></span> Integration (통합 운동)
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {cesData.integrate.map((ex) => (
@@ -252,10 +257,10 @@ export const CesInfo: React.FC = () => {
                 <p className="text-sm opacity-70 mb-3">{ex.description}</p>
                 <div className="ex-meta flex gap-3">
                   {ex.sets && (
-                    <span className="meta-tag">🔄 {ex.sets} Sets</span>
+                    <span className="meta-tag flex items-center gap-1"><Repeat size={12} /> {ex.sets} Sets</span>
                   )}
                   {ex.reps && (
-                    <span className="meta-tag">🔢 {ex.reps} Reps</span>
+                    <span className="meta-tag flex items-center gap-1"><Hash size={12} /> {ex.reps} Reps</span>
                   )}
                 </div>
               </div>

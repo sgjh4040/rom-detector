@@ -1,5 +1,6 @@
 import React from "react";
 import type { Patient } from "../lib/romTypes";
+import { Settings, Plus } from "lucide-react";
 
 interface PatientSelectorProps {
   patients: Patient[];
@@ -41,19 +42,19 @@ export const PatientSelector: React.FC<PatientSelectorProps> = ({
           {patients.length > 0 && (
             <button
               type="button"
-              className={`btn btn-small ${isManaging ? "btn-primary" : "btn-outline"}`}
+              className={`btn btn-small flex items-center gap-1 ${isManaging ? "btn-primary" : "btn-outline"}`}
               onClick={() => setIsManaging(!isManaging)}
             >
-              {isManaging ? "완료" : "⚙️ 관리"}
+              {isManaging ? "완료" : <><Settings size={14} /> 관리</>}
             </button>
           )}
           {(patients.length > 0 || patientId) && (
             <button
               type="button"
-              className="btn btn-outline btn-small"
+              className="btn btn-outline btn-small flex items-center gap-1"
               onClick={handleNewPatient}
             >
-              🆕 새 환자
+              <Plus size={14} /> 새 환자
             </button>
           )}
         </div>

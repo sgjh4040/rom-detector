@@ -13,6 +13,7 @@ import {
 } from "../lib/romData";
 // import { ExerciseCard } from "../components/ExerciseCard";
 import { JointSideResult } from "../components/JointSideResult";
+import { TrendingUp, Dumbbell } from "lucide-react";
 
 export const Results: React.FC = () => {
   // 페이지 이동
@@ -150,7 +151,7 @@ export const Results: React.FC = () => {
             }}
           >
             <div className="panel-header">
-              <h3>📈 경과 관찰 (초기 대비)</h3>
+              <h3 className="flex items-center gap-2"><TrendingUp size={20} /> 경과 관찰 (초기 대비)</h3>
               <span className="badge badge-primary">
                 총 {history.length}회 측정
               </span>
@@ -206,10 +207,10 @@ export const Results: React.FC = () => {
           </div> */}
           <div className="action-bar">
             <button
-              className="btn btn-primary"
+              className="btn btn-primary flex items-center justify-center gap-2"
               onClick={() => navigate("/ces")}
             >
-              🏋️ CES 재활 시작
+              <Dumbbell size={20} /> CES 재활 시작
             </button>
             {/* <button className="btn btn-outline" onClick={() => navigate("/")}>
               🏠 홈으로
