@@ -4,6 +4,7 @@ import {
   getMeasurementQueue,
   saveRomSession,
   getPatients,
+  deletePatient,
 } from "../lib/romData";
 import type { Side, Patient } from "../lib/romData";
 import { PatientSelector } from "../components/PatientSelector";
@@ -47,7 +48,7 @@ export const Index: React.FC = () => {
   const [isManaging, setIsManaging] = useState(false);
   // 현재 '관자 목록 관리(삭제 등)' 중인지 알려주는 상태
 
-  const patients = getPatients();
+  const [patients, setPatients] = useState(getPatients());
   // 내 컴퓨터(local)에 저장되어있는 환자 목록들 싹 다 불러오기
 
   const sides = SIDE_MODE_MAP[sideMode];
@@ -84,7 +85,8 @@ export const Index: React.FC = () => {
 
   const handleDeletePatient = (id: string) => {
     if (!confirm("정말 삭제하시겠습니까?")) return;
-    import("../lib/romData").then((m) => m.deletePatient(id));
+    deletePatient(id);
+    setPatients(getPatients()); // 화면 새로고침
     if (patientId === id) handleNewPatient();
   };
 
