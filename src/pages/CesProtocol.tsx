@@ -12,7 +12,13 @@ import { analyzeMuscles } from "../lib/muscleAnalysis";
 import { CesExercisePlayer } from "../core/components/CesExercisePlayer";
 import { BodyAnatomySvg } from "../core/components/BodyAnatomySvg";
 import { getExMeta, formatTime } from "../core/utils/cesProtocolHelpers";
-import { Play, Pause, RotateCcw, AlertTriangle, CheckCircle } from "lucide-react";
+import {
+  Play,
+  Pause,
+  RotateCcw,
+  AlertTriangle,
+  CheckCircle,
+} from "lucide-react";
 import { updatePhaseDuration } from "../features/session/data/cesTimeTracker";
 import type { CesStage } from "../lib/ces/cesTypes";
 import type { CesPhase } from "../lib/ces/CesPlayerTypes";
@@ -28,6 +34,7 @@ const STAGES: { id: CesStage; name: string }[] = [
 export const CesProtocol: React.FC = () => {
   const navigate = useNavigate();
   const session = loadRomSession();
+  console.log("session", session);
   const [activeJointSide, setActiveJointSide] = useState("");
   const [activeStage, setActiveStage] = useState<CesStage>("inhibit");
   const [activeIndex, setActiveIndex] = useState(0);
@@ -225,9 +232,20 @@ export const CesProtocol: React.FC = () => {
                 onClick={toggleTimer}
                 className={`btn-timer flex justify-center items-center gap-1 ${timerRunning ? "is-running" : "primary"}`}
               >
-                {timerRunning ? <><Pause size={14} /> PAUSE</> : <><Play size={14} /> START</>}
+                {timerRunning ? (
+                  <>
+                    <Pause size={14} /> PAUSE
+                  </>
+                ) : (
+                  <>
+                    <Play size={14} /> START
+                  </>
+                )}
               </button>
-              <button onClick={resetTimer} className="btn-timer btn-reset flex justify-center items-center gap-1">
+              <button
+                onClick={resetTimer}
+                className="btn-timer btn-reset flex justify-center items-center gap-1"
+              >
                 <RotateCcw size={14} /> RESET
               </button>
             </div>
@@ -272,7 +290,7 @@ export const CesProtocol: React.FC = () => {
           </button>
           <button
             className="btn-complete is-success"
-            onClick={() => navigate("/")}
+            onClick={() => navigate(`/trends?patientId=${session.patientId}`)}
           >
             Complete Exercise <span>›</span>
           </button>
@@ -342,7 +360,10 @@ export const CesProtocol: React.FC = () => {
           </h3>
           <div className="balance-grid">
             <div className="balance-card">
-              <p className="balance-title flex items-center gap-1" style={{ color: "var(--danger)" }}>
+              <p
+                className="balance-title flex items-center gap-1"
+                style={{ color: "var(--danger)" }}
+              >
                 <AlertTriangle size={18} /> Overactive (뭉친 근육)
               </p>
               <div className="flex flex-wrap gap-2">
@@ -364,7 +385,10 @@ export const CesProtocol: React.FC = () => {
               </div>
             </div>
             <div className="balance-card">
-              <p className="balance-title flex items-center gap-1" style={{ color: "var(--success)" }}>
+              <p
+                className="balance-title flex items-center gap-1"
+                style={{ color: "var(--success)" }}
+              >
                 <CheckCircle size={18} /> Underactive (약한 근육)
               </p>
               <div className="flex flex-wrap gap-2">

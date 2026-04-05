@@ -35,11 +35,16 @@ export const CesPlayerPage: React.FC = () => {
   if (isFinished) {
     return (
       <div className="ces-player-finish">
-        <div className="icon flex justify-center text-primary mb-4"><PartyPopper size={64} /></div>
+        <div className="icon flex justify-center text-primary mb-4">
+          <PartyPopper size={64} />
+        </div>
         <h1 className="text-3xl font-bold mb-2">운동 완료!</h1>
         <p>루틴을 모두 마쳤습니다.</p>
         <div className="action-bar justify-center mt-6 flex gap-4">
-          <button onClick={restart} className="btn btn-primary flex items-center gap-2">
+          <button
+            onClick={restart}
+            className="btn btn-primary flex items-center gap-2"
+          >
             <RotateCcw size={18} /> 다시 시작
           </button>
           <button onClick={() => navigate("/ces")} className="btn btn-outline">
@@ -114,7 +119,7 @@ export const CesPlayerPage: React.FC = () => {
           isPaused={isPaused}
           isFinished={isFinished}
           onTogglePause={togglePause}
-          onExit={() => navigate("/")}
+          onExit={() => navigate("/ces")}
           onRestart={restart}
         />
       </div>
