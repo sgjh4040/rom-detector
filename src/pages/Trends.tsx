@@ -74,17 +74,17 @@ export const Trends: React.FC = () => {
               ← 뒤로가기
             </button>
             <h1
-              className="text-3xl font-black tracking-tighter uppercase opacity-90"
+              className="text-3xl font-black tracking-tighter opacity-90"
               style={{ fontSize: "1.75rem", marginBottom: "4px" }}
             >
-              Fitness
+              측정 기록
             </h1>
             <p className="opacity-70 text-base font-bold">
               {patient.patientName} ({patient.patientAge}세)
             </p>
           </div>
           <NeumoToggle
-            label="Chart"
+            label="상세 그래프"
             isOn={showCharts}
             onToggle={() => setShowCharts(!showCharts)}
           />
