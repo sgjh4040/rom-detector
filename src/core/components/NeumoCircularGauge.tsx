@@ -6,65 +6,91 @@ interface NeumoCircularGaugeProps {
     strokeWidth?: number;
 }
 
+/**
+ * 단일 원형 진행률 게이지.
+ * - 외곽 글래스 껍데기 없이 SVG 링만 사용한다.
+ * - 중앙 숫자는 크게 표시하고 `%` 단위만 부기호로 작게 붙인다.
+ * - 링 색상은 인디고→바이올렛 그라디언트로 한 톤을 유지한다.
+ */
 export const NeumoCircularGauge: React.FC<NeumoCircularGaugeProps> = ({
     percentage,
-    size = 200,
-    strokeWidth = 18
+    size = 220,
+    strokeWidth = 14,
 }) => {
     const radius = (size - strokeWidth) / 2;
     const circumference = radius * 2 * Math.PI;
     const offset = circumference - (percentage / 100) * circumference;
 
     return (
-        <div className="flex flex-col items-center justify-center w-full h-full">
+        <div
+            style={{
+                position: 'relative',
+                width: '100%',
+                maxWidth: `${size}px`,
+                aspectRatio: '1 / 1',
+            }}
+        >
+            <svg
+                viewBox={`0 0 ${size} ${size}`}
+                width="100%"
+                height="100%"
+                style={{ transform: 'rotate(-90deg)', display: 'block' }}
+            >
+                {/* 배경 트랙 */}
+                <circle
+                    cx={size / 2}
+                    cy={size / 2}
+                    r={radius}
+                    stroke="rgba(92, 107, 192, 0.1)"
+                    strokeWidth={strokeWidth}
+                    fill="transparent"
+                />
+                {/* 진행 링 */}
+                <circle
+                    cx={size / 2}
+                    cy={size / 2}
+                    r={radius}
+                    stroke="url(#neumo-gauge-gradient)"
+                    strokeWidth={strokeWidth}
+                    fill="transparent"
+                    strokeDasharray={circumference}
+                    strokeDashoffset={offset}
+                    strokeLinecap="round"
+                    style={{ transition: 'stroke-dashoffset 0.6s cubic-bezier(0.4, 0, 0.2, 1)' }}
+                />
+                <defs>
+                    <linearGradient id="neumo-gauge-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#6366f1" />
+                        <stop offset="100%" stopColor="#a855f7" />
+                    </linearGradient>
+                </defs>
+            </svg>
+
+            {/* 중앙 라벨 — 숫자만 크게, `%`는 작게 */}
             <div
-                className="flex items-center justify-center relative"
                 style={{
-                    width: '100%',
-                    maxWidth: '220px',
-                    minWidth: '120px',
-                    aspectRatio: '1 / 1',
-                    padding: '8%',
-                    background: 'rgba(255,255,255,0.55)',
-                    backdropFilter: 'blur(16px)',
-                    WebkitBackdropFilter: 'blur(16px)',
-                    border: '1px solid rgba(255,255,255,0.4)',
-                    borderRadius: '50%',
-                    boxShadow: '0 4px 16px rgba(0,0,0,0.06)'
+                    position: 'absolute',
+                    inset: 0,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    pointerEvents: 'none',
                 }}
             >
-                <svg viewBox={`0 0 ${size} ${size}`} width="100%" height="100%" className="transform -rotate-90">
-                    {/* Background circle */}
-                    <circle
-                        cx={size / 2}
-                        cy={size / 2}
-                        r={radius}
-                        stroke="rgba(0,0,0,0.05)"
-                        strokeWidth={strokeWidth}
-                        fill="transparent"
-                    />
-                    {/* Progress circle */}
-                    <circle
-                        cx={size / 2}
-                        cy={size / 2}
-                        r={radius}
-                        stroke="url(#glass-gradient)"
-                        strokeWidth={strokeWidth}
-                        fill="transparent"
-                        strokeDasharray={circumference}
-                        strokeDashoffset={offset}
-                        strokeLinecap="round"
-                        style={{ transition: 'stroke-dashoffset 0.5s ease' }}
-                    />
-                    <defs>
-                        <linearGradient id="glass-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stopColor="#5C6BC0" />
-                            <stop offset="100%" stopColor="#7986CB" />
-                        </linearGradient>
-                    </defs>
-                </svg>
-                <div className="absolute flex flex-col items-center">
-                    <span className="font-bold" style={{ color: '#5C6BC0', fontSize: 'clamp(1.2rem, 5vw, 2rem)' }}>{percentage}%</span>
+                <div
+                    style={{
+                        display: 'flex',
+                        alignItems: 'baseline',
+                        gap: '2px',
+                        color: '#5C6BC0',
+                        fontWeight: 900,
+                        letterSpacing: '-0.03em',
+                        lineHeight: 1,
+                    }}
+                >
+                    <span style={{ fontSize: 'clamp(2.4rem, 9vw, 3.6rem)' }}>{percentage}</span>
+                    <span style={{ fontSize: 'clamp(0.9rem, 3vw, 1.2rem)', fontWeight: 800, opacity: 0.7 }}>%</span>
                 </div>
             </div>
         </div>

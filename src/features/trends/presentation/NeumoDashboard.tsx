@@ -2,7 +2,12 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { NeumoCircularGauge } from '../../../core/components/NeumoCircularGauge';
 import { NeumoProgressBar } from '../../../core/components/NeumoProgressBar';
-import { getTotalCompletionPercentage, getPhasePercentage } from '../../session/data/cesTimeTracker';
+import {
+    getTotalCompletionPercentage,
+    getPhasePercentage,
+    getPhaseSeconds,
+} from '../../session/data/cesTimeTracker';
+import type { CesStage } from '../../../lib/ces/cesTypes';
 import type { RomSession } from '../../../lib/romTypes';
 
 interface NeumoDashboardProps {
@@ -11,31 +16,65 @@ interface NeumoDashboardProps {
     onSelectSession: (id: string) => void;
 }
 
+const GOAL_SECONDS = 300; // cesTimeTracker.DEFAULT_GOAL_SECONDS 와 동일하게 유지
+const formatMinSec = (sec: number): string => {
+    const m = Math.floor(sec / 60);
+    const s = sec % 60;
+    return `${m}:${s.toString().padStart(2, '0')}`;
+};
+
+interface PhaseDef {
+    stage: CesStage;
+    label: string;
+    color: string;
+}
+
+// 단계별 색상 — 각 phase를 시각적으로 구분하기 위한 고정 팔레트
+const PHASES: PhaseDef[] = [
+    { stage: 'inhibit', label: '억제', color: '#6366f1' },   // 인디고
+    { stage: 'lengthen', label: '신장', color: '#14b8a6' },  // 틸
+    { stage: 'activate', label: '활성', color: '#f59e0b' },  // 앰버
+    { stage: 'integrate', label: '통합', color: '#a855f7' }, // 바이올렛
+];
+
 export const NeumoDashboard: React.FC<NeumoDashboardProps> = ({
     sessions,
     selectedSessionId,
-    onSelectSession
+    onSelectSession,
 }) => {
     const navigate = useNavigate();
-    const totalProgress = getTotalCompletionPercentage(selectedSessionId || undefined);
-    const inhibitPercent = getPhasePercentage('inhibit', selectedSessionId || undefined);
-    const lengthenPercent = getPhasePercentage('lengthen', selectedSessionId || undefined);
-    const activatePercent = getPhasePercentage('activate', selectedSessionId || undefined);
-    const integratePercent = getPhasePercentage('integrate', selectedSessionId || undefined);
+    const sessionKey = selectedSessionId || undefined;
+    const totalProgress = getTotalCompletionPercentage(sessionKey);
+    const phaseStats = PHASES.map((p) => ({
+        ...p,
+        percentage: getPhasePercentage(p.stage, sessionKey),
+        seconds: getPhaseSeconds(p.stage, sessionKey),
+    }));
 
     // CES 재활을 아직 한 번도 진행하지 않은 상태 — 0%만 잔뜩 보여주는 대신 안내 카드 노출
     const hasNoCesActivity =
-        totalProgress === 0 &&
-        inhibitPercent === 0 &&
-        lengthenPercent === 0 &&
-        activatePercent === 0 &&
-        integratePercent === 0;
+        totalProgress === 0 && phaseStats.every((p) => p.percentage === 0);
 
     return (
-        <div className="flex flex-col items-center" style={{ width: '100%', gap: '32px', padding: '10px 0' }}>
-            {/* Session Selector */}
-            <div className="w-full no-scrollbar" style={{ overflowX: 'auto', paddingBottom: '32px', paddingLeft: '16px', paddingRight: '16px' }}>
-                <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', alignItems: 'center', minWidth: 'max-content', padding: '16px 0' }}>
+        <div
+            className="flex flex-col items-center"
+            style={{ width: '100%', gap: '24px', padding: '10px 0' }}
+        >
+            {/* 회차 선택 버튼 */}
+            <div
+                className="w-full no-scrollbar"
+                style={{ overflowX: 'auto', paddingBottom: '8px', paddingLeft: '16px', paddingRight: '16px' }}
+            >
+                <div
+                    style={{
+                        display: 'flex',
+                        gap: '12px',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        minWidth: 'max-content',
+                        padding: '8px 0',
+                    }}
+                >
                     {sessions.map((s, i) => (
                         <button
                             key={s.createdAt}
@@ -43,13 +82,12 @@ export const NeumoDashboard: React.FC<NeumoDashboardProps> = ({
                             onClick={() => onSelectSession(s.createdAt)}
                             style={{
                                 color: selectedSessionId === s.createdAt ? 'var(--neumo-accent)' : 'var(--neumo-text)',
-                                minWidth: '140px',
-                                padding: '16px 24px',
-                                fontSize: '1rem',
-                                fontWeight: '800',
+                                minWidth: '120px',
+                                padding: '12px 20px',
+                                fontSize: '0.9rem',
+                                fontWeight: 800,
                                 whiteSpace: 'nowrap',
                                 flexShrink: 0,
-                                margin: '0 8px'
                             }}
                         >
                             {sessions.length - i}회차 ({new Date(s.createdAt).toLocaleDateString().slice(5).replace(/\.$/, '')})
@@ -58,7 +96,12 @@ export const NeumoDashboard: React.FC<NeumoDashboardProps> = ({
                 </div>
             </div>
 
-            <h2 className="text-2xl font-black tracking-tighter opacity-95" style={{ marginBottom: '8px', marginTop: '16px', fontSize: '1.5rem' }}>통계</h2>
+            <h2
+                className="text-2xl font-black tracking-tighter opacity-95"
+                style={{ marginBottom: '4px', marginTop: '8px', fontSize: '1.5rem' }}
+            >
+                통계
+            </h2>
 
             {hasNoCesActivity ? (
                 <div
@@ -74,20 +117,10 @@ export const NeumoDashboard: React.FC<NeumoDashboardProps> = ({
                         gap: '16px',
                     }}
                 >
-                    <div
-                        style={{
-                            fontSize: '2.5rem',
-                            lineHeight: 1,
-                            opacity: 0.35,
-                        }}
-                        aria-hidden="true"
-                    >
+                    <div style={{ fontSize: '2.5rem', lineHeight: 1, opacity: 0.35 }} aria-hidden="true">
                         🏃
                     </div>
-                    <p
-                        className="text-lg font-black"
-                        style={{ color: 'var(--text-primary)', margin: 0 }}
-                    >
+                    <p className="text-lg font-black" style={{ color: 'var(--text-primary)', margin: 0 }}>
                         아직 CES 재활 기록이 없어요
                     </p>
                     <p
@@ -112,44 +145,64 @@ export const NeumoDashboard: React.FC<NeumoDashboardProps> = ({
                     </button>
                 </div>
             ) : (
-                <div style={{
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    gap: '40px',
-                    width: '100%',
-                    maxWidth: '900px',
-                    marginTop: '16px',
-                    padding: '16px 8px'
-                }}>
-                    {/* 1. 좌측 (또는 상단): 원형 통계 게이지 */}
-                    <div className="flex flex-col items-center justify-center" style={{
-                        flex: '1 1 40%',
-                        minWidth: '200px',
-                        marginTop: '10px',
-                        paddingBottom: '10px'
-                    }}>
+                <div
+                    style={{
+                        display: 'flex',
+                        flexWrap: 'wrap',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        gap: '40px',
+                        width: '100%',
+                        maxWidth: '820px',
+                        padding: '8px 12px 24px',
+                    }}
+                >
+                    {/* 좌측(모바일은 상단): 원형 게이지 */}
+                    <div
+                        style={{
+                            flex: '0 1 240px',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            gap: '12px',
+                        }}
+                    >
                         <NeumoCircularGauge percentage={totalProgress} />
-                        <div style={{ marginTop: '24px', textAlign: 'center' }}>
-                            <p className="text-xl font-black opacity-80" style={{ letterSpacing: '2px', color: 'var(--text-primary)' }}>전체</p>
-                            <p className="text-sm font-bold opacity-50" style={{ color: 'var(--text-secondary)' }}>누적 달성률</p>
+                        <div style={{ textAlign: 'center' }}>
+                            <p
+                                style={{
+                                    fontSize: '0.85rem',
+                                    fontWeight: 800,
+                                    color: 'var(--text-secondary)',
+                                    opacity: 0.75,
+                                    letterSpacing: '0.05em',
+                                    margin: 0,
+                                }}
+                            >
+                                전체 누적 달성률
+                            </p>
                         </div>
                     </div>
 
-                    {/* 2. 우측 (또는 하단): 4개의 세부 막대 바 */}
-                    <div style={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        gap: '12px',       // 막대기 사이의 간격
-                        flexWrap: 'nowrap', // 막대기 4개는 절대 줄바꿈 되지 않게 강제 결속
-                        flex: '1 1 50%',   // 폭의 나머지 반(50%)을 차지하게 함
-                        minWidth: '280px'   // 화면이 이보다 더 좁아지면 통째로 밑으로 내려감
-                    }}>
-                        <NeumoProgressBar label="억제" percentage={inhibitPercent} gradient="var(--grad-relax)" />
-                        <NeumoProgressBar label="신장" percentage={lengthenPercent} gradient="var(--grad-cardio)" />
-                        <NeumoProgressBar label="활성" percentage={activatePercent} gradient="var(--grad-strength)" />
-                        <NeumoProgressBar label="통합" percentage={integratePercent} gradient="var(--grad-stretch)" />
+                    {/* 우측(모바일은 하단): 4단계 세로 스택 가로 바 */}
+                    <div
+                        style={{
+                            flex: '1 1 320px',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '18px',
+                            minWidth: '280px',
+                        }}
+                    >
+                        {phaseStats.map((p) => (
+                            <NeumoProgressBar
+                                key={p.stage}
+                                label={p.label}
+                                percentage={p.percentage}
+                                color={p.color}
+                                sublabel={`${formatMinSec(p.seconds)} / ${formatMinSec(GOAL_SECONDS)}`}
+                            />
+                        ))}
                     </div>
                 </div>
             )}

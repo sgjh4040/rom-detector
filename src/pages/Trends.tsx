@@ -1,19 +1,83 @@
 import React, { useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
+import { LayoutDashboard, BarChart3 } from "lucide-react";
 import { getPatientHistory, JOINTS } from "../lib/romData";
 import { TrendGraph } from "../features/trends/presentation/TrendGraph";
 import { NeumoDashboard } from "../features/trends/presentation/NeumoDashboard";
-import { NeumoToggle } from "../core/components/NeumoToggle";
 import { JointTrendCard } from "../features/trends/presentation/JointTrendCard";
 import { HistoryItem } from "../features/trends/presentation/HistoryItem";
 import { AppLayout } from "../components/AppLayout";
 import "../styles/Trends.css";
 
+/** 상단 뷰 모드 세그먼트 컨트롤 (대시보드 / 상세 차트) */
+interface ViewSegmentProps {
+  value: "dashboard" | "charts";
+  onChange: (value: "dashboard" | "charts") => void;
+}
+
+const ViewSegment: React.FC<ViewSegmentProps> = ({ value, onChange }) => {
+  const items: Array<{
+    key: "dashboard" | "charts";
+    label: string;
+    icon: React.ReactNode;
+  }> = [
+    { key: "dashboard", label: "대시보드", icon: <LayoutDashboard size={15} /> },
+    { key: "charts", label: "상세 차트", icon: <BarChart3 size={15} /> },
+  ];
+  return (
+    <div
+      role="tablist"
+      style={{
+        display: "inline-flex",
+        padding: "4px",
+        background: "rgba(0, 0, 0, 0.05)",
+        borderRadius: "999px",
+        border: "1px solid rgba(0, 0, 0, 0.06)",
+        gap: "2px",
+      }}
+    >
+      {items.map((item) => {
+        const active = value === item.key;
+        return (
+          <button
+            key={item.key}
+            type="button"
+            role="tab"
+            aria-selected={active}
+            onClick={() => onChange(item.key)}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "6px",
+              padding: "8px 16px",
+              borderRadius: "999px",
+              border: "none",
+              cursor: "pointer",
+              fontSize: "0.8rem",
+              fontWeight: 800,
+              color: active ? "#ffffff" : "var(--text-secondary)",
+              background: active
+                ? "linear-gradient(135deg, #5C6BC0, #7986CB)"
+                : "transparent",
+              boxShadow: active ? "0 4px 14px rgba(92, 107, 192, 0.3)" : "none",
+              transition: "all 0.2s ease",
+            }}
+          >
+            {item.icon}
+            <span>{item.label}</span>
+          </button>
+        );
+      })}
+    </div>
+  );
+};
+
 export const Trends: React.FC = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const patientId = searchParams.get("patientId");
-  const [showCharts, setShowCharts] = useState(false);
+  const [viewMode, setViewMode] = useState<"dashboard" | "charts">("dashboard");
+  const showCharts = viewMode === "charts";
 
   const history = patientId ? getPatientHistory(patientId) : [];
   const reversedHistory = [...history].reverse(); // 오래된 순
@@ -58,10 +122,18 @@ export const Trends: React.FC = () => {
         }}
       >
         <div
-          className="page-header flex justify-between items-start"
-          style={{ paddingTop: "20px", marginBottom: "20px" }}
+          className="page-header"
+          style={{
+            paddingTop: "20px",
+            marginBottom: "20px",
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "space-between",
+            alignItems: "flex-start",
+            gap: "16px",
+          }}
         >
-          <div>
+          <div style={{ minWidth: 0 }}>
             <button
               className="btn btn-outline btn-small mb-3"
               onClick={() => navigate(-1)}
@@ -83,11 +155,9 @@ export const Trends: React.FC = () => {
               {patient.patientName} ({patient.patientAge}세)
             </p>
           </div>
-          <NeumoToggle
-            label="상세 그래프"
-            isOn={showCharts}
-            onToggle={() => setShowCharts(!showCharts)}
-          />
+          <div style={{ flexShrink: 0 }}>
+            <ViewSegment value={viewMode} onChange={setViewMode} />
+          </div>
         </div>
 
         {!showCharts ? (
