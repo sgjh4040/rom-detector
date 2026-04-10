@@ -8,15 +8,21 @@ interface DataPoint {
 
 interface TrendGraphProps {
     data: DataPoint[];
+    /** Y축 상한 기준 (차트 스케일 계산용) */
     normalRange?: number;
+    /** 기준선을 그릴 값 — 지정하지 않으면 normalRange 위치에 그린다.
+     *  VAS 처럼 "낮을수록 좋음" 지표는 targetValue={0}을 전달해서 기준선을 하단에 그린다. */
+    targetValue?: number;
     unit?: string;
 }
 
 export const TrendGraph: React.FC<TrendGraphProps> = ({
     data,
     normalRange = 180,
-    unit = '°'
+    targetValue,
+    unit = '°',
 }) => {
+    const referenceValue = targetValue ?? normalRange;
     const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
 
     if (data.length === 0) return (
@@ -68,7 +74,7 @@ export const TrendGraph: React.FC<TrendGraphProps> = ({
                     <path
                         d={points}
                         fill="none"
-                        stroke="var(--neumo-accent)"
+                        stroke="var(--primary)"
                         strokeWidth="3"
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -76,17 +82,17 @@ export const TrendGraph: React.FC<TrendGraphProps> = ({
                     />
                 )}
 
-                {/* Normal Range Reference */}
-                {normalRange > 0 && (
+                {/* 기준선 — targetValue (없으면 normalRange) 위치에 dashed line */}
+                {referenceValue >= 0 && (
                     <line
                         x1={padding}
-                        y1={getY(normalRange)}
+                        y1={getY(referenceValue)}
                         x2={width - padding}
-                        y2={getY(normalRange)}
-                        stroke="var(--danger)"
-                        strokeWidth="1"
-                        strokeDasharray="4 4"
-                        opacity="0.4"
+                        y2={getY(referenceValue)}
+                        stroke="var(--success)"
+                        strokeWidth="1.5"
+                        strokeDasharray="6 6"
+                        opacity="0.55"
                     />
                 )}
 
@@ -106,7 +112,7 @@ export const TrendGraph: React.FC<TrendGraphProps> = ({
                         <g key={i} onMouseEnter={() => setHoveredIdx(i)} onMouseLeave={() => setHoveredIdx(null)}>
                             {/* Connector line on hover */}
                             {isHovered && (
-                                <line x1={x} y1={padding} x2={x} y2={height - padding} stroke="var(--neumo-accent)" strokeWidth="1" strokeDasharray="2 2" opacity="0.5" />
+                                <line x1={x} y1={padding} x2={x} y2={height - padding} stroke="var(--primary)" strokeWidth="1" strokeDasharray="2 2" opacity="0.5" />
                             )}
 
                             {/* Interactive Bullet */}
@@ -114,8 +120,8 @@ export const TrendGraph: React.FC<TrendGraphProps> = ({
                                 cx={x}
                                 cy={y}
                                 r={isHovered ? 8 : 6}
-                                fill={isHovered ? 'var(--neumo-accent)' : 'var(--neumo-bg)'}
-                                stroke="var(--neumo-accent)"
+                                fill={isHovered ? 'var(--primary)' : '#ffffff'}
+                                stroke="var(--primary)"
                                 strokeWidth="3"
                                 style={{ transition: 'all 0.2s', cursor: 'pointer' }}
                             />
@@ -123,8 +129,8 @@ export const TrendGraph: React.FC<TrendGraphProps> = ({
                             {/* Tooltip Overlay */}
                             {isHovered && (
                                 <g>
-                                    <rect x={x - 35} y={y - 50} width="70" height="35" rx="10" fill="var(--neumo-bg)" style={{ filter: 'drop-shadow(0px 4px 8px rgba(0,0,0,0.15))', border: '1px solid rgba(255,255,255,0.5)' }} />
-                                    <text x={x} y={y - 28} textAnchor="middle" fontSize="13" fontWeight="bold" fill="var(--neumo-accent)">
+                                    <rect x={x - 35} y={y - 50} width="70" height="35" rx="10" fill="#ffffff" style={{ filter: 'drop-shadow(0px 4px 8px rgba(0,0,0,0.15))', border: '1px solid rgba(255,255,255,0.5)' }} />
+                                    <text x={x} y={y - 28} textAnchor="middle" fontSize="13" fontWeight="bold" fill="var(--primary)">
                                         {d.value}{unit}
                                     </text>
                                 </g>

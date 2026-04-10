@@ -74,3 +74,18 @@
     box-shadow: var(--shadow-lg);
     color: var(--text-primary);
 }
+
+/* 관절 카드 내부 — 동작×방향 sparkline 그리드
+ * 모바일: 2열 / 640px 이상: 3열 고정
+ * (6개 이하 동작이 2행 이내로 깔끔하게 정렬) */
+.sparkline-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+}
+
+@media (min-width: 640px) {
+    .sparkline-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}

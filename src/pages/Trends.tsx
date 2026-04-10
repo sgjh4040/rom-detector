@@ -173,20 +173,43 @@ export const Trends: React.FC = () => {
           </div>
         ) : (
           <div
-            className="space-y-12 mb-16"
-            style={{ display: "flex", flexDirection: "column", gap: "40px" }}
+            className="mb-16"
+            style={{ display: "flex", flexDirection: "column", gap: "24px" }}
           >
+            {/* VAS 통증 지수 — targetValue=0 (무통)이 목표선 */}
             <div
               className="card neumo-card"
-              style={{ padding: "40px", borderRadius: "40px" }}
+              style={{ padding: "20px 16px 8px", borderRadius: "24px" }}
             >
-              <h3 className="mb-8 text-2xl font-black">통증 지수 (VAS) 변화</h3>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "baseline",
+                  padding: "4px 8px 12px",
+                }}
+              >
+                <h3 className="text-xl font-black" style={{ letterSpacing: "-0.01em" }}>
+                  통증 지수 변화
+                </h3>
+                <span
+                  style={{
+                    fontSize: "0.72rem",
+                    fontWeight: 700,
+                    color: "var(--text-secondary)",
+                    opacity: 0.7,
+                  }}
+                >
+                  낮을수록 좋음 · 목표 0
+                </span>
+              </div>
               <TrendGraph
                 data={reversedHistory.map((s) => ({
                   label: `${reversedHistory.indexOf(s) + 1}회`,
                   value: s.vasScore || 0,
                 }))}
                 normalRange={10}
+                targetValue={0}
                 unit=""
               />
             </div>

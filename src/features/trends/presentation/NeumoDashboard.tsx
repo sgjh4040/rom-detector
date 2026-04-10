@@ -81,7 +81,10 @@ export const NeumoDashboard: React.FC<NeumoDashboardProps> = ({
                             className={`neumo-btn ${selectedSessionId === s.createdAt ? 'active' : ''}`}
                             onClick={() => onSelectSession(s.createdAt)}
                             style={{
-                                color: selectedSessionId === s.createdAt ? 'var(--neumo-accent)' : 'var(--neumo-text)',
+                                color:
+                                    selectedSessionId === s.createdAt
+                                        ? 'var(--primary)'
+                                        : 'var(--text-secondary)',
                                 minWidth: '120px',
                                 padding: '12px 20px',
                                 fontSize: '0.9rem',
