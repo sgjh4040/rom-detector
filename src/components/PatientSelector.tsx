@@ -20,6 +20,9 @@ interface PatientSelectorProps {
 
   //handleNewPatient: 새 환자 등록
   handleNewPatient: () => void;
+
+  //isAddingNew: 새 환자 등록 중 — true면 "새 환자 등록 중" 배지 노출
+  isAddingNew?: boolean;
 }
 
 export const PatientSelector: React.FC<PatientSelectorProps> = ({
@@ -30,9 +33,10 @@ export const PatientSelector: React.FC<PatientSelectorProps> = ({
   handleSelectPatient,
   handleDeletePatient,
   handleNewPatient,
+  isAddingNew = false,
 }) => {
   //환자 목록이 없거나, 지금 새 환자 정보를 입력 중이면 이 컴포넌트는 아예 안 보임
-  if (patients.length === 0 && !patientId) return null;
+  if (patients.length === 0 && !patientId && !isAddingNew) return null;
 
   return (
     <div className="mb-6">
@@ -60,6 +64,28 @@ export const PatientSelector: React.FC<PatientSelectorProps> = ({
           )}
         </div>
       </div>
+
+      {/* 새 환자 등록 중 상태 배지 — 기존 환자 chip과 폼 사이 시각적 맥락 명시 */}
+      {isAddingNew && !patientId && (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+            padding: "10px 14px",
+            marginBottom: "12px",
+            background: "rgba(92, 107, 192, 0.08)",
+            border: "1px dashed rgba(92, 107, 192, 0.35)",
+            borderRadius: "12px",
+            color: "var(--primary)",
+            fontSize: "0.8rem",
+            fontWeight: 700,
+          }}
+        >
+          <Plus size={14} />
+          <span>새 환자를 등록하는 중이에요</span>
+        </div>
+      )}
 
       {patients.length > 0 && !isManaging && (
         <div

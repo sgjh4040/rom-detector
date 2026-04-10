@@ -6,17 +6,19 @@
 /** 관절 하나의 운동 동작 */
 export interface Movement {
     id: string;
-    name: string;
-    normalRange: number; // 단위: 도(°)
-    isQualitative?: boolean; // 추가: 정성적 측정(Yes/No) 여부
+    name: string;               // 한국어 표시명 (UI 기본)
+    englishName?: string;       // 의학 용어(영문) — 접근성/내보내기용, UI 기본 표시에는 사용하지 않음
+    normalRange: number;        // 단위: 도(°)
+    isQualitative?: boolean;    // 정성적 측정(Yes/No) 여부
 }
 
 /** 관절 */
 export interface Joint {
     id: string;
-    name: string;
+    name: string;               // 한국어 표시명 (UI 기본)
+    englishName?: string;       // 의학 용어(영문) — 접근성/내보내기용
     movements: Movement[];
-    isSymmetric?: boolean; // 추가: 좌우 구분이 없는 관절(예: 허리) 여부
+    isSymmetric?: boolean;      // 좌우 구분이 없는 관절(예: 허리) 여부
 }
 
 /** ROM 제한 등급 */

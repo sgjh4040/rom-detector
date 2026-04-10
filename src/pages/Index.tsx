@@ -191,6 +191,7 @@ export const Index: React.FC = () => {
               handleSelectPatient={handleSelectPatient}
               handleDeletePatient={handleDeletePatient}
               handleNewPatient={handleNewPatient}
+              isAddingNew={isAddingNew}
             />
 
             {!showForm && (
@@ -274,8 +275,16 @@ export const Index: React.FC = () => {
                 <button
                   type="submit"
                   className="btn btn-primary btn-large w-full"
+                  disabled={totalSteps === 0}
+                  style={
+                    totalSteps === 0
+                      ? { opacity: 0.5, cursor: "not-allowed" }
+                      : undefined
+                  }
                 >
-                  측정 시작하기 ({totalSteps}단계)
+                  {totalSteps === 0
+                    ? "관절을 먼저 선택해주세요"
+                    : `측정 시작하기 (${totalSteps}단계)`}
                 </button>
               </div>
             </form>

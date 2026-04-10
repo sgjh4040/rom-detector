@@ -17,7 +17,7 @@ export const Settings: React.FC = () => {
             <button onClick={() => navigate("/")} className="btn-back">
               ←
             </button>
-            <h1>설정 (Settings)</h1>
+            <h1>설정</h1>
           </div>
 
         {/* 오픈소스 라이선스 섹션 */}
