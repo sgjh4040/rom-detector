@@ -17,7 +17,12 @@ export const PainAssessment: React.FC<PainAssessmentProps> = ({
                 <input
                     type="text"
                     className="form-input"
-                    style={{ background: '#e0e0e0', border: 'none', boxShadow: 'inset 2px 2px 5px #bebebe, inset -2px -2px 5px #ffffff' }}
+                    style={{
+                        background: '#ffffff',
+                        border: '1px solid rgba(92, 107, 192, 0.2)',
+                        boxShadow: '0 1px 3px rgba(0, 0, 0, 0.04)',
+                        color: 'var(--text-primary)',
+                    }}
                     placeholder="예: 오른쪽 어깨"
                     value={painArea}
                     onChange={(e) => setPainArea(e.target.value)}

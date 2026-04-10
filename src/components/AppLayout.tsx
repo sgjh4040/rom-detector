@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Home, Settings, TrendingUp, Dumbbell } from "lucide-react";
+import { Home, Settings, TrendingUp, Dumbbell, Activity } from "lucide-react";
 import { hasPatientHistory } from "../lib/patientHistory";
 
 interface NavItem {
@@ -59,7 +59,15 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
     <>
       {/* Desktop Sidebar */}
       <nav className="app-sidebar">
-        <div className="nav-logo">V</div>
+        <button
+          type="button"
+          className="nav-logo"
+          onClick={() => navigate("/")}
+          aria-label="홈으로"
+          title="ROM Detector"
+        >
+          <Activity size={22} strokeWidth={2.4} />
+        </button>
         {allNavItems.map(renderNavItem)}
       </nav>
 

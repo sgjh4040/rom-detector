@@ -8,6 +8,8 @@ interface JointSideResultProps {
   jointId: string;
   side: Side;
   firstSession?: RomSession;
+  /** 카드 좌측 강조 보더 색상 — 지정 시 4px 세로 스트립이 카드에 직접 붙음 */
+  emphasisColor?: string;
 }
 
 export const JointSideResult: React.FC<JointSideResultProps> = ({
@@ -15,6 +17,7 @@ export const JointSideResult: React.FC<JointSideResultProps> = ({
   jointId,
   side,
   firstSession,
+  emphasisColor,
 }) => {
   const joint = JOINTS.find((j) => j.id === jointId);
   if (!joint) return null;
@@ -49,8 +52,28 @@ export const JointSideResult: React.FC<JointSideResultProps> = ({
       심각한제한: "var(--danger)",
     })[s] ?? "#9CA3AF";
 
+  // 강조 색상은 var(--danger) 또는 var(--warning) 가 들어옴 — 실제 픽스드 값으로 매핑
+  // (CSS var + alpha 조합은 인라인 style에서 동작하지 않아 직접 rgba 사용)
+  const emphasisTint =
+    emphasisColor === "var(--danger)"
+      ? "rgba(239, 68, 68, 0.05)"
+      : emphasisColor === "var(--warning)"
+        ? "rgba(245, 158, 11, 0.06)"
+        : undefined;
+
   return (
-    <div className="panel" style={{ marginBottom: "1rem" }}>
+    <div
+      className="panel"
+      style={{
+        marginBottom: "1rem",
+        // 강조 카드는 전체 카드에 아주 연한 tinted 배경 — 스트립/보더 없이도 눈에 들어옴
+        ...(emphasisTint
+          ? {
+              background: emphasisTint,
+            }
+          : {}),
+      }}
+    >
       <div className="panel-header">
         <h3>
           {joint.name}

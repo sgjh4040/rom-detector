@@ -88,22 +88,71 @@ export const Results: React.FC = () => {
   //   (EXERCISES[id] ?? []).filter((e) => e.type === "strengthening"),
   // );
 
-  let totalLimited = 0,
-    totalNormal = 0;
-  selectedJointIds.forEach((jid) =>
-    selectedSides.forEach((side) =>
-      JOINTS.find((j) => j.id === jid)?.movements.forEach((m) => {
+  // (jointId, side) 조합별 제한/정상 집계 — 정렬 + 요약 + 렌더용
+  interface JointSideStat {
+    jointId: string;
+    side: Side;
+    jointName: string;
+    limitedCount: number;
+    totalCount: number;
+    hasSevere: boolean; // 심각한제한 포함 여부
+  }
+
+  const jointSideStats: JointSideStat[] = [];
+  selectedJointIds.forEach((jid) => {
+    const joint = JOINTS.find((j) => j.id === jid);
+    if (!joint) return;
+    const sidesForThisJoint: Side[] = joint.isSymmetric ? ["좌측"] : selectedSides;
+    sidesForThisJoint.forEach((side) => {
+      let limited = 0;
+      let severe = 0;
+      joint.movements.forEach((m) => {
         const measured = session.measurements?.[jid]?.[side]?.[m.id] ?? 0;
         const severity = m.isQualitative
           ? measured === 1
             ? "심각한제한"
             : "정상"
           : calculateSeverity(measured, m.normalRange);
-        if (severity === "정상") totalNormal++;
-        else totalLimited++;
-      }),
-    ),
+        if (severity !== "정상") limited += 1;
+        if (severity === "심각한제한") severe += 1;
+      });
+      jointSideStats.push({
+        jointId: jid,
+        side,
+        jointName: joint.name,
+        limitedCount: limited,
+        totalCount: joint.movements.length,
+        hasSevere: severe > 0,
+      });
+    });
+  });
+
+  // 제한 개수 내림차순, 동수면 심각한제한 우선
+  const sortedJointSideStats = [...jointSideStats].sort((a, b) => {
+    if (b.limitedCount !== a.limitedCount) return b.limitedCount - a.limitedCount;
+    if (a.hasSevere !== b.hasSevere) return a.hasSevere ? -1 : 1;
+    return 0;
+  });
+
+  const totalLimited = jointSideStats.reduce((sum, s) => sum + s.limitedCount, 0);
+  const totalNormal = jointSideStats.reduce(
+    (sum, s) => sum + (s.totalCount - s.limitedCount),
+    0,
   );
+
+  // 상단 요약 문장 — 가장 제한이 큰 관절을 우선 강조
+  const worst = sortedJointSideStats[0];
+  const summarySentence = (() => {
+    if (!worst || totalLimited === 0) {
+      return "측정 결과 특이 소견이 없어요. 꾸준히 관리해 주세요.";
+    }
+    const sideLabel = JOINTS.find((j) => j.id === worst.jointId)?.isSymmetric
+      ? ""
+      : ` ${worst.side}`;
+    return `${worst.jointName}${sideLabel}에서 ${worst.limitedCount}개 동작이 제한돼 있어요${
+      worst.hasSevere ? " (심각 포함)" : ""
+    }.`;
+  })();
 
   return (
     <AppLayout patientId={patientId}>
@@ -142,6 +191,30 @@ export const Results: React.FC = () => {
           </div>
         </div>
 
+        {/* 상단 요약 문장 — 숫자만 있는 카드에 맥락을 더한다 */}
+        <div
+          style={{
+            marginTop: "0.75rem",
+            padding: "0.85rem 1.1rem",
+            borderRadius: "14px",
+            background:
+              totalLimited > 0
+                ? "rgba(239, 68, 68, 0.06)"
+                : "rgba(34, 197, 94, 0.06)",
+            border: `1px solid ${
+              totalLimited > 0
+                ? "rgba(239, 68, 68, 0.18)"
+                : "rgba(34, 197, 94, 0.2)"
+            }`,
+            fontSize: "0.88rem",
+            fontWeight: 700,
+            color: "var(--text-primary)",
+            lineHeight: 1.5,
+          }}
+        >
+          {summarySentence}
+        </div>
+
         {!isFirstTime && (
           <div
             className="panel clickable mt-4"
@@ -165,28 +238,24 @@ export const Results: React.FC = () => {
         )}
 
         <div className="dashboard-layout single-col mt-6">
-          {selectedJointIds.map((jid) => {
-            const joint = JOINTS.find((j) => j.id === jid);
-            if (joint?.isSymmetric) {
-              return (
-                <JointSideResult
-                  key={`${jid}-좌측`}
-                  session={session}
-                  jointId={jid}
-                  side="좌측"
-                  firstSession={firstSession}
-                />
-              );
-            }
-            return selectedSides.map((side) => (
+          {sortedJointSideStats.map((stat, idx) => {
+            // 가장 제한이 큰 첫 카드에만 강조 — 심각한제한 포함 시 danger, 아니면 warning
+            const isWorst = idx === 0 && stat.limitedCount > 0;
+            const emphasisColor = isWorst
+              ? stat.hasSevere
+                ? "var(--danger)"
+                : "var(--warning)"
+              : undefined;
+            return (
               <JointSideResult
-                key={`${jid}-${side}`}
+                key={`${stat.jointId}-${stat.side}`}
                 session={session}
-                jointId={jid}
-                side={side}
+                jointId={stat.jointId}
+                side={stat.side}
                 firstSession={firstSession}
+                emphasisColor={emphasisColor}
               />
-            ));
+            );
           })}
         </div>
 

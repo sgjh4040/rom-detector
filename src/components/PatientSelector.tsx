@@ -43,23 +43,35 @@ export const PatientSelector: React.FC<PatientSelectorProps> = ({
       <div className="flex justify-between items-center mb-4">
         <label className="form-label mb-0">환자 관리 및 선택</label>
         <div className="flex gap-2">
-          {/* 환자 관리 버튼 */}
+          {/* 환자 관리 버튼 — 탭 타겟 44px 보장 */}
           {patients.length > 0 && (
             <button
               type="button"
-              className={`btn btn-small flex items-center gap-1 ${isManaging ? "btn-primary" : "btn-outline"}`}
+              className={`btn btn-small flex items-center gap-1.5 ${isManaging ? "btn-primary" : "btn-outline"}`}
               onClick={() => setIsManaging(!isManaging)}
+              style={{
+                minHeight: "40px",
+                padding: "0.5rem 0.9rem",
+                fontSize: "0.8rem",
+                fontWeight: 700,
+              }}
             >
-              {isManaging ? "완료" : <><Settings size={14} /> 관리</>}
+              {isManaging ? "완료" : <><Settings size={16} /> 관리</>}
             </button>
           )}
           {(patients.length > 0 || patientId) && (
             <button
               type="button"
-              className="btn btn-outline btn-small flex items-center gap-1"
+              className="btn btn-outline btn-small flex items-center gap-1.5"
               onClick={handleNewPatient}
+              style={{
+                minHeight: "40px",
+                padding: "0.5rem 0.9rem",
+                fontSize: "0.8rem",
+                fontWeight: 700,
+              }}
             >
-              <Plus size={14} /> 새 환자
+              <Plus size={16} /> 새 환자
             </button>
           )}
         </div>
