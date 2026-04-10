@@ -43,6 +43,11 @@ export const getPatientHistory = (patientId: string): RomSession[] => {
     }
 };
 
+/** 해당 환자에 측정 기록이 하나라도 있는지 — CES 탭 표시 조건 */
+export const hasPatientHistory = (patientId: string): boolean => {
+    return getPatientHistory(patientId).length > 0;
+};
+
 /** 새로운 측정 세션을 히스토리에 추가 */
 export const addSessionToHistory = (patientId: string, session: RomSession): void => {
     try {

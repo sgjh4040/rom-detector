@@ -2,6 +2,8 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { RomGauge } from "../components/RomGauge";
 import { JointSideResult } from "../components/JointSideResult";
+import { AppLayout } from "../components/AppLayout";
+import { loadRomSession } from "../lib/romTypes";
 import type { RomSession } from "../lib/romTypes";
 
 const mockShoulderSession: RomSession = {
@@ -25,9 +27,11 @@ const mockShoulderSession: RomSession = {
 
 export const Lab: React.FC = () => {
   const navigate = useNavigate();
+  const session = loadRomSession();
 
   return (
-    <div className="bg-full-viewport page-bg-home" style={{ padding: "2rem" }}>
+    <AppLayout patientId={session?.patientId}>
+      <div className="bg-full-viewport page-bg-home" style={{ padding: "2rem" }}>
       <div className="container">
         <div className="page-header flex justify-between items-center mb-8">
           <div>
@@ -107,6 +111,7 @@ export const Lab: React.FC = () => {
           </p>
         </div>
       </div>
-    </div>
+      </div>
+    </AppLayout>
   );
 };

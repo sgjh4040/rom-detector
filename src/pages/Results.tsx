@@ -13,6 +13,7 @@ import {
 } from "../lib/romData";
 // import { ExerciseCard } from "../components/ExerciseCard";
 import { JointSideResult } from "../components/JointSideResult";
+import { AppLayout } from "../components/AppLayout";
 import { TrendingUp, Dumbbell } from "lucide-react";
 
 export const Results: React.FC = () => {
@@ -105,8 +106,9 @@ export const Results: React.FC = () => {
   );
 
   return (
-    <div className="bg-full-viewport page-bg-results">
-      <div className="container" style={{ maxWidth: "900px" }}>
+    <AppLayout patientId={patientId}>
+      <div className="bg-full-viewport page-bg-results">
+        <div className="container" style={{ maxWidth: "900px" }}>
         <div className="page-header flex justify-between items-center">
           <div>
             <h1>평가 리포트 대시보드</h1>
@@ -217,7 +219,8 @@ export const Results: React.FC = () => {
             </button> */}
           </div>
         </div>
+        </div>
       </div>
-    </div>
+    </AppLayout>
   );
 };

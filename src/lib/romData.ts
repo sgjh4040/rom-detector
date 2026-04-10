@@ -35,7 +35,7 @@ export {
   loadRomSession, saveRomSession,
 };
 export {
-  getPatients, savePatient, deletePatient, getPatientHistory, addSessionToHistory
+  getPatients, savePatient, deletePatient, getPatientHistory, addSessionToHistory, hasPatientHistory
 } from './patientHistory';
 export { calculateSeverity } from './romCalculations';
 

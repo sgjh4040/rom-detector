@@ -5,12 +5,15 @@ import {
   saveRomSession,
   getPatients,
   deletePatient,
+  getPatientHistory,
 } from "../lib/romData";
-import type { Side, Patient } from "../lib/romData";
+import type { Side, Patient, RomSession } from "../lib/romData";
+import { loadRomSession, clearRomSession } from "../lib/romTypes";
 import { PatientSelector } from "../components/PatientSelector";
 import { PainAssessment } from "../components/PainAssessment";
 import { JointSelector } from "../components/JointSelector";
 import { AppLayout } from "../components/AppLayout";
+import { EmptyPatientState } from "../components/EmptyPatientState";
 import { Settings } from "lucide-react";
 
 type SideMode = "좌측만" | "우측만" | "양쪽";
@@ -24,19 +27,27 @@ const SIDE_MODE_MAP: Record<SideMode, Side[]> = {
 export const Index: React.FC = () => {
   const navigate = useNavigate();
 
-  const [name, setName] = useState("");
-  //상자 안 현재값 =name, 상자값 바꾸는 리모컨 = setName, 처음엔 '' 들어있음
+  // 마운트 시 기존 세션이 있으면 자동으로 환자 정보를 채운다.
+  // (측정 → 결과 → 홈으로 돌아올 때 환자 맥락 유지)
+  const initialSession = loadRomSession();
 
-  const [age, setAge] = useState("");
+  const [name, setName] = useState(initialSession?.patientName ?? "");
+  //상자 안 현재값 =name, 상자값 바꾸는 리모컨 = setName
+
+  const [age, setAge] = useState(
+    initialSession?.patientAge ? String(initialSession.patientAge) : "",
+  );
   // 나이
 
-  const [painArea, setPainArea] = useState("");
+  const [painArea, setPainArea] = useState(initialSession?.painArea ?? "");
   // 통증부위
 
-  const [vasScore, setVasScore] = useState<number>(0);
+  const [vasScore, setVasScore] = useState<number>(initialSession?.vasScore ?? 0);
   // 통증 점수 (0점~10점 사이 점수)
 
-  const [patientId, setPatientId] = useState<string | undefined>(undefined);
+  const [patientId, setPatientId] = useState<string | undefined>(
+    initialSession?.patientId,
+  );
   // 환자마다 부여되는 고유 번호 (기존 환자일 때만 있음)
 
   const [sideMode, setSideMode] = useState<SideMode>("좌측만");
@@ -51,18 +62,17 @@ export const Index: React.FC = () => {
   const [patients, setPatients] = useState(getPatients());
   // 내 컴퓨터(local)에 저장되어있는 환자 목록들 싹 다 불러오기
 
+  const [isAddingNew, setIsAddingNew] = useState(false);
+  // 새 환자 등록 폼이 열려있는지 (환자 미선택 상태에서 폼을 표시할지 결정)
+
   const sides = SIDE_MODE_MAP[sideMode];
   // 고른 방향(좌/우/양쪽)에 따라 실제로 측정할 쪽을 결정
 
-  const totalSteps = getMeasurementQueue({
-    patientId: "",
-    patientName: "",
-    patientAge: 0,
+  const queueInput: Pick<RomSession, "selectedJointIds" | "selectedSides"> = {
     selectedJointIds,
     selectedSides: sides,
-    measurements: {},
-    createdAt: "",
-  } as any).length;
+  };
+  const totalSteps = getMeasurementQueue(queueInput as RomSession).length;
   //totalSteps: 측정해야 할 총 단계 수
 
   const handleSelectPatient = (p: Patient) => {
@@ -71,16 +81,44 @@ export const Index: React.FC = () => {
     setAge(p.age.toString());
     setPainArea(p.painArea || "");
     setVasScore(p.vasScore || 0);
+    setIsAddingNew(false);
+
+    // 다른 페이지(Settings, Trends 등)에서도 해당 환자 맥락을 유지하기 위해
+    // localStorage 세션을 최근 측정 기록 또는 최소 정보로 갱신
+    const history = getPatientHistory(p.id);
+    if (history.length > 0) {
+      // 최근 측정 기록이 있으면 그대로 세션으로 복원 (Results, CES 등에서 활용)
+      saveRomSession(history[0]);
+    } else {
+      // 측정 기록이 없으면 환자 정보만 담은 최소 세션
+      saveRomSession({
+        patientId: p.id,
+        patientName: p.name,
+        patientAge: p.age,
+        painArea: p.painArea || "",
+        vasScore: p.vasScore || 0,
+        selectedJointIds: [],
+        selectedSides: [],
+        measurements: {},
+        createdAt: new Date().toISOString(),
+      });
+    }
   };
   //환자를 선택하면 → 그 환자의 정보를 state에 넣어서 화면에 자동으로 채움
+  //  + localStorage 세션도 함께 갱신해서 다른 페이지 이동 시 일관성 유지
 
   const handleNewPatient = () => {
+    // Index state 해제 + 현재 세션도 함께 제거
+    // (다른 페이지에서 이전 환자가 따라다니는 일관성 깨짐 방지)
+    // 환자 목록/히스토리 데이터는 유지됨 — 언제든 다시 선택 가능
+    clearRomSession();
     setPatientId(undefined);
     setName("");
     setAge("");
     setPainArea("");
     setVasScore(0);
     setIsManaging(false);
+    setIsAddingNew(true);
   };
 
   const handleDeletePatient = (id: string) => {
@@ -110,28 +148,29 @@ export const Index: React.FC = () => {
     });
 
     // 2. 측정 순서를 정해서 첫 번째 측정 화면으로 이동
-    const queue = getMeasurementQueue({
-      selectedJointIds,
-      selectedSides: sides,
-    } as any);
+    const queue = getMeasurementQueue(queueInput as RomSession);
     navigate(`/measure?joint=${queue[0].jointId}&side=${queue[0].side}`);
   };
   ////////////////////////////////////////////////////////
   //밑으로는 보여주는 부분
+
+  // 상태 A: 등록된 환자가 없고, 새 환자 등록 폼도 아직 안 열림
+  if (patients.length === 0 && !isAddingNew) {
+    return (
+      <AppLayout patientId={undefined}>
+        <EmptyPatientState onAddPatient={() => setIsAddingNew(true)} />
+      </AppLayout>
+    );
+  }
+
+  // 상태 B/C: 환자 있음 (선택 여부에 따라 폼 조건부 표시)
+  const showForm = patientId !== undefined || isAddingNew;
 
   return (
     <AppLayout patientId={patientId}>
       <div className="bg-full-viewport page-bg-home">
         <div className="container pb-10">
           <div className="page-header">
-            {/* 세팅 페이지로 가는 버튼 */}
-            {/* <button
-            onClick={() => navigate("/cesinfo")}
-            className="btn-settings-top mr-12"
-            style={{ marginRight: "40px" }}
-          >
-            📚
-          </button> */}
             <button
               onClick={() => navigate("/settings")}
               className="btn-settings-top flex items-center justify-center"
@@ -154,6 +193,21 @@ export const Index: React.FC = () => {
               handleNewPatient={handleNewPatient}
             />
 
+            {!showForm && (
+              <div
+                style={{
+                  padding: "2rem 1rem",
+                  textAlign: "center",
+                  color: "var(--text-secondary)",
+                }}
+              >
+                <p style={{ fontSize: "0.95rem", fontWeight: 600 }}>
+                  환자를 선택하거나 새로 등록해 주세요
+                </p>
+              </div>
+            )}
+
+            {showForm && (
             <form onSubmit={handleSubmit}>
               <div className="grid grid-cols-2 gap-4 mb-4">
                 <div className="form-group">
@@ -225,6 +279,7 @@ export const Index: React.FC = () => {
                 </button>
               </div>
             </form>
+            )}
           </div>
         </div>
       </div>

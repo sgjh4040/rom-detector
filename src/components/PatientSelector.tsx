@@ -1,5 +1,6 @@
 import React from "react";
 import type { Patient } from "../lib/romTypes";
+import { getPatientHistory } from "../lib/patientHistory";
 import { Settings, Plus } from "lucide-react";
 
 interface PatientSelectorProps {
@@ -77,17 +78,45 @@ export const PatientSelector: React.FC<PatientSelectorProps> = ({
           {patients
             .slice(-5)
             .reverse()
-            .map((p) => (
-              <button
-                key={p.id}
-                type="button"
-                className={`btn ${patientId === p.id ? "btn-primary" : "btn-outline"}`}
-                style={{ whiteSpace: "nowrap", fontSize: "0.875rem" }}
-                onClick={() => handleSelectPatient(p)}
-              >
-                {p.name} ({p.age})
-              </button>
-            ))}
+            .map((p) => {
+              const history = getPatientHistory(p.id);
+              const lastSession = history[0];
+              const sublabel = lastSession
+                ? `${new Date(lastSession.createdAt).toLocaleDateString("ko-KR", { month: "short", day: "numeric" })}${lastSession.vasScore !== undefined ? ` · VAS ${lastSession.vasScore}` : ""}`
+                : "측정 전";
+              return (
+                <button
+                  key={p.id}
+                  type="button"
+                  className={`btn ${patientId === p.id ? "btn-primary" : "btn-outline"}`}
+                  style={{
+                    whiteSpace: "nowrap",
+                    fontSize: "0.875rem",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "flex-start",
+                    gap: "2px",
+                    padding: "0.55rem 0.9rem",
+                    minHeight: "auto",
+                    lineHeight: 1.2,
+                  }}
+                  onClick={() => handleSelectPatient(p)}
+                >
+                  <span style={{ fontWeight: 800 }}>
+                    {p.name} ({p.age})
+                  </span>
+                  <span
+                    style={{
+                      fontSize: "0.68rem",
+                      fontWeight: 600,
+                      opacity: 0.75,
+                    }}
+                  >
+                    {sublabel}
+                  </span>
+                </button>
+              );
+            })}
         </div>
       )}
 

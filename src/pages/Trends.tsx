@@ -6,6 +6,7 @@ import { NeumoDashboard } from "../features/trends/presentation/NeumoDashboard";
 import { NeumoToggle } from "../core/components/NeumoToggle";
 import { JointTrendCard } from "../features/trends/presentation/JointTrendCard";
 import { HistoryItem } from "../features/trends/presentation/HistoryItem";
+import { AppLayout } from "../components/AppLayout";
 import "../styles/Trends.css";
 
 export const Trends: React.FC = () => {
@@ -23,26 +24,29 @@ export const Trends: React.FC = () => {
 
   if (!patientId || history.length === 0) {
     return (
-      <div className="container p-8 text-center neumo-inset">
-        <h2>환자 데이터를 찾을 수 없습니다.</h2>
-        <button className="btn btn-primary mt-4" onClick={() => navigate("/")}>
-          메인으로
-        </button>
-      </div>
+      <AppLayout patientId={patientId ?? undefined}>
+        <div className="container p-8 text-center neumo-inset">
+          <h2>환자 데이터를 찾을 수 없습니다.</h2>
+          <button className="btn btn-primary mt-4" onClick={() => navigate("/")}>
+            메인으로
+          </button>
+        </div>
+      </AppLayout>
     );
   }
 
   const patient = history[0];
 
   return (
-    <div
-      className="bg-full-viewport page-bg-results pb-20 neumo-container"
-      style={{
-        minHeight: "100vh",
-        padding: "0 20px 80px",
-        overflow: "visible",
-      }}
-    >
+    <AppLayout patientId={patientId}>
+      <div
+        className="bg-full-viewport page-bg-results pb-20 neumo-container"
+        style={{
+          minHeight: "100vh",
+          padding: "0 20px 80px",
+          overflow: "visible",
+        }}
+      >
       <div
         className="container"
         style={{
@@ -156,6 +160,7 @@ export const Trends: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </AppLayout>
   );
 };

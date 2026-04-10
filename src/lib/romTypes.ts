@@ -138,6 +138,15 @@ export const saveRomSession = (session: RomSession): void => {
     }
 };
 
+/** 현재 세션만 제거 — 환자/히스토리 데이터는 유지 */
+export const clearRomSession = (): void => {
+    try {
+        localStorage.removeItem(SESSION_STORAGE_KEY);
+    } catch (error) {
+        console.error('[ROM] 세션 삭제 실패:', error);
+    }
+};
+
 /** RomSession 타입가드 */
 const isValidRomSession = (value: unknown): value is RomSession => {
     if (typeof value !== 'object' || value === null) return false;
