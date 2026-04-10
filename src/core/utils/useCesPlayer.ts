@@ -1,6 +1,8 @@
 // useCesPlayer.ts — NTC 플레이어 상태·타이머·자동 전환 훅 (PRD 4-0: 200줄 이하)
 import { useState, useEffect, useRef, useCallback } from 'react';
 import type { CesRoutine, CesExerciseStep } from '../../lib/ces/CesPlayerTypes';
+import type { CesStage } from '../../lib/ces/cesTypes';
+import { updatePhaseDuration } from '../../features/session/data/cesTimeTracker';
 
 export interface UseCesPlayerReturn {
     currentStep: CesExerciseStep;
@@ -45,14 +47,19 @@ const prefetchVideo = (url: string): void => {
     document.head.appendChild(link);
 };
 
-export const useCesPlayer = (routine: CesRoutine): UseCesPlayerReturn => {
+export const useCesPlayer = (routine: CesRoutine, sessionCreatedAt?: string): UseCesPlayerReturn => {
     const [stepIndex, setStepIndex] = useState(0);
     const [countdown, setCountdown] = useState(routine.exercises[0]?.durationSeconds ?? 0);
-    const [isPaused, setIsPaused] = useState(false);
+    // 진입 시 자동 재생하지 않음 — 사용자가 ▶ 버튼을 눌러야 시작
+    const [isPaused, setIsPaused] = useState(true);
     const [isFinished, setIsFinished] = useState(false);
 
     const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
     const beepFiredRef = useRef(false);
+    // countdown을 ref로도 보관 — StrictMode에서 updater가 2번 호출되는 것을
+    // 피하기 위해 side effect(updatePhaseDuration)는 updater 바깥에서 실행
+    const countdownRef = useRef(countdown);
+    useEffect(() => { countdownRef.current = countdown; }, [countdown]);
 
     const exercises = routine.exercises;
     const totalSteps = exercises.length;
@@ -91,10 +98,15 @@ export const useCesPlayer = (routine: CesRoutine): UseCesPlayerReturn => {
             return;
         }
         timerRef.current = setInterval(() => {
+            // side effect는 updater 바깥에서 — StrictMode 이중 호출 방지
+            if (countdownRef.current > 0) {
+                const stage = currentStep.cesPhase.toLowerCase() as CesStage;
+                updatePhaseDuration(stage, 1, sessionCreatedAt);
+            }
             setCountdown(prev => Math.max(0, prev - 1));
         }, 1000);
         return () => { if (timerRef.current) clearInterval(timerRef.current); };
-    }, [isPaused, isFinished]);
+    }, [isPaused, isFinished, currentStep.cesPhase, sessionCreatedAt]);
 
     /** 카운트다운 완료 시 스텝 전환 부작용 처리 */
     useEffect(() => {

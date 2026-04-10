@@ -67,3 +67,11 @@ export const getTotalCompletionPercentage = (sessionCreatedAt?: string, goalSeco
     const totalGoal = goalSeconds * 4;
     return Math.min(100, Math.round((totalCurrent / totalGoal) * 100));
 };
+
+/** 특정 회차의 단계별 누적 초 단위 시간 (표시용) */
+export const getPhaseSeconds = (stage: CesStage, sessionCreatedAt?: string): number => {
+    const history = loadCesHistory();
+    const key = sessionCreatedAt || 'latest';
+    if (!history[key]) return 0;
+    return (history[key] as any)[stage] as number;
+};

@@ -3,6 +3,8 @@ import React from "react";
 import type { CesExerciseStep } from "../../lib/ces/CesPlayerTypes";
 import { PHASE_META } from "../../lib/ces/CesPlayerTypes";
 import { Play, Pause, RotateCcw, SkipForward } from "lucide-react";
+import { getPhaseSeconds } from "../../features/session/data/cesTimeTracker";
+import type { CesStage } from "../../lib/ces/cesTypes";
 
 interface CesPlayerControllerProps {
   currentStep: CesExerciseStep;
@@ -14,10 +16,24 @@ interface CesPlayerControllerProps {
   totalSteps: number;
   isPaused: boolean;
   isFinished: boolean;
+  sessionCreatedAt?: string;
   onTogglePause: () => void;
   onExit: () => void;
   onRestart: () => void;
 }
+
+const PHASES: { stage: CesStage; label: string; color: string }[] = [
+  { stage: "inhibit", label: "Inhibit", color: "#EAB308" },
+  { stage: "lengthen", label: "Lengthen", color: "#3B82F6" },
+  { stage: "activate", label: "Activate", color: "#EF4444" },
+  { stage: "integrate", label: "Integrate", color: "#22C55E" },
+];
+
+const fmtMMSS = (total: number): string => {
+  const m = Math.floor(total / 60);
+  const s = total % 60;
+  return `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+};
 
 const pad = (n: number): string => String(n).padStart(2, "0");
 
@@ -30,6 +46,7 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
   totalSteps,
   isPaused,
   isFinished,
+  sessionCreatedAt,
   onTogglePause,
   onExit,
   onRestart,
@@ -38,6 +55,21 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
   const secs = countdown % 60;
   const phase = PHASE_META[currentStep.cesPhase];
   const isWarning = countdown <= 3 && countdown > 0;
+  const activeStage = currentStep.cesPhase.toLowerCase() as CesStage;
+
+  // 1초마다 리렌더 — localStorage에 쌓이는 누적 시간을 실시간으로 반영
+  const [, forceTick] = React.useState(0);
+  React.useEffect(() => {
+    if (isPaused || isFinished) return;
+    const id = setInterval(() => forceTick((n) => n + 1), 1000);
+    return () => clearInterval(id);
+  }, [isPaused, isFinished]);
+
+  const phaseSeconds = PHASES.map((p) => ({
+    ...p,
+    seconds: getPhaseSeconds(p.stage, sessionCreatedAt),
+  }));
+  const totalSeconds = phaseSeconds.reduce((sum, p) => sum + p.seconds, 0);
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
@@ -128,6 +160,96 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
             곧 다음 운동으로 전환됩니다!
           </p>
         )}
+      </div>
+
+      {/* 누적 운동 시간 — 4단계별 + 합계 */}
+      <div
+        style={{
+          padding: "1rem",
+          background: "#fff",
+          borderRadius: "14px",
+          border: "1.5px solid #eef2f7",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "baseline",
+            marginBottom: "0.6rem",
+          }}
+        >
+          <span
+            style={{
+              fontSize: "0.7rem",
+              fontWeight: 800,
+              color: "var(--text-secondary)",
+              textTransform: "uppercase",
+              letterSpacing: "0.08em",
+            }}
+          >
+            누적 운동 시간
+          </span>
+          <span
+            style={{
+              fontSize: "1.1rem",
+              fontWeight: 900,
+              color: "#1C3F6F",
+              fontVariantNumeric: "tabular-nums",
+            }}
+          >
+            {fmtMMSS(totalSeconds)}
+          </span>
+        </div>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(4, 1fr)",
+            gap: "0.5rem",
+          }}
+        >
+          {phaseSeconds.map((p) => {
+            const isActive = p.stage === activeStage;
+            return (
+              <div
+                key={p.stage}
+                style={{
+                  padding: "0.5rem 0.4rem",
+                  borderRadius: "8px",
+                  background: isActive ? `${p.color}15` : "#f7f9fc",
+                  border: isActive
+                    ? `1.5px solid ${p.color}`
+                    : "1.5px solid transparent",
+                  textAlign: "center",
+                  transition: "all 0.2s",
+                }}
+              >
+                <p
+                  style={{
+                    fontSize: "0.55rem",
+                    fontWeight: 800,
+                    color: p.color,
+                    textTransform: "uppercase",
+                    letterSpacing: "0.05em",
+                    marginBottom: "2px",
+                  }}
+                >
+                  {p.label}
+                </p>
+                <p
+                  style={{
+                    fontSize: "0.85rem",
+                    fontWeight: 900,
+                    color: "#1C3F6F",
+                    fontVariantNumeric: "tabular-nums",
+                  }}
+                >
+                  {fmtMMSS(p.seconds)}
+                </p>
+              </div>
+            );
+          })}
+        </div>
       </div>
 
       {/* 전체 진행률 바 */}

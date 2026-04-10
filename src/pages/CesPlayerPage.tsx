@@ -8,6 +8,7 @@ import { BodyAnatomySvg } from "../core/components/BodyAnatomySvg";
 import { MOCK_ROUTINE, PHASE_META } from "../lib/ces/CesPlayerTypes";
 import type { CesRoutine } from "../lib/ces/CesPlayerTypes";
 import { PartyPopper, RotateCcw } from "lucide-react";
+import { loadRomSession } from "../lib/romTypes";
 
 export const CesPlayerPage: React.FC = () => {
   const navigate = useNavigate();
@@ -16,6 +17,9 @@ export const CesPlayerPage: React.FC = () => {
   // 이전 페이지에서 넘어온 실제 루틴이 있으면 사용, 없으면 데모 루틴 표출
   const customRoutine =
     (location.state?.customRoutine as CesRoutine) || MOCK_ROUTINE;
+
+  // 현재 환자 세션 — 운동 시간을 회차별로 누적 기록하기 위해 createdAt 사용
+  const session = loadRomSession();
 
   const {
     currentStep,
@@ -30,7 +34,7 @@ export const CesPlayerPage: React.FC = () => {
     togglePause,
     goToStep,
     restart,
-  } = useCesPlayer(customRoutine);
+  } = useCesPlayer(customRoutine, session?.createdAt);
 
   if (isFinished) {
     return (
@@ -118,6 +122,7 @@ export const CesPlayerPage: React.FC = () => {
           totalSteps={totalSteps}
           isPaused={isPaused}
           isFinished={isFinished}
+          sessionCreatedAt={session?.createdAt}
           onTogglePause={togglePause}
           onExit={() => navigate("/ces")}
           onRestart={restart}
