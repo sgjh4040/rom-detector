@@ -11,6 +11,7 @@ import {
   getPatientHistory,
   savePatient,
 } from "../lib/romData";
+import type { Side } from "../lib/romData";
 // import { ExerciseCard } from "../components/ExerciseCard";
 import { JointSideResult } from "../components/JointSideResult";
 import { AppLayout } from "../components/AppLayout";
