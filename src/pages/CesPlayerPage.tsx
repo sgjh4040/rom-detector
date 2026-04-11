@@ -6,9 +6,25 @@ import { CesVideoPlayer } from "../core/components/CesVideoPlayer";
 import { CesPlayerController } from "../core/components/CesPlayerController";
 import { BodyAnatomySvg } from "../core/components/BodyAnatomySvg";
 import { MOCK_ROUTINE, PHASE_META } from "../lib/ces/CesPlayerTypes";
-import type { CesRoutine } from "../lib/ces/CesPlayerTypes";
+import type { CesRoutine, CesPlayerStep } from "../lib/ces/CesPlayerTypes";
 import { PartyPopper, RotateCcw } from "lucide-react";
 import { loadRomSession } from "../lib/romTypes";
+
+/** 브레이크 스텝을 건너뛰고 가장 가까운 exercise 스텝을 찾는다 — 근육 하이라이트 유지용 */
+const findNearestExerciseStep = (
+  steps: CesPlayerStep[],
+  currentIndex: number,
+): CesPlayerStep | null => {
+  // 현재 이후 (다음 운동)
+  for (let i = currentIndex; i < steps.length; i++) {
+    if (steps[i].kind === "exercise") return steps[i];
+  }
+  // 없으면 이전 (마지막 운동)
+  for (let i = currentIndex; i >= 0; i--) {
+    if (steps[i].kind === "exercise") return steps[i];
+  }
+  return null;
+};
 
 export const CesPlayerPage: React.FC = () => {
   const navigate = useNavigate();
@@ -34,6 +50,7 @@ export const CesPlayerPage: React.FC = () => {
     togglePause,
     goToStep,
     restart,
+    skipBreak,
   } = useCesPlayer(customRoutine, session?.createdAt);
 
   if (isFinished) {
@@ -59,6 +76,17 @@ export const CesPlayerPage: React.FC = () => {
     );
   }
 
+  const isBreak = currentStep.kind === "break";
+  // 브레이크 중에도 해부 SVG 가 비지 않게 가장 가까운 운동의 타겟 근육을 유지
+  const anchorExerciseStep = isBreak
+    ? findNearestExerciseStep(customRoutine.exercises, stepIndex + 1)
+    : currentStep;
+  const highlightIds =
+    anchorExerciseStep && anchorExerciseStep.kind === "exercise"
+      ? anchorExerciseStep.targetSvgIds
+      : [];
+  const currentPhase = currentStep.cesPhase;
+
   return (
     <div className="ces-player">
       {/* ── A 영역: 비디오 플레이어 ────────────────────────────── */}
@@ -69,7 +97,7 @@ export const CesPlayerPage: React.FC = () => {
               <span>● medicalmotion</span>
             </div>
             <div className="step-dots">
-              {customRoutine.exercises.map((_, i) => (
+              {customRoutine.exercises.map((step, i) => (
                 <button
                   key={i}
                   onClick={() => goToStep(i)}
@@ -78,10 +106,12 @@ export const CesPlayerPage: React.FC = () => {
                     width: i === stepIndex ? "24px" : "8px",
                     background:
                       i === stepIndex
-                        ? PHASE_META[customRoutine.exercises[i].cesPhase].color
+                        ? PHASE_META[step.cesPhase].color
                         : i < stepIndex
                           ? "rgba(255,255,255,0.6)"
                           : "rgba(255,255,255,0.2)",
+                    // 브레이크 스텝은 점을 더 작게 표시해서 "운동 흐름" 이 읽히게
+                    opacity: step.kind === "break" ? 0.55 : 1,
                   }}
                 />
               ))}
@@ -89,22 +119,39 @@ export const CesPlayerPage: React.FC = () => {
           </div>
 
           <CesVideoPlayer
-            videoUrl={currentStep.videoUrl}
-            nextVideoUrl={nextStep?.videoUrl}
-            exerciseName={currentStep.exerciseName}
+            videoUrl={
+              currentStep.kind === "exercise" ? currentStep.videoUrl : ""
+            }
+            nextVideoUrl={
+              nextStep && nextStep.kind === "exercise"
+                ? nextStep.videoUrl
+                : undefined
+            }
+            exerciseName={
+              currentStep.kind === "exercise"
+                ? currentStep.exerciseName
+                : "휴식"
+            }
+            isBreak={isBreak}
+            breakKind={
+              currentStep.kind === "break" ? currentStep.breakKind : undefined
+            }
+            upcomingExerciseName={
+              currentStep.kind === "break" ? currentStep.toExercise : undefined
+            }
           />
 
           <div className="progress-track">
             <div
               className="progress-bar"
               style={{
-                background: PHASE_META[currentStep.cesPhase].color,
+                background: PHASE_META[currentPhase].color,
                 width: `${stepProgress}%`,
               }}
             />
           </div>
           <div className="progress-meta">
-            <p>현재 스텝 진행률</p>
+            <p>{isBreak ? "브레이크 진행률" : "현재 스텝 진행률"}</p>
             <span>{Math.round(stepProgress)}%</span>
           </div>
         </div>
@@ -126,6 +173,7 @@ export const CesPlayerPage: React.FC = () => {
           onTogglePause={togglePause}
           onExit={() => navigate("/ces")}
           onRestart={restart}
+          onSkipBreak={skipBreak}
         />
       </div>
 
@@ -144,8 +192,8 @@ export const CesPlayerPage: React.FC = () => {
           Target Muscles
         </p>
         <BodyAnatomySvg
-          highlightIds={currentStep.targetSvgIds}
-          cesPhase={currentStep.cesPhase}
+          highlightIds={highlightIds}
+          cesPhase={currentPhase}
           showGroupButtons={false}
         />
       </div>

@@ -1,12 +1,12 @@
 // useCesPlayer.ts — NTC 플레이어 상태·타이머·자동 전환 훅 (PRD 4-0: 200줄 이하)
 import { useState, useEffect, useRef, useCallback } from 'react';
-import type { CesRoutine, CesExerciseStep } from '../../lib/ces/CesPlayerTypes';
+import type { CesRoutine, CesPlayerStep } from '../../lib/ces/CesPlayerTypes';
 import type { CesStage } from '../../lib/ces/cesTypes';
 import { updatePhaseDuration } from '../../features/session/data/cesTimeTracker';
 
 export interface UseCesPlayerReturn {
-    currentStep: CesExerciseStep;
-    nextStep: CesExerciseStep | null;
+    currentStep: CesPlayerStep;
+    nextStep: CesPlayerStep | null;
     countdown: number;
     isPaused: boolean;
     progress: number;           // 전체 진행률 0~100
@@ -17,6 +17,8 @@ export interface UseCesPlayerReturn {
     togglePause: () => void;
     goToStep: (idx: number) => void;
     restart: () => void;
+    /** 현재 브레이크 스텝을 즉시 종료하고 다음 스텝으로 — exercise 스텝일 땐 no-op */
+    skipBreak: () => void;
 }
 
 /** AudioContext로 짧은 Beep음 재생 */
@@ -47,6 +49,18 @@ const prefetchVideo = (url: string): void => {
     document.head.appendChild(link);
 };
 
+/** 다음 exercise 스텝의 비디오 URL 을 찾아 반환 — 브레이크는 건너뛴다 */
+const findNextVideoUrl = (
+    steps: CesPlayerStep[],
+    fromIndex: number,
+): string | null => {
+    for (let i = fromIndex; i < steps.length; i++) {
+        const s = steps[i];
+        if (s.kind === 'exercise' && s.videoUrl) return s.videoUrl;
+    }
+    return null;
+};
+
 export const useCesPlayer = (routine: CesRoutine, sessionCreatedAt?: string): UseCesPlayerReturn => {
     const [stepIndex, setStepIndex] = useState(0);
     const [countdown, setCountdown] = useState(routine.exercises[0]?.durationSeconds ?? 0);
@@ -66,7 +80,7 @@ export const useCesPlayer = (routine: CesRoutine, sessionCreatedAt?: string): Us
     const currentStep = exercises[stepIndex] ?? exercises[0];
     const nextStep = stepIndex + 1 < totalSteps ? exercises[stepIndex + 1] : null;
 
-    // 전체 경과 초 계산
+    // 전체 경과 초 계산 — 브레이크 스텝도 루틴 총 시간에는 포함됨
     const elapsedTotal = exercises
         .slice(0, stepIndex)
         .reduce((sum, ex) => sum + ex.durationSeconds, 0)
@@ -86,27 +100,29 @@ export const useCesPlayer = (routine: CesRoutine, sessionCreatedAt?: string): Us
             const nextEx = exercises[next];
             setCountdown(nextEx.durationSeconds);
             beepFiredRef.current = false;
-            if (exercises[next + 1]) prefetchVideo(exercises[next + 1].videoUrl);
+            // 브레이크 건너뛰고 "실제 다음 운동" 의 비디오를 prefetch
+            const upcomingVideo = findNextVideoUrl(exercises, next + 1);
+            if (upcomingVideo) prefetchVideo(upcomingVideo);
             return next;
         });
     }, [exercises, totalSteps]);
 
-    /** 타이머 tick */
+    /** 타이머 tick — exercise 스텝일 때만 updatePhaseDuration 호출 */
     useEffect(() => {
         if (isPaused || isFinished) {
             if (timerRef.current) clearInterval(timerRef.current);
             return;
         }
         timerRef.current = setInterval(() => {
-            // side effect는 updater 바깥에서 — StrictMode 이중 호출 방지
-            if (countdownRef.current > 0) {
+            // 브레이크 스텝은 누적에서 제외 — 대시보드 목표 분모와 일관성 유지
+            if (countdownRef.current > 0 && currentStep.kind === 'exercise') {
                 const stage = currentStep.cesPhase.toLowerCase() as CesStage;
                 updatePhaseDuration(stage, 1, sessionCreatedAt);
             }
             setCountdown(prev => Math.max(0, prev - 1));
         }, 1000);
         return () => { if (timerRef.current) clearInterval(timerRef.current); };
-    }, [isPaused, isFinished, currentStep.cesPhase, sessionCreatedAt]);
+    }, [isPaused, isFinished, currentStep, sessionCreatedAt]);
 
     /** 카운트다운 완료 시 스텝 전환 부작용 처리 */
     useEffect(() => {
@@ -119,9 +135,10 @@ export const useCesPlayer = (routine: CesRoutine, sessionCreatedAt?: string): Us
         }
     }, [countdown, isFinished, isPaused, advanceStep]);
 
-    // 마운트 시 다음 영상 prefetch
+    // 마운트 시 다음 운동 영상 prefetch — 브레이크는 건너뛴다
     useEffect(() => {
-        if (exercises[1]) prefetchVideo(exercises[1].videoUrl);
+        const upcoming = findNextVideoUrl(exercises, 1);
+        if (upcoming) prefetchVideo(upcoming);
     }, [exercises]);
 
     const togglePause = useCallback(() => setIsPaused(p => !p), []);
@@ -136,5 +153,11 @@ export const useCesPlayer = (routine: CesRoutine, sessionCreatedAt?: string): Us
 
     const restart = useCallback(() => goToStep(0), [goToStep]);
 
-    return { currentStep, nextStep, countdown, isPaused, progress, stepProgress, stepIndex, totalSteps, isFinished, togglePause, goToStep, restart };
+    /** 브레이크 스텝 중 사용자가 "건너뛰기" 를 누르면 즉시 다음 스텝으로 */
+    const skipBreak = useCallback(() => {
+        if (currentStep.kind !== 'break') return;
+        advanceStep();
+    }, [currentStep, advanceStep]);
+
+    return { currentStep, nextStep, countdown, isPaused, progress, stepProgress, stepIndex, totalSteps, isFinished, togglePause, goToStep, restart, skipBreak };
 };

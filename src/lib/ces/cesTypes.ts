@@ -15,6 +15,8 @@ export interface CesExercise {
     sets?: number;
     reps?: number;
     holdSeconds?: number;
+    /** 이 운동의 세트 간 휴식 시간 override (초). 지정하지 않으면 전역 기본값(30초) 사용 */
+    restSeconds?: number;
 }
 
 /** CES 단계 타입 */

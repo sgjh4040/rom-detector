@@ -20,9 +20,9 @@ import {
   CheckCircle,
 } from "lucide-react";
 import { updatePhaseDuration } from "../features/session/data/cesTimeTracker";
-import { exerciseSeconds } from "../lib/ces/cesGoalCalculator";
-import type { CesExercise, CesStage } from "../lib/ces/cesTypes";
-import type { CesPhase, CesExerciseStep } from "../lib/ces/CesPlayerTypes";
+import { buildRoutineFromAnalysis } from "../lib/ces/cesRoutineBuilder";
+import type { CesStage } from "../lib/ces/cesTypes";
+import type { CesPhase } from "../lib/ces/CesPlayerTypes";
 import type { Side } from "../lib/romTypes";
 
 const STAGES: { id: CesStage; name: string }[] = [
@@ -151,43 +151,16 @@ export const CesProtocol: React.FC = () => {
     return getTargetMuscles(currentEx.name);
   }, [currentEx, getTargetMuscles]);
 
-  // ── 데이터 연동: 4단계 운동을 플레이어 규격에 맞게 병합 ──
+  // ── 데이터 연동: 빌더에 위임 ──
   //
-  // 각 스텝의 `durationSeconds` 는 트렌드 대시보드가 목표 시간을 계산할 때
-  // 사용하는 `exerciseSeconds()` 와 동일한 공식을 사용해야 한다. 그렇지 않으면
-  // (예전 버그처럼) `sets` 가 빠져서 플레이어를 풀로 돌려도 목표 시간의 1/sets
-  // 밖에 누적되지 않아 대시보드가 100% 에 못 미치는 퍼센트로 표시된다.
+  // `buildRoutineFromAnalysis` 가 세트 분할 + set-rest/transition 브레이크
+  // 삽입을 담당한다. CesProtocol 은 분석 결과와 근육 타겟 매퍼만 넘기면 된다.
+  // 스텝의 durationSeconds 합은 cesGoalCalculator.exerciseSeconds 와 일치해서
+  // 대시보드 phase 목표와 1:1 로 매칭된다.
   const handleStartPlayer = () => {
-    let stepCount = 0;
-    const routineExercises: CesExerciseStep[] = [];
-
-    const mapExercises = (phaseArr: CesExercise[], phaseName: CesPhase) => {
-      phaseArr.forEach((ex) => {
-        routineExercises.push({
-          step: ++stepCount,
-          exerciseName: ex.name,
-          videoUrl: ex.youtubeId || "",
-          durationSeconds: exerciseSeconds(ex),
-          cesPhase: phaseName,
-          targetSvgIds: getTargetMuscles(ex.name),
-        });
-      });
-    };
-
-    mapExercises(analysis.inhibit, "Inhibit");
-    mapExercises(analysis.lengthen, "Lengthen");
-    mapExercises(analysis.activate, "Activate");
-    mapExercises(analysis.integrate, "Integrate");
-
-    const customRoutine = {
-      routineId: `routine_${Date.now()}`,
-      totalDurationSeconds: routineExercises.reduce(
-        (acc, curr) => acc + curr.durationSeconds,
-        0,
-      ),
-      exercises: routineExercises,
-    };
-
+    const customRoutine = buildRoutineFromAnalysis(analysis, {
+      getTargetMuscles,
+    });
     navigate("/ces-player", { state: { customRoutine } });
   };
 
