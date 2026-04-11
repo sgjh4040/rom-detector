@@ -49,23 +49,46 @@ export const updatePhaseDuration = (stage: CesStage, additionalSeconds: number, 
 };
 
 
-export const getPhasePercentage = (stage: CesStage, sessionCreatedAt?: string, goalSeconds = DEFAULT_GOAL_SECONDS): number => {
+/**
+ * 단계별 누적 시간을 목표 초 대비 퍼센트로 반환한다.
+ *
+ * @param stage CES 단계
+ * @param sessionCreatedAt 세션 ID (createdAt)
+ * @param goalSeconds 목표 초 — 생략 시 DEFAULT_GOAL_SECONDS(300) 폴백.
+ *                    처방이 비어 있을 때(= 0)는 0%를 반환한다.
+ */
+export const getPhasePercentage = (
+    stage: CesStage,
+    sessionCreatedAt?: string,
+    goalSeconds: number = DEFAULT_GOAL_SECONDS,
+): number => {
     const history = loadCesHistory();
     const key = sessionCreatedAt || 'latest';
     if (!history[key]) return 0;
+    if (goalSeconds <= 0) return 0; // 처방이 없으면 퍼센트 정의 불가
     const current = (history[key] as any)[stage] as number;
     return Math.min(100, Math.round((current / goalSeconds) * 100));
 };
 
-
-export const getTotalCompletionPercentage = (sessionCreatedAt?: string, goalSeconds = DEFAULT_GOAL_SECONDS): number => {
+/**
+ * 세션의 4단계 누적 시간을 총 목표 대비 퍼센트로 반환한다.
+ *
+ * @param sessionCreatedAt 세션 ID (createdAt)
+ * @param totalGoalSeconds 4단계 전체 합산 목표 초.
+ *                         생략 시 `DEFAULT_GOAL_SECONDS * 4`(= 1200초) 폴백.
+ *                         처방이 비어 있을 때(= 0)는 0%를 반환한다.
+ */
+export const getTotalCompletionPercentage = (
+    sessionCreatedAt?: string,
+    totalGoalSeconds: number = DEFAULT_GOAL_SECONDS * 4,
+): number => {
     const history = loadCesHistory();
     const key = sessionCreatedAt || 'latest';
     if (!history[key]) return 0;
+    if (totalGoalSeconds <= 0) return 0;
     const d = history[key];
     const totalCurrent = d.inhibit + d.lengthen + d.activate + d.integrate;
-    const totalGoal = goalSeconds * 4;
-    return Math.min(100, Math.round((totalCurrent / totalGoal) * 100));
+    return Math.min(100, Math.round((totalCurrent / totalGoalSeconds) * 100));
 };
 
 /** 특정 회차의 단계별 누적 초 단위 시간 (표시용) */

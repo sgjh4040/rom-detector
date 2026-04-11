@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { LayoutDashboard, BarChart3 } from "lucide-react";
-import { getPatientHistory, JOINTS } from "../lib/romData";
+import { getPatientHistory, JOINTS, saveRomSession } from "../lib/romData";
 import { TrendGraph } from "../features/trends/presentation/TrendGraph";
 import { NeumoDashboard } from "../features/trends/presentation/NeumoDashboard";
 import { JointTrendCard } from "../features/trends/presentation/JointTrendCard";
@@ -85,6 +85,19 @@ export const Trends: React.FC = () => {
   const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
     history.length > 0 ? history[0].createdAt : null,
   );
+
+  // 트렌드 페이지에서 고른 회차를 active `rom_session` 으로 동기화한다.
+  // - 네비의 "CES" 탭이나 어디에서 CES 재활을 시작해도, 지금 보고 있는 회차에
+  //   시간이 누적되도록 보장한다.
+  // - 화면이 처음 열릴 때(= selectedSessionId 가 최신) 도 최신 세션으로 동기화되므로
+  //   "최신 회차 = 기본 선택" 케이스도 일관되게 처리된다.
+  useEffect(() => {
+    if (!selectedSessionId) return;
+    const picked = history.find((s) => s.createdAt === selectedSessionId);
+    if (picked) {
+      saveRomSession(picked);
+    }
+  }, [selectedSessionId, history]);
 
   if (!patientId || history.length === 0) {
     return (

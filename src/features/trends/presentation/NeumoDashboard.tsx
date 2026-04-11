@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { NeumoCircularGauge } from '../../../core/components/NeumoCircularGauge';
 import { NeumoProgressBar } from '../../../core/components/NeumoProgressBar';
@@ -7,6 +7,10 @@ import {
     getPhasePercentage,
     getPhaseSeconds,
 } from '../../session/data/cesTimeTracker';
+import {
+    computePhaseGoals,
+    EMPTY_PHASE_GOALS,
+} from '../../../lib/ces/cesGoalCalculator';
 import type { CesStage } from '../../../lib/ces/cesTypes';
 import type { RomSession } from '../../../lib/romTypes';
 
@@ -16,7 +20,6 @@ interface NeumoDashboardProps {
     onSelectSession: (id: string) => void;
 }
 
-const GOAL_SECONDS = 300; // cesTimeTracker.DEFAULT_GOAL_SECONDS 와 동일하게 유지
 const formatMinSec = (sec: number): string => {
     const m = Math.floor(sec / 60);
     const s = sec % 60;
@@ -44,16 +47,30 @@ export const NeumoDashboard: React.FC<NeumoDashboardProps> = ({
 }) => {
     const navigate = useNavigate();
     const sessionKey = selectedSessionId || undefined;
-    const totalProgress = getTotalCompletionPercentage(sessionKey);
+
+    // 선택된 회차의 RomSession을 찾아서 CES 처방 기반 목표 시간을 계산한다.
+    // 처방 자체가 없는 경우(= 전부 정상 측정) EMPTY_PHASE_GOALS 로 폴백된다.
+    const currentSession = useMemo(
+        () => sessions.find((s) => s.createdAt === selectedSessionId) ?? sessions[0],
+        [sessions, selectedSessionId],
+    );
+    const phaseGoals = useMemo(
+        () => (currentSession ? computePhaseGoals(currentSession) : EMPTY_PHASE_GOALS),
+        [currentSession],
+    );
+
+    const totalProgress = getTotalCompletionPercentage(sessionKey, phaseGoals.total);
     const phaseStats = PHASES.map((p) => ({
         ...p,
-        percentage: getPhasePercentage(p.stage, sessionKey),
+        percentage: getPhasePercentage(p.stage, sessionKey, phaseGoals[p.stage]),
         seconds: getPhaseSeconds(p.stage, sessionKey),
+        goalSeconds: phaseGoals[p.stage],
     }));
 
-    // CES 재활을 아직 한 번도 진행하지 않은 상태 — 0%만 잔뜩 보여주는 대신 안내 카드 노출
+    // CES 재활 진행 기록이 없거나, 처방 자체가 비어 있는 경우 엠프티 카드 노출
     const hasNoCesActivity =
-        totalProgress === 0 && phaseStats.every((p) => p.percentage === 0);
+        phaseGoals.total === 0 ||
+        (totalProgress === 0 && phaseStats.every((p) => p.percentage === 0));
 
     return (
         <div
@@ -142,7 +159,19 @@ export const NeumoDashboard: React.FC<NeumoDashboardProps> = ({
                             fontWeight: 800,
                             fontSize: '0.95rem',
                         }}
-                        onClick={() => navigate('/ces')}
+                        onClick={() => {
+                            // 선택된 회차를 active session 으로 지정한 뒤 CES 재활 진입.
+                            // 이렇게 해야 updatePhaseDuration 이 현재 선택한 회차 key 에 누적된다.
+                            // (그냥 navigate 만 하면 가장 최근 rom_session 으로 누적돼서
+                            //  과거 회차를 고르고 재활을 시작해도 누적이 최신 회차로 흘러들어감)
+                            if (currentSession) {
+                                localStorage.setItem(
+                                    'rom_session',
+                                    JSON.stringify(currentSession),
+                                );
+                            }
+                            navigate('/ces');
+                        }}
                     >
                         CES 재활 시작하기
                     </button>
@@ -203,7 +232,11 @@ export const NeumoDashboard: React.FC<NeumoDashboardProps> = ({
                                 label={p.label}
                                 percentage={p.percentage}
                                 color={p.color}
-                                sublabel={`${formatMinSec(p.seconds)} / ${formatMinSec(GOAL_SECONDS)}`}
+                                sublabel={
+                                    p.goalSeconds > 0
+                                        ? `${formatMinSec(p.seconds)} / ${formatMinSec(p.goalSeconds)}`
+                                        : '처방 없음'
+                                }
                             />
                         ))}
                     </div>
