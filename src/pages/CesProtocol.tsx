@@ -20,8 +20,9 @@ import {
   CheckCircle,
 } from "lucide-react";
 import { updatePhaseDuration } from "../features/session/data/cesTimeTracker";
-import type { CesStage } from "../lib/ces/cesTypes";
-import type { CesPhase } from "../lib/ces/CesPlayerTypes";
+import { exerciseSeconds } from "../lib/ces/cesGoalCalculator";
+import type { CesExercise, CesStage } from "../lib/ces/cesTypes";
+import type { CesPhase, CesExerciseStep } from "../lib/ces/CesPlayerTypes";
 import type { Side } from "../lib/romTypes";
 
 const STAGES: { id: CesStage; name: string }[] = [
@@ -151,17 +152,22 @@ export const CesProtocol: React.FC = () => {
   }, [currentEx, getTargetMuscles]);
 
   // ── 데이터 연동: 4단계 운동을 플레이어 규격에 맞게 병합 ──
+  //
+  // 각 스텝의 `durationSeconds` 는 트렌드 대시보드가 목표 시간을 계산할 때
+  // 사용하는 `exerciseSeconds()` 와 동일한 공식을 사용해야 한다. 그렇지 않으면
+  // (예전 버그처럼) `sets` 가 빠져서 플레이어를 풀로 돌려도 목표 시간의 1/sets
+  // 밖에 누적되지 않아 대시보드가 100% 에 못 미치는 퍼센트로 표시된다.
   const handleStartPlayer = () => {
     let stepCount = 0;
-    const routineExercises: any[] = [];
+    const routineExercises: CesExerciseStep[] = [];
 
-    const mapExercises = (phaseArr: any[], phaseName: string) => {
+    const mapExercises = (phaseArr: CesExercise[], phaseName: CesPhase) => {
       phaseArr.forEach((ex) => {
         routineExercises.push({
           step: ++stepCount,
           exerciseName: ex.name,
           videoUrl: ex.youtubeId || "",
-          durationSeconds: ex.holdSeconds || (ex.reps ? ex.reps * 3 : 30),
+          durationSeconds: exerciseSeconds(ex),
           cesPhase: phaseName,
           targetSvgIds: getTargetMuscles(ex.name),
         });
