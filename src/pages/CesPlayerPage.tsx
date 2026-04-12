@@ -10,6 +10,76 @@ import type { CesRoutine, CesPlayerStep } from "../lib/ces/CesPlayerTypes";
 import { PartyPopper, RotateCcw } from "lucide-react";
 import { loadRomSession } from "../lib/romTypes";
 
+/* ── Phase-grouped step dots ─────────────────────────────────── */
+/** 운동 스텝만 phase별로 그룹핑하여 깔끔하게 표시 — break 점 제거 */
+const StepDotsGrouped: React.FC<{
+  exercises: CesPlayerStep[];
+  currentStepIndex: number;
+  onGoToStep: (i: number) => void;
+}> = ({ exercises, currentStepIndex, onGoToStep }) => {
+  // 운동 스텝만 추출하되 원래 인덱스를 보존
+  const exerciseEntries = exercises
+    .map((step, i) => ({ step, originalIndex: i }))
+    .filter((e) => e.step.kind === "exercise");
+
+  // phase 순서대로 그룹핑 (연속된 같은 phase를 하나의 그룹으로)
+  const groups: { phase: string; entries: typeof exerciseEntries }[] = [];
+  for (const entry of exerciseEntries) {
+    const phase = entry.step.cesPhase;
+    const last = groups[groups.length - 1];
+    if (last && last.phase === phase) {
+      last.entries.push(entry);
+    } else {
+      groups.push({ phase, entries: [entry] });
+    }
+  }
+
+  // 현재 stepIndex가 break일 때 → 직전 운동의 originalIndex를 active로
+  let activeOriginalIndex = currentStepIndex;
+  if (exercises[currentStepIndex]?.kind === "break") {
+    for (let i = currentStepIndex; i >= 0; i--) {
+      if (exercises[i].kind === "exercise") {
+        activeOriginalIndex = i;
+        break;
+      }
+    }
+  }
+
+  return (
+    <div className="step-dots-grouped">
+      {groups.map((group, gi) => {
+        const meta = PHASE_META[group.phase as keyof typeof PHASE_META];
+        return (
+          <React.Fragment key={gi}>
+            {gi > 0 && <span className="step-dots-divider" />}
+            <div className="step-dots-phase">
+              {group.entries.map((entry) => {
+                const isActive = entry.originalIndex === activeOriginalIndex;
+                const isDone = entry.originalIndex < activeOriginalIndex;
+                return (
+                  <button
+                    key={entry.originalIndex}
+                    onClick={() => onGoToStep(entry.originalIndex)}
+                    className={`step-dot ${isActive ? "is-active" : ""}`}
+                    style={{
+                      width: isActive ? "24px" : "8px",
+                      background: isActive
+                        ? meta.color
+                        : isDone
+                          ? "rgba(255,255,255,0.6)"
+                          : "rgba(255,255,255,0.2)",
+                    }}
+                  />
+                );
+              })}
+            </div>
+          </React.Fragment>
+        );
+      })}
+    </div>
+  );
+};
+
 /** 브레이크 스텝을 건너뛰고 가장 가까운 exercise 스텝을 찾는다 — 근육 하이라이트 유지용 */
 const findNearestExerciseStep = (
   steps: CesPlayerStep[],
@@ -96,26 +166,11 @@ export const CesPlayerPage: React.FC = () => {
             <div className="video-brand">
               <span>● medicalmotion</span>
             </div>
-            <div className="step-dots">
-              {customRoutine.exercises.map((step, i) => (
-                <button
-                  key={i}
-                  onClick={() => goToStep(i)}
-                  className={`step-dot ${i === stepIndex ? "is-active" : ""}`}
-                  style={{
-                    width: i === stepIndex ? "24px" : "8px",
-                    background:
-                      i === stepIndex
-                        ? PHASE_META[step.cesPhase].color
-                        : i < stepIndex
-                          ? "rgba(255,255,255,0.6)"
-                          : "rgba(255,255,255,0.2)",
-                    // 브레이크 스텝은 점을 더 작게 표시해서 "운동 흐름" 이 읽히게
-                    opacity: step.kind === "break" ? 0.55 : 1,
-                  }}
-                />
-              ))}
-            </div>
+            <StepDotsGrouped
+              exercises={customRoutine.exercises}
+              currentStepIndex={stepIndex}
+              onGoToStep={goToStep}
+            />
           </div>
 
           <CesVideoPlayer
@@ -170,6 +225,7 @@ export const CesPlayerPage: React.FC = () => {
           isPaused={isPaused}
           isFinished={isFinished}
           sessionCreatedAt={session?.createdAt}
+          allSteps={customRoutine.exercises}
           onTogglePause={togglePause}
           onExit={() => navigate("/ces")}
           onRestart={restart}

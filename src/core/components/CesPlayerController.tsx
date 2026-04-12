@@ -24,6 +24,7 @@ interface CesPlayerControllerProps {
   isPaused: boolean;
   isFinished: boolean;
   sessionCreatedAt?: string;
+  allSteps?: CesPlayerStep[];
   onTogglePause: () => void;
   onExit: () => void;
   onRestart: () => void;
@@ -55,6 +56,7 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
   isPaused,
   isFinished,
   sessionCreatedAt,
+  allSteps,
   onTogglePause,
   onExit,
   onRestart,
@@ -67,6 +69,29 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
   const breakMeta = isBreak ? BREAK_META[currentStep.breakKind] : null;
   const isWarning = countdown <= 3 && countdown > 0;
   const activeStage = currentStep.cesPhase.toLowerCase() as CesStage;
+
+  // 운동 전용 카운트 (break 제외)
+  const exerciseSteps = allSteps
+    ? allSteps.filter((s) => s.kind === "exercise")
+    : [];
+  const totalExerciseCount = exerciseSteps.length;
+  // 현재까지 완료 + 진행 중인 운동 번호
+  const currentExerciseNum = allSteps
+    ? allSteps.slice(0, stepIndex + 1).filter((s) => s.kind === "exercise").length
+    : stepIndex + 1;
+  // phase별 운동 수
+  const phaseCounts = allSteps
+    ? (["Inhibit", "Lengthen", "Activate", "Integrate"] as const).reduce(
+        (acc, p) => {
+          const count = allSteps.filter(
+            (s) => s.kind === "exercise" && s.cesPhase === p,
+          ).length;
+          if (count > 0) acc.push({ phase: p, count });
+          return acc;
+        },
+        [] as { phase: string; count: number }[],
+      )
+    : [];
 
   // 1초마다 리렌더 — localStorage에 쌓이는 누적 시간을 실시간으로 반영
   const [, forceTick] = React.useState(0);
@@ -128,7 +153,7 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
                 marginBottom: "0.25rem",
               }}
             >
-              Step {stepIndex + 1} / {totalSteps}
+              운동 {currentExerciseNum} / {totalExerciseCount}
             </p>
             <h2
               style={{
@@ -177,12 +202,11 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
               fontSize: "0.7rem",
               color: "var(--text-secondary)",
               fontWeight: 700,
-              textTransform: "uppercase",
               letterSpacing: "0.08em",
               marginBottom: "0.25rem",
             }}
           >
-            Step {stepIndex + 1} / {totalSteps}
+            운동 {currentExerciseNum} / {totalExerciseCount}
             {currentStep.kind === "exercise" &&
               currentStep.currentSet &&
               currentStep.totalSets &&
@@ -191,6 +215,16 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
                   {" · "}세트 {currentStep.currentSet} / {currentStep.totalSets}
                 </>
               )}
+            {phaseCounts.length > 0 && (
+              <span style={{ marginLeft: "0.5rem", opacity: 0.7, fontSize: "0.6rem" }}>
+                ({phaseCounts
+                  .map((p) => {
+                    const short = PHASE_META[p.phase as keyof typeof PHASE_META].label.split("(")[0].trim();
+                    return `${short} ${p.count}`;
+                  })
+                  .join(" · ")})
+              </span>
+            )}
           </p>
           <h2
             style={{

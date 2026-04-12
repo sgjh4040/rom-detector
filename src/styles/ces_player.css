@@ -93,6 +93,25 @@
     gap: 0.4rem;
 }
 
+.step-dots-grouped {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.step-dots-phase {
+    display: flex;
+    gap: 0.3rem;
+}
+
+.step-dots-divider {
+    width: 1px;
+    height: 14px;
+    background: rgba(255, 255, 255, 0.25);
+    margin: 0 0.3rem;
+    flex-shrink: 0;
+}
+
 .step-dot {
     height: 8px;
     border-radius: var(--radius-pill);
