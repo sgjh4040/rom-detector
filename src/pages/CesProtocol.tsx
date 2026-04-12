@@ -25,11 +25,11 @@ import type { CesStage } from "../lib/ces/cesTypes";
 import type { CesPhase } from "../lib/ces/CesPlayerTypes";
 import type { Side } from "../lib/romTypes";
 
-const STAGES: { id: CesStage; name: string }[] = [
-  { id: "inhibit", name: "INHIBIT" },
-  { id: "lengthen", name: "LENGTHEN" },
-  { id: "activate", name: "ACTIVATE" },
-  { id: "integrate", name: "INTEGRATE" },
+const STAGES: { id: CesStage; label: string; color: string }[] = [
+  { id: "inhibit", label: "억제", color: "#fbbf24" },
+  { id: "lengthen", label: "신장", color: "#60a5fa" },
+  { id: "activate", label: "활성", color: "#f87171" },
+  { id: "integrate", label: "통합", color: "#4ade80" },
 ];
 
 export const CesProtocol: React.FC = () => {
@@ -233,20 +233,77 @@ export const CesProtocol: React.FC = () => {
           )}
         </div>
 
-        {/* 단계 탭 */}
-        <div className="ces-stage-tabs">
-          {STAGES.map((s) => (
-            <button
-              key={s.id}
-              className={`ces-tab-btn ${activeStage === s.id ? "is-active" : ""}`}
-              onClick={() => {
-                setActiveStage(s.id);
-                setActiveIndex(0);
-              }}
-            >
-              {s.name}
-            </button>
-          ))}
+        {/* 단계 세그먼트 컨트롤 */}
+        <div
+          role="tablist"
+          style={{
+            display: "flex",
+            gap: "4px",
+            padding: "4px",
+            background: "rgba(255, 255, 255, 0.06)",
+            borderRadius: "12px",
+            border: "1px solid rgba(255, 255, 255, 0.08)",
+            marginBottom: "1.25rem",
+          }}
+        >
+          {STAGES.map((s) => {
+            const isActive = activeStage === s.id;
+            const count = analysis[s.id]?.length ?? 0;
+            return (
+              <button
+                key={s.id}
+                role="tab"
+                aria-selected={isActive}
+                onClick={() => {
+                  setActiveStage(s.id);
+                  setActiveIndex(0);
+                }}
+                style={{
+                  flex: 1,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  gap: "3px",
+                  padding: "0.55rem 0.25rem",
+                  borderRadius: "9px",
+                  border: "none",
+                  cursor: "pointer",
+                  background: isActive
+                    ? `${s.color}30`
+                    : "transparent",
+                  boxShadow: isActive
+                    ? `0 2px 8px ${s.color}25`
+                    : "none",
+                  transition: "all 0.2s ease",
+                  fontFamily: "inherit",
+                }}
+              >
+                <span
+                  style={{
+                    fontSize: "0.72rem",
+                    fontWeight: 800,
+                    color: isActive ? s.color : "rgba(255,255,255,0.4)",
+                    letterSpacing: "0.02em",
+                    transition: "color 0.2s",
+                  }}
+                >
+                  {s.label}
+                </span>
+                <span
+                  style={{
+                    fontSize: "0.6rem",
+                    fontWeight: 700,
+                    color: isActive
+                      ? "rgba(255,255,255,0.8)"
+                      : "rgba(255,255,255,0.25)",
+                    transition: "color 0.2s",
+                  }}
+                >
+                  {count}개
+                </span>
+              </button>
+            );
+          })}
         </div>
 
         {/* 하단 액션 */}
