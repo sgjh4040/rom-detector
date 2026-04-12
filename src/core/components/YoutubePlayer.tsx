@@ -6,25 +6,41 @@ interface Props {
     title?: string;
 }
 
-/** 유튜브 플레이어 — youtubeId가 비어있으면 업로드 안내 플레이스홀더 표시 */
+/** 유튜브 플레이어 — youtubeId가 비어있으면 간결한 플레이스홀더 표시 */
 export const YoutubePlayer: React.FC<Props> = ({ youtubeId, title }) => {
     const [loaded, setLoaded] = useState(false);
 
     if (!youtubeId) {
         return (
             <div style={{
-                width: '100%', aspectRatio: '16/9',
-                backgroundColor: 'var(--bg-color)',
-                border: '2px dashed var(--border-color)',
-                borderRadius: '10px',
-                display: 'flex', flexDirection: 'column',
-                alignItems: 'center', justifyContent: 'center',
-                color: 'var(--text-secondary)', gap: '0.5rem',
+                width: '100%',
+                aspectRatio: '21/9',
+                background: 'linear-gradient(135deg, #f0f2f8 0%, #e8eaf0 100%)',
+                borderRadius: '12px',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'var(--text-secondary)',
+                gap: '0.4rem',
+                border: '1px solid rgba(0,0,0,0.04)',
             }}>
-                <span style={{ fontSize: '2rem' }}>🎬</span>
-                <p style={{ fontSize: '0.875rem', textAlign: 'center', lineHeight: 1.5 }}>
-                    영상 준비 중<br />
-                    <span style={{ fontSize: '0.75rem' }}>유튜브 업로드 후 youtubeId를 입력하면 표시됩니다</span>
+                <span style={{ fontSize: '1.5rem', opacity: 0.4 }}>🎬</span>
+                <p style={{
+                    fontSize: '0.78rem',
+                    fontWeight: 700,
+                    opacity: 0.5,
+                    margin: 0,
+                }}>
+                    {title || '영상 준비 중'}
+                </p>
+                <p style={{
+                    fontSize: '0.65rem',
+                    fontWeight: 600,
+                    opacity: 0.35,
+                    margin: 0,
+                }}>
+                    아래 설명을 참고하세요
                 </p>
             </div>
         );

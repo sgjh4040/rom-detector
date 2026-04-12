@@ -171,12 +171,12 @@ export const CesExercisePlayer: React.FC<CesExercisePlayerProps> = ({
       <div
         className="overflow-hidden"
         style={{
-          borderRadius: "4px",
-          background: "#000",
-          boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
+          borderRadius: "12px",
+          background: current.youtubeId ? "#000" : "transparent",
+          boxShadow: current.youtubeId ? "0 10px 30px rgba(0,0,0,0.1)" : "none",
         }}
       >
-        <YoutubePlayer youtubeId={current.youtubeId} />
+        <YoutubePlayer youtubeId={current.youtubeId} title={current.name} />
       </div>
 
       {/* 운동 리스트 — 깔끔한 행 스타일. 유튜브 ID 있으면 미니 썸네일, 없으면 카테고리 닷 */}
