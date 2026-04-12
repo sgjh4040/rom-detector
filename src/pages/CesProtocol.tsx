@@ -169,14 +169,7 @@ export const CesProtocol: React.FC = () => {
     <div className="ces-dashboard page-bg-ces">
       {/* ─── 사이드바 ──────────────────────────────────────── */}
       <div className="ces-sidebar">
-        <div className="sidebar-logo">
-          <span>●</span> medicalmotion
-        </div>
-        <div className="flex justify-end pr-2 mb-4">
-          <div className="sidebar-menu-btn" />
-        </div>
-
-        {/* 해부 SVG: 사이드바 절반 차지, 잘림 없음 */}
+        {/* 해부 SVG: 사이드바 상단 — 로고/햄버거 제거, SVG 가 주인공 */}
         <div
           className="human-anatomy-box"
           style={{
@@ -199,12 +192,12 @@ export const CesProtocol: React.FC = () => {
           />
         </div>
 
-        {/* 통계: 타이머 + 운동 처방 */}
+        {/* 타이머 — NTC 스타일 수동 누적 */}
         <div className="sidebar-stats">
           <div
             className={`card stat-card-inner ${timerRunning ? "is-active" : ""}`}
           >
-            <p className="sub-label">Total Time</p>
+            <p className="sub-label">누적 운동 시간</p>
             <p className="stat-main-val">{formatTime(seconds)}</p>
             <div className="timer-actions">
               <button
@@ -213,11 +206,11 @@ export const CesProtocol: React.FC = () => {
               >
                 {timerRunning ? (
                   <>
-                    <Pause size={14} /> PAUSE
+                    <Pause size={14} /> 일시정지
                   </>
                 ) : (
                   <>
-                    <Play size={14} /> START
+                    <Play size={14} /> 시작
                   </>
                 )}
               </button>
@@ -225,22 +218,19 @@ export const CesProtocol: React.FC = () => {
                 onClick={resetTimer}
                 className="btn-timer btn-reset flex justify-center items-center gap-1"
               >
-                <RotateCcw size={14} /> RESET
+                <RotateCcw size={14} /> 초기화
               </button>
             </div>
           </div>
 
           {currentEx && getExMeta(currentEx) && (
             <div>
-              <p className="sub-label">Exercise</p>
+              <p className="sub-label">현재 운동</p>
               <p className="stat-sub-val" style={{ color: "#63E6BE" }}>
                 {getExMeta(currentEx)}
               </p>
             </div>
           )}
-          {/* [PRD 4-2] Line/Systems 비표시 (사용자 요청으로 주석 처리) */}
-          {/* <div><p className="sub-label">Line</p><p className="stat-sub-val" style={{ letterSpacing: '0.1em' }}>Front Line</p></div> */}
-          {/* <div><p className="sub-label">Systems</p><p className="stat-sub-val">Fascia System<br />Nervous Systems</p></div> */}
         </div>
 
         {/* 단계 탭 */}
@@ -265,19 +255,13 @@ export const CesProtocol: React.FC = () => {
             className="btn-complete is-primary"
             onClick={handleStartPlayer}
           >
-            Start Player <span>›</span>
+            자동 재생 시작 <span>›</span>
           </button>
           <button
             className="btn-complete is-success"
             onClick={() => navigate(`/trends?patientId=${session.patientId}`)}
           >
-            Complete Exercise <span>›</span>
-          </button>
-          <button
-            className="btn-close-circle"
-            onClick={() => navigate("/results")}
-          >
-            ✕
+            운동 완료 <span>›</span>
           </button>
         </div>
       </div>
