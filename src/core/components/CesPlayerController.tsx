@@ -31,10 +31,10 @@ interface CesPlayerControllerProps {
 }
 
 const PHASES: { stage: CesStage; label: string; color: string }[] = [
-  { stage: "inhibit", label: "Inhibit", color: "#EAB308" },
-  { stage: "lengthen", label: "Lengthen", color: "#3B82F6" },
-  { stage: "activate", label: "Activate", color: "#EF4444" },
-  { stage: "integrate", label: "Integrate", color: "#22C55E" },
+  { stage: "inhibit", label: "Inhibit", color: "#fbbf24" },
+  { stage: "lengthen", label: "Lengthen", color: "#60a5fa" },
+  { stage: "activate", label: "Activate", color: "#f87171" },
+  { stage: "integrate", label: "Integrate", color: "#4ade80" },
 ];
 
 const fmtMMSS = (total: number): string => {
@@ -210,7 +210,7 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
   // 카운트다운 박스 배경 — 브레이크일 땐 breakMeta.bgColor
   const countdownBg = isBreak && breakMeta ? breakMeta.bgColor : "rgba(28,63,111,0.05)";
   const countdownColor = isWarning
-    ? "#EF4444"
+    ? "#f87171"
     : isBreak && breakMeta
       ? breakMeta.color
       : "#1C3F6F";
@@ -246,7 +246,7 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
           <p
             style={{
               fontSize: "0.8rem",
-              color: "#EF4444",
+              color: "#f87171",
               fontWeight: 800,
               marginTop: "0.5rem",
               animation: "pulse-slow 0.5s infinite",
@@ -487,7 +487,7 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
               padding: "0.9rem",
               borderRadius: "10px",
               border: "none",
-              background: isPaused ? "#22C55E" : "#F59E0B",
+              background: isPaused ? "#4ade80" : "#F59E0B",
               color: "#fff",
               fontWeight: 800,
               fontSize: "0.9rem",

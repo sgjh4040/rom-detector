@@ -10,26 +10,26 @@ const STAGE_META: Record<
   inhibit: {
     label: "1단계: 억제 (Inhibit)",
     icon: <CircleSlash size={18} color="currentColor" />,
-    color: "#EF4444",
-    bg: "rgba(239,68,68,0.08)",
+    color: "#fbbf24",
+    bg: "rgba(251,191,36,0.08)",
   },
   lengthen: {
     label: "2단계: 신장 (Lengthen)",
     icon: <Accessibility size={18} color="currentColor" />,
-    color: "#EAB308",
-    bg: "rgba(234,179,8,0.08)",
+    color: "#60a5fa",
+    bg: "rgba(96,165,250,0.08)",
   },
   activate: {
     label: "3단계: 활성화 (Activate)",
     icon: <CheckCircle2 size={18} color="currentColor" />,
-    color: "#22C55E",
-    bg: "rgba(34,197,94,0.08)",
+    color: "#f87171",
+    bg: "rgba(248,113,113,0.08)",
   },
   integrate: {
     label: "4단계: 통합 (Integrate)",
     icon: <Activity size={18} color="currentColor" />,
-    color: "#3B82F6",
-    bg: "rgba(59,130,246,0.08)",
+    color: "#4ade80",
+    bg: "rgba(74,222,128,0.08)",
   },
 };
 
