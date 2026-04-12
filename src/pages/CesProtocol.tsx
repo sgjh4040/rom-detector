@@ -169,20 +169,10 @@ export const CesProtocol: React.FC = () => {
     <div className="ces-dashboard page-bg-ces">
       {/* ─── 사이드바 ──────────────────────────────────────── */}
       <div className="ces-sidebar">
-        {/* 해부 SVG: 사이드바 상단 — 로고/햄버거 제거, SVG 가 주인공 */}
-        <div
-          className="human-anatomy-box"
-          style={{
-            padding: 0,
-            height: "50vh",
-            width: "100%",
-            flex: "0 0 50vh",
-            overflow: "hidden",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
+        {/* 해부 SVG: 사이드바 상단 — 모바일에서는 CSS 로 display:none 처리.
+             인라인 display 를 쓰면 CSS 미디어 쿼리를 이기므로 제거함. */}
+        <div className="human-anatomy-box">
+
           <BodyAnatomySvg
             highlightIds={targetMuscles}
             cesPhase={
