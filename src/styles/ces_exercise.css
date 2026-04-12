@@ -147,16 +147,5 @@
     letter-spacing: 0.05em;
 }
 
-@media (max-width: 768px) {
-    .ces-main {
-        padding: 1.5rem;
-    }
-
-    .balance-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .ex-tray {
-        grid-template-columns: 1fr;
-    }
-}
+/* 모바일 레이아웃은 dashboard_premium.css 에서 통합 관리 */
+/* .ces-main 의 모바일 padding/order 는 dashboard_premium.css @media 에서 제어 */

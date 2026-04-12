@@ -421,8 +421,106 @@
         overflow: visible;
     }
 
+    /* 메인(운동 정보)을 위로, 배경에 구조감 추가 */
+    .ces-main {
+        order: -1;
+        padding: 1.25rem 1rem 6rem; /* 하단 플로팅 타이머 공간 확보 */
+        background: linear-gradient(180deg, #f0f2f8 0%, var(--bg-gradient) 100%);
+    }
+
     .ces-sidebar {
         height: auto;
-        padding: 1.5rem;
+        padding: 1.25rem;
+    }
+
+    /* 모바일: 해부 SVG 숨김 — 데스크탑 사이드바에서만 유의미 */
+    .ces-sidebar .human-anatomy-box {
+        display: none;
+    }
+
+    /* 모바일: 근육 밸런스 숨김 — 핵심 운동 정보에 집중 */
+    .muscle-balance-box {
+        display: none;
+    }
+
+    /* 모바일 하단 플로팅 타이머 바 — NTC 스타일 */
+    .ces-sidebar .sidebar-stats {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 50;
+        background: rgba(20, 25, 40, 0.95);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 0.75rem 1rem;
+        margin: 0;
+        flex-direction: row;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .ces-sidebar .sidebar-stats .stat-card-inner {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0;
+        background: none;
+        border: none;
+        box-shadow: none;
+        animation: none;
+    }
+
+    .ces-sidebar .sidebar-stats .sub-label {
+        display: none;
+    }
+
+    .ces-sidebar .sidebar-stats .stat-main-val {
+        font-size: 1.3rem;
+        margin: 0;
+    }
+
+    .ces-sidebar .sidebar-stats .timer-actions {
+        margin-top: 0;
+        gap: 0.4rem;
+    }
+
+    .ces-sidebar .sidebar-stats .btn-timer {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.7rem;
+        white-space: nowrap;
+    }
+
+    /* "현재 운동" 라벨 — 플로팅 바에서는 불필요 */
+    .ces-sidebar .sidebar-stats > div:last-child {
+        display: none;
+    }
+
+    /* 모바일 단계 탭 — 가로 스크롤 */
+    .ces-sidebar .ces-stage-tabs {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+
+    .ces-sidebar .ces-stage-tabs::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* 모바일 하단 액션 — "자동 재생 시작" 만 크게, 나머지 작게 */
+    .ces-sidebar .sidebar-actions {
+        gap: 0.5rem;
+    }
+
+    .ces-sidebar .sidebar-actions .btn-complete.is-primary {
+        flex: 2; /* 자동 재생 시작이 더 넓게 */
+        font-size: 0.8rem;
+    }
+
+    .ces-sidebar .sidebar-actions .btn-complete.is-success {
+        flex: 1;
+        font-size: 0.7rem;
+        padding: 0.7rem;
     }
 }
