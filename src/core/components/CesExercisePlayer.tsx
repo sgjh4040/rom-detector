@@ -143,34 +143,164 @@ export const CesExercisePlayer: React.FC<CesExercisePlayerProps> = ({
         <YoutubePlayer youtubeId={current.youtubeId} />
       </div>
 
-      <div className="ex-tray">
-        {exercises.map((ex, idx) => (
-          <div
-            key={ex.id}
-            className="ex-tray-item"
-            onClick={() => onIndexChange(idx)}
-          >
-            <div
-              className={`ex-tray-thumb ${idx === activeIndex ? "is-active" : ""}`}
-            >
-              <img
-                src={`https://img.youtube.com/vi/${ex.youtubeId || "dQw4w9WgXcQ"}/mqdefault.jpg`}
-                alt={ex.name}
-                style={{ width: "100%", height: "100%", objectFit: "cover" }}
-              />
-              {idx !== activeIndex && <div className="play-overlay"><PlayCircle size={32} color="white" /></div>}
-            </div>
+      {/* 운동 리스트 — 깔끔한 행 스타일. 유튜브 ID 있으면 미니 썸네일, 없으면 카테고리 닷 */}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "6px",
+          marginTop: "1.25rem",
+        }}
+      >
+        {exercises.map((ex, idx) => {
+          const isActive = idx === activeIndex;
+          const hasVideo = !!ex.youtubeId;
+          const thumbUrl = hasVideo
+            ? `https://img.youtube.com/vi/${ex.youtubeId}/mqdefault.jpg`
+            : null;
 
-            <div className="flex flex-col">
-              <div className="ex-meta-top">
-                <span className="ex-category-code">{categoryCode} |</span>
-                <span className="ex-tray-title">{ex.name}</span>
-                <span className="ex-tray-time">{formatExMeta(ex)}</span>
+          return (
+            <button
+              key={ex.id}
+              type="button"
+              onClick={() => onIndexChange(idx)}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "12px",
+                width: "100%",
+                padding: "12px 14px",
+                borderRadius: "14px",
+                border: isActive
+                  ? "2px solid var(--primary)"
+                  : "1px solid rgba(0, 0, 0, 0.06)",
+                background: isActive
+                  ? "rgba(92, 107, 192, 0.08)"
+                  : "rgba(255, 255, 255, 0.65)",
+                boxShadow: isActive
+                  ? "0 4px 14px rgba(92, 107, 192, 0.12)"
+                  : "0 1px 3px rgba(0, 0, 0, 0.03)",
+                cursor: "pointer",
+                textAlign: "left",
+                fontFamily: "inherit",
+                transition: "all 0.15s ease",
+              }}
+            >
+              {/* 좌측: 썸네일 or 카테고리 닷 */}
+              {thumbUrl ? (
+                <div
+                  style={{
+                    width: "56px",
+                    height: "38px",
+                    borderRadius: "8px",
+                    overflow: "hidden",
+                    flexShrink: 0,
+                    position: "relative",
+                  }}
+                >
+                  <img
+                    src={thumbUrl}
+                    alt=""
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      opacity: isActive ? 1 : 0.75,
+                    }}
+                  />
+                  {!isActive && (
+                    <div
+                      style={{
+                        position: "absolute",
+                        inset: 0,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        background: "rgba(0,0,0,0.3)",
+                      }}
+                    >
+                      <PlayCircle size={18} color="white" />
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <span
+                  style={{
+                    width: "10px",
+                    height: "10px",
+                    borderRadius: "50%",
+                    background: isActive ? "var(--primary)" : "rgba(0,0,0,0.15)",
+                    flexShrink: 0,
+                    marginLeft: "2px",
+                    transition: "background 0.15s",
+                  }}
+                />
+              )}
+
+              {/* 중앙: 운동명 + 도구 */}
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "baseline",
+                    gap: "6px",
+                  }}
+                >
+                  <span
+                    style={{
+                      fontSize: "0.72rem",
+                      fontWeight: 800,
+                      color: "var(--primary)",
+                      opacity: 0.7,
+                    }}
+                  >
+                    {categoryCode}
+                  </span>
+                  <span
+                    style={{
+                      fontSize: "0.88rem",
+                      fontWeight: isActive ? 800 : 700,
+                      color: isActive
+                        ? "var(--text-primary)"
+                        : "var(--text-secondary)",
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                    }}
+                  >
+                    {ex.name}
+                  </span>
+                </div>
+                {ex.tools && (
+                  <span
+                    style={{
+                      fontSize: "0.7rem",
+                      fontWeight: 600,
+                      color: "var(--text-secondary)",
+                      opacity: 0.65,
+                    }}
+                  >
+                    {ex.tools}
+                  </span>
+                )}
               </div>
-              <p className="ex-tray-info">{ex.tools || "No Material needed"}</p>
-            </div>
-          </div>
-        ))}
+
+              {/* 우측: 시간/세트 정보 */}
+              <span
+                style={{
+                  fontSize: "0.75rem",
+                  fontWeight: 700,
+                  color: isActive ? "var(--primary)" : "var(--text-secondary)",
+                  whiteSpace: "nowrap",
+                  flexShrink: 0,
+                  opacity: isActive ? 1 : 0.7,
+                }}
+              >
+                {formatExMeta(ex)}
+              </span>
+            </button>
+          );
+        })}
       </div>
     </div>
   );
