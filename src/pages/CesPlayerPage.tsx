@@ -52,7 +52,8 @@ const StoryProgressBar: React.FC<{
       {/* 세그먼트 바 */}
       <div className="story-bar">
         {exerciseEntries.map((entry, i) => {
-          const meta = PHASE_META[entry.step.cesPhase as keyof typeof PHASE_META];
+          const meta =
+            PHASE_META[entry.step.cesPhase as keyof typeof PHASE_META];
           const isDone = i < activeExerciseIdx;
           const isActive = i === activeExerciseIdx;
           const isBreakActive = exercises[currentStepIndex]?.kind === "break";
@@ -60,7 +61,9 @@ const StoryProgressBar: React.FC<{
           const fill = isDone
             ? 100
             : isActive
-              ? isBreakActive ? 100 : Math.max(2, stepProgress)
+              ? isBreakActive
+                ? 100
+                : Math.max(2, stepProgress)
               : 0;
           return (
             <div key={entry.originalIndex} className="story-segment">
@@ -177,7 +180,7 @@ export const CesPlayerPage: React.FC = () => {
         <div style={{ width: "100%", maxWidth: "760px" }}>
           <div className="video-header">
             <div className="video-brand">
-              <span>● medicalmotion</span>
+              {/* <span>● medicalmotion</span> */}
             </div>
             <StoryProgressBar
               exercises={customRoutine.exercises}
