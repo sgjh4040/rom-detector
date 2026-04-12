@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import type { CesExercise } from "../../lib/ces/cesTypes";
 import { YoutubePlayer } from "./YoutubePlayer";
-import { CountdownTimer } from "./CountdownTimer";
 import { Wrench, PlayCircle } from "lucide-react";
 
 interface CesExercisePlayerProps {
@@ -55,76 +54,113 @@ export const CesExercisePlayer: React.FC<CesExercisePlayerProps> = ({
   const current = exercises[activeIndex] || exercises[0];
   const categoryCode = STAGE_CODE_MAP[stageId] || "R";
 
+  // 단계 라벨 매핑
+  const stageLabel: Record<string, { label: string; color: string }> = {
+    inhibit: { label: "억제", color: "#fbbf24" },
+    lengthen: { label: "신장", color: "#60a5fa" },
+    activate: { label: "활성", color: "#f87171" },
+    integrate: { label: "통합", color: "#4ade80" },
+  };
+  const stage = stageLabel[stageId] ?? { label: stageId, color: "#6366f1" };
+
   return (
     <div className="flex flex-col h-full">
       <div className="main-header">
-        <h2 className="main-title">{current.name}</h2>
+        {/* 1행: 단계 뱃지 + 순번 */}
         <div
           style={{
             display: "flex",
             alignItems: "center",
-            gap: "1rem",
-            marginTop: "0.35rem",
-            flexWrap: "wrap",
+            gap: "8px",
+            marginBottom: "8px",
           }}
         >
-          {current.tools && <p className="main-subtitle flex items-center gap-1"><Wrench size={14} /> {current.tools}</p>}
-          {/* 세트/횟수/초 뱃지 */}
-          <div style={{ display: "flex", gap: "0.4rem", flexWrap: "wrap" }}>
-            {current.sets && (
-              <span
-                style={{
-                  fontSize: "0.78rem",
-                  fontWeight: 700,
-                  padding: "0.2rem 0.55rem",
-                  borderRadius: "999px",
-                  background: "rgba(28,63,111,0.1)",
-                  color: "#1C3F6F",
-                }}
-              >
-                {current.sets}세트
-              </span>
-            )}
-            {current.reps && (
-              <span
-                style={{
-                  fontSize: "0.78rem",
-                  fontWeight: 700,
-                  padding: "0.2rem 0.55rem",
-                  borderRadius: "999px",
-                  background: "rgba(28,63,111,0.1)",
-                  color: "#1C3F6F",
-                }}
-              >
-                {current.reps}회
-              </span>
-            )}
-            {current.holdSeconds && (
-              <div className="flex flex-col gap-2">
-                <span
-                  style={{
-                    fontSize: "0.78rem",
-                    fontWeight: 700,
-                    padding: "0.2rem 0.55rem",
-                    borderRadius: "999px",
-                    background: "rgba(99,230,190,0.15)",
-                    color: "#099268",
-                  }}
-                >
-                  {current.holdSeconds}초 유지
-                </span>
-                <CountdownTimer initialSeconds={current.holdSeconds} />
-              </div>
-            )}
-          </div>
+          <span
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "5px",
+              padding: "0.25rem 0.7rem",
+              borderRadius: "999px",
+              background: stage.color,
+              color: "#fff",
+              fontSize: "0.72rem",
+              fontWeight: 800,
+              letterSpacing: "0.03em",
+            }}
+          >
+            {stage.label}
+          </span>
+          <span
+            style={{
+              fontSize: "0.75rem",
+              fontWeight: 700,
+              color: "var(--text-secondary)",
+              opacity: 0.7,
+            }}
+          >
+            {activeIndex + 1} / {exercises.length}
+          </span>
         </div>
+
+        {/* 2행: 운동 이름 (크게) */}
+        <h2
+          style={{
+            fontSize: "1.5rem",
+            fontWeight: 900,
+            color: "var(--text-primary)",
+            letterSpacing: "-0.02em",
+            lineHeight: 1.3,
+            marginBottom: "6px",
+          }}
+        >
+          {current.name}
+        </h2>
+
+        {/* 3행: 도구 + 시간/세트 메타 (한 줄) */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "0.5rem",
+            flexWrap: "wrap",
+            marginBottom: "8px",
+          }}
+        >
+          {current.tools && (
+            <span
+              className="flex items-center gap-1"
+              style={{
+                fontSize: "0.8rem",
+                fontWeight: 700,
+                color: "var(--text-secondary)",
+              }}
+            >
+              <Wrench size={13} /> {current.tools}
+            </span>
+          )}
+          {(current.tools && formatExMeta(current)) && (
+            <span style={{ color: "var(--text-secondary)", opacity: 0.4 }}>·</span>
+          )}
+          <span
+            style={{
+              fontSize: "0.8rem",
+              fontWeight: 700,
+              color: "var(--primary)",
+            }}
+          >
+            {formatExMeta(current)}
+          </span>
+        </div>
+
+        {/* 4행: 설명 */}
         {current.description && (
           <p
             style={{
               fontSize: "0.85rem",
               color: "var(--text-secondary)",
-              marginTop: "0.5rem",
               lineHeight: 1.6,
+              marginBottom: "4px",
             }}
           >
             {current.description}

@@ -268,14 +268,27 @@ export const CesProtocol: React.FC = () => {
 
       {/* ─── 메인 패널 ─────────────────────────────────────── */}
       <div className="ces-main">
-        <div className="flex justify-between items-center mb-8">
+        {/* 상단 헤더 — 관절/방향 + 환자 요약 (압축) */}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: "1.25rem",
+            gap: "12px",
+          }}
+        >
           <select
             className="form-select"
             style={{
               width: "auto",
               boxShadow: "none",
               fontWeight: 800,
-              fontSize: "1.25rem",
+              fontSize: "1.1rem",
+              padding: "0.5rem 2rem 0.5rem 0.75rem",
+              borderRadius: "10px",
+              border: "1px solid rgba(0,0,0,0.08)",
+              background: "rgba(255,255,255,0.7)",
             }}
             value={activeJointSide}
             onChange={(e) => {
@@ -289,21 +302,18 @@ export const CesProtocol: React.FC = () => {
               </option>
             ))}
           </select>
-          <div className="main-user-info">
-            <div>
-              <p className="user-name">{session?.patientName ?? "환자"}</p>
-              <p className="user-meta">
-                {session?.patientAge ? `${session.patientAge}세` : ""}
-              </p>
-            </div>
-            <div className="user-avatar">
-              <img
-                src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${session?.patientName ?? "default"}`}
-                alt="avatar"
-                style={{ width: "100%" }}
-              />
-            </div>
-          </div>
+          <span
+            style={{
+              fontSize: "0.78rem",
+              fontWeight: 700,
+              color: "var(--text-secondary)",
+              opacity: 0.7,
+              whiteSpace: "nowrap",
+            }}
+          >
+            {session?.patientName ?? "환자"}
+            {session?.patientAge ? ` · ${session.patientAge}세` : ""}
+          </span>
         </div>
 
         <CesExercisePlayer
