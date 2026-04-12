@@ -10,31 +10,20 @@ import type { CesRoutine, CesPlayerStep } from "../lib/ces/CesPlayerTypes";
 import { PartyPopper, RotateCcw } from "lucide-react";
 import { loadRomSession } from "../lib/romTypes";
 
-/* ── Phase-grouped step dots ─────────────────────────────────── */
-/** 운동 스텝만 phase별로 그룹핑하여 깔끔하게 표시 — break 점 제거 */
-const StepDotsGrouped: React.FC<{
+/* ── 인스타 스토리 바 — 운동 진행률 표시 ─────────────────────── */
+/** 운동 스텝만 세그먼트로 표시, phase 색상, 좌/우 탭으로 이동 */
+const StoryProgressBar: React.FC<{
   exercises: CesPlayerStep[];
   currentStepIndex: number;
+  stepProgress: number;
   onGoToStep: (i: number) => void;
-}> = ({ exercises, currentStepIndex, onGoToStep }) => {
-  // 운동 스텝만 추출하되 원래 인덱스를 보존
+}> = ({ exercises, currentStepIndex, stepProgress, onGoToStep }) => {
+  // 운동 스텝만 추출 + 원래 인덱스 보존
   const exerciseEntries = exercises
     .map((step, i) => ({ step, originalIndex: i }))
     .filter((e) => e.step.kind === "exercise");
 
-  // phase 순서대로 그룹핑 (연속된 같은 phase를 하나의 그룹으로)
-  const groups: { phase: string; entries: typeof exerciseEntries }[] = [];
-  for (const entry of exerciseEntries) {
-    const phase = entry.step.cesPhase;
-    const last = groups[groups.length - 1];
-    if (last && last.phase === phase) {
-      last.entries.push(entry);
-    } else {
-      groups.push({ phase, entries: [entry] });
-    }
-  }
-
-  // 현재 stepIndex가 break일 때 → 직전 운동의 originalIndex를 active로
+  // 현재 stepIndex → 운동 기준 인덱스 (break일 때 직전 운동)
   let activeOriginalIndex = currentStepIndex;
   if (exercises[currentStepIndex]?.kind === "break") {
     for (let i = currentStepIndex; i >= 0; i--) {
@@ -44,38 +33,62 @@ const StepDotsGrouped: React.FC<{
       }
     }
   }
+  const activeExerciseIdx = exerciseEntries.findIndex(
+    (e) => e.originalIndex === activeOriginalIndex,
+  );
+
+  // 좌/우 탭 → 이전/다음 운동으로 이동
+  const goToPrev = () => {
+    const prev = exerciseEntries[activeExerciseIdx - 1];
+    if (prev) onGoToStep(prev.originalIndex);
+  };
+  const goToNext = () => {
+    const next = exerciseEntries[activeExerciseIdx + 1];
+    if (next) onGoToStep(next.originalIndex);
+  };
 
   return (
-    <div className="step-dots-grouped">
-      {groups.map((group, gi) => {
-        const meta = PHASE_META[group.phase as keyof typeof PHASE_META];
-        return (
-          <React.Fragment key={gi}>
-            {gi > 0 && <span className="step-dots-divider" />}
-            <div className="step-dots-phase">
-              {group.entries.map((entry) => {
-                const isActive = entry.originalIndex === activeOriginalIndex;
-                const isDone = entry.originalIndex < activeOriginalIndex;
-                return (
-                  <button
-                    key={entry.originalIndex}
-                    onClick={() => onGoToStep(entry.originalIndex)}
-                    className={`step-dot ${isActive ? "is-active" : ""}`}
-                    style={{
-                      width: isActive ? "24px" : "8px",
-                      background: isActive
-                        ? meta.color
-                        : isDone
-                          ? "rgba(255,255,255,0.6)"
-                          : "rgba(255,255,255,0.2)",
-                    }}
-                  />
-                );
-              })}
+    <div className="story-bar-wrap">
+      {/* 세그먼트 바 */}
+      <div className="story-bar">
+        {exerciseEntries.map((entry, i) => {
+          const meta = PHASE_META[entry.step.cesPhase as keyof typeof PHASE_META];
+          const isDone = i < activeExerciseIdx;
+          const isActive = i === activeExerciseIdx;
+          const isBreakActive = exercises[currentStepIndex]?.kind === "break";
+          // 진행률: 완료 100%, 현재 운동은 stepProgress, 나머지 0%
+          const fill = isDone
+            ? 100
+            : isActive
+              ? isBreakActive ? 100 : Math.max(2, stepProgress)
+              : 0;
+          return (
+            <div key={entry.originalIndex} className="story-segment">
+              <div
+                className="story-segment-fill"
+                style={{
+                  width: `${fill}%`,
+                  background: meta.color,
+                  opacity: isDone ? 0.7 : 1,
+                }}
+              />
             </div>
-          </React.Fragment>
-        );
-      })}
+          );
+        })}
+      </div>
+      {/* 좌/우 탭 영역 (투명 오버레이) */}
+      <div className="story-tap-zones">
+        <button
+          className="story-tap-left"
+          onClick={goToPrev}
+          aria-label="이전 운동"
+        />
+        <button
+          className="story-tap-right"
+          onClick={goToNext}
+          aria-label="다음 운동"
+        />
+      </div>
     </div>
   );
 };
@@ -166,9 +179,10 @@ export const CesPlayerPage: React.FC = () => {
             <div className="video-brand">
               <span>● medicalmotion</span>
             </div>
-            <StepDotsGrouped
+            <StoryProgressBar
               exercises={customRoutine.exercises}
               currentStepIndex={stepIndex}
+              stepProgress={stepProgress}
               onGoToStep={goToStep}
             />
           </div>
