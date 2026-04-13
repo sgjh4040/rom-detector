@@ -33,6 +33,6 @@ test.describe('CES 정보 페이지', () => {
 
   test('Go to Protocol 버튼 클릭 시 /ces로 이동', async ({ page }) => {
     await page.getByText(/Go to Protocol/).click();
-    await expect(page).toHaveURL(/#\/ces/);
+    await expect(page).toHaveURL(/\/ces/);
   });
 });

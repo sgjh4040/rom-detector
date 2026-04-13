@@ -33,6 +33,6 @@ test.describe('결과 페이지', () => {
 
   test('CES 재활 시작 버튼 클릭 시 /ces로 이동', async ({ page }) => {
     await page.getByRole('button', { name: /CES 재활 시작/ }).click();
-    await expect(page).toHaveURL(/#\/ces/);
+    await expect(page).toHaveURL(/\/ces/);
   });
 });

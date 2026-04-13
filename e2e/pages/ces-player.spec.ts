@@ -7,7 +7,7 @@ test.describe('CES 플레이어 페이지', () => {
     // Navigate to /ces first, then click "가이드 운동 시작" to get proper state
     await navigateTo(page, '/ces');
     await page.getByText(/가이드 운동 시작/).click();
-    await page.waitForURL(/#\/ces-player/);
+    await page.waitForURL(/\/ces-player/);
     await page.waitForLoadState('networkidle');
   });
 

@@ -22,8 +22,8 @@ test('결과 → CES → 플레이어 골든패스', async ({ page }) => {
 
   // ─── 3. "CES 재활 시작" 클릭 → /ces ────────────────────────────────
   await page.getByRole('button', { name: /CES 재활 시작/ }).click();
-  await page.waitForURL(/#\/ces/);
-  await expect(page).toHaveURL(/#\/ces/);
+  await page.waitForURL(/\/ces/);
+  await expect(page).toHaveURL(/\/ces/);
 
   // ─── 4. 4단계 탭 확인 ──────────────────────────────────────────────
   await expect(page.getByRole('tab', { name: /억제/ })).toBeVisible();
@@ -33,8 +33,8 @@ test('결과 → CES → 플레이어 골든패스', async ({ page }) => {
 
   // ─── 5. "가이드 운동 시작" 클릭 → /ces-player ────────────────────────
   await page.getByText(/가이드 운동 시작/).click();
-  await page.waitForURL(/#\/ces-player/);
-  await expect(page).toHaveURL(/#\/ces-player/);
+  await page.waitForURL(/\/ces-player/);
+  await expect(page).toHaveURL(/\/ces-player/);
 
   // ─── 6. 플레이어 UI 렌더링 확인 ────────────────────────────────────
   await page.waitForLoadState('networkidle');

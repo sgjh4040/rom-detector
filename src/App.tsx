@@ -1,5 +1,5 @@
 import React from "react";
-import { HashRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Index } from "./pages/Index";
 import { RomMeasurement } from "./pages/RomMeasurement";
 import { Results } from "./pages/Results";
@@ -16,7 +16,7 @@ import { CesInfo } from "./pages/CesInfo";
 // "아예 안 넘긴 상태"를 구분할 수 있다.
 const App: React.FC = () => {
   return (
-    <HashRouter>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       <Routes>
         {/* Full-screen pages (레이아웃 래퍼 없음) */}
         <Route path="/measure" element={<RomMeasurement />} />
@@ -32,7 +32,7 @@ const App: React.FC = () => {
         <Route path="/trends" element={<Trends />} />
         <Route path="/lab" element={<Lab />} />
       </Routes>
-    </HashRouter>
+    </BrowserRouter>
   );
 };
 
