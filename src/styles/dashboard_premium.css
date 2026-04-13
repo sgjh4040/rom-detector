@@ -196,30 +196,34 @@
     border-color: rgba(255, 255, 255, 0.3);
 }
 
+/* 일시정지 — 운동 중 일시 정지 (옐로/앰버, 빨강은 과함) */
 .btn-timer.is-running {
     color: #fff;
-    background: var(--danger);
-    border-color: var(--danger);
-    box-shadow: 0 0 15px rgba(239, 83, 80, 0.4);
+    background: #F59E0B;
+    border-color: #F59E0B;
+    box-shadow: 0 0 15px rgba(245, 158, 11, 0.4);
 }
 
+/* 시작 — 재생/Play의 보편적 의미 (그린) */
 .btn-timer.primary {
     color: #fff;
-    background: var(--primary);
-    border-color: var(--primary);
-    box-shadow: 0 0 15px rgba(92, 107, 192, 0.4);
+    background: #22C55E;
+    border-color: #22C55E;
+    box-shadow: 0 0 15px rgba(34, 197, 94, 0.4);
 }
 
+/* 초기화 — 약한 위계, 신중함 (회색 outline) */
 .btn-timer.btn-reset {
-    color: #fff;
-    background: rgba(229, 115, 115, 0.15);
-    border-color: rgba(229, 115, 115, 0.4);
+    color: rgba(255, 255, 255, 0.75);
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.15);
 }
 
 .btn-timer.btn-reset:hover {
-    background: #E57373;
-    border-color: #E57373;
-    box-shadow: 0 0 15px rgba(229, 115, 115, 0.4);
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+    color: #fff;
+    box-shadow: none;
 }
 
 .btn-timer:active {
@@ -333,10 +337,12 @@
     box-shadow: 0 4px 12px rgba(92, 107, 192, 0.3);
 }
 
+/* 운동 완료 — 보조 액션이라 outline 스타일로 위계 분리 */
 .btn-complete.is-success {
-    background: var(--success);
-    border-color: var(--success);
-    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.25);
+    color: rgba(255, 255, 255, 0.85);
+    box-shadow: none;
 }
 
 .btn-complete.is-primary:hover {
@@ -344,8 +350,9 @@
 }
 
 .btn-complete.is-success:hover {
-    background: #66BB6A; /* Lightened Success */
-    box-shadow: 0 6px 20px rgba(76, 175, 80, 0.45);
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.4);
+    color: #fff;
 }
 
 .btn-close-circle {
@@ -527,14 +534,10 @@
         gap: 0.5rem;
     }
 
-    .ces-sidebar .sidebar-actions .btn-complete.is-primary {
-        flex: 2;
-        font-size: 0.8rem;
-    }
-
+    .ces-sidebar .sidebar-actions .btn-complete.is-primary,
     .ces-sidebar .sidebar-actions .btn-complete.is-success {
         flex: 1;
-        font-size: 0.7rem;
-        padding: 0.7rem;
+        font-size: 0.78rem;
+        padding: 0.85rem;
     }
 }
