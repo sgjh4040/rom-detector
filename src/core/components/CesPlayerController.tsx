@@ -52,7 +52,7 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
   countdown,
   progress,
   stepIndex,
-  totalSteps,
+  // totalSteps,
   isPaused,
   isFinished,
   sessionCreatedAt,
