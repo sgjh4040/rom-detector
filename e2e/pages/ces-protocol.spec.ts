@@ -14,8 +14,8 @@ test.describe('CES 프로토콜 페이지', () => {
     await expect(page.getByRole('tab', { name: /통합/ })).toBeVisible();
   });
 
-  test('자동 재생 시작 버튼 표시', async ({ page }) => {
-    await expect(page.getByText(/자동 재생 시작/)).toBeVisible();
+  test('가이드 운동 시작 버튼 표시', async ({ page }) => {
+    await expect(page.getByText(/가이드 운동 시작/)).toBeVisible();
   });
 
   test('Muscle Balance 섹션 표시', async ({ page }) => {

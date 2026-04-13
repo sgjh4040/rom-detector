@@ -8,7 +8,7 @@ import { navigateTo, seedDefault } from '../helpers/setup';
  * 2. /#/results 이동 → 환자 정보 확인
  * 3. "CES 재활 시작" 클릭 → /#/ces 이동 확인
  * 4. 4단계 탭(억제, 신장, 활성, 통합) 확인
- * 5. "자동 재생 시작" 클릭 → /#/ces-player 이동 확인
+ * 5. "가이드 운동 시작" 클릭 → /#/ces-player 이동 확인
  * 6. 플레이어 UI (story-bar-wrap 또는 진행률) 렌더링 확인
  */
 test('결과 → CES → 플레이어 골든패스', async ({ page }) => {
@@ -31,8 +31,8 @@ test('결과 → CES → 플레이어 골든패스', async ({ page }) => {
   await expect(page.getByRole('tab', { name: /활성/ })).toBeVisible();
   await expect(page.getByRole('tab', { name: /통합/ })).toBeVisible();
 
-  // ─── 5. "자동 재생 시작" 클릭 → /ces-player ────────────────────────
-  await page.getByText(/자동 재생 시작/).click();
+  // ─── 5. "가이드 운동 시작" 클릭 → /ces-player ────────────────────────
+  await page.getByText(/가이드 운동 시작/).click();
   await page.waitForURL(/#\/ces-player/);
   await expect(page).toHaveURL(/#\/ces-player/);
 

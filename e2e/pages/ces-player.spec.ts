@@ -4,9 +4,9 @@ import { navigateTo, seedDefault } from '../helpers/setup';
 test.describe('CES 플레이어 페이지', () => {
   test.beforeEach(async ({ page }) => {
     await seedDefault(page);
-    // Navigate to /ces first, then click "자동 재생 시작" to get proper state
+    // Navigate to /ces first, then click "가이드 운동 시작" to get proper state
     await navigateTo(page, '/ces');
-    await page.getByText(/자동 재생 시작/).click();
+    await page.getByText(/가이드 운동 시작/).click();
     await page.waitForURL(/#\/ces-player/);
     await page.waitForLoadState('networkidle');
   });

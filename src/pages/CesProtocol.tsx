@@ -302,7 +302,7 @@ export const CesProtocol: React.FC = () => {
             className="btn-complete is-primary"
             onClick={handleStartPlayer}
           >
-            자동 재생 시작 <span>›</span>
+            가이드 운동 시작 <span>›</span>
           </button>
           <button
             className="btn-complete is-success"
