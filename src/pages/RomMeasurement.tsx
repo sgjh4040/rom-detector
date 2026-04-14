@@ -152,13 +152,13 @@ export const RomMeasurement: React.FC = () => {
               label={activeMov.name}
             />
           ) : activeMov ? (
-            <>
+            <div className="rom-measure-card">
               <AngleDisplayPanel
                 activeMov={activeMov}
                 activeVal={activeVal}
                 handleChange={handleChange}
               />
-              <div style={{ marginTop: "2rem" }}>
+              <div style={{ marginTop: "1.5rem" }}>
                 <FastInputControls
                   activeMov={activeMov}
                   activeVal={activeVal}
@@ -166,7 +166,7 @@ export const RomMeasurement: React.FC = () => {
                   handlePhoto={handlePhoto}
                 />
               </div>
-            </>
+            </div>
           ) : null}
         </div>
       </main>

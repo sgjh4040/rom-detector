@@ -23,7 +23,7 @@ export const SHOULDER_CES: JointCesData = {
             ],
             activate: [
                 ex('sh_act_flex1', '어깨 굽힘 운동 (밴드)', '선 자세에서 밴드를 손에 묶고 팔꿈치를 편상태에서 팔을 귀옆까지 올립니다. .', '', { sets: 3, reps: 12 }),
-                ex('sh_act_flex2', '전거근 활성화 (Push-Up Plus)', '팔굽혀펴기 자세에서 상체를 완전히 올린 뒤 견갑골을 앞으로 더 밀어냅니다.', '', { sets: 3, reps: 10 })
+                ex('sh_act_flex2', '전거근 활성화 (Push-Up Plus)', '팔굽혀펴기 자세에서 상체를 완전히 올린 뒤 견갑골을 앞으로 더 밀어냅니다.', 'RFbjeyq_ZPc', { sets: 3, reps: 10 })
             ],
         },
         extension: {

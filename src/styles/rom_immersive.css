@@ -439,3 +439,99 @@
 .rom-footer__next:hover .rom-footer__arrow {
     transform: translateX(4px);
 }
+/* ── 측정 카드 (다이얼 + 슬라이더 그룹화) ────────────────── */
+.rom-measure-card {
+    width: 100%;
+    max-width: 520px;
+    margin: 0 auto;
+    padding: 1.75rem 1.5rem 1.5rem;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(28, 63, 111, 0.08),
+                0 2px 8px rgba(28, 63, 111, 0.04);
+}
+
+/* ── 각도 다이얼 (반원 goniometer) ──────────────────────── */
+.angle-dial {
+    position: relative;
+    width: 100%;
+    max-width: 360px;
+    margin: 0.5rem auto 1.25rem;
+}
+
+.angle-dial__svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    overflow: visible;
+}
+
+.angle-dial__center {
+    position: absolute;
+    left: 50%;
+    top: 68%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    pointer-events: none;
+    line-height: 1;
+}
+
+.angle-dial__value {
+    font-size: 2.8rem;
+    font-weight: 900;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+    transition: color 0.25s ease;
+}
+
+.angle-dial__unit {
+    font-size: 1.4rem;
+    color: var(--text-secondary);
+    margin-left: 0.1rem;
+    font-weight: 700;
+}
+
+.angle-dial__target {
+    margin-top: 0.35rem;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+
+.angle-dial__target--normal {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    color: #22C55E;
+    font-weight: 800;
+}
+
+.angle-dial__target-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+}
+
+/* 반응형 — 모바일에선 다이얼 축소 */
+@media (max-width: 480px) {
+    .rom-measure-card {
+        padding: 1.25rem 1rem;
+        border-radius: 16px;
+    }
+
+    .angle-dial {
+        max-width: 300px;
+    }
+
+    .angle-dial__value {
+        font-size: 2.2rem;
+    }
+
+    .angle-dial__unit {
+        font-size: 1.1rem;
+    }
+}

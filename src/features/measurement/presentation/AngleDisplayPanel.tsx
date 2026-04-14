@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import type { Movement } from '../../../lib/romData';
+import { AngleDial } from './AngleDial';
 
-// 각도 표시 패널
+// 각도 표시 패널 — 다이얼 + 슬라이더를 한 카드에 그룹화
 interface AngleDisplayPanelProps {
     activeMov: Movement | undefined;
     activeVal: number;
@@ -16,17 +17,7 @@ export const AngleDisplayPanel: React.FC<AngleDisplayPanelProps> = ({
     const maxVal = Math.max(180, activeMov?.normalRange ?? 180);
     const normalVal = activeMov?.normalRange ?? 0;
 
-    const [displayVal, setDisplayVal] = useState(activeVal);
-    useEffect(() => setDisplayVal(activeVal), [activeVal]);
-
     const isNormal = activeVal >= normalVal && normalVal > 0;
-    const isActive = activeVal > 0;
-
-    const valueClass = isNormal
-        ? 'rom-angle__value rom-angle__value--normal'
-        : isActive
-            ? 'rom-angle__value rom-angle__value--active'
-            : 'rom-angle__value';
 
     return (
         <>
@@ -39,17 +30,8 @@ export const AngleDisplayPanel: React.FC<AngleDisplayPanelProps> = ({
                 </div>
             </div>
 
-            {/* Giant Angle */}
-            <div className="rom-angle">
-                <span className={valueClass}>{displayVal}</span>
-                <span className="rom-angle__unit">°</span>
-                {isNormal && (
-                    <span className="rom-angle__tag">
-                        <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#34d399' }} />
-                        정상
-                    </span>
-                )}
-            </div>
+            {/* Angle Dial — 각도계로 시각화 */}
+            <AngleDial value={activeVal} maxVal={maxVal} normalVal={normalVal} />
 
             {/* Slider */}
             <div className="rom-slider">
