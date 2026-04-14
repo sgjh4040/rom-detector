@@ -14,7 +14,8 @@ import { PainAssessment } from "../components/PainAssessment";
 import { JointSelector } from "../components/JointSelector";
 import { AppLayout } from "../components/AppLayout";
 import { EmptyPatientState } from "../components/EmptyPatientState";
-import { Settings } from "lucide-react";
+import { HomePatientSummary } from "../components/HomePatientSummary";
+import { Settings, Play, LineChart } from "lucide-react";
 
 type SideMode = "좌측만" | "우측만" | "양쪽";
 const SIDE_MODE_MAP: Record<SideMode, Side[]> = {
@@ -65,6 +66,11 @@ export const Index: React.FC = () => {
   const [isAddingNew, setIsAddingNew] = useState(false);
   // 새 환자 등록 폼이 열려있는지 (환자 미선택 상태에서 폼을 표시할지 결정)
 
+  const [isStartingNewMeasurement, setIsStartingNewMeasurement] =
+    useState(false);
+  // 기존 환자 선택 시 요약 카드 → 측정 설정 폼으로 전환 여부
+  // 첫 진입은 요약 카드만 보이고, 버튼을 눌러야 폼이 펼쳐진다
+
   const sides = SIDE_MODE_MAP[sideMode];
   // 고른 방향(좌/우/양쪽)에 따라 실제로 측정할 쪽을 결정
 
@@ -82,6 +88,8 @@ export const Index: React.FC = () => {
     setPainArea(p.painArea || "");
     setVasScore(p.vasScore || 0);
     setIsAddingNew(false);
+    // 환자를 새로 선택하면 요약 카드부터 보여준다
+    setIsStartingNewMeasurement(false);
 
     // 다른 페이지(Settings, Trends 등)에서도 해당 환자 맥락을 유지하기 위해
     // localStorage 세션을 최근 측정 기록 또는 최소 정보로 갱신
@@ -119,6 +127,7 @@ export const Index: React.FC = () => {
     setVasScore(0);
     setIsManaging(false);
     setIsAddingNew(true);
+    setIsStartingNewMeasurement(false);
   };
 
   const handleDeletePatient = (id: string) => {
@@ -163,8 +172,17 @@ export const Index: React.FC = () => {
     );
   }
 
-  // 상태 B/C: 환자 있음 (선택 여부에 따라 폼 조건부 표시)
-  const showForm = patientId !== undefined || isAddingNew;
+  // 상태 분기
+  // - 환자 선택 없고 등록 중도 아님 → "환자를 선택하거나 새로 등록해 주세요"
+  // - 기존 환자 선택 → 요약 카드 (측정 시작/기록 보기 CTA)
+  // - 새 환자 등록 OR 기존 환자에서 "새 측정 시작" 클릭 → 폼 펼침
+  const showSummary =
+    patientId !== undefined && !isAddingNew && !isStartingNewMeasurement;
+  const showForm = isAddingNew || isStartingNewMeasurement;
+
+  // 요약 카드에서 사용 — 현재 선택된 환자의 측정 히스토리 건수
+  const historyCount = patientId ? getPatientHistory(patientId).length : 0;
+  const lastMeasuredAt = patients.find((p) => p.id === patientId)?.lastMeasuredAt;
 
   return (
     <AppLayout patientId={patientId}>
@@ -194,7 +212,7 @@ export const Index: React.FC = () => {
               isAddingNew={isAddingNew}
             />
 
-            {!showForm && (
+            {!showSummary && !showForm && (
               <div
                 style={{
                   padding: "2rem 1rem",
@@ -208,8 +226,75 @@ export const Index: React.FC = () => {
               </div>
             )}
 
+            {showSummary && (
+              <div className="patient-summary">
+                <div className="patient-summary__info">
+                  <h2 className="patient-summary__name">
+                    {name}
+                    <span className="patient-summary__age"> ({age}세)</span>
+                  </h2>
+                  <div className="patient-summary__meta">
+                    {painArea && <span>{painArea}</span>}
+                    {painArea && <span className="dot">·</span>}
+                    <span>VAS {vasScore}</span>
+                    {historyCount > 0 && (
+                      <>
+                        <span className="dot">·</span>
+                        <span>측정 {historyCount}회</span>
+                      </>
+                    )}
+                  </div>
+                  {lastMeasuredAt && (
+                    <p className="patient-summary__last">
+                      최근 측정:{" "}
+                      {new Date(lastMeasuredAt).toLocaleDateString("ko-KR", {
+                        month: "long",
+                        day: "numeric",
+                      })}
+                    </p>
+                  )}
+                </div>
+                <div className="patient-summary__actions">
+                  <button
+                    type="button"
+                    className="btn btn-primary btn-large"
+                    onClick={() => setIsStartingNewMeasurement(true)}
+                  >
+                    <Play size={18} /> 새 측정 시작
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-outline btn-large"
+                    onClick={() =>
+                      navigate(`/trends?patientId=${patientId}`)
+                    }
+                    disabled={historyCount === 0}
+                    style={
+                      historyCount === 0
+                        ? { opacity: 0.5, cursor: "not-allowed" }
+                        : undefined
+                    }
+                  >
+                    <LineChart size={18} />
+                    {historyCount === 0 ? "측정 기록 없음" : "측정 기록 보기"}
+                  </button>
+                </div>
+                {patientId && <HomePatientSummary patientId={patientId} />}
+              </div>
+            )}
+
             {showForm && (
             <form onSubmit={handleSubmit}>
+              {/* 기존 환자에서 "새 측정 시작"을 눌러 들어온 경우, 돌아가기 링크 제공 */}
+              {isStartingNewMeasurement && !isAddingNew && (
+                <button
+                  type="button"
+                  className="patient-summary__back"
+                  onClick={() => setIsStartingNewMeasurement(false)}
+                >
+                  ← 환자 정보로 돌아가기
+                </button>
+              )}
               <div className="grid grid-cols-2 gap-4 mb-4">
                 <div className="form-group">
                   <label className="form-label">이름</label>
