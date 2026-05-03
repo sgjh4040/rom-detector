@@ -19,6 +19,7 @@ async function gen() {
   await sharp(svg, { density: 512 })
     .resize(168, 168, { fit: 'contain', background: WHITE })
     .extend({ top: 12, bottom: 12, left: 12, right: 12, background: WHITE })
+    .flatten({ background: WHITE })
     .png()
     .toFile(`${outDir}/icon-192.png`);
 
@@ -26,6 +27,7 @@ async function gen() {
   await sharp(svg, { density: 1024 })
     .resize(448, 448, { fit: 'contain', background: WHITE })
     .extend({ top: 32, bottom: 32, left: 32, right: 32, background: WHITE })
+    .flatten({ background: WHITE })
     .png()
     .toFile(`${outDir}/icon-512.png`);
 
@@ -33,13 +35,15 @@ async function gen() {
   await sharp(svg, { density: 1024 })
     .resize(320, 320, { fit: 'contain', background: PRIMARY })
     .extend({ top: 96, bottom: 96, left: 96, right: 96, background: PRIMARY })
+    .flatten({ background: PRIMARY })
     .png()
     .toFile(`${outDir}/icon-512-maskable.png`);
 
-  // Apple touch icon: 180x180, 흰 배경
+  // Apple touch icon: 180x180, 흰 배경. iOS 호환성 위해 알파 제거(RGB).
   await sharp(svg, { density: 512 })
     .resize(160, 160, { fit: 'contain', background: WHITE })
     .extend({ top: 10, bottom: 10, left: 10, right: 10, background: WHITE })
+    .flatten({ background: WHITE })
     .png()
     .toFile(`${outDir}/apple-touch-icon.png`);
 
