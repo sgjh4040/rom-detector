@@ -20,7 +20,7 @@ export const ANKLE_CES: JointCesData = {
             ex('ak_inh_df2', '가자미근 SMR', '폼롤러를 종아리 아래에 대고 무릎을 굽힌 상태로 중간·하부를 롤링합니다.', '', { tools: '폼롤러', holdSeconds: 40 })],
             lengthen: [ex('ak_len_df1', '비복근 스트레칭 (무릎 편 상태)', '벽에 양손을 대고 한 발을 뒤로 빼 발뒤꿈치를 바닥에 붙인 채 30초 유지합니다.', '', { holdSeconds: 30, sets: 2 }),
             ex('ak_len_df2', '가자미근 스트레칭 (무릎 굽힌 상태)', '동일 자세에서 뒤쪽 무릎을 약간 굽혀 가자미근을 30초 늘입니다.', '', { holdSeconds: 30, sets: 2 })],
-            activate: [ex('ak_act_df1', '전경골근 강화 (발등 들기)', '의자에 앉아 발뒤꿈치를 floor에 두고 발등을 최대한 들어올립니다.', '', { sets: 3, reps: 20 })],
+            activate: [ex('ak_act_df1', '전경골근 강화 (발등 들기)', '의자에 앉아 발뒤꿈치를 바닥에 두고 발등을 최대한 들어올립니다.', '', { sets: 3, reps: 20 })],
         },
         inversion: {
             inhibit: [ex('ak_inh_inv1', '비골근 SMR', '마사지 볼로 외측 복사뼈 위쪽 비골근을 30초 압박합니다.', '', { tools: '마사지 볼', holdSeconds: 30 })],
