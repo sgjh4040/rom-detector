@@ -80,6 +80,11 @@ CES 4단계: Inhibit(억제) → Lengthen(신장) → Activate(활성) → Integ
 - 스크린샷 촬영 시 별도 허락 없이 실행
 - localhost 접근 허용
 - 작업 중간 상태는 묻지 말고 최종만 보고
+- **검증 끝나면 즉시 정리** — 사용자가 "유지해달라"고 명시하지 않는 한:
+  1. `browser_close`로 탭 종료
+  2. 띄운 dev/preview 서버 종료 (`kill <PID>` + `lsof -i :포트` 비어있는지 확인)
+  3. 잔존 프로세스 정리: `pkill -f "playwright-mcp|mcp-chrome"`
+- 후속 작업에서 다시 필요하면 새로 띄우면 됨 (auto-restart). 켜둔 채 방치 금지.
 
 ## 작업 시 패턴
 - **직접 브라우저 확인** — 목업/추측 말고 dev 서버 + Playwright MCP로 실측
