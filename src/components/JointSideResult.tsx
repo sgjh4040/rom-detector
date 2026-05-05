@@ -183,7 +183,7 @@ export const JointSideResult: React.FC<JointSideResultProps> = ({
                     height: "10px",
                     background: "var(--border-color)",
                     borderRadius: "999px",
-                    margin: "24px 16px 8px 16px", // 팝오버가 글씨를 가리지 않도록 상/하/좌/우 여백 추가
+                    margin: "24px 16px 4px 16px", // 팝오버가 글씨를 가리지 않도록 상/하/좌/우 여백 추가
                   }}
                 >
                   {(() => {
@@ -253,6 +253,44 @@ export const JointSideResult: React.FC<JointSideResultProps> = ({
                     );
                   })()}
                 </div>
+
+                {/* 정상 대비 보조 라인 — 바 시각만으로는 정량 파악이 어려워 한 줄 추가 */}
+                {(() => {
+                  if (res.severity === "정상") {
+                    return (
+                      <div
+                        style={{
+                          fontSize: "0.78rem",
+                          fontWeight: 700,
+                          color: "var(--success)",
+                          textAlign: "center",
+                          marginTop: "0.4rem",
+                        }}
+                      >
+                        정상 범위 도달
+                      </div>
+                    );
+                  }
+                  if (res.normalRange === 0) return null;
+                  const measuredClamped = Math.max(0, res.measured);
+                  const percent = Math.floor(
+                    (measuredClamped / res.normalRange) * 100,
+                  );
+                  const remaining = res.normalRange - measuredClamped;
+                  return (
+                    <div
+                      style={{
+                        fontSize: "0.78rem",
+                        fontWeight: 700,
+                        color: "var(--text-secondary)",
+                        textAlign: "center",
+                        marginTop: "0.4rem",
+                      }}
+                    >
+                      정상의 {percent}% · {remaining}° 더 필요
+                    </div>
+                  );
+                })()}
               </>
             )}
           </div>
