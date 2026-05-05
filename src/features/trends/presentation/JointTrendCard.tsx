@@ -110,6 +110,7 @@ export const JointTrendCard: React.FC<JointTrendCardProps> = ({ joint, history }
                                 sublabel={isBilateral ? s.side : undefined}
                                 data={s.data}
                                 unit="°"
+                                normalRange={s.normalRange}
                                 isActive={s.key === currentKey}
                                 onClick={() => setSelectedKey(s.key)}
                             />

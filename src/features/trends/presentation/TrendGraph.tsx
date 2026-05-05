@@ -129,14 +129,14 @@ export const TrendGraph: React.FC<TrendGraphProps> = ({
                             dot={{
                                 fill: '#ffffff',
                                 stroke: '#000000',
-                                strokeWidth: 3,
-                                r: 6,
+                                strokeWidth: 1.5,
+                                r: 3,
                             }}
                             activeDot={{
                                 fill: '#000000',
                                 stroke: '#000000',
-                                strokeWidth: 3,
-                                r: 8,
+                                strokeWidth: 1.5,
+                                r: 5,
                             }}
                             style={{
                                 filter:

@@ -21,6 +21,8 @@ interface SparklineCardProps {
     onClick?: () => void;
     /** VAS 처럼 값이 낮을수록 좋은 지표 */
     lowerIsBetter?: boolean;
+    /** 정상 가동범위 — n=1 일 때 하단 진행률 바 표시에 사용 */
+    normalRange?: number;
 }
 
 /**
@@ -38,6 +40,7 @@ export const SparklineCard: React.FC<SparklineCardProps> = ({
     isActive = false,
     onClick,
     lowerIsBetter = false,
+    normalRange,
 }) => {
     if (data.length === 0) return null;
 
@@ -186,16 +189,16 @@ export const SparklineCard: React.FC<SparklineCardProps> = ({
                 )}
             </div>
 
-            {/* Sparkline */}
-            <svg
-                width="100%"
-                height={height}
-                viewBox={`0 0 ${width} ${height}`}
-                preserveAspectRatio="none"
-                style={{ display: 'block', marginTop: 'auto' }}
-                aria-hidden="true"
-            >
-                {hasMultiplePoints && (
+            {/* Sparkline (n>=2) 또는 측정 1회 안내 (n=1) */}
+            {hasMultiplePoints ? (
+                <svg
+                    width="100%"
+                    height={height}
+                    viewBox={`0 0 ${width} ${height}`}
+                    preserveAspectRatio="none"
+                    style={{ display: 'block', marginTop: 'auto' }}
+                    aria-hidden="true"
+                >
                     <path
                         d={pathD}
                         fill="none"
@@ -205,17 +208,87 @@ export const SparklineCard: React.FC<SparklineCardProps> = ({
                         strokeLinejoin="round"
                         opacity={0.9}
                     />
-                )}
-                {data.map((d, i) => (
-                    <circle
-                        key={i}
-                        cx={getX(i)}
-                        cy={getY(d.value)}
-                        r={i === data.length - 1 ? 2.8 : 1.6}
-                        fill={deltaColor}
-                    />
-                ))}
-            </svg>
+                    {data.map((d, i) => (
+                        <circle
+                            key={i}
+                            cx={getX(i)}
+                            cy={getY(d.value)}
+                            r={i === data.length - 1 ? 2.8 : 1.6}
+                            fill={deltaColor}
+                        />
+                    ))}
+                </svg>
+            ) : normalRange !== undefined ? (
+                <div
+                    style={{
+                        marginTop: 'auto',
+                        height,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'flex-end',
+                        gap: 4,
+                    }}
+                    aria-hidden="true"
+                >
+                    <div
+                        style={{
+                            height: 4,
+                            borderRadius: 4,
+                            background: 'rgba(0, 0, 0, 0.06)',
+                            overflow: 'hidden',
+                        }}
+                    >
+                        <div
+                            style={{
+                                height: '100%',
+                                width: `${Math.max(
+                                    0,
+                                    Math.min(
+                                        100,
+                                        (lowerIsBetter
+                                            ? (normalRange - latestValue) / normalRange
+                                            : latestValue / normalRange) * 100,
+                                    ),
+                                )}%`,
+                                background: 'var(--text-primary)',
+                                opacity: 0.5,
+                                borderRadius: 4,
+                            }}
+                        />
+                    </div>
+                    <div
+                        style={{
+                            display: 'flex',
+                            justifyContent: 'flex-end',
+                            fontSize: '0.62rem',
+                            fontWeight: 700,
+                            color: 'var(--text-secondary)',
+                            opacity: 0.6,
+                        }}
+                    >
+                        정상 {normalRange}
+                        {unit}
+                    </div>
+                </div>
+            ) : (
+                <div
+                    style={{
+                        height,
+                        marginTop: 'auto',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '0.62rem',
+                        fontWeight: 700,
+                        color: 'var(--text-secondary)',
+                        opacity: 0.35,
+                        letterSpacing: '0.04em',
+                    }}
+                    aria-hidden="true"
+                >
+                    측정 1회
+                </div>
+            )}
         </button>
     );
 };
