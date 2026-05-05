@@ -161,6 +161,26 @@ export const Results: React.FC = () => {
         <div className="container" style={{ maxWidth: "900px" }}>
         <div className="page-header flex justify-between items-center">
           <div>
+            <button
+              type="button"
+              onClick={() => navigate(-1)}
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "4px",
+                padding: "6px 12px",
+                marginBottom: "8px",
+                fontSize: "0.78rem",
+                fontWeight: 700,
+                color: "var(--text-secondary)",
+                background: "rgba(255, 255, 255, 0.6)",
+                border: "1px solid rgba(0, 0, 0, 0.06)",
+                borderRadius: "999px",
+                cursor: "pointer",
+              }}
+            >
+              ← 뒤로가기
+            </button>
             <h1>평가 리포트 대시보드</h1>
             <p>
               {patientName} ({patientAge}세){" "}

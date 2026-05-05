@@ -89,3 +89,18 @@
         grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 }
+/* 평가 히스토리 행 — 전체 클릭 영역, hover 시 살짝 부드러운 강조 */
+.history-row:hover {
+    background: rgba(255, 255, 255, 0.7) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    transform: translateY(-1px);
+}
+
+.history-row:active {
+    transform: translateY(0);
+}
+
+.history-row:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+}
