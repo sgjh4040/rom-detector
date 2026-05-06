@@ -85,8 +85,17 @@ export const Settings: React.FC = () => {
         <div className="container">
           {/* 상단 헤더 */}
           <div className="settings-header">
-            <button onClick={() => navigate("/")} className="btn-back">
-              ←
+            <button
+              type="button"
+              className="btn btn-outline btn-small mb-3"
+              onClick={() => navigate(-1)}
+              style={{
+                padding: "6px 14px",
+                borderRadius: "8px",
+                fontSize: "0.8rem",
+              }}
+            >
+              ← 뒤로가기
             </button>
             <h1>설정</h1>
           </div>
