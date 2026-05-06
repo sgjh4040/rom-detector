@@ -104,3 +104,21 @@
     outline: 2px solid var(--primary);
     outline-offset: 2px;
 }
+
+/* 회차 선택 chip — hover 미세 강조 (active 상태가 아닌 칩에만) */
+.session-chip:hover:not([style*="var(--primary)"]) {
+    background: rgba(255, 255, 255, 0.95) !important;
+    border-color: rgba(92, 107, 192, 0.35) !important;
+    color: var(--text-primary) !important;
+}
+
+.session-chip:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+}
+
+/* 가로 스크롤 영역 — 시작/끝 페이드로 스크롤 가능함을 시각화 */
+.session-chip-row {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+}

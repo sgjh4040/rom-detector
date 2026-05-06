@@ -77,42 +77,68 @@ export const NeumoDashboard: React.FC<NeumoDashboardProps> = ({
             className="flex flex-col items-center"
             style={{ width: '100%', gap: '24px', padding: '10px 0' }}
         >
-            {/* 회차 선택 버튼 */}
+            {/* 회차 선택 칩 — 가로 스크롤 (회차 수 많아도 안전) */}
             <div
-                className="w-full no-scrollbar"
-                style={{ overflowX: 'auto', paddingBottom: '8px', paddingLeft: '16px', paddingRight: '16px' }}
+                className="w-full no-scrollbar session-chip-row"
+                style={{
+                    overflowX: 'auto',
+                    paddingBottom: '8px',
+                    paddingLeft: '16px',
+                    paddingRight: '16px',
+                }}
             >
                 <div
                     style={{
                         display: 'flex',
-                        gap: '12px',
-                        justifyContent: 'center',
+                        gap: '8px',
+                        justifyContent: 'flex-start',
                         alignItems: 'center',
                         minWidth: 'max-content',
-                        padding: '8px 0',
+                        padding: '4px 0',
                     }}
                 >
-                    {sessions.map((s, i) => (
-                        <button
-                            key={s.createdAt}
-                            className={`neumo-btn ${selectedSessionId === s.createdAt ? 'active' : ''}`}
-                            onClick={() => onSelectSession(s.createdAt)}
-                            style={{
-                                color:
-                                    selectedSessionId === s.createdAt
+                    {sessions.map((s, i) => {
+                        const isActive = selectedSessionId === s.createdAt;
+                        return (
+                            <button
+                                key={s.createdAt}
+                                type="button"
+                                className="session-chip"
+                                onClick={() => onSelectSession(s.createdAt)}
+                                style={{
+                                    padding: '8px 14px',
+                                    fontSize: '0.78rem',
+                                    fontWeight: 700,
+                                    whiteSpace: 'nowrap',
+                                    flexShrink: 0,
+                                    borderRadius: '999px',
+                                    border: isActive
+                                        ? '1px solid var(--primary)'
+                                        : '1px solid rgba(0, 0, 0, 0.08)',
+                                    background: isActive
                                         ? 'var(--primary)'
+                                        : 'rgba(255, 255, 255, 0.7)',
+                                    color: isActive
+                                        ? '#ffffff'
                                         : 'var(--text-secondary)',
-                                minWidth: '120px',
-                                padding: '12px 20px',
-                                fontSize: '0.9rem',
-                                fontWeight: 800,
-                                whiteSpace: 'nowrap',
-                                flexShrink: 0,
-                            }}
-                        >
-                            {sessions.length - i}회차 ({new Date(s.createdAt).toLocaleDateString().slice(5).replace(/\.$/, '')})
-                        </button>
-                    ))}
+                                    boxShadow: isActive
+                                        ? '0 4px 12px rgba(92, 107, 192, 0.25)'
+                                        : '0 1px 2px rgba(0, 0, 0, 0.03)',
+                                    cursor: 'pointer',
+                                    transition:
+                                        'background 0.18s, color 0.18s, box-shadow 0.18s, border-color 0.18s',
+                                    fontFamily: 'inherit',
+                                }}
+                            >
+                                {sessions.length - i}회차 (
+                                {new Date(s.createdAt)
+                                    .toLocaleDateString()
+                                    .slice(5)
+                                    .replace(/\.$/, '')}
+                                )
+                            </button>
+                        );
+                    })}
                 </div>
             </div>
 
