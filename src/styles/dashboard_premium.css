@@ -447,6 +447,12 @@
         -webkit-backdrop-filter: none;
     }
 
+    /* CES 운동 페이지(non info-mode) — 하단 fixed 타이머 바만큼 padding-bottom 보장.
+       단계 탭/액션 등 자식이 타이머 바에 가려지지 않게 한 곳에서 처리. */
+    .ces-dashboard:not(.info-mode) .ces-sidebar {
+        padding-bottom: calc(80px + env(safe-area-inset-bottom));
+    }
+
     /* 모바일: 해부 SVG 숨김 — 데스크탑 사이드바에서만 유의미 */
     .ces-sidebar .human-anatomy-box {
         display: none;
@@ -527,10 +533,9 @@
         display: none;
     }
 
-    /* 모바일 하단 액션 — 플로팅 타이머 위에 보이도록 margin-top 해제 + 여백 확보 */
+    /* 모바일 하단 액션 — padding-bottom은 .ces-sidebar 컨테이너에서 일괄 처리 */
     .ces-sidebar .sidebar-actions {
         margin-top: 1rem;
-        padding-bottom: 4.5rem; /* 플로팅 타이머 바 높이만큼 여백 */
         gap: 0.5rem;
     }
 
