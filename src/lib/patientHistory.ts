@@ -31,12 +31,17 @@ export const savePatient = (patient: Patient): void => {
     }
 };
 
-/** 특정 환자의 모든 측정 히스토리 불러오기 */
+/** 특정 환자의 모든 측정 히스토리 불러오기 — 항상 newest-first 정렬 보장
+ *  (수동 import / seed / 외부 편집된 데이터에도 일관된 순서 제공) */
 export const getPatientHistory = (patientId: string): RomSession[] => {
     try {
         const key = `rom_history_${patientId}`;
         const saved = localStorage.getItem(key);
-        return saved ? JSON.parse(saved) : [];
+        if (!saved) return [];
+        const parsed: RomSession[] = JSON.parse(saved);
+        return parsed.sort(
+            (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+        );
     } catch (error) {
         console.error('히스토리 로드 실패:', error);
         return [];
