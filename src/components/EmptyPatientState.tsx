@@ -1,5 +1,5 @@
 import React from "react";
-import { UserPlus, Activity, Dumbbell, LineChart } from "lucide-react";
+import { UserPlus, Activity, Dumbbell, LineChart, Printer } from "lucide-react";
 
 interface EmptyPatientStateProps {
   onAddPatient: () => void;
@@ -26,6 +26,11 @@ const FEATURES: FeatureHint[] = [
     icon: <LineChart size={18} />,
     title: "추이 분석",
     desc: "회차별 변화와 VAS 통증 지수를 한 눈에",
+  },
+  {
+    icon: <Printer size={18} />,
+    title: "리포트 인쇄",
+    desc: "측정 결과를 한 페이지로 깔끔하게 출력",
   },
 ];
 
@@ -121,14 +126,8 @@ export const EmptyPatientState: React.FC<EmptyPatientStateProps> = ({
           </button>
         </div>
 
-        {/* 기능 소개 3장 */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
-            gap: "0.75rem",
-          }}
-        >
+        {/* 기능 소개 — 모바일 2×2 / 태블릿+ 4× */}
+        <div className="feature-hint-grid">
           {FEATURES.map((f) => (
             <div
               key={f.title}
