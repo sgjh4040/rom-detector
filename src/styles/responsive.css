@@ -96,6 +96,12 @@
     .app-sidebar {
         display: none;
     }
+
+    /* AppLayout wrapper — fixed bottom nav 만큼 안전한 padding 확보
+       (페이지 컨테이너가 .container 클래스를 쓰지 않아도 nav 가림 방지) */
+    .app-main-with-sidebar {
+        padding-bottom: calc(72px + env(safe-area-inset-bottom));
+    }
 }
 
 /* ── Tablet & Desktop ────────────────────────────────── */
