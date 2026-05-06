@@ -21,8 +21,8 @@ const ViewSegment: React.FC<ViewSegmentProps> = ({ value, onChange }) => {
     label: string;
     icon: React.ReactNode;
   }> = [
-    { key: "dashboard", label: "대시보드", icon: <LayoutDashboard size={15} /> },
     { key: "charts", label: "상세 차트", icon: <BarChart3 size={15} /> },
+    { key: "dashboard", label: "대시보드", icon: <LayoutDashboard size={15} /> },
   ];
   return (
     <div
