@@ -32,10 +32,10 @@ interface CesPlayerControllerProps {
 }
 
 const PHASES: { stage: CesStage; label: string; color: string }[] = [
-  { stage: "inhibit", label: "Inhibit", color: STAGE_COLORS.inhibit },
-  { stage: "lengthen", label: "Lengthen", color: STAGE_COLORS.lengthen },
-  { stage: "activate", label: "Activate", color: STAGE_COLORS.activate },
-  { stage: "integrate", label: "Integrate", color: STAGE_COLORS.integrate },
+  { stage: "inhibit", label: "억제", color: STAGE_COLORS.inhibit },
+  { stage: "lengthen", label: "신장", color: STAGE_COLORS.lengthen },
+  { stage: "activate", label: "활성", color: STAGE_COLORS.activate },
+  { stage: "integrate", label: "통합", color: STAGE_COLORS.integrate },
 ];
 
 const fmtMMSS = (total: number): string => {

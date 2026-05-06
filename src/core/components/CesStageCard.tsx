@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import type { CesExercise, CesStage } from "../../lib/ces/cesTypes";
 import { YoutubePlayer } from "./YoutubePlayer";
 import { CircleSlash, Accessibility, CheckCircle2, Activity, ChevronUp, ChevronDown, Wrench } from "lucide-react";
+import { STAGE_COLORS } from "../../lib/ces/CesPlayerTypes";
 
 const STAGE_META: Record<
   CesStage,
@@ -10,26 +11,26 @@ const STAGE_META: Record<
   inhibit: {
     label: "1단계: 억제 (Inhibit)",
     icon: <CircleSlash size={18} color="currentColor" />,
-    color: "#fbbf24",
-    bg: "rgba(251,191,36,0.08)",
+    color: STAGE_COLORS.inhibit,
+    bg: "rgba(239,108,0,0.08)",
   },
   lengthen: {
     label: "2단계: 신장 (Lengthen)",
     icon: <Accessibility size={18} color="currentColor" />,
-    color: "#60a5fa",
-    bg: "rgba(96,165,250,0.08)",
+    color: STAGE_COLORS.lengthen,
+    bg: "rgba(6,182,212,0.08)",
   },
   activate: {
-    label: "3단계: 활성화 (Activate)",
+    label: "3단계: 활성 (Activate)",
     icon: <CheckCircle2 size={18} color="currentColor" />,
-    color: "#f87171",
-    bg: "rgba(248,113,113,0.08)",
+    color: STAGE_COLORS.activate,
+    bg: "rgba(236,72,153,0.08)",
   },
   integrate: {
     label: "4단계: 통합 (Integrate)",
     icon: <Activity size={18} color="currentColor" />,
-    color: "#4ade80",
-    bg: "rgba(74,222,128,0.08)",
+    color: STAGE_COLORS.integrate,
+    bg: "rgba(16,185,129,0.08)",
   },
 };
 
