@@ -76,7 +76,7 @@ export const Trends: React.FC = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const patientId = searchParams.get("patientId");
-  const [viewMode, setViewMode] = useState<"dashboard" | "charts">("dashboard");
+  const [viewMode, setViewMode] = useState<"dashboard" | "charts">("charts");
   const showCharts = viewMode === "charts";
 
   const history = patientId ? getPatientHistory(patientId) : [];
