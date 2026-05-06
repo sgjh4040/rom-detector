@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 import type { CesExercise } from "../../lib/ces/cesTypes";
 import { YoutubePlayer } from "./YoutubePlayer";
 import { Wrench, PlayCircle } from "lucide-react";
+import { STAGE_COLORS } from "../../lib/ces/CesPlayerTypes";
 
 interface CesExercisePlayerProps {
   exercises: CesExercise[];
@@ -54,14 +55,14 @@ export const CesExercisePlayer: React.FC<CesExercisePlayerProps> = ({
   const current = exercises[activeIndex] || exercises[0];
   const categoryCode = STAGE_CODE_MAP[stageId] || "R";
 
-  // 단계 라벨 매핑
+  // 단계 라벨 매핑 (색상은 SSOT인 STAGE_COLORS 에서 가져옴)
   const stageLabel: Record<string, { label: string; color: string }> = {
-    inhibit: { label: "억제", color: "#fbbf24" },
-    lengthen: { label: "신장", color: "#60a5fa" },
-    activate: { label: "활성", color: "#f87171" },
-    integrate: { label: "통합", color: "#4ade80" },
+    inhibit: { label: "억제", color: STAGE_COLORS.inhibit },
+    lengthen: { label: "신장", color: STAGE_COLORS.lengthen },
+    activate: { label: "활성", color: STAGE_COLORS.activate },
+    integrate: { label: "통합", color: STAGE_COLORS.integrate },
   };
-  const stage = stageLabel[stageId] ?? { label: stageId, color: "#6366f1" };
+  const stage = stageLabel[stageId] ?? { label: stageId, color: "var(--primary)" };
 
   return (
     <div className="flex flex-col h-full">

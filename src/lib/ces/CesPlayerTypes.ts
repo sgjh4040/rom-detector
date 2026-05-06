@@ -58,6 +58,16 @@ export interface CesRoutine {
     exercises: CesPlayerStep[];
 }
 
+// ── CES 4단계 색상 SSOT ─────────────────────────────────────────────────────
+//  글로벌 버튼 색(Play #22C55E, Pause #F59E0B, Primary #5C6BC0)과 충돌 없음.
+//  4단계 의미와 톤 매칭, 색맹 친화적.
+export const STAGE_COLORS = {
+    inhibit: '#ef6c00',   // 딥오렌지 — 억제(풀어주기, 따뜻한 해소)
+    lengthen: '#06b6d4',  // 시안 — 신장(늘리기, 차분한 스트레치)
+    activate: '#ec4899',  // 핑크 — 활성(깨우기, 에너지·각성)
+    integrate: '#10b981', // 에메랄드 — 통합(합치기, 안정·균형)
+} as const;
+
 // ── 페이즈별 시각 메타 ───────────────────────────────────────────────────────
 export interface PhaseMeta {
     label: string;
@@ -69,25 +79,25 @@ export interface PhaseMeta {
 export const PHASE_META: Record<CesPhase, PhaseMeta> = {
     Inhibit: {
         label: '억제 (Inhibit)',
-        color: '#fbbf24',    // 노란색
+        color: STAGE_COLORS.inhibit,
         animation: 'pulse-slow',
         description: '과활성 근육 이완 중',
     },
     Lengthen: {
         label: '신장 (Lengthen)',
-        color: '#60a5fa',   // 파란색
+        color: STAGE_COLORS.lengthen,
         animation: 'fade-in',
         description: '짧아진 근육 연장 중',
     },
     Activate: {
-        label: '활성화 (Activate)',
-        color: '#f87171',    // 빨간색
+        label: '활성 (Activate)',
+        color: STAGE_COLORS.activate,
         animation: 'heartbeat',
         description: '저활성 근육 강화 중',
     },
     Integrate: {
         label: '통합 (Integrate)',
-        color: '#4ade80',    // 초록색
+        color: STAGE_COLORS.integrate,
         animation: 'glow',
         description: '전신 협응력 강화 중',
     },

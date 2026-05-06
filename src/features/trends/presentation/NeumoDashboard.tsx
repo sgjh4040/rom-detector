@@ -12,6 +12,7 @@ import {
     EMPTY_PHASE_GOALS,
 } from '../../../lib/ces/cesGoalCalculator';
 import type { CesStage } from '../../../lib/ces/cesTypes';
+import { STAGE_COLORS } from '../../../lib/ces/CesPlayerTypes';
 import type { RomSession } from '../../../lib/romTypes';
 
 interface NeumoDashboardProps {
@@ -32,12 +33,12 @@ interface PhaseDef {
     color: string;
 }
 
-// 단계별 색상 — 각 phase를 시각적으로 구분하기 위한 고정 팔레트
+// 단계별 색상 — SSOT 인 STAGE_COLORS 에서 가져옴 (Player/Dashboard 일관)
 const PHASES: PhaseDef[] = [
-    { stage: 'inhibit', label: '억제', color: '#6366f1' },   // 인디고
-    { stage: 'lengthen', label: '신장', color: '#14b8a6' },  // 틸
-    { stage: 'activate', label: '활성', color: '#f59e0b' },  // 앰버
-    { stage: 'integrate', label: '통합', color: '#a855f7' }, // 바이올렛
+    { stage: 'inhibit', label: '억제', color: STAGE_COLORS.inhibit },
+    { stage: 'lengthen', label: '신장', color: STAGE_COLORS.lengthen },
+    { stage: 'activate', label: '활성', color: STAGE_COLORS.activate },
+    { stage: 'integrate', label: '통합', color: STAGE_COLORS.integrate },
 ];
 
 export const NeumoDashboard: React.FC<NeumoDashboardProps> = ({

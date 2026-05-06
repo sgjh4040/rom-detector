@@ -22,14 +22,14 @@ import {
 import { updatePhaseDuration } from "../features/session/data/cesTimeTracker";
 import { buildRoutineFromAnalysis } from "../lib/ces/cesRoutineBuilder";
 import type { CesStage } from "../lib/ces/cesTypes";
-import type { CesPhase } from "../lib/ces/CesPlayerTypes";
+import { STAGE_COLORS, type CesPhase } from "../lib/ces/CesPlayerTypes";
 import type { Side } from "../lib/romTypes";
 
 const STAGES: { id: CesStage; label: string; color: string }[] = [
-  { id: "inhibit", label: "억제", color: "#fbbf24" },
-  { id: "lengthen", label: "신장", color: "#60a5fa" },
-  { id: "activate", label: "활성", color: "#f87171" },
-  { id: "integrate", label: "통합", color: "#4ade80" },
+  { id: "inhibit", label: "억제", color: STAGE_COLORS.inhibit },
+  { id: "lengthen", label: "신장", color: STAGE_COLORS.lengthen },
+  { id: "activate", label: "활성", color: STAGE_COLORS.activate },
+  { id: "integrate", label: "통합", color: STAGE_COLORS.integrate },
 ];
 
 export const CesProtocol: React.FC = () => {

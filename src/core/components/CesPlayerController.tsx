@@ -1,7 +1,7 @@
 // CesPlayerController.tsx — B 영역: 카운트다운·진행률·버튼 (PRD 4-0: 200줄 이하)
 import React from "react";
 import type { CesPlayerStep } from "../../lib/ces/CesPlayerTypes";
-import { PHASE_META, BREAK_META } from "../../lib/ces/CesPlayerTypes";
+import { PHASE_META, BREAK_META, STAGE_COLORS } from "../../lib/ces/CesPlayerTypes";
 import {
   Play,
   Pause,
@@ -32,10 +32,10 @@ interface CesPlayerControllerProps {
 }
 
 const PHASES: { stage: CesStage; label: string; color: string }[] = [
-  { stage: "inhibit", label: "Inhibit", color: "#fbbf24" },
-  { stage: "lengthen", label: "Lengthen", color: "#60a5fa" },
-  { stage: "activate", label: "Activate", color: "#f87171" },
-  { stage: "integrate", label: "Integrate", color: "#4ade80" },
+  { stage: "inhibit", label: "Inhibit", color: STAGE_COLORS.inhibit },
+  { stage: "lengthen", label: "Lengthen", color: STAGE_COLORS.lengthen },
+  { stage: "activate", label: "Activate", color: STAGE_COLORS.activate },
+  { stage: "integrate", label: "Integrate", color: STAGE_COLORS.integrate },
 ];
 
 const fmtMMSS = (total: number): string => {
