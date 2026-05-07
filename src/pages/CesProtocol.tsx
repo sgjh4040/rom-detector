@@ -5,20 +5,14 @@ import { loadRomSession, JOINTS } from "../lib/romData";
 import { analyzeMuscles } from "../lib/muscleAnalysis";
 import { CesExercisePlayer } from "../core/components/CesExercisePlayer";
 import { BodyAnatomySvg } from "../core/components/BodyAnatomySvg";
-import { getExMeta, formatTime } from "../core/utils/cesProtocolHelpers";
-import {
-  Play,
-  Pause,
-  RotateCcw,
-  AlertTriangle,
-  CheckCircle,
-} from "lucide-react";
+import { AlertTriangle, CheckCircle } from "lucide-react";
 import { buildRoutineFromAnalysis } from "../lib/ces/cesRoutineBuilder";
 import type { CesStage } from "../lib/ces/cesTypes";
 import { type CesPhase } from "../lib/ces/CesPlayerTypes";
 import type { Side } from "../lib/romTypes";
 import { STAGES, getTargetMuscles } from "./cesProtocol/helpers";
 import { useCesProtocolTimer } from "./cesProtocol/useCesProtocolTimer";
+import { TimerCard } from "./cesProtocol/TimerCard";
 
 export const CesProtocol: React.FC = () => {
   const navigate = useNavigate();
@@ -115,46 +109,13 @@ export const CesProtocol: React.FC = () => {
           />
         </div>
 
-        {/* 타이머 — NTC 스타일 수동 누적 */}
-        <div className="sidebar-stats">
-          <div
-            className={`card stat-card-inner ${timerRunning ? "is-active" : ""}`}
-          >
-            <p className="sub-label">누적 운동 시간</p>
-            <p className="stat-main-val">{formatTime(seconds)}</p>
-            <div className="timer-actions">
-              <button
-                onClick={toggleTimer}
-                className={`btn-timer flex justify-center items-center gap-1 ${timerRunning ? "is-running" : "primary"}`}
-              >
-                {timerRunning ? (
-                  <>
-                    <Pause size={14} /> 일시정지
-                  </>
-                ) : (
-                  <>
-                    <Play size={14} /> 시작
-                  </>
-                )}
-              </button>
-              <button
-                onClick={resetTimer}
-                className="btn-timer btn-reset flex justify-center items-center gap-1"
-              >
-                <RotateCcw size={14} /> 초기화
-              </button>
-            </div>
-          </div>
-
-          {currentEx && getExMeta(currentEx) && (
-            <div>
-              <p className="sub-label">현재 운동</p>
-              <p className="stat-sub-val" style={{ color: "#63E6BE" }}>
-                {getExMeta(currentEx)}
-              </p>
-            </div>
-          )}
-        </div>
+        <TimerCard
+          seconds={seconds}
+          timerRunning={timerRunning}
+          toggleTimer={toggleTimer}
+          resetTimer={resetTimer}
+          currentEx={currentEx}
+        />
 
         {/* 단계 세그먼트 컨트롤 */}
         <div
