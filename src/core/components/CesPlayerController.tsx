@@ -2,17 +2,11 @@
 import React from "react";
 import type { CesPlayerStep } from "../../lib/ces/CesPlayerTypes";
 import { PHASE_META, BREAK_META } from "../../lib/ces/CesPlayerTypes";
-import {
-  Play,
-  Pause,
-  RotateCcw,
-  SkipForward,
-  Coffee,
-  ArrowRight,
-} from "lucide-react";
+import { SkipForward, Coffee, ArrowRight } from "lucide-react";
 import { getPhaseSeconds } from "../../features/session/data/cesTimeTracker";
 import type { CesStage } from "../../lib/ces/cesTypes";
 import { PHASES, fmtMMSS, pad } from "./cesPlayer/helpers";
+import { PlayerActions } from "./cesPlayer/PlayerActions";
 
 interface CesPlayerControllerProps {
   currentStep: CesPlayerStep;
@@ -459,89 +453,16 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
         </div>
       )}
 
-      {/* 컨트롤 버튼 */}
-      <div style={{ display: "flex", gap: "0.75rem" }}>
-        {isFinished ? (
-          <button
-            onClick={onRestart}
-            style={{
-              flex: 1,
-              padding: "0.9rem",
-              borderRadius: "var(--radius-xs)",
-              border: "none",
-              background: "var(--ink-strong)",
-              color: "#fff",
-              fontWeight: 800,
-              fontSize: "var(--text-sm)",
-              cursor: "pointer",
-            }}
-          >
-            <RotateCcw size={16} /> 다시 시작
-          </button>
-        ) : isBreak && breakMeta ? (
-          <button
-            onClick={onSkipBreak}
-            style={{
-              flex: 1,
-              padding: "0.9rem",
-              borderRadius: "var(--radius-xs)",
-              border: "none",
-              background: breakMeta.color,
-              color: "#fff",
-              fontWeight: 800,
-              fontSize: "var(--text-sm)",
-              cursor: "pointer",
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: "0.5rem",
-            }}
-          >
-            <SkipForward size={16} /> 건너뛰기
-          </button>
-        ) : (
-          <button
-            onClick={onTogglePause}
-            style={{
-              flex: 1,
-              padding: "0.9rem",
-              borderRadius: "var(--radius-xs)",
-              border: "none",
-              background: isPaused ? "#4ade80" : "var(--warning)",
-              color: "#fff",
-              fontWeight: 800,
-              fontSize: "var(--text-sm)",
-              cursor: "pointer",
-              transition: "background 0.2s",
-            }}
-          >
-            {isPaused ? (
-              <>
-                <Play size={16} /> 재개
-              </>
-            ) : (
-              <>
-                <Pause size={16} /> 일시정지
-              </>
-            )}
-          </button>
-        )}
-        <button
-          onClick={onExit}
-          style={{
-            padding: "0.9rem 1.25rem",
-            borderRadius: "var(--radius-xs)",
-            border: "1.5px solid #e5e7eb",
-            background: "#fff",
-            color: "#6b7280",
-            fontWeight: 800,
-            fontSize: "var(--text-sm)",
-            cursor: "pointer",
-          }}
-        >
-          ✕
-        </button>
-      </div>
+      <PlayerActions
+        isFinished={isFinished}
+        isBreak={isBreak}
+        breakMeta={breakMeta}
+        isPaused={isPaused}
+        onTogglePause={onTogglePause}
+        onExit={onExit}
+        onRestart={onRestart}
+        onSkipBreak={onSkipBreak}
+      />
     </div>
   );
 };
