@@ -5,6 +5,7 @@ import { JOINTS } from "../lib/romData";
 import { Activity, Brain, Wrench, Timer, Repeat, Hash, PlayCircle } from "lucide-react";
 import { STAGE_LABELS } from "./cesInfo/helpers";
 import { JointSidebar } from "./cesInfo/JointSidebar";
+import { MovementTabs } from "./cesInfo/MovementTabs";
 
 export const CesInfo: React.FC = () => {
   const navigate = useNavigate();
@@ -51,22 +52,12 @@ export const CesInfo: React.FC = () => {
           </p>
         </header>
 
-        {/* Movement Selector (Sub-tabs) */}
-        <div className="movement-tabs mb-8 flex gap-2 flex-wrap">
-          {Object.keys(cesData.protocol).map((mId) => {
-            const mName =
-              currentJoint?.movements.find((m) => m.id === mId)?.name || mId;
-            return (
-              <button
-                key={mId}
-                className={`ces-tab-btn flex-1 min-w-[120px] ${activeMovement === mId ? "is-active" : ""}`}
-                onClick={() => setSelectedMovement(mId)}
-              >
-                {mName}
-              </button>
-            );
-          })}
-        </div>
+        <MovementTabs
+          movementIds={Object.keys(cesData.protocol)}
+          movements={currentJoint?.movements ?? []}
+          activeMovement={activeMovement}
+          onSelect={setSelectedMovement}
+        />
 
         {activeMovement && (
           <div className="info-grid grid grid-cols-1 lg:grid-cols-12 gap-6">
