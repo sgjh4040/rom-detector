@@ -1,7 +1,7 @@
 // CesPlayerController.tsx — B 영역: 카운트다운·진행률·버튼 (PRD 4-0: 200줄 이하)
 import React from "react";
 import type { CesPlayerStep } from "../../lib/ces/CesPlayerTypes";
-import { PHASE_META, BREAK_META, STAGE_COLORS } from "../../lib/ces/CesPlayerTypes";
+import { PHASE_META, BREAK_META } from "../../lib/ces/CesPlayerTypes";
 import {
   Play,
   Pause,
@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { getPhaseSeconds } from "../../features/session/data/cesTimeTracker";
 import type { CesStage } from "../../lib/ces/cesTypes";
+import { PHASES, fmtMMSS, pad } from "./cesPlayer/helpers";
 
 interface CesPlayerControllerProps {
   currentStep: CesPlayerStep;
@@ -30,21 +31,6 @@ interface CesPlayerControllerProps {
   onRestart: () => void;
   onSkipBreak: () => void;
 }
-
-const PHASES: { stage: CesStage; label: string; color: string }[] = [
-  { stage: "inhibit", label: "억제", color: STAGE_COLORS.inhibit },
-  { stage: "lengthen", label: "신장", color: STAGE_COLORS.lengthen },
-  { stage: "activate", label: "활성", color: STAGE_COLORS.activate },
-  { stage: "integrate", label: "통합", color: STAGE_COLORS.integrate },
-];
-
-const fmtMMSS = (total: number): string => {
-  const m = Math.floor(total / 60);
-  const s = total % 60;
-  return `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
-};
-
-const pad = (n: number): string => String(n).padStart(2, "0");
 
 export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
   currentStep,
