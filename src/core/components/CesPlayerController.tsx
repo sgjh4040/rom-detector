@@ -8,6 +8,7 @@ import type { CesStage } from "../../lib/ces/cesTypes";
 import { PHASES, fmtMMSS, pad } from "./cesPlayer/helpers";
 import { PlayerActions } from "./cesPlayer/PlayerActions";
 import { NextStepPreview } from "./cesPlayer/NextStepPreview";
+import { ProgressBar } from "./cesPlayer/ProgressBar";
 
 interface CesPlayerControllerProps {
   currentStep: CesPlayerStep;
@@ -362,49 +363,7 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
         </div>
       </div>
 
-      {/* 전체 진행률 바 */}
-      <div>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            marginBottom: "0.4rem",
-          }}
-        >
-          <span
-            style={{
-              fontSize: "var(--text-xs)",
-              fontWeight: 700,
-              color: "var(--text-secondary)",
-            }}
-          >
-            전체 진행률
-          </span>
-          <span
-            style={{ fontSize: "var(--text-xs)", fontWeight: 800, color: "var(--ink-strong)" }}
-          >
-            {Math.round(progress)}%
-          </span>
-        </div>
-        <div
-          style={{
-            height: "6px",
-            borderRadius: "var(--radius-pill)",
-            background: "#eef2f7",
-            overflow: "hidden",
-          }}
-        >
-          <div
-            style={{
-              height: "100%",
-              width: `${progress}%`,
-              background: `linear-gradient(90deg, ${phase.color}, var(--ink-strong))`,
-              borderRadius: "var(--radius-pill)",
-              transition: "width 0.5s ease",
-            }}
-          />
-        </div>
-      </div>
+      <ProgressBar progress={progress} accentColor={phase.color} />
 
       {!isBreak && nextStep && nextStep.kind === "exercise" && (
         <NextStepPreview nextStep={nextStep} />
