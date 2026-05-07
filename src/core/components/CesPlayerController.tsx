@@ -2,11 +2,12 @@
 import React from "react";
 import type { CesPlayerStep } from "../../lib/ces/CesPlayerTypes";
 import { PHASE_META, BREAK_META } from "../../lib/ces/CesPlayerTypes";
-import { SkipForward, Coffee, ArrowRight } from "lucide-react";
+import { Coffee, ArrowRight } from "lucide-react";
 import { getPhaseSeconds } from "../../features/session/data/cesTimeTracker";
 import type { CesStage } from "../../lib/ces/cesTypes";
 import { PHASES, fmtMMSS, pad } from "./cesPlayer/helpers";
 import { PlayerActions } from "./cesPlayer/PlayerActions";
+import { NextStepPreview } from "./cesPlayer/NextStepPreview";
 
 interface CesPlayerControllerProps {
   currentStep: CesPlayerStep;
@@ -405,52 +406,8 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
         </div>
       </div>
 
-      {/* 다음 운동 예고 — exercise 스텝일 때만 */}
       {!isBreak && nextStep && nextStep.kind === "exercise" && (
-        <div
-          style={{
-            padding: "0.75rem 1rem",
-            borderRadius: "var(--radius-xs)",
-            background: "rgba(28,63,111,0.05)",
-            display: "flex",
-            alignItems: "center",
-            gap: "0.75rem",
-          }}
-        >
-          <span className="flex items-center" style={{ fontSize: "var(--text-base)" }}>
-            <SkipForward size={18} />
-          </span>
-          <div>
-            <p
-              style={{
-                fontSize: "var(--text-2xs)",
-                color: "var(--text-secondary)",
-                fontWeight: 700,
-                textTransform: "uppercase",
-              }}
-            >
-              다음
-            </p>
-            <p
-              style={{ fontSize: "var(--text-sm)", fontWeight: 800, color: "var(--ink-strong)" }}
-            >
-              {nextStep.exerciseName}
-            </p>
-          </div>
-          <span
-            style={{
-              marginLeft: "auto",
-              padding: "0.2rem 0.5rem",
-              borderRadius: "var(--radius-xs)",
-              background: PHASE_META[nextStep.cesPhase].color,
-              color: "#fff",
-              fontSize: "var(--text-2xs)",
-              fontWeight: 800,
-            }}
-          >
-            {PHASE_META[nextStep.cesPhase].label.split(" ")[0]}
-          </span>
-        </div>
+        <NextStepPreview nextStep={nextStep} />
       )}
 
       <PlayerActions
