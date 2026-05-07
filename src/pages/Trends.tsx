@@ -57,7 +57,7 @@ const ViewSegment: React.FC<ViewSegmentProps> = ({ value, onChange }) => {
               fontWeight: 800,
               color: active ? "#ffffff" : "var(--text-secondary)",
               background: active
-                ? "linear-gradient(135deg, #5C6BC0, #7986CB)"
+                ? "var(--primary-gradient)"
                 : "transparent",
               boxShadow: active ? "0 4px 14px rgba(92, 107, 192, 0.3)" : "none",
               transition: "all 0.2s ease",

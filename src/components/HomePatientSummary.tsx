@@ -24,10 +24,10 @@ interface JointStat {
 
 // 심각도별 색상 — 빨강=심각, 주황=중등도, 앰버=경도, 그린=정상
 const SEVERITY_COLORS: Record<Severity, string> = {
-  정상: "#22C55E",
-  경도제한: "#F59E0B",
+  정상: "var(--success)",
+  경도제한: "var(--warning)",
   중등도제한: "#FB923C",
-  심각한제한: "#EF4444",
+  심각한제한: "var(--danger)",
 };
 
 const SEVERITY_LABELS: Record<Severity, string> = {
@@ -119,7 +119,7 @@ export const HomePatientSummary: React.FC<Props> = ({ patientId }) => {
   const vasTrendLabel =
     vasDelta < 0 ? "개선 중" : vasDelta > 0 ? "악화" : "변화 없음";
   const vasTrendColor =
-    vasDelta < 0 ? "#22C55E" : vasDelta > 0 ? "#EF4444" : "#5C6BC0";
+    vasDelta < 0 ? "var(--success)" : vasDelta > 0 ? "var(--danger)" : "var(--primary)";
 
   // Y축 동적 도메인 — 변화폭이 작아도 그래프에 뚜렷하게 보이도록
   const vasValues = vasData.map((d) => d.vas);

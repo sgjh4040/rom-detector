@@ -83,7 +83,7 @@ export const NeumoCircularGauge: React.FC<NeumoCircularGaugeProps> = ({
                         display: 'flex',
                         alignItems: 'baseline',
                         gap: '2px',
-                        color: '#5C6BC0',
+                        color: 'var(--primary)',
                         fontWeight: 900,
                         letterSpacing: '-0.03em',
                         lineHeight: 1,

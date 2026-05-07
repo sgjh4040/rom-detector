@@ -10,15 +10,25 @@
     --primary-gradient: linear-gradient(135deg, #5C6BC0, #7986CB);
 
     /* ── Semantic ───────────────────────────────────────── */
-    --success: #4CAF50;
-    --success-bg: rgba(76, 175, 80, 0.08);
-    --success-text: #2E7D32;
-    --warning: #FF9800;
-    --warning-bg: rgba(255, 152, 0, 0.08);
-    --warning-text: #E65100;
-    --danger: #EF5350;
-    --danger-bg: rgba(239, 83, 80, 0.08);
-    --danger-text: #C62828;
+    /*
+     * audit #17: 인라인 hex 와 토큰을 동일 hex 로 통일.
+     *  - success: #22C55E (CLAUDE.md "Play 그린", AngleDial/HomePatientSummary 정상색)
+     *  - warning: #F59E0B (CLAUDE.md "Pause 앰버")
+     *  - danger:  #EF4444 (severity '심각한제한', 인라인 다수)
+     * bg/text 변형도 새 hex 의 RGB 로 정렬.
+     */
+    --success: #22C55E;
+    --success-bg: rgba(34, 197, 94, 0.08);
+    --success-text: #15803D;
+    --warning: #F59E0B;
+    --warning-bg: rgba(245, 158, 11, 0.08);
+    --warning-text: #B45309;
+    --danger: #EF4444;
+    --danger-bg: rgba(239, 68, 68, 0.08);
+    --danger-text: #B91C1C;
+
+    /* 짙은 네이비 강조 — CesPlayerController 전용 SSOT */
+    --ink-strong: #1C3F6F;
 
     /* ── Surface & Backgrounds ─────────────────────────── */
     --bg: #F5F7FA;

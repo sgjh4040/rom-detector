@@ -230,7 +230,7 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
             style={{
               fontSize: "1.6rem",
               fontWeight: 900,
-              color: "#1C3F6F",
+              color: "var(--ink-strong)",
               lineHeight: 1.2,
             }}
           >
@@ -247,7 +247,7 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
     ? "#f87171"
     : isBreak && breakMeta
       ? breakMeta.color
-      : "#1C3F6F";
+      : "var(--ink-strong)";
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
@@ -323,7 +323,7 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
             style={{
               fontSize: "1.1rem",
               fontWeight: 900,
-              color: "#1C3F6F",
+              color: "var(--ink-strong)",
               fontVariantNumeric: "tabular-nums",
             }}
           >
@@ -369,7 +369,7 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
                   style={{
                     fontSize: "0.85rem",
                     fontWeight: 900,
-                    color: "#1C3F6F",
+                    color: "var(--ink-strong)",
                     fontVariantNumeric: "tabular-nums",
                   }}
                 >
@@ -400,7 +400,7 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
             전체 진행률
           </span>
           <span
-            style={{ fontSize: "0.7rem", fontWeight: 800, color: "#1C3F6F" }}
+            style={{ fontSize: "0.7rem", fontWeight: 800, color: "var(--ink-strong)" }}
           >
             {Math.round(progress)}%
           </span>
@@ -417,7 +417,7 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
             style={{
               height: "100%",
               width: `${progress}%`,
-              background: `linear-gradient(90deg, ${phase.color}, #1C3F6F)`,
+              background: `linear-gradient(90deg, ${phase.color}, var(--ink-strong))`,
               borderRadius: "var(--radius-pill)",
               transition: "width 0.5s ease",
             }}
@@ -452,7 +452,7 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
               다음
             </p>
             <p
-              style={{ fontSize: "0.85rem", fontWeight: 800, color: "#1C3F6F" }}
+              style={{ fontSize: "0.85rem", fontWeight: 800, color: "var(--ink-strong)" }}
             >
               {nextStep.exerciseName}
             </p>
@@ -483,7 +483,7 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
               padding: "0.9rem",
               borderRadius: "var(--radius-xs)",
               border: "none",
-              background: "#1C3F6F",
+              background: "var(--ink-strong)",
               color: "#fff",
               fontWeight: 800,
               fontSize: "0.9rem",
@@ -521,7 +521,7 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
               padding: "0.9rem",
               borderRadius: "var(--radius-xs)",
               border: "none",
-              background: isPaused ? "#4ade80" : "#F59E0B",
+              background: isPaused ? "#4ade80" : "var(--warning)",
               color: "#fff",
               fontWeight: 800,
               fontSize: "0.9rem",

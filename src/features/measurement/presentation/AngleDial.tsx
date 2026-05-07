@@ -12,10 +12,10 @@ interface Props {
 
 // 심각도별 호 색상
 const SEVERITY_COLORS: Record<Severity, string> = {
-  정상: "#22C55E",
-  경도제한: "#F59E0B",
+  정상: "var(--success)",
+  경도제한: "var(--warning)",
   중등도제한: "#FB923C",
-  심각한제한: "#EF4444",
+  심각한제한: "var(--danger)",
 };
 
 // SVG 반원 기하 — 왼쪽 시작점에서 오른쪽 끝점까지 위로 볼록한 반원
@@ -82,7 +82,7 @@ export const AngleDial: React.FC<Props> = ({ value, maxVal, normalVal }) => {
             y1={normalTickInner.y}
             x2={normalTickOuter.x}
             y2={normalTickOuter.y}
-            stroke="#5C6BC0"
+            stroke="var(--primary)"
             strokeWidth="2.5"
             strokeLinecap="round"
             opacity="0.85"
