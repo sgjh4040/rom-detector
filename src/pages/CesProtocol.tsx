@@ -1,11 +1,5 @@
 // CesProtocol.tsx — CES 재활 프로토콜 메인 페이지 (PRD 4-0: 200줄 이하)
-import React, {
-  useState,
-  useMemo,
-  useEffect,
-  useRef,
-  useCallback,
-} from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { loadRomSession, JOINTS } from "../lib/romData";
 import { analyzeMuscles } from "../lib/muscleAnalysis";
@@ -19,12 +13,12 @@ import {
   AlertTriangle,
   CheckCircle,
 } from "lucide-react";
-import { updatePhaseDuration } from "../features/session/data/cesTimeTracker";
 import { buildRoutineFromAnalysis } from "../lib/ces/cesRoutineBuilder";
 import type { CesStage } from "../lib/ces/cesTypes";
 import { type CesPhase } from "../lib/ces/CesPlayerTypes";
 import type { Side } from "../lib/romTypes";
 import { STAGES, getTargetMuscles } from "./cesProtocol/helpers";
+import { useCesProtocolTimer } from "./cesProtocol/useCesProtocolTimer";
 
 export const CesProtocol: React.FC = () => {
   const navigate = useNavigate();
@@ -34,30 +28,10 @@ export const CesProtocol: React.FC = () => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   // ── 타이머 (▶ 시작 버튼을 눌러야 작동) ──────────────────────────
-  const [seconds, setSeconds] = useState(0);
-  const [timerRunning, setTimerRunning] = useState(false);
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
-
-  useEffect(() => {
-    if (timerRunning) {
-      timerRef.current = setInterval(() => {
-        setSeconds((p) => p + 1);
-        // 1초마다 실시간(latest) 및 현재 1/2회차 세션(createdAt) 양쪽 모두에 시간 기록
-        updatePhaseDuration(activeStage, 1, session?.createdAt);
-      }, 1000);
-    } else if (timerRef.current) {
-      clearInterval(timerRef.current);
-    }
-    return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
-    };
-  }, [timerRunning, activeStage]);
-
-  const toggleTimer = useCallback(() => setTimerRunning((r) => !r), []);
-  const resetTimer = useCallback(() => {
-    setTimerRunning(false);
-    setSeconds(0);
-  }, []);
+  const { seconds, timerRunning, toggleTimer, resetTimer } = useCesProtocolTimer({
+    activeStage,
+    sessionCreatedAt: session?.createdAt,
+  });
 
   // ── 관절-방향 목록 ────────────────────────────────────────────────
   const jointSideList = useMemo(() => {
