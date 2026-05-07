@@ -35,6 +35,15 @@ export const saveCesHistory = (history: CesHistoryMap): void => {
     }
 };
 
+/** 4단계 누적 시간 기록을 모두 제거. (Settings 의 "전체 데이터 삭제"용) */
+export const clearCesHistory = (): void => {
+    try {
+        localStorage.removeItem(STORAGE_KEY);
+    } catch (e) {
+        console.error('Failed to clear CES history', e);
+    }
+};
+
 // [PRD 2-3] any 제거: PhaseDurations 의 4 단계 number 키만 안전하게 다루는 헬퍼.
 // stage 가 'lastUpdated' 같은 string 키를 받지 않도록 CesStage 로 좁혀 컴파일 타임에 차단한다.
 const addStage = (d: PhaseDurations, stage: CesStage, seconds: number): void => {

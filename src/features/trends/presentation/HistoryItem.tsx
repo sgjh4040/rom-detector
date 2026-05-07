@@ -1,5 +1,6 @@
 import React from 'react';
 import type { RomSession } from '../../../lib/romTypes';
+import { saveRomSession } from '../../../lib/romTypes';
 import { useNavigate } from 'react-router-dom';
 
 interface HistoryItemProps {
@@ -12,7 +13,7 @@ export const HistoryItem: React.FC<HistoryItemProps> = ({ session, index, total 
     const navigate = useNavigate();
 
     const openDetail = () => {
-        localStorage.setItem('rom_session', JSON.stringify(session));
+        saveRomSession(session);
         navigate('/results');
     };
 

@@ -14,6 +14,7 @@ import {
 import type { CesStage } from '../../../lib/ces/cesTypes';
 import { STAGE_COLORS } from '../../../lib/ces/CesPlayerTypes';
 import type { RomSession } from '../../../lib/romTypes';
+import { saveRomSession } from '../../../lib/romTypes';
 
 interface NeumoDashboardProps {
     sessions: RomSession[];
@@ -192,10 +193,7 @@ export const NeumoDashboard: React.FC<NeumoDashboardProps> = ({
                             // (그냥 navigate 만 하면 가장 최근 rom_session 으로 누적돼서
                             //  과거 회차를 고르고 재활을 시작해도 누적이 최신 회차로 흘러들어감)
                             if (currentSession) {
-                                localStorage.setItem(
-                                    'rom_session',
-                                    JSON.stringify(currentSession),
-                                );
+                                saveRomSession(currentSession);
                             }
                             navigate('/ces');
                         }}

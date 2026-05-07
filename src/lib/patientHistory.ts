@@ -78,6 +78,22 @@ export const addSessionToHistory = (patientId: string, session: RomSession): voi
     }
 };
 
+/** 모든 환자 + 환자별 히스토리 일괄 삭제. (Settings 의 "전체 데이터 삭제"용)
+ *  현재 활성 세션(rom_session)과 CES 누적 시간(ces_history_durations)은
+ *  각각 lib/romTypes.ts 의 clearRomSession() 과 cesTimeTracker.ts 의
+ *  clearCesHistory() 로 따로 비워야 한다. */
+export const clearAllPatientsAndHistory = (): void => {
+    try {
+        const patients = getPatients();
+        patients.forEach(p => {
+            localStorage.removeItem(`rom_history_${p.id}`);
+        });
+        localStorage.removeItem(PATIENTS_KEY);
+    } catch (error) {
+        console.error('전체 데이터 삭제 실패:', error);
+    }
+};
+
 /** 환자 정보와 모든 히스토리 삭제 */
 export const deletePatient = (patientId: string): void => {
     try {

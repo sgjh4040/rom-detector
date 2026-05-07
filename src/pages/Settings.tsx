@@ -4,7 +4,12 @@ import { useNavigate } from "react-router-dom";
 import { Download, Trash2, FileText, Users } from "lucide-react";
 import { AppLayout } from "../components/AppLayout";
 import { loadRomSession, clearRomSession } from "../lib/romTypes";
-import { getPatients, getPatientHistory } from "../lib/romData";
+import {
+  getPatients,
+  getPatientHistory,
+  clearAllPatientsAndHistory,
+} from "../lib/romData";
+import { clearCesHistory } from "../features/session/data/cesTimeTracker";
 
 /** 현재 localStorage의 환자/히스토리/세션을 JSON으로 묶어 파일로 다운로드 */
 const exportAllData = (): void => {
@@ -32,14 +37,11 @@ const exportAllData = (): void => {
   URL.revokeObjectURL(url);
 };
 
-/** 모든 환자/히스토리/세션을 localStorage에서 제거 */
+/** 모든 환자/히스토리/세션/CES 누적시간을 localStorage에서 제거.
+ *  매직 스트링/직접 접근 금지 — lib 래퍼만 사용. */
 const deleteAllData = (): void => {
-  const patients = getPatients();
-  patients.forEach((p) => {
-    localStorage.removeItem(`rom_history_${p.id}`);
-  });
-  localStorage.removeItem("rom_patients");
-  localStorage.removeItem("ces_history_durations");
+  clearAllPatientsAndHistory();
+  clearCesHistory();
   clearRomSession();
 };
 
