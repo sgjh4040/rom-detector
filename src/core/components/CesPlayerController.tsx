@@ -3,13 +3,12 @@ import React from "react";
 import type { CesPlayerStep } from "../../lib/ces/CesPlayerTypes";
 import { PHASE_META, BREAK_META } from "../../lib/ces/CesPlayerTypes";
 import { Coffee, ArrowRight } from "lucide-react";
-import { getPhaseSeconds } from "../../features/session/data/cesTimeTracker";
 import type { CesStage } from "../../lib/ces/cesTypes";
-import { PHASES, fmtMMSS } from "./cesPlayer/helpers";
 import { PlayerActions } from "./cesPlayer/PlayerActions";
 import { NextStepPreview } from "./cesPlayer/NextStepPreview";
 import { ProgressBar } from "./cesPlayer/ProgressBar";
 import { CountdownTimer } from "./cesPlayer/CountdownTimer";
+import { PhaseTimeCards } from "./cesPlayer/PhaseTimeCards";
 
 interface CesPlayerControllerProps {
   currentStep: CesPlayerStep;
@@ -72,20 +71,6 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
         [] as { phase: string; count: number }[],
       )
     : [];
-
-  // 1초마다 리렌더 — localStorage에 쌓이는 누적 시간을 실시간으로 반영
-  const [, forceTick] = React.useState(0);
-  React.useEffect(() => {
-    if (isPaused || isFinished) return;
-    const id = setInterval(() => forceTick((n) => n + 1), 1000);
-    return () => clearInterval(id);
-  }, [isPaused, isFinished]);
-
-  const phaseSeconds = PHASES.map((p) => ({
-    ...p,
-    seconds: getPhaseSeconds(p.stage, sessionCreatedAt),
-  }));
-  const totalSeconds = phaseSeconds.reduce((sum, p) => sum + p.seconds, 0);
 
   // ── 헤더: 현재 스텝 이름/페이즈 뱃지 ─────────────────────────
   const renderHeader = () => {
@@ -227,95 +212,13 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
 
       <CountdownTimer countdown={countdown} isBreak={isBreak} breakMeta={breakMeta} />
 
-      {/* 누적 운동 시간 — 4단계별 + 합계 (브레이크 포함 안됨) */}
-      <div
-        style={{
-          padding: "1rem",
-          background: "#fff",
-          borderRadius: "var(--radius-md)",
-          border: "1.5px solid #eef2f7",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "baseline",
-            marginBottom: "0.6rem",
-          }}
-        >
-          <span
-            style={{
-              fontSize: "var(--text-xs)",
-              fontWeight: 800,
-              color: "var(--text-secondary)",
-              textTransform: "uppercase",
-              letterSpacing: "0.08em",
-            }}
-          >
-            누적 운동 시간
-          </span>
-          <span
-            style={{
-              fontSize: "var(--text-lg)",
-              fontWeight: 900,
-              color: "var(--ink-strong)",
-              fontVariantNumeric: "tabular-nums",
-            }}
-          >
-            {fmtMMSS(totalSeconds)}
-          </span>
-        </div>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(4, 1fr)",
-            gap: "0.5rem",
-          }}
-        >
-          {phaseSeconds.map((p) => {
-            const isActive = !isBreak && p.stage === activeStage;
-            return (
-              <div
-                key={p.stage}
-                style={{
-                  padding: "0.5rem 0.4rem",
-                  borderRadius: "var(--radius-xs)",
-                  background: isActive ? `${p.color}15` : "#f7f9fc",
-                  border: isActive
-                    ? `1.5px solid ${p.color}`
-                    : "1.5px solid transparent",
-                  textAlign: "center",
-                  transition: "all 0.2s",
-                }}
-              >
-                <p
-                  style={{
-                    fontSize: "var(--text-2xs)",
-                    fontWeight: 800,
-                    color: p.color,
-                    textTransform: "uppercase",
-                    letterSpacing: "0.05em",
-                    marginBottom: "2px",
-                  }}
-                >
-                  {p.label}
-                </p>
-                <p
-                  style={{
-                    fontSize: "var(--text-sm)",
-                    fontWeight: 900,
-                    color: "var(--ink-strong)",
-                    fontVariantNumeric: "tabular-nums",
-                  }}
-                >
-                  {fmtMMSS(p.seconds)}
-                </p>
-              </div>
-            );
-          })}
-        </div>
-      </div>
+      <PhaseTimeCards
+        isPaused={isPaused}
+        isFinished={isFinished}
+        isBreak={isBreak}
+        activeStage={activeStage}
+        sessionCreatedAt={sessionCreatedAt}
+      />
 
       <ProgressBar progress={progress} accentColor={phase.color} />
 
