@@ -2,10 +2,11 @@ import React, { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ALL_CES_DATA } from "../lib/ces";
 import { JOINTS } from "../lib/romData";
-import { Activity, Brain, Wrench, Timer, Repeat, Hash, PlayCircle } from "lucide-react";
+import { Activity, Wrench, Timer, Repeat, Hash, PlayCircle } from "lucide-react";
 import { STAGE_LABELS } from "./cesInfo/helpers";
 import { JointSidebar } from "./cesInfo/JointSidebar";
 import { MovementTabs } from "./cesInfo/MovementTabs";
+import { MuscleAnalysisCard } from "./cesInfo/MuscleAnalysisCard";
 
 export const CesInfo: React.FC = () => {
   const navigate = useNavigate();
@@ -63,43 +64,10 @@ export const CesInfo: React.FC = () => {
           <div className="info-grid grid grid-cols-1 lg:grid-cols-12 gap-6">
             {/* --- Left Column: Muscle Map --- */}
             <div className="lg:col-span-4 space-y-6">
-              <section className="card muscle-map-card p-6 h-full">
-                <h3 className="section-title mb-4 flex items-center gap-2">
-                  <span className="icon text-primary"><Brain size={24} /></span> 근육 분석
-                </h3>
-                <div className="space-y-6">
-                  <div>
-                    <h4 className="flex items-center gap-2 text-red-400 font-bold mb-2">
-                      <span className="w-2 h-2 rounded-full bg-red-400"></span>
-                      과활성 (짧아짐)
-                    </h4>
-                    <div className="flex flex-wrap gap-2">
-                      {cesData.muscleMap[activeMovement]?.overactive.map(
-                        (m) => (
-                          <span key={m} className="muscle-tag overactive">
-                            {m}
-                          </span>
-                        ),
-                      )}
-                    </div>
-                  </div>
-                  <div>
-                    <h4 className="flex items-center gap-2 text-green-400 font-bold mb-2">
-                      <span className="w-2 h-2 rounded-full bg-green-400"></span>
-                      저활성 (약해짐)
-                    </h4>
-                    <div className="flex flex-wrap gap-2">
-                      {cesData.muscleMap[activeMovement]?.underactive.map(
-                        (m) => (
-                          <span key={m} className="muscle-tag underactive">
-                            {m}
-                          </span>
-                        ),
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </section>
+              <MuscleAnalysisCard
+                overactive={cesData.muscleMap[activeMovement]?.overactive ?? []}
+                underactive={cesData.muscleMap[activeMovement]?.underactive ?? []}
+              />
             </div>
 
             {/* --- Right Column: Protocols --- */}
