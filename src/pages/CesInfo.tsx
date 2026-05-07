@@ -2,35 +2,8 @@ import React, { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ALL_CES_DATA } from "../lib/ces";
 import { JOINTS } from "../lib/romData";
-import type { CesStage } from "../lib/ces/cesTypes";
-import { 
-  CircleSlash, Accessibility, Activity, CheckCircle2,
-  User, Crosshair, Watch, Footprints, MoveVertical,
-  Brain, Wrench, Timer, Repeat, Hash, PlayCircle
-} from "lucide-react";
-
-const STAGE_LABELS: Record<
-  CesStage,
-  { label: string; short: string; icon: React.ReactNode; color: string }
-> = {
-  inhibit: { label: "억제 (Inhibit)", short: "억제", icon: <CircleSlash size={18} color="currentColor" />, color: "var(--danger)" },
-  lengthen: { label: "신장 (Lengthen)", short: "신장", icon: <Accessibility size={18} color="currentColor" />, color: "var(--warning)" },
-  activate: { label: "활성 (Activate)", short: "활성", icon: <CheckCircle2 size={18} color="currentColor" />, color: "var(--success)" },
-  integrate: { label: "통합 (Integrate)", short: "통합", icon: <Activity size={18} color="currentColor" />, color: "var(--primary)" },
-};
-
-const JOINT_ICONS: Record<string, React.ReactNode> = {
-  shoulder: <User size={18} />,
-  elbow: <Crosshair size={18} />,
-  wrist: <Watch size={18} />,
-  hip: <Activity size={18} />,
-  knee: <Footprints size={18} />,
-  ankle: <Footprints size={18} />,
-  waist: <MoveVertical size={18} />,
-};
-
-const UPPER_BODY = ["shoulder", "elbow", "wrist", "waist"];
-const LOWER_BODY = ["hip", "knee", "ankle"];
+import { Activity, Brain, Wrench, Timer, Repeat, Hash, PlayCircle } from "lucide-react";
+import { STAGE_LABELS, JOINT_ICONS, UPPER_BODY, LOWER_BODY } from "./cesInfo/helpers";
 
 export const CesInfo: React.FC = () => {
   const navigate = useNavigate();
