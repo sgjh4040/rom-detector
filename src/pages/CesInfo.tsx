@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { ALL_CES_DATA } from "../lib/ces";
 import { JOINTS } from "../lib/romData";
 import { Activity, Brain, Wrench, Timer, Repeat, Hash, PlayCircle } from "lucide-react";
-import { STAGE_LABELS, JOINT_ICONS, UPPER_BODY, LOWER_BODY } from "./cesInfo/helpers";
+import { STAGE_LABELS } from "./cesInfo/helpers";
+import { JointSidebar } from "./cesInfo/JointSidebar";
 
 export const CesInfo: React.FC = () => {
   const navigate = useNavigate();
@@ -34,54 +35,12 @@ export const CesInfo: React.FC = () => {
 
   return (
     <div className="ces-dashboard page-bg-ces info-mode">
-      {/* --- Sidebar for Joint Selection --- */}
-      <div className="ces-sidebar">
-        <div className="sidebar-logo">
-          <span>●</span> CES 참고
-        </div>
-        <div className="sidebar-menu mt-8">
-          <div className="menu-group-label text-[10px] opacity-40 font-bold mb-2 ml-4 tracking-widest">
-            상체
-          </div>
-          {JOINTS.filter((j) => UPPER_BODY.includes(j.id)).map((j) => (
-            <button
-              key={j.id}
-              className={`sidebar-item ${selectedJointId === j.id ? "is-active" : ""}`}
-              onClick={() => setSelectedJointId(j.id)}
-            >
-              <span className="item-icon">{JOINT_ICONS[j.id]}</span>
-              <span className="item-label">{j.name.split(" (")[0]}</span>
-            </button>
-          ))}
-
-          <div className="menu-group-label text-[10px] opacity-40 font-bold mb-2 ml-4 mt-6 tracking-widest">
-            하체
-          </div>
-          {JOINTS.filter((j) => LOWER_BODY.includes(j.id)).map((j) => (
-            <button
-              key={j.id}
-              className={`sidebar-item ${selectedJointId === j.id ? "is-active" : ""}`}
-              onClick={() => setSelectedJointId(j.id)}
-            >
-              <span className="item-icon">{JOINT_ICONS[j.id]}</span>
-              <span className="item-label">{j.name.split(" (")[0]}</span>
-            </button>
-          ))}
-        </div>
-
-        <div className="sidebar-actions mt-auto">
-          <button className="btn-complete" onClick={() => navigate("/ces")}>
-            프로토콜 시작 <span>›</span>
-          </button>
-          <button
-            className="btn-close-circle"
-            onClick={() => navigate("/")}
-            aria-label="닫기"
-          >
-            ✕
-          </button>
-        </div>
-      </div>
+      <JointSidebar
+        selectedJointId={selectedJointId}
+        onSelect={setSelectedJointId}
+        onStartProtocol={() => navigate("/ces")}
+        onClose={() => navigate("/")}
+      />
 
       {/* --- Main Content Area --- */}
       <div className="ces-main scroll-y">
