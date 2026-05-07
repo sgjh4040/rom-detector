@@ -112,7 +112,7 @@ export const SparklineCard: React.FC<SparklineCardProps> = ({
             <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px' }}>
                 <span
                     style={{
-                        fontSize: '0.82rem',
+                        fontSize: 'var(--text-sm)',
                         fontWeight: 800,
                         color: 'var(--text-primary)',
                     }}
@@ -122,7 +122,7 @@ export const SparklineCard: React.FC<SparklineCardProps> = ({
                 {sublabel && (
                     <span
                         style={{
-                            fontSize: '0.65rem',
+                            fontSize: 'var(--text-2xs)',
                             fontWeight: 700,
                             color: 'var(--text-secondary)',
                             opacity: 0.7,
@@ -145,7 +145,7 @@ export const SparklineCard: React.FC<SparklineCardProps> = ({
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: '2px' }}>
                     <span
                         style={{
-                            fontSize: '1.5rem',
+                            fontSize: 'var(--text-xl)',
                             fontWeight: 900,
                             color: 'var(--text-primary)',
                             letterSpacing: '-0.02em',
@@ -157,7 +157,7 @@ export const SparklineCard: React.FC<SparklineCardProps> = ({
                     </span>
                     <span
                         style={{
-                            fontSize: '0.72rem',
+                            fontSize: 'var(--text-xs)',
                             fontWeight: 700,
                             color: 'var(--text-secondary)',
                             opacity: 0.65,
@@ -173,7 +173,7 @@ export const SparklineCard: React.FC<SparklineCardProps> = ({
                             display: 'inline-flex',
                             alignItems: 'center',
                             gap: '2px',
-                            fontSize: '0.7rem',
+                            fontSize: 'var(--text-xs)',
                             fontWeight: 800,
                             color: deltaColor,
                             fontVariantNumeric: 'tabular-nums',
@@ -260,7 +260,7 @@ export const SparklineCard: React.FC<SparklineCardProps> = ({
                         style={{
                             display: 'flex',
                             justifyContent: 'flex-end',
-                            fontSize: '0.62rem',
+                            fontSize: 'var(--text-2xs)',
                             fontWeight: 700,
                             color: 'var(--text-secondary)',
                             opacity: 0.6,
@@ -278,7 +278,7 @@ export const SparklineCard: React.FC<SparklineCardProps> = ({
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        fontSize: '0.62rem',
+                        fontSize: 'var(--text-2xs)',
                         fontWeight: 700,
                         color: 'var(--text-secondary)',
                         opacity: 0.35,

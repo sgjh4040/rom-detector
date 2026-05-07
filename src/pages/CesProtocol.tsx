@@ -270,7 +270,7 @@ export const CesProtocol: React.FC = () => {
               >
                 <span
                   style={{
-                    fontSize: "0.72rem",
+                    fontSize: "var(--text-xs)",
                     fontWeight: 800,
                     color: isActive ? s.color : "rgba(255,255,255,0.4)",
                     letterSpacing: "0.02em",
@@ -281,7 +281,7 @@ export const CesProtocol: React.FC = () => {
                 </span>
                 <span
                   style={{
-                    fontSize: "0.6rem",
+                    fontSize: "var(--text-2xs)",
                     fontWeight: 700,
                     color: isActive
                       ? "rgba(255,255,255,0.8)"
@@ -331,7 +331,7 @@ export const CesProtocol: React.FC = () => {
               width: "auto",
               boxShadow: "none",
               fontWeight: 800,
-              fontSize: "1.1rem",
+              fontSize: "var(--text-lg)",
               padding: "0.5rem 2rem 0.5rem 0.75rem",
               borderRadius: "var(--radius-xs)",
               border: "1px solid rgba(0,0,0,0.08)",
@@ -351,7 +351,7 @@ export const CesProtocol: React.FC = () => {
           </select>
           <span
             style={{
-              fontSize: "0.78rem",
+              fontSize: "var(--text-xs)",
               fontWeight: 700,
               color: "var(--text-secondary)",
               opacity: 0.7,
@@ -374,7 +374,7 @@ export const CesProtocol: React.FC = () => {
         <div className="muscle-balance-box">
           <h3
             className="main-title"
-            style={{ fontSize: "1.1rem", marginBottom: "1.5rem" }}
+            style={{ fontSize: "var(--text-lg)", marginBottom: "1.5rem" }}
           >
             Muscle Balance Status
           </h3>
@@ -391,7 +391,7 @@ export const CesProtocol: React.FC = () => {
                   <span
                     key={m}
                     style={{
-                      fontSize: "0.8rem",
+                      fontSize: "var(--text-sm)",
                       padding: "0.3rem 0.6rem",
                       background: "rgba(240,62,62,0.1)",
                       color: "var(--danger)",
@@ -416,7 +416,7 @@ export const CesProtocol: React.FC = () => {
                   <span
                     key={m}
                     style={{
-                      fontSize: "0.8rem",
+                      fontSize: "var(--text-sm)",
                       padding: "0.3rem 0.6rem",
                       background: "rgba(46,204,136,0.1)",
                       color: "var(--success)",

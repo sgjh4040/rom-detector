@@ -129,7 +129,7 @@ export const RomMeasurement: React.FC = () => {
         </div>
         <div className="rom-header__pct">
           {Math.floor(overallPct)}
-          <span style={{ fontSize: "0.75rem" }}>%</span>
+          <span style={{ fontSize: "var(--text-xs)" }}>%</span>
         </div>
       </header>
 

@@ -85,7 +85,7 @@ export const CesExercisePlayer: React.FC<CesExercisePlayerProps> = ({
               borderRadius: "var(--radius-pill)",
               background: stage.color,
               color: "#fff",
-              fontSize: "0.72rem",
+              fontSize: "var(--text-xs)",
               fontWeight: 800,
               letterSpacing: "0.03em",
             }}
@@ -94,7 +94,7 @@ export const CesExercisePlayer: React.FC<CesExercisePlayerProps> = ({
           </span>
           <span
             style={{
-              fontSize: "0.75rem",
+              fontSize: "var(--text-xs)",
               fontWeight: 700,
               color: "var(--text-secondary)",
               opacity: 0.7,
@@ -107,7 +107,7 @@ export const CesExercisePlayer: React.FC<CesExercisePlayerProps> = ({
         {/* 2행: 운동 이름 (크게) */}
         <h2
           style={{
-            fontSize: "1.5rem",
+            fontSize: "var(--text-xl)",
             fontWeight: 900,
             color: "var(--text-primary)",
             letterSpacing: "-0.02em",
@@ -132,7 +132,7 @@ export const CesExercisePlayer: React.FC<CesExercisePlayerProps> = ({
             <span
               className="flex items-center gap-1"
               style={{
-                fontSize: "0.8rem",
+                fontSize: "var(--text-sm)",
                 fontWeight: 700,
                 color: "var(--text-secondary)",
               }}
@@ -145,7 +145,7 @@ export const CesExercisePlayer: React.FC<CesExercisePlayerProps> = ({
           )}
           <span
             style={{
-              fontSize: "0.8rem",
+              fontSize: "var(--text-sm)",
               fontWeight: 700,
               color: "var(--primary)",
             }}
@@ -158,7 +158,7 @@ export const CesExercisePlayer: React.FC<CesExercisePlayerProps> = ({
         {current.description && (
           <p
             style={{
-              fontSize: "0.85rem",
+              fontSize: "var(--text-sm)",
               color: "var(--text-secondary)",
               lineHeight: 1.6,
               marginBottom: "4px",
@@ -285,7 +285,7 @@ export const CesExercisePlayer: React.FC<CesExercisePlayerProps> = ({
                 >
                   <span
                     style={{
-                      fontSize: "0.72rem",
+                      fontSize: "var(--text-xs)",
                       fontWeight: 800,
                       color: "var(--primary)",
                       opacity: 0.7,
@@ -295,7 +295,7 @@ export const CesExercisePlayer: React.FC<CesExercisePlayerProps> = ({
                   </span>
                   <span
                     style={{
-                      fontSize: "0.88rem",
+                      fontSize: "var(--text-sm)",
                       fontWeight: isActive ? 800 : 700,
                       color: isActive
                         ? "var(--text-primary)"
@@ -311,7 +311,7 @@ export const CesExercisePlayer: React.FC<CesExercisePlayerProps> = ({
                 {ex.tools && (
                   <span
                     style={{
-                      fontSize: "0.7rem",
+                      fontSize: "var(--text-xs)",
                       fontWeight: 600,
                       color: "var(--text-secondary)",
                       opacity: 0.65,
@@ -325,7 +325,7 @@ export const CesExercisePlayer: React.FC<CesExercisePlayerProps> = ({
               {/* 우측: 시간/세트 정보 */}
               <span
                 style={{
-                  fontSize: "0.75rem",
+                  fontSize: "var(--text-xs)",
                   fontWeight: 700,
                   color: isActive ? "var(--primary)" : "var(--text-secondary)",
                   whiteSpace: "nowrap",

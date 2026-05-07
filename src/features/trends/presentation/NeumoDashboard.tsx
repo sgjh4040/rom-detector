@@ -109,7 +109,7 @@ export const NeumoDashboard: React.FC<NeumoDashboardProps> = ({
                                 onClick={() => onSelectSession(s.createdAt)}
                                 style={{
                                     padding: '8px 14px',
-                                    fontSize: '0.78rem',
+                                    fontSize: 'var(--text-xs)',
                                     fontWeight: 700,
                                     whiteSpace: 'nowrap',
                                     flexShrink: 0,
@@ -146,7 +146,7 @@ export const NeumoDashboard: React.FC<NeumoDashboardProps> = ({
 
             <h2
                 className="text-2xl font-black tracking-tighter opacity-95"
-                style={{ marginBottom: '4px', marginTop: '8px', fontSize: '1.5rem' }}
+                style={{ marginBottom: '4px', marginTop: '8px', fontSize: 'var(--text-xl)' }}
             >
                 통계
             </h2>
@@ -165,7 +165,7 @@ export const NeumoDashboard: React.FC<NeumoDashboardProps> = ({
                         gap: '16px',
                     }}
                 >
-                    <div style={{ fontSize: '2.5rem', lineHeight: 1, opacity: 0.35 }} aria-hidden="true">
+                    <div style={{ fontSize: 'var(--text-3xl)', lineHeight: 1, opacity: 0.35 }} aria-hidden="true">
                         🏃
                     </div>
                     <p className="text-lg font-black" style={{ color: 'var(--text-primary)', margin: 0 }}>
@@ -185,7 +185,7 @@ export const NeumoDashboard: React.FC<NeumoDashboardProps> = ({
                             padding: '12px 28px',
                             borderRadius: 'var(--radius-pill)',
                             fontWeight: 800,
-                            fontSize: '0.95rem',
+                            fontSize: 'var(--text-base)',
                         }}
                         onClick={() => {
                             // 선택된 회차를 active session 으로 지정한 뒤 CES 재활 진입.
@@ -228,7 +228,7 @@ export const NeumoDashboard: React.FC<NeumoDashboardProps> = ({
                         <div style={{ textAlign: 'center' }}>
                             <p
                                 style={{
-                                    fontSize: '0.85rem',
+                                    fontSize: 'var(--text-sm)',
                                     fontWeight: 800,
                                     color: 'var(--text-secondary)',
                                     opacity: 0.75,

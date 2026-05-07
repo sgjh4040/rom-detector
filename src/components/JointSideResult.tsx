@@ -116,7 +116,7 @@ export const JointSideResult: React.FC<JointSideResultProps> = ({
               className="file-name"
               style={{
                 fontWeight: 800,
-                fontSize: "0.9rem",
+                fontSize: "var(--text-sm)",
                 color: "var(--text-primary)",
                 wordBreak: "keep-all",
               }}
@@ -127,7 +127,7 @@ export const JointSideResult: React.FC<JointSideResultProps> = ({
               <span
                 className={`badge ${res.severity === "정상" ? "badge-success" : res.severity === "심각한제한" ? "badge-danger" : "badge-warning"}`}
                 style={{
-                  fontSize: "0.65rem",
+                  fontSize: "var(--text-2xs)",
                   padding: "0.2rem 0.5rem",
                   fontWeight: 800,
                 }}
@@ -151,7 +151,7 @@ export const JointSideResult: React.FC<JointSideResultProps> = ({
               <div
                 className="flex items-center gap-1"
                 style={{
-                  fontSize: "1rem",
+                  fontSize: "var(--text-base)",
                   fontWeight: 800,
                   color: severityBgColor(res.severity),
                 }}
@@ -167,7 +167,7 @@ export const JointSideResult: React.FC<JointSideResultProps> = ({
                   style={{
                     display: "flex",
                     justifyContent: "space-between",
-                    fontSize: "0.75rem",
+                    fontSize: "var(--text-xs)",
                     fontWeight: 700,
                     color: "var(--text-secondary)",
                   }}
@@ -237,7 +237,7 @@ export const JointSideResult: React.FC<JointSideResultProps> = ({
                               left: "50%",
                               transform: "translateX(-50%)",
                               fontWeight: 900,
-                              fontSize: "0.85rem",
+                              fontSize: "var(--text-sm)",
                               color: barColor,
                               background: "rgba(255,255,255,0.9)",
                               padding: "2px 6px",
@@ -260,7 +260,7 @@ export const JointSideResult: React.FC<JointSideResultProps> = ({
                     return (
                       <div
                         style={{
-                          fontSize: "0.78rem",
+                          fontSize: "var(--text-xs)",
                           fontWeight: 700,
                           color: "var(--success)",
                           textAlign: "center",
@@ -280,7 +280,7 @@ export const JointSideResult: React.FC<JointSideResultProps> = ({
                   return (
                     <div
                       style={{
-                        fontSize: "0.78rem",
+                        fontSize: "var(--text-xs)",
                         fontWeight: 700,
                         color: "var(--text-secondary)",
                         textAlign: "center",

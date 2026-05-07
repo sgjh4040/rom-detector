@@ -80,6 +80,20 @@
     /* ── Font ───────────────────────────────────────────── */
     --font: 'Manrope', -apple-system, system-ui, sans-serif;
 
+    /* ── Font Size (audit #15: 인라인 44 종을 9 단계로 흡수) ─────────────
+     * Tailwind 표준 호환 + 의료 앱 보조 라벨용 단계 보강.
+     * 인라인 fontSize 새로 박지 말고 var(--text-*) 사용.
+     */
+    --text-2xs:     0.625rem;  /* 10px — 메타 라벨 / 도트 위 텍스트 */
+    --text-xs:      0.75rem;   /* 12px — 캡션 / 작은 라벨 */
+    --text-sm:      0.875rem;  /* 14px — 보조 텍스트 / 칩 */
+    --text-base:    1rem;      /* 16px — 본문 기본 */
+    --text-lg:      1.125rem;  /* 18px — 강조 본문 / 카드 제목 */
+    --text-xl:      1.5rem;    /* 24px — 섹션 제목 */
+    --text-2xl:     2rem;      /* 32px — 페이지 제목 / 큰 통계 숫자 */
+    --text-3xl:     2.5rem;    /* 40px — 강한 통계 숫자 / 큰 이모지 */
+    --text-display: 4.5rem;    /* 72px — 디스플레이 카운터 (CES 타이머 등) */
+
     /* ── Spacing ────────────────────────────────────────── */
     --space-xs: 0.25rem;
     --space-sm: 0.5rem;

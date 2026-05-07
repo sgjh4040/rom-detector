@@ -52,7 +52,7 @@ export const NeumoProgressBar: React.FC<NeumoProgressBarProps> = ({
                     />
                     <span
                         style={{
-                            fontSize: '0.9rem',
+                            fontSize: 'var(--text-sm)',
                             fontWeight: 800,
                             color: 'var(--text-primary)',
                             whiteSpace: 'nowrap',
@@ -63,7 +63,7 @@ export const NeumoProgressBar: React.FC<NeumoProgressBarProps> = ({
                     {sublabel && (
                         <span
                             style={{
-                                fontSize: '0.72rem',
+                                fontSize: 'var(--text-xs)',
                                 fontWeight: 600,
                                 color: 'var(--text-secondary)',
                                 opacity: 0.7,
@@ -76,7 +76,7 @@ export const NeumoProgressBar: React.FC<NeumoProgressBarProps> = ({
                 </div>
                 <span
                     style={{
-                        fontSize: '0.95rem',
+                        fontSize: 'var(--text-base)',
                         fontWeight: 900,
                         color: 'var(--text-primary)',
                         fontVariantNumeric: 'tabular-nums',

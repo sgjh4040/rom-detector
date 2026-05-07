@@ -49,7 +49,7 @@ export const HistoryItem: React.FC<HistoryItemProps> = ({ session, index, total 
             <span
                 aria-hidden="true"
                 style={{
-                    fontSize: '1.1rem',
+                    fontSize: 'var(--text-lg)',
                     fontWeight: 700,
                     color: 'var(--text-secondary)',
                     opacity: 0.4,

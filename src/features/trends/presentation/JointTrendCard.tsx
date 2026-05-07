@@ -137,7 +137,7 @@ export const JointTrendCard: React.FC<JointTrendCardProps> = ({ joint, history }
                         >
                             <span
                                 style={{
-                                    fontSize: '0.9rem',
+                                    fontSize: 'var(--text-sm)',
                                     fontWeight: 800,
                                     color: 'var(--text-primary)',
                                 }}
@@ -147,7 +147,7 @@ export const JointTrendCard: React.FC<JointTrendCardProps> = ({ joint, history }
                             </span>
                             <span
                                 style={{
-                                    fontSize: '0.72rem',
+                                    fontSize: 'var(--text-xs)',
                                     fontWeight: 700,
                                     color: 'var(--text-secondary)',
                                     opacity: 0.7,

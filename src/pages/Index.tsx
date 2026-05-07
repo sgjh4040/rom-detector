@@ -220,7 +220,7 @@ export const Index: React.FC = () => {
                   color: "var(--text-secondary)",
                 }}
               >
-                <p style={{ fontSize: "0.95rem", fontWeight: 600 }}>
+                <p style={{ fontSize: "var(--text-base)", fontWeight: 600 }}>
                   환자를 선택하거나 새로 등록해 주세요
                 </p>
               </div>

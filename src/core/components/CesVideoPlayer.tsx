@@ -90,13 +90,13 @@ export const CesVideoPlayer: React.FC<CesVideoPlayerProps> = ({
                             <Coffee size={36} strokeWidth={2.2} />
                         )}
                     </div>
-                    <p style={{ fontSize: '1.05rem', fontWeight: 800, margin: 0 }}>
+                    <p style={{ fontSize: 'var(--text-base)', fontWeight: 800, margin: 0 }}>
                         {breakKind === 'transition' ? '다음 운동 준비' : '세트 간 휴식'}
                     </p>
                     {upcomingExerciseName && (
                         <p
                             style={{
-                                fontSize: '0.82rem',
+                                fontSize: 'var(--text-sm)',
                                 fontWeight: 600,
                                 color: 'rgba(255,255,255,0.75)',
                                 margin: 0,
@@ -140,14 +140,14 @@ export const CesVideoPlayer: React.FC<CesVideoPlayerProps> = ({
                         style={{
                             color: 'rgba(255,255,255,0.7)',
                             fontWeight: 700,
-                            fontSize: '1rem',
+                            fontSize: 'var(--text-base)',
                             textAlign: 'center',
                             padding: '0 1rem',
                         }}
                     >
                         {exerciseName}
                     </p>
-                    <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.75rem' }}>
+                    <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 'var(--text-xs)' }}>
                         영상 준비 중
                     </p>
                 </div>

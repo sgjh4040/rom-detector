@@ -124,7 +124,7 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
                 borderRadius: "var(--radius-pill)",
                 background: breakMeta.color,
                 color: "#fff",
-                fontSize: "0.72rem",
+                fontSize: "var(--text-xs)",
                 fontWeight: 800,
                 letterSpacing: "0.05em",
               }}
@@ -134,7 +134,7 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
             </span>
             <span
               style={{
-                fontSize: "0.72rem",
+                fontSize: "var(--text-xs)",
                 color: "var(--text-secondary)",
                 fontWeight: 600,
               }}
@@ -145,7 +145,7 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
           <div>
             <p
               style={{
-                fontSize: "0.7rem",
+                fontSize: "var(--text-xs)",
                 color: "var(--text-secondary)",
                 fontWeight: 700,
                 textTransform: "uppercase",
@@ -157,7 +157,7 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
             </p>
             <h2
               style={{
-                fontSize: "1.6rem",
+                fontSize: "var(--text-xl)",
                 fontWeight: 900,
                 color: breakMeta.color,
                 lineHeight: 1.2,
@@ -179,7 +179,7 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
               borderRadius: "var(--radius-pill)",
               background: phase.color,
               color: "#fff",
-              fontSize: "0.72rem",
+              fontSize: "var(--text-xs)",
               fontWeight: 800,
               letterSpacing: "0.05em",
             }}
@@ -188,7 +188,7 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
           </span>
           <span
             style={{
-              fontSize: "0.72rem",
+              fontSize: "var(--text-xs)",
               color: "var(--text-secondary)",
               fontWeight: 600,
             }}
@@ -199,7 +199,7 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
         <div>
           <p
             style={{
-              fontSize: "0.7rem",
+              fontSize: "var(--text-xs)",
               color: "var(--text-secondary)",
               fontWeight: 700,
               letterSpacing: "0.08em",
@@ -216,7 +216,7 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
                 </>
               )}
             {phaseCounts.length > 0 && (
-              <span style={{ marginLeft: "0.5rem", opacity: 0.7, fontSize: "0.6rem" }}>
+              <span style={{ marginLeft: "0.5rem", opacity: 0.7, fontSize: "var(--text-2xs)" }}>
                 ({phaseCounts
                   .map((p) => {
                     const short = PHASE_META[p.phase as keyof typeof PHASE_META].label.split("(")[0].trim();
@@ -228,7 +228,7 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
           </p>
           <h2
             style={{
-              fontSize: "1.6rem",
+              fontSize: "var(--text-xl)",
               fontWeight: 900,
               color: "var(--ink-strong)",
               lineHeight: 1.2,
@@ -265,7 +265,7 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
       >
         <p
           style={{
-            fontSize: "4.5rem",
+            fontSize: "var(--text-display)",
             fontWeight: 900,
             lineHeight: 1,
             fontVariantNumeric: "tabular-nums",
@@ -279,7 +279,7 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
         {isWarning && (
           <p
             style={{
-              fontSize: "0.8rem",
+              fontSize: "var(--text-sm)",
               color: "#f87171",
               fontWeight: 800,
               marginTop: "0.5rem",
@@ -310,7 +310,7 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
         >
           <span
             style={{
-              fontSize: "0.7rem",
+              fontSize: "var(--text-xs)",
               fontWeight: 800,
               color: "var(--text-secondary)",
               textTransform: "uppercase",
@@ -321,7 +321,7 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
           </span>
           <span
             style={{
-              fontSize: "1.1rem",
+              fontSize: "var(--text-lg)",
               fontWeight: 900,
               color: "var(--ink-strong)",
               fontVariantNumeric: "tabular-nums",
@@ -355,7 +355,7 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
               >
                 <p
                   style={{
-                    fontSize: "0.55rem",
+                    fontSize: "var(--text-2xs)",
                     fontWeight: 800,
                     color: p.color,
                     textTransform: "uppercase",
@@ -367,7 +367,7 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
                 </p>
                 <p
                   style={{
-                    fontSize: "0.85rem",
+                    fontSize: "var(--text-sm)",
                     fontWeight: 900,
                     color: "var(--ink-strong)",
                     fontVariantNumeric: "tabular-nums",
@@ -392,7 +392,7 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
         >
           <span
             style={{
-              fontSize: "0.7rem",
+              fontSize: "var(--text-xs)",
               fontWeight: 700,
               color: "var(--text-secondary)",
             }}
@@ -400,7 +400,7 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
             전체 진행률
           </span>
           <span
-            style={{ fontSize: "0.7rem", fontWeight: 800, color: "var(--ink-strong)" }}
+            style={{ fontSize: "var(--text-xs)", fontWeight: 800, color: "var(--ink-strong)" }}
           >
             {Math.round(progress)}%
           </span>
@@ -437,13 +437,13 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
             gap: "0.75rem",
           }}
         >
-          <span className="flex items-center" style={{ fontSize: "1rem" }}>
+          <span className="flex items-center" style={{ fontSize: "var(--text-base)" }}>
             <SkipForward size={18} />
           </span>
           <div>
             <p
               style={{
-                fontSize: "0.65rem",
+                fontSize: "var(--text-2xs)",
                 color: "var(--text-secondary)",
                 fontWeight: 700,
                 textTransform: "uppercase",
@@ -452,7 +452,7 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
               다음
             </p>
             <p
-              style={{ fontSize: "0.85rem", fontWeight: 800, color: "var(--ink-strong)" }}
+              style={{ fontSize: "var(--text-sm)", fontWeight: 800, color: "var(--ink-strong)" }}
             >
               {nextStep.exerciseName}
             </p>
@@ -464,7 +464,7 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
               borderRadius: "var(--radius-xs)",
               background: PHASE_META[nextStep.cesPhase].color,
               color: "#fff",
-              fontSize: "0.65rem",
+              fontSize: "var(--text-2xs)",
               fontWeight: 800,
             }}
           >
@@ -486,7 +486,7 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
               background: "var(--ink-strong)",
               color: "#fff",
               fontWeight: 800,
-              fontSize: "0.9rem",
+              fontSize: "var(--text-sm)",
               cursor: "pointer",
             }}
           >
@@ -503,7 +503,7 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
               background: breakMeta.color,
               color: "#fff",
               fontWeight: 800,
-              fontSize: "0.9rem",
+              fontSize: "var(--text-sm)",
               cursor: "pointer",
               display: "inline-flex",
               alignItems: "center",
@@ -524,7 +524,7 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
               background: isPaused ? "#4ade80" : "var(--warning)",
               color: "#fff",
               fontWeight: 800,
-              fontSize: "0.9rem",
+              fontSize: "var(--text-sm)",
               cursor: "pointer",
               transition: "background 0.2s",
             }}
@@ -549,7 +549,7 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
             background: "#fff",
             color: "#6b7280",
             fontWeight: 800,
-            fontSize: "0.9rem",
+            fontSize: "var(--text-sm)",
             cursor: "pointer",
           }}
         >

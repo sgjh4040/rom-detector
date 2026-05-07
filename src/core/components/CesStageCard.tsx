@@ -79,7 +79,7 @@ export const CesStageCard: React.FC<Props> = ({
       >
         <span
           className="flex items-center gap-2"
-          style={{ fontSize: "1.05rem", fontWeight: 700, color: meta.color }}
+          style={{ fontSize: "var(--text-base)", fontWeight: 700, color: meta.color }}
         >
           {meta.icon} {meta.label}
         </span>
@@ -98,7 +98,7 @@ export const CesStageCard: React.FC<Props> = ({
                   key={ex.id}
                   type="button"
                   className={`btn ${i === activeIdx ? "btn-primary" : "btn-outline"}`}
-                  style={{ fontSize: "0.8rem", padding: "0.3rem 0.75rem" }}
+                  style={{ fontSize: "var(--text-sm)", padding: "0.3rem 0.75rem" }}
                   onClick={() => setActiveIdx(i)}
                 >
                   {i + 1}. {ex.name}
@@ -120,7 +120,7 @@ export const CesStageCard: React.FC<Props> = ({
                   <p
                     className="flex items-center gap-1"
                     style={{
-                      fontSize: "0.8rem",
+                      fontSize: "var(--text-sm)",
                       color: meta.color,
                       marginBottom: "0.5rem",
                     }}
@@ -130,7 +130,7 @@ export const CesStageCard: React.FC<Props> = ({
                 )}
                 <p
                   style={{
-                    fontSize: "0.9rem",
+                    fontSize: "var(--text-sm)",
                     lineHeight: 1.7,
                     color: "var(--text-secondary)",
                   }}
@@ -139,7 +139,7 @@ export const CesStageCard: React.FC<Props> = ({
                 </p>
                 <div
                   className="flex gap-3"
-                  style={{ marginTop: "0.75rem", fontSize: "0.875rem" }}
+                  style={{ marginTop: "0.75rem", fontSize: "var(--text-sm)" }}
                 >
                   {current.sets && (
                     <span className="badge badge-success">

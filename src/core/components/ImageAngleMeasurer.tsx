@@ -86,7 +86,7 @@ export const ImageAngleMeasurer: React.FC<Props> = ({ onAngleConfirmed }) => {
           >
             <p
               style={{
-                fontSize: "0.9rem",
+                fontSize: "var(--text-sm)",
                 fontWeight: 600,
                 marginBottom: "0.5rem",
                 color: "var(--primary)",
@@ -103,7 +103,7 @@ export const ImageAngleMeasurer: React.FC<Props> = ({ onAngleConfirmed }) => {
                   className={`badge ${i < points.length ? "badge-success" : "badge-outline"}`}
                   style={{
                     flex: 1,
-                    fontSize: "0.7rem",
+                    fontSize: "var(--text-xs)",
                     textAlign: "center",
                     padding: "0.4rem",
                   }}
@@ -149,7 +149,7 @@ export const ImageAngleMeasurer: React.FC<Props> = ({ onAngleConfirmed }) => {
             >
               <div className="flex justify-between items-center mb-2">
                 <span
-                  style={{ fontSize: "0.8rem", color: "var(--text-secondary)" }}
+                  style={{ fontSize: "var(--text-sm)", color: "var(--text-secondary)" }}
                 >
                   측정된 각도
                 </span>
@@ -157,7 +157,7 @@ export const ImageAngleMeasurer: React.FC<Props> = ({ onAngleConfirmed }) => {
                   type="button"
                   className={`btn ${isInverted ? "btn-primary" : "btn-outline"}`}
                   style={{
-                    fontSize: "0.75rem",
+                    fontSize: "var(--text-xs)",
                     padding: "0.25rem 0.75rem",
                     height: "auto",
                   }}
@@ -168,7 +168,7 @@ export const ImageAngleMeasurer: React.FC<Props> = ({ onAngleConfirmed }) => {
               </div>
               <p
                 style={{
-                  fontSize: "2.5rem",
+                  fontSize: "var(--text-3xl)",
                   fontWeight: 900,
                   color: "var(--primary)",
                   lineHeight: 1,
@@ -197,8 +197,8 @@ export const ImageAngleMeasurer: React.FC<Props> = ({ onAngleConfirmed }) => {
             color: "var(--text-secondary)",
           }}
         >
-          <p className="flex justify-center" style={{ fontSize: "2rem", marginBottom: "0.5rem" }}><Camera size={32} /></p>
-          <p style={{ fontSize: "0.875rem", lineHeight: 1.5 }}>
+          <p className="flex justify-center" style={{ fontSize: "var(--text-2xl)", marginBottom: "0.5rem" }}><Camera size={32} /></p>
+          <p style={{ fontSize: "var(--text-sm)", lineHeight: 1.5 }}>
             사진을 불러오면 3점을 클릭해서
             <br />
             관절 각도를 직접 측정할 수 있습니다.

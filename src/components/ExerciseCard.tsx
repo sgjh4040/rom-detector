@@ -39,12 +39,12 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({ exercise }) => (
         {/* 텍스트 정보 */}
         <div style={{ padding: '1rem' }}>
             <div className="flex justify-between items-center mb-1">
-                <h3 style={{ fontSize: '1rem' }}>{exercise.title}</h3>
+                <h3 style={{ fontSize: 'var(--text-base)' }}>{exercise.title}</h3>
                 {exercise.level && (
-                    <span className="badge badge-blue" style={{ fontSize: '0.7rem' }}>{exercise.level}</span>
+                    <span className="badge badge-blue" style={{ fontSize: 'var(--text-xs)' }}>{exercise.level}</span>
                 )}
             </div>
-            <p style={{ fontSize: '0.825rem', lineHeight: 1.55, color: 'var(--text-secondary)' }}>
+            <p style={{ fontSize: 'var(--text-sm)', lineHeight: 1.55, color: 'var(--text-secondary)' }}>
                 {exercise.description}
             </p>
         </div>

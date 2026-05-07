@@ -254,7 +254,7 @@ export const CesPlayerPage: React.FC = () => {
       <div className="ces-player-anatomy">
         <p
           style={{
-            fontSize: "0.65rem",
+            fontSize: "var(--text-2xs)",
             color: "var(--text-secondary)",
             fontWeight: 700,
             textTransform: "uppercase",

@@ -52,7 +52,7 @@ export const PatientSelector: React.FC<PatientSelectorProps> = ({
               style={{
                 minHeight: "40px",
                 padding: "0.5rem 0.9rem",
-                fontSize: "0.8rem",
+                fontSize: "var(--text-sm)",
                 fontWeight: 700,
               }}
             >
@@ -67,7 +67,7 @@ export const PatientSelector: React.FC<PatientSelectorProps> = ({
               style={{
                 minHeight: "40px",
                 padding: "0.5rem 0.9rem",
-                fontSize: "0.8rem",
+                fontSize: "var(--text-sm)",
                 fontWeight: 700,
               }}
             >
@@ -90,7 +90,7 @@ export const PatientSelector: React.FC<PatientSelectorProps> = ({
             border: "1px dashed rgba(92, 107, 192, 0.35)",
             borderRadius: "var(--radius-sm)",
             color: "var(--primary)",
-            fontSize: "0.8rem",
+            fontSize: "var(--text-sm)",
             fontWeight: 700,
           }}
         >
@@ -129,7 +129,7 @@ export const PatientSelector: React.FC<PatientSelectorProps> = ({
                   className={`btn ${patientId === p.id ? "btn-primary" : "btn-outline"}`}
                   style={{
                     whiteSpace: "nowrap",
-                    fontSize: "0.875rem",
+                    fontSize: "var(--text-sm)",
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "flex-start",
@@ -145,7 +145,7 @@ export const PatientSelector: React.FC<PatientSelectorProps> = ({
                   </span>
                   <span
                     style={{
-                      fontSize: "0.68rem",
+                      fontSize: "var(--text-2xs)",
                       fontWeight: 600,
                       opacity: 0.75,
                     }}
@@ -187,7 +187,7 @@ export const PatientSelector: React.FC<PatientSelectorProps> = ({
                     <span
                       style={{
                         color: "var(--text-secondary)",
-                        fontSize: "0.8rem",
+                        fontSize: "var(--text-sm)",
                       }}
                     >
                       ({p.age}세)
@@ -195,7 +195,7 @@ export const PatientSelector: React.FC<PatientSelectorProps> = ({
                   </div>
                   <button
                     className="btn btn-danger btn-small"
-                    style={{ padding: "0.2rem 0.4rem", fontSize: "0.75rem" }}
+                    style={{ padding: "0.2rem 0.4rem", fontSize: "var(--text-xs)" }}
                     onClick={() => handleDeletePatient(p.id)}
                   >
                     삭제

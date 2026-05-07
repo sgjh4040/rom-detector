@@ -53,7 +53,7 @@ const ViewSegment: React.FC<ViewSegmentProps> = ({ value, onChange }) => {
               borderRadius: "var(--radius-pill)",
               border: "none",
               cursor: "pointer",
-              fontSize: "0.8rem",
+              fontSize: "var(--text-sm)",
               fontWeight: 800,
               color: active ? "#ffffff" : "var(--text-secondary)",
               background: active
@@ -153,14 +153,14 @@ export const Trends: React.FC = () => {
               style={{
                 padding: "6px 14px",
                 borderRadius: "var(--radius-xs)",
-                fontSize: "0.8rem",
+                fontSize: "var(--text-sm)",
               }}
             >
               ← 뒤로가기
             </button>
             <h1
               className="text-3xl font-black tracking-tighter opacity-90"
-              style={{ fontSize: "1.75rem", marginBottom: "4px" }}
+              style={{ fontSize: "var(--text-2xl)", marginBottom: "4px" }}
             >
               측정 기록
             </h1>
@@ -207,7 +207,7 @@ export const Trends: React.FC = () => {
                 </h3>
                 <span
                   style={{
-                    fontSize: "0.72rem",
+                    fontSize: "var(--text-xs)",
                     fontWeight: 700,
                     color: "var(--text-secondary)",
                     opacity: 0.7,

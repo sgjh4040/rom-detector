@@ -12,7 +12,7 @@ export const JointSelector: React.FC<JointSelectorProps> = ({
     return (
         <div className="mb-6">
             <h2 className="mt-6 mb-2">관절 선택
-                <span style={{ fontSize: '0.875rem', fontWeight: 400, color: 'var(--text-secondary)', marginLeft: '0.5rem' }}>
+                <span style={{ fontSize: 'var(--text-sm)', fontWeight: 400, color: 'var(--text-secondary)', marginLeft: '0.5rem' }}>
                     (복수 선택 가능)
                 </span>
             </h2>

@@ -89,7 +89,7 @@ export const EmptyPatientState: React.FC<EmptyPatientStateProps> = ({
 
           <h2
             style={{
-              fontSize: "1.5rem",
+              fontSize: "var(--text-xl)",
               fontWeight: 900,
               color: "var(--text-primary)",
               marginBottom: "0.5rem",
@@ -100,7 +100,7 @@ export const EmptyPatientState: React.FC<EmptyPatientStateProps> = ({
           </h2>
           <p
             style={{
-              fontSize: "0.95rem",
+              fontSize: "var(--text-base)",
               color: "var(--text-secondary)",
               fontWeight: 600,
               marginBottom: "1.75rem",
@@ -160,7 +160,7 @@ export const EmptyPatientState: React.FC<EmptyPatientStateProps> = ({
               </div>
               <div
                 style={{
-                  fontSize: "0.85rem",
+                  fontSize: "var(--text-sm)",
                   fontWeight: 800,
                   color: "var(--text-primary)",
                 }}
@@ -169,7 +169,7 @@ export const EmptyPatientState: React.FC<EmptyPatientStateProps> = ({
               </div>
               <div
                 style={{
-                  fontSize: "0.72rem",
+                  fontSize: "var(--text-xs)",
                   fontWeight: 600,
                   color: "var(--text-secondary)",
                   lineHeight: 1.45,

@@ -25,9 +25,9 @@ export const YoutubePlayer: React.FC<Props> = ({ youtubeId, title }) => {
                 gap: '0.4rem',
                 border: '1px solid rgba(0,0,0,0.04)',
             }}>
-                <span style={{ fontSize: '1.5rem', opacity: 0.4 }}>🎬</span>
+                <span style={{ fontSize: 'var(--text-xl)', opacity: 0.4 }}>🎬</span>
                 <p style={{
-                    fontSize: '0.78rem',
+                    fontSize: 'var(--text-xs)',
                     fontWeight: 700,
                     opacity: 0.5,
                     margin: 0,
@@ -35,7 +35,7 @@ export const YoutubePlayer: React.FC<Props> = ({ youtubeId, title }) => {
                     {title || '영상 준비 중'}
                 </p>
                 <p style={{
-                    fontSize: '0.65rem',
+                    fontSize: 'var(--text-2xs)',
                     fontWeight: 600,
                     opacity: 0.35,
                     margin: 0,
@@ -54,7 +54,7 @@ export const YoutubePlayer: React.FC<Props> = ({ youtubeId, title }) => {
                     alignItems: 'center', justifyContent: 'center',
                     backgroundColor: 'var(--bg-color)',
                 }}>
-                    <span style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>로딩 중...</span>
+                    <span style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-sm)' }}>로딩 중...</span>
                 </div>
             )}
             <iframe

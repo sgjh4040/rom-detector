@@ -94,7 +94,7 @@ export const Settings: React.FC = () => {
               style={{
                 padding: "6px 14px",
                 borderRadius: "var(--radius-xs)",
-                fontSize: "0.8rem",
+                fontSize: "var(--text-sm)",
               }}
             >
               ← 뒤로가기
@@ -128,7 +128,7 @@ export const Settings: React.FC = () => {
               >
                 <div
                   style={{
-                    fontSize: "0.7rem",
+                    fontSize: "var(--text-xs)",
                     fontWeight: 700,
                     color: "var(--text-secondary)",
                     marginBottom: "4px",
@@ -138,7 +138,7 @@ export const Settings: React.FC = () => {
                 </div>
                 <div
                   style={{
-                    fontSize: "1.4rem",
+                    fontSize: "var(--text-xl)",
                     fontWeight: 900,
                     color: "var(--text-primary)",
                   }}
@@ -157,7 +157,7 @@ export const Settings: React.FC = () => {
               >
                 <div
                   style={{
-                    fontSize: "0.7rem",
+                    fontSize: "var(--text-xs)",
                     fontWeight: 700,
                     color: "var(--text-secondary)",
                     marginBottom: "4px",
@@ -167,7 +167,7 @@ export const Settings: React.FC = () => {
                 </div>
                 <div
                   style={{
-                    fontSize: "1.4rem",
+                    fontSize: "var(--text-xl)",
                     fontWeight: 900,
                     color: "var(--text-primary)",
                   }}
@@ -204,7 +204,7 @@ export const Settings: React.FC = () => {
 
             <p
               style={{
-                fontSize: "0.72rem",
+                fontSize: "var(--text-xs)",
                 color: "var(--text-secondary)",
                 marginTop: "10px",
                 lineHeight: 1.5,
@@ -250,7 +250,7 @@ export const Settings: React.FC = () => {
             style={{
               textAlign: "center",
               marginTop: "3rem",
-              fontSize: "0.8rem",
+              fontSize: "var(--text-sm)",
               color: "var(--text-secondary)",
             }}
           >

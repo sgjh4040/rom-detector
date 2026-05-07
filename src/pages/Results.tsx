@@ -168,7 +168,7 @@ export const Results: React.FC = () => {
               style={{
                 padding: "6px 14px",
                 borderRadius: "var(--radius-xs)",
-                fontSize: "0.8rem",
+                fontSize: "var(--text-sm)",
               }}
             >
               ← 뒤로가기
@@ -219,7 +219,7 @@ export const Results: React.FC = () => {
                 ? "rgba(239, 68, 68, 0.18)"
                 : "rgba(34, 197, 94, 0.2)"
             }`,
-            fontSize: "0.88rem",
+            fontSize: "var(--text-sm)",
             fontWeight: 700,
             color: "var(--text-primary)",
             lineHeight: 1.5,
@@ -244,7 +244,7 @@ export const Results: React.FC = () => {
                 총 {history.length}회 측정
               </span>
             </div>
-            <p style={{ fontSize: "0.875rem", padding: "0 1.25rem 1rem" }}>
+            <p style={{ fontSize: "var(--text-sm)", padding: "0 1.25rem 1rem" }}>
               첫 측정 대비 변화량 확인 (클릭 시 추이 분석)
             </p>
           </div>
