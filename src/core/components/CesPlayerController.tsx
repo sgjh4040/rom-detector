@@ -5,10 +5,11 @@ import { PHASE_META, BREAK_META } from "../../lib/ces/CesPlayerTypes";
 import { Coffee, ArrowRight } from "lucide-react";
 import { getPhaseSeconds } from "../../features/session/data/cesTimeTracker";
 import type { CesStage } from "../../lib/ces/cesTypes";
-import { PHASES, fmtMMSS, pad } from "./cesPlayer/helpers";
+import { PHASES, fmtMMSS } from "./cesPlayer/helpers";
 import { PlayerActions } from "./cesPlayer/PlayerActions";
 import { NextStepPreview } from "./cesPlayer/NextStepPreview";
 import { ProgressBar } from "./cesPlayer/ProgressBar";
+import { CountdownTimer } from "./cesPlayer/CountdownTimer";
 
 interface CesPlayerControllerProps {
   currentStep: CesPlayerStep;
@@ -44,12 +45,9 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
   onRestart,
   onSkipBreak,
 }) => {
-  const mins = Math.floor(countdown / 60);
-  const secs = countdown % 60;
   const isBreak = currentStep.kind === "break";
   const phase = PHASE_META[currentStep.cesPhase];
   const breakMeta = isBreak ? BREAK_META[currentStep.breakKind] : null;
-  const isWarning = countdown <= 3 && countdown > 0;
   const activeStage = currentStep.cesPhase.toLowerCase() as CesStage;
 
   // 운동 전용 카운트 (break 제외)
@@ -223,55 +221,11 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
     );
   };
 
-  // 카운트다운 박스 배경 — 브레이크일 땐 breakMeta.bgColor
-  const countdownBg = isBreak && breakMeta ? breakMeta.bgColor : "rgba(28,63,111,0.05)";
-  const countdownColor = isWarning
-    ? "#f87171"
-    : isBreak && breakMeta
-      ? breakMeta.color
-      : "var(--ink-strong)";
-
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
       {renderHeader()}
 
-      {/* 카운트다운 타이머 */}
-      <div
-        style={{
-          textAlign: "center",
-          padding: "1.5rem",
-          background: countdownBg,
-          borderRadius: "var(--radius-md)",
-          transition: "background 0.3s",
-        }}
-      >
-        <p
-          style={{
-            fontSize: "var(--text-display)",
-            fontWeight: 900,
-            lineHeight: 1,
-            fontVariantNumeric: "tabular-nums",
-            color: countdownColor,
-            transition: "color 0.3s",
-            letterSpacing: "-0.02em",
-          }}
-        >
-          {pad(mins)}:{pad(secs)}
-        </p>
-        {isWarning && (
-          <p
-            style={{
-              fontSize: "var(--text-sm)",
-              color: "#f87171",
-              fontWeight: 800,
-              marginTop: "0.5rem",
-              animation: "pulse-slow 0.5s infinite",
-            }}
-          >
-            {isBreak ? "곧 다음 스텝 시작!" : "곧 다음 운동으로 전환됩니다!"}
-          </p>
-        )}
-      </div>
+      <CountdownTimer countdown={countdown} isBreak={isBreak} breakMeta={breakMeta} />
 
       {/* 누적 운동 시간 — 4단계별 + 합계 (브레이크 포함 안됨) */}
       <div
