@@ -14,6 +14,7 @@ import { getTargetMuscles } from "./cesProtocol/helpers";
 import { useCesProtocolTimer } from "./cesProtocol/useCesProtocolTimer";
 import { TimerCard } from "./cesProtocol/TimerCard";
 import { StageTabs } from "./cesProtocol/StageTabs";
+import { JointSideHeader } from "./cesProtocol/JointSideHeader";
 
 export const CesProtocol: React.FC = () => {
   const navigate = useNavigate();
@@ -151,53 +152,16 @@ export const CesProtocol: React.FC = () => {
 
       {/* ─── 메인 패널 ─────────────────────────────────────── */}
       <div className="ces-main">
-        {/* 상단 헤더 — 관절/방향 + 환자 요약 (압축) */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginBottom: "1.25rem",
-            gap: "12px",
+        <JointSideHeader
+          jointSideList={jointSideList}
+          activeJointSide={activeJointSide}
+          onChange={(id) => {
+            setActiveJointSide(id);
+            setActiveIndex(0);
           }}
-        >
-          <select
-            className="form-select"
-            style={{
-              width: "auto",
-              boxShadow: "none",
-              fontWeight: 800,
-              fontSize: "var(--text-lg)",
-              padding: "0.5rem 2rem 0.5rem 0.75rem",
-              borderRadius: "var(--radius-xs)",
-              border: "1px solid rgba(0,0,0,0.08)",
-              background: "rgba(255,255,255,0.7)",
-            }}
-            value={activeJointSide}
-            onChange={(e) => {
-              setActiveJointSide(e.target.value);
-              setActiveIndex(0);
-            }}
-          >
-            {jointSideList.map((js) => (
-              <option key={js.id} value={js.id}>
-                {js.label}
-              </option>
-            ))}
-          </select>
-          <span
-            style={{
-              fontSize: "var(--text-xs)",
-              fontWeight: 700,
-              color: "var(--text-secondary)",
-              opacity: 0.7,
-              whiteSpace: "nowrap",
-            }}
-          >
-            {session?.patientName ?? "환자"}
-            {session?.patientAge ? ` · ${session.patientAge}세` : ""}
-          </span>
-        </div>
+          patientName={session?.patientName}
+          patientAge={session?.patientAge}
+        />
 
         <CesExercisePlayer
           exercises={exercises}
