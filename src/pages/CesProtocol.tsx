@@ -10,9 +10,10 @@ import { buildRoutineFromAnalysis } from "../lib/ces/cesRoutineBuilder";
 import type { CesStage } from "../lib/ces/cesTypes";
 import { type CesPhase } from "../lib/ces/CesPlayerTypes";
 import type { Side } from "../lib/romTypes";
-import { STAGES, getTargetMuscles } from "./cesProtocol/helpers";
+import { getTargetMuscles } from "./cesProtocol/helpers";
 import { useCesProtocolTimer } from "./cesProtocol/useCesProtocolTimer";
 import { TimerCard } from "./cesProtocol/TimerCard";
+import { StageTabs } from "./cesProtocol/StageTabs";
 
 export const CesProtocol: React.FC = () => {
   const navigate = useNavigate();
@@ -117,78 +118,19 @@ export const CesProtocol: React.FC = () => {
           currentEx={currentEx}
         />
 
-        {/* 단계 세그먼트 컨트롤 */}
-        <div
-          role="tablist"
-          style={{
-            display: "flex",
-            gap: "4px",
-            padding: "4px",
-            background: "rgba(255, 255, 255, 0.06)",
-            borderRadius: "var(--radius-sm)",
-            border: "1px solid rgba(255, 255, 255, 0.08)",
-            marginBottom: "1.25rem",
+        <StageTabs
+          activeStage={activeStage}
+          stageCounts={{
+            inhibit: analysis.inhibit?.length ?? 0,
+            lengthen: analysis.lengthen?.length ?? 0,
+            activate: analysis.activate?.length ?? 0,
+            integrate: analysis.integrate?.length ?? 0,
           }}
-        >
-          {STAGES.map((s) => {
-            const isActive = activeStage === s.id;
-            const count = analysis[s.id]?.length ?? 0;
-            return (
-              <button
-                key={s.id}
-                role="tab"
-                aria-selected={isActive}
-                onClick={() => {
-                  setActiveStage(s.id);
-                  setActiveIndex(0);
-                }}
-                style={{
-                  flex: 1,
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  gap: "3px",
-                  padding: "0.55rem 0.25rem",
-                  borderRadius: "var(--radius-xs)",
-                  border: "none",
-                  cursor: "pointer",
-                  background: isActive
-                    ? `${s.color}30`
-                    : "transparent",
-                  boxShadow: isActive
-                    ? `0 2px 8px ${s.color}25`
-                    : "none",
-                  transition: "all 0.2s ease",
-                  fontFamily: "inherit",
-                }}
-              >
-                <span
-                  style={{
-                    fontSize: "var(--text-xs)",
-                    fontWeight: 800,
-                    color: isActive ? s.color : "rgba(255,255,255,0.4)",
-                    letterSpacing: "0.02em",
-                    transition: "color 0.2s",
-                  }}
-                >
-                  {s.label}
-                </span>
-                <span
-                  style={{
-                    fontSize: "var(--text-2xs)",
-                    fontWeight: 700,
-                    color: isActive
-                      ? "rgba(255,255,255,0.8)"
-                      : "rgba(255,255,255,0.25)",
-                    transition: "color 0.2s",
-                  }}
-                >
-                  {count}개
-                </span>
-              </button>
-            );
-          })}
-        </div>
+          onSelect={(stage) => {
+            setActiveStage(stage);
+            setActiveIndex(0);
+          }}
+        />
 
         {/* 하단 액션 */}
         <div className="sidebar-actions">
