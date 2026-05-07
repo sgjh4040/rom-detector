@@ -22,20 +22,13 @@ import {
 import { updatePhaseDuration } from "../features/session/data/cesTimeTracker";
 import { buildRoutineFromAnalysis } from "../lib/ces/cesRoutineBuilder";
 import type { CesStage } from "../lib/ces/cesTypes";
-import { STAGE_COLORS, type CesPhase } from "../lib/ces/CesPlayerTypes";
+import { type CesPhase } from "../lib/ces/CesPlayerTypes";
 import type { Side } from "../lib/romTypes";
-
-const STAGES: { id: CesStage; label: string; color: string }[] = [
-  { id: "inhibit", label: "억제", color: STAGE_COLORS.inhibit },
-  { id: "lengthen", label: "신장", color: STAGE_COLORS.lengthen },
-  { id: "activate", label: "활성", color: STAGE_COLORS.activate },
-  { id: "integrate", label: "통합", color: STAGE_COLORS.integrate },
-];
+import { STAGES, getTargetMuscles } from "./cesProtocol/helpers";
 
 export const CesProtocol: React.FC = () => {
   const navigate = useNavigate();
   const session = loadRomSession();
-  console.log("session", session);
   const [activeJointSide, setActiveJointSide] = useState("");
   const [activeStage, setActiveStage] = useState<CesStage>("inhibit");
   const [activeIndex, setActiveIndex] = useState(0);
@@ -113,43 +106,10 @@ export const CesProtocol: React.FC = () => {
   const exercises = analysis[activeStage];
   const currentEx = exercises[activeIndex] || exercises[0];
 
-  // 운동 이름에서 매칭 가능한 한국어 근육 키워드를 뽑아냅니다.
-  const getTargetMuscles = useCallback((name: string) => {
-    const keywords = [
-      "소흉근",
-      "대흉근",
-      "전방삼각근",
-      "광배근",
-      "상부승모근",
-      "견갑거근",
-      "극하근",
-      "견갑하근",
-      "하부승모근",
-      "전경골근",
-      "비복근",
-      "가자미근",
-      "후경골근",
-      "비골근",
-      "대둔근",
-      "중둔근",
-      "복횡근",
-      "코어",
-      "전거근",
-      "Y자",
-      "T자",
-      "케이블",
-      "흉추",
-      "삼각근",
-      "장요근",
-    ];
-    const found = keywords.filter((k) => name.includes(k));
-    return found.length > 0 ? found : ["코어"]; // fallback
-  }, []);
-
   const targetMuscles = useMemo(() => {
     if (!currentEx) return ["코어"];
     return getTargetMuscles(currentEx.name);
-  }, [currentEx, getTargetMuscles]);
+  }, [currentEx]);
 
   // ── 데이터 연동: 빌더에 위임 ──
   //
@@ -164,7 +124,6 @@ export const CesProtocol: React.FC = () => {
     navigate("/ces-player", { state: { customRoutine } });
   };
 
-  console.log("최종 targetMuscles:", targetMuscles);
   return (
     <div className="ces-dashboard page-bg-ces">
       {/* ─── 사이드바 ──────────────────────────────────────── */}
