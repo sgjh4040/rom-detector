@@ -27,6 +27,11 @@ export default defineConfig({
         ],
       },
       workbox: {
+        // 새 SW 가 다운로드되면 즉시 활성화 (waiting 상태 건너뛰기)
+        // + 모든 client 인스턴스를 새 SW 로 강제 인계.
+        // → iOS PWA 에서 며칠간 옛 버전 보이던 문제 해소.
+        skipWaiting: true,
+        clientsClaim: true,
         globPatterns: ['**/*.{js,css,html,svg,ico,woff2}'],
         globIgnores: [
           '**/flutter_app_web/**',
