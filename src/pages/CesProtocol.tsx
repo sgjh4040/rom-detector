@@ -5,7 +5,6 @@ import { loadRomSession, JOINTS } from "../lib/romData";
 import { analyzeMuscles } from "../lib/muscleAnalysis";
 import { CesExercisePlayer } from "../core/components/CesExercisePlayer";
 import { BodyAnatomySvg } from "../core/components/BodyAnatomySvg";
-import { AlertTriangle, CheckCircle } from "lucide-react";
 import { buildRoutineFromAnalysis } from "../lib/ces/cesRoutineBuilder";
 import type { CesStage } from "../lib/ces/cesTypes";
 import { type CesPhase } from "../lib/ces/CesPlayerTypes";
@@ -15,6 +14,7 @@ import { useCesProtocolTimer } from "./cesProtocol/useCesProtocolTimer";
 import { TimerCard } from "./cesProtocol/TimerCard";
 import { StageTabs } from "./cesProtocol/StageTabs";
 import { JointSideHeader } from "./cesProtocol/JointSideHeader";
+import { MuscleBalanceCard } from "./cesProtocol/MuscleBalanceCard";
 
 export const CesProtocol: React.FC = () => {
   const navigate = useNavigate();
@@ -170,67 +170,10 @@ export const CesProtocol: React.FC = () => {
           onIndexChange={setActiveIndex}
         />
 
-        {/* 근육 밸런스 */}
-        <div className="muscle-balance-box">
-          <h3
-            className="main-title"
-            style={{ fontSize: "var(--text-lg)", marginBottom: "1.5rem" }}
-          >
-            Muscle Balance Status
-          </h3>
-          <div className="balance-grid">
-            <div className="balance-card">
-              <p
-                className="balance-title flex items-center gap-1"
-                style={{ color: "var(--danger)" }}
-              >
-                <AlertTriangle size={18} /> Overactive (뭉친 근육)
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {analysis.overactiveMuscles.map((m) => (
-                  <span
-                    key={m}
-                    style={{
-                      fontSize: "var(--text-sm)",
-                      padding: "0.3rem 0.6rem",
-                      background: "rgba(240,62,62,0.1)",
-                      color: "var(--danger)",
-                      borderRadius: "var(--radius-xs)",
-                      fontWeight: 700,
-                    }}
-                  >
-                    {m}
-                  </span>
-                ))}
-              </div>
-            </div>
-            <div className="balance-card">
-              <p
-                className="balance-title flex items-center gap-1"
-                style={{ color: "var(--success)" }}
-              >
-                <CheckCircle size={18} /> Underactive (약한 근육)
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {analysis.underactiveMuscles.map((m) => (
-                  <span
-                    key={m}
-                    style={{
-                      fontSize: "var(--text-sm)",
-                      padding: "0.3rem 0.6rem",
-                      background: "rgba(46,204,136,0.1)",
-                      color: "var(--success)",
-                      borderRadius: "var(--radius-xs)",
-                      fontWeight: 700,
-                    }}
-                  >
-                    {m}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
+        <MuscleBalanceCard
+          overactiveMuscles={analysis.overactiveMuscles}
+          underactiveMuscles={analysis.underactiveMuscles}
+        />
       </div>
     </div>
   );
