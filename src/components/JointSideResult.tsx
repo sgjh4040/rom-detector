@@ -97,7 +97,7 @@ export const JointSideResult: React.FC<JointSideResultProps> = ({
             padding: "1.25rem",
             background: "var(--surface)",
             boxShadow: "var(--neumo-shadow-small)",
-            borderRadius: "16px",
+            borderRadius: "var(--radius-md)",
             marginBottom: "1rem",
             border: "1px solid rgba(255,255,255,0.5)",
           }}
@@ -182,7 +182,7 @@ export const JointSideResult: React.FC<JointSideResultProps> = ({
                     position: "relative",
                     height: "10px",
                     background: "var(--border-color)",
-                    borderRadius: "999px",
+                    borderRadius: "var(--radius-pill)",
                     margin: "24px 16px 4px 16px", // 팝오버가 글씨를 가리지 않도록 상/하/좌/우 여백 추가
                   }}
                 >
@@ -209,7 +209,7 @@ export const JointSideResult: React.FC<JointSideResultProps> = ({
                             height: "100%",
                             width: `${percent}%`,
                             background: barColor,
-                            borderRadius: "999px",
+                            borderRadius: "var(--radius-pill)",
                             transition: "width 1s ease-out",
                           }}
                         />
@@ -225,7 +225,7 @@ export const JointSideResult: React.FC<JointSideResultProps> = ({
                             height: "18px",
                             background: "#fff",
                             border: `4px solid ${barColor}`,
-                            borderRadius: "50%",
+                            borderRadius: "var(--radius-circle)",
                             boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
                           }}
                         >
@@ -241,7 +241,7 @@ export const JointSideResult: React.FC<JointSideResultProps> = ({
                               color: barColor,
                               background: "rgba(255,255,255,0.9)",
                               padding: "2px 6px",
-                              borderRadius: "6px",
+                              borderRadius: "var(--radius-xs)",
                               boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
                               whiteSpace: "nowrap",
                             }}

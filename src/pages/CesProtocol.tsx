@@ -231,7 +231,7 @@ export const CesProtocol: React.FC = () => {
             gap: "4px",
             padding: "4px",
             background: "rgba(255, 255, 255, 0.06)",
-            borderRadius: "12px",
+            borderRadius: "var(--radius-sm)",
             border: "1px solid rgba(255, 255, 255, 0.08)",
             marginBottom: "1.25rem",
           }}
@@ -255,7 +255,7 @@ export const CesProtocol: React.FC = () => {
                   alignItems: "center",
                   gap: "3px",
                   padding: "0.55rem 0.25rem",
-                  borderRadius: "9px",
+                  borderRadius: "var(--radius-xs)",
                   border: "none",
                   cursor: "pointer",
                   background: isActive
@@ -333,7 +333,7 @@ export const CesProtocol: React.FC = () => {
               fontWeight: 800,
               fontSize: "1.1rem",
               padding: "0.5rem 2rem 0.5rem 0.75rem",
-              borderRadius: "10px",
+              borderRadius: "var(--radius-xs)",
               border: "1px solid rgba(0,0,0,0.08)",
               background: "rgba(255,255,255,0.7)",
             }}
@@ -395,7 +395,7 @@ export const CesProtocol: React.FC = () => {
                       padding: "0.3rem 0.6rem",
                       background: "rgba(240,62,62,0.1)",
                       color: "var(--danger)",
-                      borderRadius: "6px",
+                      borderRadius: "var(--radius-xs)",
                       fontWeight: 700,
                     }}
                   >
@@ -420,7 +420,7 @@ export const CesProtocol: React.FC = () => {
                       padding: "0.3rem 0.6rem",
                       background: "rgba(46,204,136,0.1)",
                       color: "var(--success)",
-                      borderRadius: "6px",
+                      borderRadius: "var(--radius-xs)",
                       fontWeight: 700,
                     }}
                   >

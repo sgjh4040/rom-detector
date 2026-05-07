@@ -88,7 +88,7 @@ export const PatientSelector: React.FC<PatientSelectorProps> = ({
             marginBottom: "12px",
             background: "rgba(92, 107, 192, 0.08)",
             border: "1px dashed rgba(92, 107, 192, 0.35)",
-            borderRadius: "12px",
+            borderRadius: "var(--radius-sm)",
             color: "var(--primary)",
             fontSize: "0.8rem",
             fontWeight: 700,

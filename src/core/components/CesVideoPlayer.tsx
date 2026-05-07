@@ -55,7 +55,7 @@ export const CesVideoPlayer: React.FC<CesVideoPlayerProps> = ({
                 position: 'relative',
                 width: '100%',
                 background: bgColor,
-                borderRadius: '12px',
+                borderRadius: 'var(--radius-sm)',
                 overflow: 'hidden',
                 aspectRatio: '16/9',
                 transition: 'background 0.4s ease',
@@ -77,7 +77,7 @@ export const CesVideoPlayer: React.FC<CesVideoPlayerProps> = ({
                         style={{
                             width: '72px',
                             height: '72px',
-                            borderRadius: '50%',
+                            borderRadius: 'var(--radius-circle)',
                             background: 'rgba(255,255,255,0.15)',
                             display: 'flex',
                             alignItems: 'center',

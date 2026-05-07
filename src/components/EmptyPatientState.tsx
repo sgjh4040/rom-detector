@@ -67,7 +67,7 @@ export const EmptyPatientState: React.FC<EmptyPatientStateProps> = ({
           style={{
             padding: "2.5rem 2rem",
             textAlign: "center",
-            borderRadius: "24px",
+            borderRadius: "var(--radius-lg)",
           }}
         >
           <div
@@ -77,7 +77,7 @@ export const EmptyPatientState: React.FC<EmptyPatientStateProps> = ({
               justifyContent: "center",
               width: "88px",
               height: "88px",
-              borderRadius: "50%",
+              borderRadius: "var(--radius-circle)",
               background:
                 "linear-gradient(135deg, rgba(99,102,241,0.14), rgba(99,102,241,0.05))",
               color: "#6366f1",
@@ -135,7 +135,7 @@ export const EmptyPatientState: React.FC<EmptyPatientStateProps> = ({
                 padding: "1rem 0.9rem",
                 background: "rgba(255, 255, 255, 0.6)",
                 border: "1px solid rgba(255, 255, 255, 0.45)",
-                borderRadius: "16px",
+                borderRadius: "var(--radius-md)",
                 boxShadow: "0 4px 16px rgba(0, 0, 0, 0.04)",
                 display: "flex",
                 flexDirection: "column",
@@ -150,7 +150,7 @@ export const EmptyPatientState: React.FC<EmptyPatientStateProps> = ({
                   justifyContent: "center",
                   width: "32px",
                   height: "32px",
-                  borderRadius: "10px",
+                  borderRadius: "var(--radius-xs)",
                   background: "rgba(99, 102, 241, 0.1)",
                   color: "#6366f1",
                   marginBottom: "0.25rem",

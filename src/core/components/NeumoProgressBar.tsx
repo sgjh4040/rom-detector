@@ -45,7 +45,7 @@ export const NeumoProgressBar: React.FC<NeumoProgressBarProps> = ({
                         style={{
                             width: '8px',
                             height: '8px',
-                            borderRadius: '50%',
+                            borderRadius: 'var(--radius-circle)',
                             background: color,
                             flexShrink: 0,
                         }}
@@ -90,7 +90,7 @@ export const NeumoProgressBar: React.FC<NeumoProgressBarProps> = ({
                     width: '100%',
                     height: '8px',
                     background: 'rgba(0, 0, 0, 0.06)',
-                    borderRadius: '999px',
+                    borderRadius: 'var(--radius-pill)',
                     overflow: 'hidden',
                 }}
             >
@@ -99,7 +99,7 @@ export const NeumoProgressBar: React.FC<NeumoProgressBarProps> = ({
                         width: `${percentage}%`,
                         height: '100%',
                         background: color,
-                        borderRadius: '999px',
+                        borderRadius: 'var(--radius-pill)',
                         transition: 'width 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
                     }}
                 />

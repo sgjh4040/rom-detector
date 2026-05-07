@@ -113,7 +113,7 @@ export const NeumoDashboard: React.FC<NeumoDashboardProps> = ({
                                     fontWeight: 700,
                                     whiteSpace: 'nowrap',
                                     flexShrink: 0,
-                                    borderRadius: '999px',
+                                    borderRadius: 'var(--radius-pill)',
                                     border: isActive
                                         ? '1px solid var(--primary)'
                                         : '1px solid rgba(0, 0, 0, 0.08)',
@@ -183,7 +183,7 @@ export const NeumoDashboard: React.FC<NeumoDashboardProps> = ({
                         style={{
                             marginTop: '12px',
                             padding: '12px 28px',
-                            borderRadius: '999px',
+                            borderRadius: 'var(--radius-pill)',
                             fontWeight: 800,
                             fontSize: '0.95rem',
                         }}

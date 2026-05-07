@@ -73,7 +73,7 @@ export const JointTrendCard: React.FC<JointTrendCardProps> = ({ joint, history }
         <div
             className="neumo-card mb-6"
             style={{
-                borderRadius: '20px',
+                borderRadius: 'var(--radius-md)',
                 padding: '16px',
                 overflow: 'visible',
                 border: '1px solid rgba(255, 255, 255, 0.7)',
@@ -121,7 +121,7 @@ export const JointTrendCard: React.FC<JointTrendCardProps> = ({ joint, history }
                     <div
                         style={{
                             background: 'rgba(255, 255, 255, 0.55)',
-                            borderRadius: '18px',
+                            borderRadius: 'var(--radius-md)',
                             padding: '14px 4px 6px',
                             border: '1px solid rgba(0, 0, 0, 0.04)',
                             boxShadow: 'inset 0 1px 2px rgba(0, 0, 0, 0.02)',

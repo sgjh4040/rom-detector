@@ -56,7 +56,7 @@ export const CesStageCard: React.FC<Props> = ({
   return (
     <div
       style={{
-        borderRadius: "12px",
+        borderRadius: "var(--radius-sm)",
         overflow: "hidden",
         border: `1px solid ${meta.color}33`,
         marginBottom: "1.5rem",

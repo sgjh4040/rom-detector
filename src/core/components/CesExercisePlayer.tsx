@@ -82,7 +82,7 @@ export const CesExercisePlayer: React.FC<CesExercisePlayerProps> = ({
               alignItems: "center",
               gap: "5px",
               padding: "0.25rem 0.7rem",
-              borderRadius: "999px",
+              borderRadius: "var(--radius-pill)",
               background: stage.color,
               color: "#fff",
               fontSize: "0.72rem",
@@ -172,7 +172,7 @@ export const CesExercisePlayer: React.FC<CesExercisePlayerProps> = ({
       <div
         className="overflow-hidden"
         style={{
-          borderRadius: "12px",
+          borderRadius: "var(--radius-sm)",
           background: current.youtubeId ? "#000" : "transparent",
           boxShadow: current.youtubeId ? "0 10px 30px rgba(0,0,0,0.1)" : "none",
         }}
@@ -207,7 +207,7 @@ export const CesExercisePlayer: React.FC<CesExercisePlayerProps> = ({
                 gap: "12px",
                 width: "100%",
                 padding: "12px 14px",
-                borderRadius: "14px",
+                borderRadius: "var(--radius-md)",
                 border: isActive
                   ? "2px solid var(--primary)"
                   : "1px solid rgba(0, 0, 0, 0.06)",
@@ -229,7 +229,7 @@ export const CesExercisePlayer: React.FC<CesExercisePlayerProps> = ({
                   style={{
                     width: "56px",
                     height: "38px",
-                    borderRadius: "8px",
+                    borderRadius: "var(--radius-xs)",
                     overflow: "hidden",
                     flexShrink: 0,
                     position: "relative",
@@ -265,7 +265,7 @@ export const CesExercisePlayer: React.FC<CesExercisePlayerProps> = ({
                   style={{
                     width: "10px",
                     height: "10px",
-                    borderRadius: "50%",
+                    borderRadius: "var(--radius-circle)",
                     background: isActive ? "var(--primary)" : "rgba(0,0,0,0.15)",
                     flexShrink: 0,
                     marginLeft: "2px",

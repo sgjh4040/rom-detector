@@ -121,7 +121,7 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
                 alignItems: "center",
                 gap: "6px",
                 padding: "0.3rem 0.75rem",
-                borderRadius: "999px",
+                borderRadius: "var(--radius-pill)",
                 background: breakMeta.color,
                 color: "#fff",
                 fontSize: "0.72rem",
@@ -176,7 +176,7 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
           <span
             style={{
               padding: "0.3rem 0.75rem",
-              borderRadius: "999px",
+              borderRadius: "var(--radius-pill)",
               background: phase.color,
               color: "#fff",
               fontSize: "0.72rem",
@@ -259,7 +259,7 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
           textAlign: "center",
           padding: "1.5rem",
           background: countdownBg,
-          borderRadius: "16px",
+          borderRadius: "var(--radius-md)",
           transition: "background 0.3s",
         }}
       >
@@ -296,7 +296,7 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
         style={{
           padding: "1rem",
           background: "#fff",
-          borderRadius: "14px",
+          borderRadius: "var(--radius-md)",
           border: "1.5px solid #eef2f7",
         }}
       >
@@ -344,7 +344,7 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
                 key={p.stage}
                 style={{
                   padding: "0.5rem 0.4rem",
-                  borderRadius: "8px",
+                  borderRadius: "var(--radius-xs)",
                   background: isActive ? `${p.color}15` : "#f7f9fc",
                   border: isActive
                     ? `1.5px solid ${p.color}`
@@ -408,7 +408,7 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
         <div
           style={{
             height: "6px",
-            borderRadius: "999px",
+            borderRadius: "var(--radius-pill)",
             background: "#eef2f7",
             overflow: "hidden",
           }}
@@ -418,7 +418,7 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
               height: "100%",
               width: `${progress}%`,
               background: `linear-gradient(90deg, ${phase.color}, #1C3F6F)`,
-              borderRadius: "999px",
+              borderRadius: "var(--radius-pill)",
               transition: "width 0.5s ease",
             }}
           />
@@ -430,7 +430,7 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
         <div
           style={{
             padding: "0.75rem 1rem",
-            borderRadius: "10px",
+            borderRadius: "var(--radius-xs)",
             background: "rgba(28,63,111,0.05)",
             display: "flex",
             alignItems: "center",
@@ -461,7 +461,7 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
             style={{
               marginLeft: "auto",
               padding: "0.2rem 0.5rem",
-              borderRadius: "6px",
+              borderRadius: "var(--radius-xs)",
               background: PHASE_META[nextStep.cesPhase].color,
               color: "#fff",
               fontSize: "0.65rem",
@@ -481,7 +481,7 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
             style={{
               flex: 1,
               padding: "0.9rem",
-              borderRadius: "10px",
+              borderRadius: "var(--radius-xs)",
               border: "none",
               background: "#1C3F6F",
               color: "#fff",
@@ -498,7 +498,7 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
             style={{
               flex: 1,
               padding: "0.9rem",
-              borderRadius: "10px",
+              borderRadius: "var(--radius-xs)",
               border: "none",
               background: breakMeta.color,
               color: "#fff",
@@ -519,7 +519,7 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
             style={{
               flex: 1,
               padding: "0.9rem",
-              borderRadius: "10px",
+              borderRadius: "var(--radius-xs)",
               border: "none",
               background: isPaused ? "#4ade80" : "#F59E0B",
               color: "#fff",
@@ -544,7 +544,7 @@ export const CesPlayerController: React.FC<CesPlayerControllerProps> = ({
           onClick={onExit}
           style={{
             padding: "0.9rem 1.25rem",
-            borderRadius: "10px",
+            borderRadius: "var(--radius-xs)",
             border: "1.5px solid #e5e7eb",
             background: "#fff",
             color: "#6b7280",

@@ -167,7 +167,7 @@ export const Results: React.FC = () => {
               onClick={() => navigate(-1)}
               style={{
                 padding: "6px 14px",
-                borderRadius: "8px",
+                borderRadius: "var(--radius-xs)",
                 fontSize: "0.8rem",
               }}
             >
@@ -209,7 +209,7 @@ export const Results: React.FC = () => {
           style={{
             marginTop: "0.75rem",
             padding: "0.85rem 1.1rem",
-            borderRadius: "14px",
+            borderRadius: "var(--radius-md)",
             background:
               totalLimited > 0
                 ? "rgba(239, 68, 68, 0.06)"

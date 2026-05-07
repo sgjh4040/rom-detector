@@ -20,7 +20,7 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({ exercise }) => (
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
             }}>
                 <div style={{
-                    width: '48px', height: '48px', borderRadius: '50%',
+                    width: '48px', height: '48px', borderRadius: 'var(--radius-circle)',
                     background: 'rgba(255,255,255,0.92)',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     boxShadow: '0 4px 16px rgba(0,0,0,0.2)',

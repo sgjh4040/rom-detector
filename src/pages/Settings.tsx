@@ -93,7 +93,7 @@ export const Settings: React.FC = () => {
               onClick={() => navigate(-1)}
               style={{
                 padding: "6px 14px",
-                borderRadius: "8px",
+                borderRadius: "var(--radius-xs)",
                 fontSize: "0.8rem",
               }}
             >
@@ -122,7 +122,7 @@ export const Settings: React.FC = () => {
                   flex: 1,
                   padding: "12px 14px",
                   background: "rgba(92, 107, 192, 0.06)",
-                  borderRadius: "12px",
+                  borderRadius: "var(--radius-sm)",
                   border: "1px solid rgba(92, 107, 192, 0.12)",
                 }}
               >
@@ -151,7 +151,7 @@ export const Settings: React.FC = () => {
                   flex: 1,
                   padding: "12px 14px",
                   background: "rgba(92, 107, 192, 0.06)",
-                  borderRadius: "12px",
+                  borderRadius: "var(--radius-sm)",
                   border: "1px solid rgba(92, 107, 192, 0.12)",
                 }}
               >

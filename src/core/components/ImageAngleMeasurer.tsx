@@ -31,7 +31,7 @@ export const ImageAngleMeasurer: React.FC<Props> = ({ onAngleConfirmed }) => {
     <div
       style={{
         border: "1px solid var(--border-color)",
-        borderRadius: "20px",
+        borderRadius: "var(--radius-md)",
         padding: "1.25rem",
         marginTop: "1rem",
         background: "var(--bg)",
@@ -80,7 +80,7 @@ export const ImageAngleMeasurer: React.FC<Props> = ({ onAngleConfirmed }) => {
               marginBottom: "1rem",
               padding: "1rem",
               backgroundColor: "var(--bg)",
-              borderRadius: "15px",
+              borderRadius: "var(--radius-md)",
               boxShadow: "var(--shadow-pressed)",
             }}
           >
@@ -118,7 +118,7 @@ export const ImageAngleMeasurer: React.FC<Props> = ({ onAngleConfirmed }) => {
           <div
             style={{
               position: "relative",
-              borderRadius: "15px",
+              borderRadius: "var(--radius-md)",
               overflow: "hidden",
               boxShadow: "var(--shadow-raised-sm)",
               border: "1px solid rgba(255,255,255,0.2)",
@@ -142,7 +142,7 @@ export const ImageAngleMeasurer: React.FC<Props> = ({ onAngleConfirmed }) => {
                 marginTop: "1.25rem",
                 padding: "1.25rem",
                 backgroundColor: "var(--bg)",
-                borderRadius: "15px",
+                borderRadius: "var(--radius-md)",
                 textAlign: "center",
                 boxShadow: "var(--shadow-raised)",
               }}
@@ -193,7 +193,7 @@ export const ImageAngleMeasurer: React.FC<Props> = ({ onAngleConfirmed }) => {
             padding: "1.5rem",
             textAlign: "center",
             border: "2px dashed var(--border-color)",
-            borderRadius: "8px",
+            borderRadius: "var(--radius-xs)",
             color: "var(--text-secondary)",
           }}
         >

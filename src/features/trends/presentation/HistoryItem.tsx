@@ -30,7 +30,7 @@ export const HistoryItem: React.FC<HistoryItemProps> = ({ session, index, total 
                 gap: '12px',
                 border: '1px solid rgba(255, 255, 255, 0.8)',
                 padding: '20px',
-                borderRadius: '24px',
+                borderRadius: 'var(--radius-lg)',
                 marginBottom: '10px',
                 background: 'transparent',
                 fontFamily: 'inherit',

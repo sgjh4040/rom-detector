@@ -91,7 +91,7 @@ export const SparklineCard: React.FC<SparklineCardProps> = ({
                 flexDirection: 'column',
                 gap: '6px',
                 padding: '14px',
-                borderRadius: '14px',
+                borderRadius: 'var(--radius-md)',
                 border: isActive
                     ? '2px solid var(--primary)'
                     : '1px solid rgba(0, 0, 0, 0.06)',

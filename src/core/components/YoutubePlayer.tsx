@@ -16,7 +16,7 @@ export const YoutubePlayer: React.FC<Props> = ({ youtubeId, title }) => {
                 width: '100%',
                 aspectRatio: '21/9',
                 background: 'linear-gradient(135deg, #f0f2f8 0%, #e8eaf0 100%)',
-                borderRadius: '12px',
+                borderRadius: 'var(--radius-sm)',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
@@ -47,7 +47,7 @@ export const YoutubePlayer: React.FC<Props> = ({ youtubeId, title }) => {
     }
 
     return (
-        <div style={{ width: '100%', aspectRatio: '16/9', borderRadius: '10px', overflow: 'hidden', position: 'relative', backgroundColor: '#000' }}>
+        <div style={{ width: '100%', aspectRatio: '16/9', borderRadius: 'var(--radius-xs)', overflow: 'hidden', position: 'relative', backgroundColor: '#000' }}>
             {!loaded && (
                 <div style={{
                     position: 'absolute', inset: 0, display: 'flex',

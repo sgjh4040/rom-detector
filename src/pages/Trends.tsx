@@ -31,7 +31,7 @@ const ViewSegment: React.FC<ViewSegmentProps> = ({ value, onChange }) => {
         display: "inline-flex",
         padding: "4px",
         background: "rgba(0, 0, 0, 0.05)",
-        borderRadius: "999px",
+        borderRadius: "var(--radius-pill)",
         border: "1px solid rgba(0, 0, 0, 0.06)",
         gap: "2px",
       }}
@@ -50,7 +50,7 @@ const ViewSegment: React.FC<ViewSegmentProps> = ({ value, onChange }) => {
               alignItems: "center",
               gap: "6px",
               padding: "8px 16px",
-              borderRadius: "999px",
+              borderRadius: "var(--radius-pill)",
               border: "none",
               cursor: "pointer",
               fontSize: "0.8rem",
@@ -152,7 +152,7 @@ export const Trends: React.FC = () => {
               onClick={() => navigate(-1)}
               style={{
                 padding: "6px 14px",
-                borderRadius: "8px",
+                borderRadius: "var(--radius-xs)",
                 fontSize: "0.8rem",
               }}
             >
@@ -176,7 +176,7 @@ export const Trends: React.FC = () => {
         {!showCharts ? (
           <div
             className="neumo-card mb-6"
-            style={{ borderRadius: "24px", padding: "16px" }}
+            style={{ borderRadius: "var(--radius-lg)", padding: "16px" }}
           >
             <NeumoDashboard
               sessions={history}
@@ -192,7 +192,7 @@ export const Trends: React.FC = () => {
             {/* VAS 통증 지수 — targetValue=0 (무통)이 목표선 */}
             <div
               className="card neumo-card"
-              style={{ padding: "20px 16px 8px", borderRadius: "24px" }}
+              style={{ padding: "20px 16px 8px", borderRadius: "var(--radius-lg)" }}
             >
               <div
                 style={{
@@ -240,7 +240,7 @@ export const Trends: React.FC = () => {
         <div
           className="panel neumo-inset"
           style={{
-            borderRadius: "24px",
+            borderRadius: "var(--radius-lg)",
             marginTop: "24px",
             padding: "24px 16px",
             overflow: "visible",
