@@ -1,7 +1,7 @@
 # rom-detector
 
 ROM(관절가동범위) 측정 + CES(Corrective Exercise Strategy) 재활 처방 웹 앱.
-의료/헬스케어 용도. 1인 개발, GitHub Pages 배포.
+의료/헬스케어 용도. 1인 개발, **Vercel 자동 배포** (운영: https://rom-detector.vercel.app/).
 
 ## ⚠️ 최우선 규칙
 **모든 코드 작성 전 [PRD.md](./PRD.md) 먼저 확인.**
@@ -9,20 +9,24 @@ PRD 조항 위반 = Fail. 파일 200줄, `any` 금지, 매직 스트링 금지, 
 
 ## 기술 스택
 - React 19 + TypeScript + Vite
-- React Router (BrowserRouter + basename `/rom-detector`)
+- React Router (BrowserRouter + basename = `import.meta.env.BASE_URL`, 즉 dev/Vercel 모두 `/`)
 - Tailwind CSS 4 + 커스텀 CSS
 - Playwright E2E (Chromium + WebKit)
 - localStorage 기반 (서버 없음)
 
 ## 명령어
-- `npm run dev` — 개발 서버 (포트 5173, URL `/rom-detector/...`)
-- `npm run build` — 빌드 + 404.html fallback 복사 (GitHub Pages SPA)
+- `npm run dev` — 개발 서버 (포트 5173, URL `http://localhost:5173/...`)
+- `npm run build` — 프로덕션 빌드 (Vercel 자동 빌드와 동일)
 - `npm run lint`
 - `npm run test:e2e`
 - `npm run test:e2e:ui` — Playwright UI 모드
-- `npm run deploy` — gh-pages 배포
 
-## 라우트 (BrowserRouter, basename `/rom-detector`)
+## 배포
+- **Vercel 자동 배포** — main 브랜치 push 시 자동 트리거. 운영 URL: https://rom-detector.vercel.app/
+- **PWA 자동 갱신** — workbox `skipWaiting + clientsClaim` + `visibilitychange/controllerchange` 핸들러 (`src/main.tsx`)로 폰 PWA 가 백그라운드 복귀 시 즉시 새 버전 적용.
+- GitHub Pages 는 사용 안 함 (gh-pages 브랜치 삭제됨, repo Settings → Pages → Source: None 권장).
+
+## 라우트 (BrowserRouter, basename `/`)
 - `/` 홈 — 환자 등록/선택
 - `/measure` 측정
 - `/results` 결과 대시보드
@@ -92,7 +96,7 @@ CES 4단계: Inhibit(억제) → Lengthen(신장) → Activate(활성) → Integ
 - **E2E 네비게이션** — `navigateTo(page, '/ces')` 헬퍼 사용 (URL에 `#` 쓰지 말 것)
 
 ## 절대 금지
-- `dist/` 폴더 직접 수정 (gh-pages가 자동 생성)
+- `dist/` 폴더 직접 수정 (Vercel 빌드가 자동 생성)
 - `.claude/`, `.playwright-mcp/`, `test-results/` 커밋 (이미 `.gitignore`)
 - `--no-verify` 등 hook 우회
 - 환자 정보를 외부 서비스로 전송 (의료 데이터)
@@ -103,7 +107,7 @@ CES 4단계: Inhibit(억제) → Lengthen(신장) → Activate(활성) → Integ
 - `src/lib/ces/CesPlayerTypes.ts` — CES 단계/페이즈 메타
 - `src/styles/dashboard_premium.css` — 전체 디자인 토큰
 - `src/styles/ces_player.css` — 플레이어 레이아웃
-- `vite.config.ts` — `base: '/rom-detector/'`
+- `vite.config.ts` — `base` 미설정 (= `/`, Vercel 루트 도메인)
 
 ## 이 파일의 역할
 - **PRD.md** → 제품/아키텍처 규칙 (강제)
