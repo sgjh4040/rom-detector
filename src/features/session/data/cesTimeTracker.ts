@@ -35,16 +35,23 @@ export const saveCesHistory = (history: CesHistoryMap): void => {
     }
 };
 
+// [PRD 2-3] any 제거: PhaseDurations 의 4 단계 number 키만 안전하게 다루는 헬퍼.
+// stage 가 'lastUpdated' 같은 string 키를 받지 않도록 CesStage 로 좁혀 컴파일 타임에 차단한다.
+const addStage = (d: PhaseDurations, stage: CesStage, seconds: number): void => {
+    d[stage] = d[stage] + seconds;
+};
+const readStage = (d: PhaseDurations, stage: CesStage): number => d[stage];
+
 export const updatePhaseDuration = (stage: CesStage, additionalSeconds: number, sessionCreatedAt?: string): void => {
     const history = loadCesHistory();
     const key = sessionCreatedAt || 'latest';
-    
+
     if (!history[key]) {
         history[key] = { inhibit: 0, lengthen: 0, activate: 0, integrate: 0, lastUpdated: new Date().toISOString() };
     }
-    (history[key] as any)[stage] += additionalSeconds;
+    addStage(history[key], stage, additionalSeconds);
     history[key].lastUpdated = new Date().toISOString();
-    
+
     saveCesHistory(history);
 };
 
@@ -66,7 +73,7 @@ export const getPhasePercentage = (
     const key = sessionCreatedAt || 'latest';
     if (!history[key]) return 0;
     if (goalSeconds <= 0) return 0; // 처방이 없으면 퍼센트 정의 불가
-    const current = (history[key] as any)[stage] as number;
+    const current = readStage(history[key], stage);
     return Math.min(100, Math.round((current / goalSeconds) * 100));
 };
 
@@ -96,5 +103,5 @@ export const getPhaseSeconds = (stage: CesStage, sessionCreatedAt?: string): num
     const history = loadCesHistory();
     const key = sessionCreatedAt || 'latest';
     if (!history[key]) return 0;
-    return (history[key] as any)[stage] as number;
+    return readStage(history[key], stage);
 };
