@@ -119,8 +119,10 @@ export const PatientSelector: React.FC<PatientSelectorProps> = ({
             .map((p) => {
               const history = getPatientHistory(p.id);
               const lastSession = history[0];
+              // [audit #33] 칩의 날짜가 등록일/첫 측정일/최근 측정일 중 무엇인지 모호했음.
+              // 다른 페이지(Index 환자 카드, HomePatientSummary)와 동일하게 "최근" prefix 로 의미 명확화.
               const sublabel = lastSession
-                ? `${new Date(lastSession.createdAt).toLocaleDateString("ko-KR", { month: "short", day: "numeric" })}${lastSession.vasScore !== undefined ? ` · VAS ${lastSession.vasScore}` : ""}`
+                ? `최근 ${new Date(lastSession.createdAt).toLocaleDateString("ko-KR", { month: "short", day: "numeric" })}${lastSession.vasScore !== undefined ? ` · VAS ${lastSession.vasScore}` : ""}`
                 : "측정 전";
               return (
                 <button
