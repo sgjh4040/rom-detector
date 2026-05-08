@@ -1,4 +1,4 @@
-// MuscleBalanceCard.tsx — CesProtocol 메인 패널 하단의 Overactive/Underactive 근육 밸런스 카드.
+// MuscleBalanceCard.tsx — CesProtocol 메인 패널 하단의 과활성/저활성 근육 밸런스 카드.
 import React from "react";
 import { AlertTriangle, CheckCircle } from "lucide-react";
 
@@ -19,7 +19,7 @@ export const MuscleBalanceCard: React.FC<MuscleBalanceCardProps> = ({
         className="main-title"
         style={{ fontSize: "var(--text-lg)", marginBottom: "1.5rem" }}
       >
-        Muscle Balance Status
+        근육 밸런스 (Muscle Balance)
       </h3>
       <div className="balance-grid">
         <div className="balance-card">
@@ -27,7 +27,7 @@ export const MuscleBalanceCard: React.FC<MuscleBalanceCardProps> = ({
             className="balance-title icon-text icon-text--sm"
             style={{ color: "var(--danger)" }}
           >
-            <AlertTriangle size={18} /> Overactive (뭉친 근육)
+            <AlertTriangle size={18} /> 과활성 (뭉친 근육)
           </p>
           <div className="flex flex-wrap gap-2">
             {overactiveMuscles.map((m) => (
@@ -52,7 +52,7 @@ export const MuscleBalanceCard: React.FC<MuscleBalanceCardProps> = ({
             className="balance-title icon-text icon-text--sm"
             style={{ color: "var(--success)" }}
           >
-            <CheckCircle size={18} /> Underactive (약한 근육)
+            <CheckCircle size={18} /> 저활성 (약한 근육)
           </p>
           <div className="flex flex-wrap gap-2">
             {underactiveMuscles.map((m) => (
