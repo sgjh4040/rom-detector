@@ -15,7 +15,8 @@ import type { Side } from "../lib/romData";
 // import { ExerciseCard } from "../components/ExerciseCard";
 import { JointSideResult } from "../components/JointSideResult";
 import { AppLayout } from "../components/AppLayout";
-import { TrendingUp, Dumbbell } from "lucide-react";
+import { EmptyState } from "../components/EmptyState";
+import { TrendingUp, Dumbbell, FileSearch } from "lucide-react";
 
 export const Results: React.FC = () => {
   // 페이지 이동
@@ -39,10 +40,24 @@ export const Results: React.FC = () => {
     }
   }, [session]);
 
-  // 세션이 없으면 홈으로 이동
+  // 세션이 없으면 안내를 노출하고 사용자가 직접 이동하도록 함 (audit #21).
+  // 기존에는 자동 navigate('/') 였으나 사용자에게 영문도 안 보여줘서
+  // "왜 페이지가 새로고침되지?" 같은 혼란이 있었음.
   if (!session) {
-    navigate("/");
-    return null;
+    return (
+      <EmptyState
+        size="md"
+        fullScreen
+        icon={<FileSearch size={48} strokeWidth={1.8} />}
+        title="측정 세션이 없어요"
+        description="새 측정을 시작하면 결과 리포트가 여기에 표시됩니다."
+        cta={{
+          label: "홈으로 돌아가기",
+          variant: "pill",
+          onClick: () => navigate("/"),
+        }}
+      />
+    );
   }
 
   // 선택된 관절, 방향, 환자 정보

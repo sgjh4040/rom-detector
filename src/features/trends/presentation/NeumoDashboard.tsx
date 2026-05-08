@@ -15,6 +15,7 @@ import type { CesStage } from '../../../lib/ces/cesTypes';
 import { STAGE_COLORS } from '../../../lib/ces/CesPlayerTypes';
 import type { RomSession } from '../../../lib/romTypes';
 import { saveRomSession } from '../../../lib/romTypes';
+import { EmptyState } from '../../../components/EmptyState';
 
 interface NeumoDashboardProps {
     sessions: RomSession[];
@@ -152,42 +153,21 @@ export const NeumoDashboard: React.FC<NeumoDashboardProps> = ({
             </h2>
 
             {hasNoCesActivity ? (
-                <div
-                    style={{
-                        width: '100%',
-                        maxWidth: '520px',
-                        margin: '8px auto 24px',
-                        padding: '36px 24px',
-                        textAlign: 'center',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        gap: '16px',
-                    }}
-                >
-                    <div style={{ fontSize: 'var(--text-3xl)', lineHeight: 1, opacity: 0.35 }} aria-hidden="true">
-                        🏃
-                    </div>
-                    <p className="text-lg font-black" style={{ color: 'var(--text-primary)', margin: 0 }}>
-                        아직 CES 재활 기록이 없어요
-                    </p>
-                    <p
-                        className="text-sm font-bold"
-                        style={{ color: 'var(--text-secondary)', opacity: 0.7, margin: 0, lineHeight: 1.5 }}
-                    >
-                        억제 · 신장 · 활성 · 통합 4단계로 구성된<br />
-                        재활 루틴을 시작하면 진행률이 여기에 쌓여요.
-                    </p>
-                    <button
-                        className="btn btn-primary"
-                        style={{
-                            marginTop: '12px',
-                            padding: '12px 28px',
-                            borderRadius: 'var(--radius-pill)',
-                            fontWeight: 800,
-                            fontSize: 'var(--text-base)',
-                        }}
-                        onClick={() => {
+                <EmptyState
+                    size="md"
+                    icon={<span style={{ fontSize: '1em' }}>🏃</span>}
+                    title="아직 CES 재활 기록이 없어요"
+                    description={
+                        <>
+                            억제 · 신장 · 활성 · 통합 4단계로 구성된
+                            <br />
+                            재활 루틴을 시작하면 진행률이 여기에 쌓여요.
+                        </>
+                    }
+                    cta={{
+                        label: 'CES 재활 시작하기',
+                        variant: 'pill',
+                        onClick: () => {
                             // 선택된 회차를 active session 으로 지정한 뒤 CES 재활 진입.
                             // 이렇게 해야 updatePhaseDuration 이 현재 선택한 회차 key 에 누적된다.
                             // (그냥 navigate 만 하면 가장 최근 rom_session 으로 누적돼서
@@ -196,11 +176,9 @@ export const NeumoDashboard: React.FC<NeumoDashboardProps> = ({
                                 saveRomSession(currentSession);
                             }
                             navigate('/ces');
-                        }}
-                    >
-                        CES 재활 시작하기
-                    </button>
-                </div>
+                        },
+                    }}
+                />
             ) : (
                 <div
                     style={{

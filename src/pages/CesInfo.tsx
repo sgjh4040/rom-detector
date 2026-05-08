@@ -1,7 +1,9 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { AlertCircle } from "lucide-react";
 import { ALL_CES_DATA } from "../lib/ces";
 import { JOINTS } from "../lib/romData";
+import { EmptyState } from "../components/EmptyState";
 import { JointSidebar } from "./cesInfo/JointSidebar";
 import { MovementTabs } from "./cesInfo/MovementTabs";
 import { MuscleAnalysisCard } from "./cesInfo/MuscleAnalysisCard";
@@ -33,7 +35,20 @@ export const CesInfo: React.FC = () => {
   }, [activeMovement, selectedMovement]);
 
   if (!cesData)
-    return <div className="p-8">{selectedJointId} 데이터를 찾을 수 없어요</div>;
+    return (
+      <EmptyState
+        size="sm"
+        fullScreen
+        icon={<AlertCircle size={40} strokeWidth={1.8} />}
+        title="CES 데이터를 찾을 수 없어요"
+        description={`${selectedJointId} 관절의 참고 자료가 아직 준비되지 않았습니다.`}
+        cta={{
+          label: "홈으로 돌아가기",
+          variant: "pill",
+          onClick: () => navigate("/"),
+        }}
+      />
+    );
 
   return (
     <div className="ces-dashboard page-bg-ces info-mode">
