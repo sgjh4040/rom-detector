@@ -25,9 +25,10 @@ export const MovementListSidebar: React.FC<MovementListSidebarProps> = ({
 }) => {
     return (
         <div className="w-full md:w-[320px] flex-shrink-0 flex flex-col pt-4">
-            <h3 className="text-[13px] font-semibold text-gray-400 uppercase tracking-widest px-4 mb-4">
+            {/* [audit #27] 13px 카테고리 라벨은 헤딩이 아니라 그룹 라벨 — div 로 시멘틱 정확화 */}
+            <div className="text-[13px] font-semibold text-gray-400 uppercase tracking-widest px-4 mb-4">
                 Measurements ({joint.movements.length})
-            </h3>
+            </div>
 
             <div className="flex flex-col gap-1">
                 {joint.movements.map(m => {

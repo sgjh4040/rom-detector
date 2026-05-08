@@ -70,6 +70,41 @@ h1, h2, h3, h4 {
     line-height: 1.3;
 }
 
+/* ── 제목 위계 표준 클래스 (audit #27) ─────────────────────
+ * 페이지마다 h1/h2/h3 fontSize 가 인라인 / Tailwind 클래스로 override 되어
+ * 일관성이 깨지던 문제 해소. 신규 코드는 이 클래스를 사용하고, 기존 인라인
+ * fontSize override 는 점진적으로 제거한다.
+ *
+ * - .page-title       : 페이지 메인 헤더 (h1 톤, 28px)
+ * - .section-title    : 카드/섹션 헤더 (h2 톤, 20px)
+ * - .subsection-title : 하위 섹션/그룹 헤더 (h3 톤, 17px)
+ *
+ * 이미 정의된 .info-mode .section-title 등 페이지별 override 는 specificity 가
+ * 더 높아 그대로 우선 적용된다.
+ */
+.page-title {
+    font-size: 1.75rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--text-primary);
+    line-height: 1.3;
+}
+
+.section-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+    line-height: 1.3;
+}
+
+.subsection-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.3;
+}
+
 p {
     color: var(--text-secondary);
 }

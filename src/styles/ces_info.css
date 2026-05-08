@@ -204,6 +204,8 @@
   .info-mode .ces-main {
     padding: 1.25rem 1rem 4rem;
   }
-  .info-mode .main-title { font-size: 1.5rem !important; }
+  /* [audit #27] 모바일에서 페이지 제목을 살짝 줄임 (1.75rem → 1.5rem) — !important 제거.
+     specificity 가 .page-title 보다 높아 자연스럽게 우선 적용. */
+  .info-mode .main-title { font-size: 1.5rem; }
   .info-mode .info-header { margin-bottom: 1.5rem; }
 }

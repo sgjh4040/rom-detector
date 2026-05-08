@@ -62,7 +62,7 @@ export const CesInfo: React.FC = () => {
       {/* --- Main Content Area --- */}
       <div className="ces-main scroll-y">
         <header className="info-header mb-8">
-          <h1 className="main-title text-4xl">{currentJoint?.name}</h1>
+          <h1 className="main-title page-title">{currentJoint?.name}</h1>
           <p className="sub-label opacity-70">
             교정 운동 전략 (CES) 참고 가이드
           </p>

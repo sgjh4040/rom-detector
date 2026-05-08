@@ -24,7 +24,8 @@ export const MovementSidebar: React.FC<MovementSidebarProps> = ({ joint, measure
     return (
         <div className="w-full md:w-1/3 flex flex-col gap-2">
             <div className="px-2 mb-2 flex items-center justify-between">
-                <h3 className="text-sm font-semibold text-slate-500 uppercase tracking-wider">Movements</h3>
+                {/* [audit #27] 카테고리 라벨 — 헤딩이 아니라 그룹 라벨 */}
+                <div className="text-sm font-semibold text-slate-500 uppercase tracking-wider">Movements</div>
                 <span className="text-xs font-medium text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">
                     {joint.movements.length}
                 </span>
