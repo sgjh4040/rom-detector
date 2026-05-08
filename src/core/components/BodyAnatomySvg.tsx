@@ -9,25 +9,36 @@ interface BodyAnatomySvgProps {
   showGroupButtons?: boolean;
 }
 
+/**
+ * [audit #19] 근육 색칠 정확도 디버깅용 로그 헬퍼.
+ * import.meta.env.DEV 가드로 dev 서버에서만 출력하고 프로덕션 번들에서는 제거된다.
+ * 새로운 진단 로그가 필요하면 여기에 dbg(...) 호출을 추가하면 prefix 가 자동 적용된다.
+ */
+const dbg = (...args: unknown[]): void => {
+  if (import.meta.env.DEV) {
+    console.log("[BodyAnatomy]", ...args);
+  }
+};
+
 export const BodyAnatomySvg: React.FC<BodyAnatomySvgProps> = ({
   highlightIds = [],
   cesPhase,
 }) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const lastMsgRef = useRef<string>("");
-  console.log("최종 highlightIds:", highlightIds);
+  dbg("최종 highlightIds:", highlightIds);
   // Flutter 쪽에 데이터를 전송하는 핵심 함수
   const syncState = useCallback(
     (force = false) => {
       if (!iframeRef.current || !iframeRef.current.contentWindow) return;
 
-      console.log("PHASE_META:", PHASE_META);
+      dbg("PHASE_META:", PHASE_META);
       const color = cesPhase ? PHASE_META[cesPhase].color : "#ff0000";
-      console.log("color:", color);
+      dbg("color:", color);
       const muscles = highlightIds.join(",");
-      console.log("muscles:", muscles);
+      dbg("muscles:", muscles);
       const msgStr = `${muscles}|${color}`;
-      console.log("msgStr1:", msgStr);
+      dbg("msgStr1:", msgStr);
 
       // 이전 메시지와 동일하면 중복 전송하지 않음 (단, force가 true면 무조건 전송)
       if (!force && lastMsgRef.current === msgStr) return;
@@ -35,7 +46,7 @@ export const BodyAnatomySvg: React.FC<BodyAnatomySvgProps> = ({
       // Flutter 쪽에 데이터를 전송
       iframeRef.current.contentWindow.postMessage({ muscles, color }, "*");
       lastMsgRef.current = msgStr;
-      console.log("msgStr2:", msgStr);
+      dbg("msgStr2:", msgStr);
     },
     [highlightIds, cesPhase],
   );
