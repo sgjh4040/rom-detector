@@ -1,5 +1,6 @@
 import React from "react";
 import { UserPlus, Activity, Dumbbell, LineChart, Printer } from "lucide-react";
+import { EmptyState } from "./EmptyState";
 
 interface EmptyPatientStateProps {
   onAddPatient: () => void;
@@ -36,97 +37,32 @@ const FEATURES: FeatureHint[] = [
 
 /**
  * 등록된 환자가 한 명도 없을 때 표시되는 빈 상태 컴포넌트.
- * 큰 아이콘 + 안내 문구 + CTA + 기능 소개 3장을 노출해 첫 인상을 보강한다.
+ * 공통 EmptyState (size="lg") 위에 4기능 카드 그리드를 extra 슬롯으로 얹는다.
  */
 export const EmptyPatientState: React.FC<EmptyPatientStateProps> = ({
   onAddPatient,
 }) => {
   return (
-    <div
-      className="bg-full-viewport page-bg-home"
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        minHeight: "100vh",
-        padding: "2rem 1.25rem",
+    <EmptyState
+      size="lg"
+      fullScreen
+      fullScreenBgClass="bg-full-viewport page-bg-home"
+      icon={<UserPlus size={44} strokeWidth={1.8} />}
+      title="환자가 없습니다"
+      description={
+        <>
+          새 환자를 등록하고
+          <br />
+          ROM 측정을 시작해 보세요
+        </>
+      }
+      cta={{
+        label: "새 환자 등록하기",
+        onClick: onAddPatient,
+        icon: <UserPlus size={18} />,
+        variant: "block",
       }}
-    >
-      <div
-        style={{
-          width: "100%",
-          maxWidth: "560px",
-          display: "flex",
-          flexDirection: "column",
-          gap: "1.25rem",
-        }}
-      >
-        {/* 메인 CTA 카드 */}
-        <div
-          className="card neumo-card"
-          style={{
-            padding: "2.5rem 2rem",
-            textAlign: "center",
-            borderRadius: "var(--radius-lg)",
-          }}
-        >
-          <div
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-              width: "88px",
-              height: "88px",
-              borderRadius: "var(--radius-circle)",
-              background:
-                "linear-gradient(135deg, rgba(99,102,241,0.14), rgba(99,102,241,0.05))",
-              color: "#6366f1",
-              marginBottom: "1.25rem",
-            }}
-          >
-            <UserPlus size={44} strokeWidth={1.8} />
-          </div>
-
-          <h2
-            style={{
-              fontSize: "var(--text-xl)",
-              fontWeight: 900,
-              color: "var(--text-primary)",
-              marginBottom: "0.5rem",
-              letterSpacing: "-0.02em",
-            }}
-          >
-            환자가 없습니다
-          </h2>
-          <p
-            style={{
-              fontSize: "var(--text-base)",
-              color: "var(--text-secondary)",
-              fontWeight: 600,
-              marginBottom: "1.75rem",
-              lineHeight: 1.55,
-            }}
-          >
-            새 환자를 등록하고
-            <br />
-            ROM 측정을 시작해 보세요
-          </p>
-
-          <button
-            className="btn btn-primary btn-large w-full"
-            onClick={onAddPatient}
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: "0.5rem",
-            }}
-          >
-            <UserPlus size={18} />새 환자 등록하기
-          </button>
-        </div>
-
-        {/* 기능 소개 — 모바일 2×2 / 태블릿+ 4× */}
+      extra={
         <div className="feature-hint-grid">
           {FEATURES.map((f) => (
             <div
@@ -180,7 +116,7 @@ export const EmptyPatientState: React.FC<EmptyPatientStateProps> = ({
             </div>
           ))}
         </div>
-      </div>
-    </div>
+      }
+    />
   );
 };
