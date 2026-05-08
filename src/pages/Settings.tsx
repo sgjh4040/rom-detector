@@ -89,8 +89,11 @@ export const Settings: React.FC = () => {
     <AppLayout patientId={session?.patientId}>
       <div className="bg-full-viewport page-bg-settings">
         <div className="container">
-          {/* 상단 헤더 */}
-          <div className="settings-header">
+          {/* 상단 헤더 — Trends/Results 와 동일한 .page-header 패턴 (audit #38) */}
+          <div
+            className="page-header"
+            style={{ paddingTop: "20px", marginBottom: "20px" }}
+          >
             <button
               type="button"
               className="btn btn-outline btn-small mb-3"
@@ -103,7 +106,15 @@ export const Settings: React.FC = () => {
             >
               ← 뒤로가기
             </button>
-            <h1>설정</h1>
+            <h1
+              className="text-3xl font-black tracking-tighter opacity-90"
+              style={{ fontSize: "var(--text-2xl)", marginBottom: "4px" }}
+            >
+              설정
+            </h1>
+            <p className="opacity-70 text-base font-bold">
+              데이터 관리 · 라이선스 · 앱 정보
+            </p>
           </div>
 
           {/* 데이터 관리 카드 */}

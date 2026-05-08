@@ -197,12 +197,7 @@ a:hover {
     transform: rotate(30deg) scale(0.95);
 }
 
-.settings-header {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin-bottom: 2rem;
-}
+/* .settings-header 는 audit #38 처리 후 .page-header 로 통합. 정의 제거. */
 
 .settings-card {
     background: var(--glass-bg-strong);
