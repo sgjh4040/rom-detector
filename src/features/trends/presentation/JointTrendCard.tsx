@@ -17,9 +17,13 @@ interface MovementSeries {
     normalRange: number;
 }
 
-const formatDate = (ts: string): string => {
+/**
+ * 회차 라벨용 짧은 날짜 포맷. 예: "5/1" (5월 1일).
+ * Trends 통증 지수 차트와 관절별 추이 차트에서 동일 형식 공유 (audit #36).
+ */
+export const formatDate = (ts: string): string => {
     const d = new Date(ts);
-    return `${d.getMonth() + 1}.${d.getDate()}.`;
+    return `${d.getMonth() + 1}/${d.getDate()}`;
 };
 
 /**

@@ -4,7 +4,7 @@ import { LayoutDashboard, BarChart3 } from "lucide-react";
 import { getPatientHistory, JOINTS, saveRomSession } from "../lib/romData";
 import { TrendGraph } from "../features/trends/presentation/TrendGraph";
 import { NeumoDashboard } from "../features/trends/presentation/NeumoDashboard";
-import { JointTrendCard } from "../features/trends/presentation/JointTrendCard";
+import { JointTrendCard, formatDate } from "../features/trends/presentation/JointTrendCard";
 import { HistoryItem } from "../features/trends/presentation/HistoryItem";
 import { AppLayout } from "../components/AppLayout";
 import "../styles/Trends.css";
@@ -217,8 +217,9 @@ export const Trends: React.FC = () => {
                 </span>
               </div>
               <TrendGraph
-                data={reversedHistory.map((s) => ({
-                  label: `${reversedHistory.indexOf(s) + 1}회`,
+                data={reversedHistory.map((s, idx) => ({
+                  // [audit #36] 회차 + 날짜 병기로 시간 간격 정보 보존. 다른 차트와 동일 포맷.
+                  label: `${idx + 1}회 (${formatDate(s.createdAt)})`,
                   value: s.vasScore || 0,
                 }))}
                 normalRange={10}
