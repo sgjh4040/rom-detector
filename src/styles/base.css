@@ -154,12 +154,12 @@ a:hover {
     width: 200px;
     height: 200px;
     background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%);
-    border-radius: 50%;
+    border-radius: var(--radius-circle);
     pointer-events: none;
 }
 
 .header-badge {
-    font-size: 0.75rem;
+    font-size: var(--text-xs);
     font-weight: 700;
     color: var(--primary);
     text-transform: uppercase;
@@ -173,7 +173,7 @@ a:hover {
     right: 1.25rem;
     width: 40px;
     height: 40px;
-    border-radius: 50%;
+    border-radius: var(--radius-circle);
     background: var(--glass-bg);
     backdrop-filter: var(--glass-blur);
     -webkit-backdrop-filter: var(--glass-blur);
@@ -208,7 +208,7 @@ a:hover {
 .btn-back {
     width: 40px;
     height: 40px;
-    border-radius: 50%;
+    border-radius: var(--radius-circle);
     background: var(--glass-bg);
     backdrop-filter: var(--glass-blur);
     -webkit-backdrop-filter: var(--glass-blur);
@@ -269,7 +269,7 @@ a:hover {
     width: 500px;
     height: 500px;
     background: radial-gradient(circle, rgba(92, 107, 192, 0.08) 0%, transparent 70%);
-    border-radius: 50%;
+    border-radius: var(--radius-circle);
     pointer-events: none;
     z-index: 0;
 }

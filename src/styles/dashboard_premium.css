@@ -173,10 +173,10 @@
 .btn-timer {
     flex: 1;
     padding: 0.6rem;
-    border-radius: 8px;
+    border-radius: var(--radius-xs);
     border: 1px solid rgba(255, 255, 255, 0.15);
     font-weight: 800;
-    font-size: 0.75rem;
+    font-size: var(--text-xs);
     cursor: pointer;
     background: rgba(255, 255, 255, 0.1);
     color: #fff;
@@ -253,7 +253,7 @@
 .user-avatar {
     width: 44px;
     height: 44px;
-    border-radius: 50%;
+    border-radius: var(--radius-circle);
     background: var(--glass-bg);
     box-shadow: var(--shadow-sm);
     border: 2px solid white;
@@ -275,7 +275,7 @@
     flex: 1;
     background: transparent;
     border: none;
-    border-radius: 8px;
+    border-radius: var(--radius-xs);
     padding: 0.6rem 0.25rem;
     color: rgba(255, 255, 255, 0.4);
     font-size: 0.65rem;
@@ -313,7 +313,7 @@
     border-radius: var(--radius-sm);
     padding: 0.85rem;
     font-weight: 700;
-    font-size: 0.75rem;
+    font-size: var(--text-xs);
     text-transform: uppercase;
     letter-spacing: 0.05em;
     display: flex;
@@ -517,7 +517,7 @@
         padding: 0.5rem 0.75rem;
         font-size: 0.7rem;
         white-space: nowrap;
-        border-radius: 8px;
+        border-radius: var(--radius-xs);
         min-width: 0;
         overflow: hidden;
     }

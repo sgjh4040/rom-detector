@@ -36,7 +36,7 @@
   width: calc(100% - 1.5rem);
   margin: 0.25rem 0.75rem;
   padding: 0.75rem 1rem;
-  border-radius: 12px;
+  border-radius: var(--radius-sm);
   transition: all 0.2s ease;
   color: var(--text-secondary);
   background: transparent;
@@ -58,10 +58,10 @@
 .info-mode .sidebar-item.is-active .item-icon { transform: scale(1.1); }
 
 /* 근육 태그 / 메타 태그 */
-.muscle-tag { padding: 0.4rem 0.8rem; border-radius: 8px; font-size: 0.85rem; font-weight: 600; }
+.muscle-tag { padding: 0.4rem 0.8rem; border-radius: var(--radius-xs); font-size: 0.85rem; font-weight: 600; }
 .muscle-tag.overactive { background: rgba(239, 68, 68, 0.1); color: #c53030; border: 1px solid rgba(239, 68, 68, 0.25); }
 .muscle-tag.underactive { background: rgba(34, 197, 94, 0.1); color: #2f855a; border: 1px solid rgba(34, 197, 94, 0.3); }
-.info-mode .meta-tag { font-size: 0.75rem; color: var(--text-secondary); background: rgba(0, 0, 0, 0.04); padding: 0.2rem 0.5rem; border-radius: 6px; border: 1px solid rgba(0, 0, 0, 0.06); }
+.info-mode .meta-tag { font-size: var(--text-xs); color: var(--text-secondary); background: rgba(0, 0, 0, 0.04); padding: 0.2rem 0.5rem; border-radius: 6px; border: 1px solid rgba(0, 0, 0, 0.06); }
 
 /* 동작(움직임) 탭 */
 .info-mode .movement-tabs .ces-tab-btn {
@@ -69,7 +69,7 @@
   text-transform: none;
   font-weight: 700;
   height: 3rem;
-  border-radius: 12px;
+  border-radius: var(--radius-sm);
   border: 1px solid rgba(0, 0, 0, 0.08);
   background: rgba(255, 255, 255, 0.6);
   color: var(--text-secondary);
@@ -109,7 +109,7 @@
   border: none;
   font-weight: 700;
   padding: 0.85rem 1.25rem;
-  border-radius: 12px;
+  border-radius: var(--radius-sm);
   box-shadow: 0 4px 12px rgba(92, 107, 192, 0.25);
   transition: all 0.2s ease;
 }
@@ -127,7 +127,7 @@
   border: 1px solid rgba(0, 0, 0, 0.08);
   width: 44px;
   height: 44px;
-  border-radius: 12px;
+  border-radius: var(--radius-sm);
   flex-shrink: 0;
   transition: all 0.2s ease;
 }
@@ -170,7 +170,7 @@
     width: auto;
     margin: 0;
     padding: 0.5rem 0.9rem;
-    border-radius: 999px;
+    border-radius: var(--radius-pill);
     background: rgba(255, 255, 255, 0.7);
     border: 1px solid rgba(0, 0, 0, 0.08);
     font-size: 0.78rem;
@@ -212,6 +212,6 @@
   }
   /* [audit #27] 모바일에서 페이지 제목을 살짝 줄임 (1.75rem → 1.5rem) — !important 제거.
      specificity 가 .page-title 보다 높아 자연스럽게 우선 적용. */
-  .info-mode .main-title { font-size: 1.5rem; }
+  .info-mode .main-title { font-size: var(--text-xl); }
   .info-mode .info-header { margin-bottom: 1.5rem; }
 }
