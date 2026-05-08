@@ -1,5 +1,75 @@
 /* components.css — Vitalis Glass 카드, 버튼, 폼, 배지 */
 
+/* ── Phase Badge (CES 4단계 / 브레이크 라벨, audit #18) ───
+ * background 색만 inline 으로 받는 동적 배지. 4단계 색상은 SEVERITY 와 별도로
+ * PHASE_META.color (lib/ces/CesPlayerTypes.ts) 가 출처. SeverityBadge 와는
+ * 시각 톤이 다르므로 별도 클래스로 둔다.
+ *
+ * 사용 예:
+ *   <span className="phase-badge" style={{ background: phase.color }}>억제</span>
+ *   <span className="phase-badge phase-badge--sm" ...>억제</span>  // 작은 변형
+ */
+.phase-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.3rem 0.75rem;
+    border-radius: var(--radius-pill);
+    color: #fff;
+    font-size: var(--text-xs);
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+}
+.phase-badge--sm {
+    padding: 0.25rem 0.7rem;
+    letter-spacing: 0.03em;
+}
+
+/* ── Stat Tile (홈/Trends/Settings/Results 의 stat 박스, audit #18) ───
+ * "측정 관절 1 / 제한 동작 4 / 정상 동작 2" 같은 작은 통계 박스.
+ * 4 곳 이상에서 거의 동일한 인라인 style 로 반복되던 패턴.
+ *
+ * 사용 예:
+ *   <div className="stat-tile">
+ *     <p className="stat-tile__label">측정 관절</p>
+ *     <p className="stat-tile__value">1</p>
+ *   </div>
+ */
+.stat-tile {
+    flex: 1;
+    padding: 12px 14px;
+    background: rgba(92, 107, 192, 0.06);
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(92, 107, 192, 0.12);
+}
+.stat-tile__label {
+    font-size: var(--text-xs);
+    font-weight: 700;
+    color: var(--text-secondary);
+    margin: 0 0 4px;
+}
+.stat-tile__value {
+    font-size: var(--text-xl);
+    font-weight: 900;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+/* ── Meta Label (작은 회색 라벨, audit #18) ─────────────────
+ * "최근 측정 5/1" / "운동 1 / 6" 같은 작은 메타 텍스트. fontSize/color/weight
+ * 조합이 30+곳에서 반복되던 패턴.
+ */
+.meta-label {
+    font-size: var(--text-xs);
+    color: var(--text-secondary);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    margin: 0;
+}
+.meta-label--xs {
+    font-size: var(--text-2xs);
+}
+
 /* ── Card (Glassmorphism) ────────────────────────────── */
 .card {
     background: var(--glass-bg-strong);

@@ -76,20 +76,7 @@ export const CesExercisePlayer: React.FC<CesExercisePlayerProps> = ({
             marginBottom: "8px",
           }}
         >
-          <span
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "5px",
-              padding: "0.25rem 0.7rem",
-              borderRadius: "var(--radius-pill)",
-              background: stage.color,
-              color: "#fff",
-              fontSize: "var(--text-xs)",
-              fontWeight: 800,
-              letterSpacing: "0.03em",
-            }}
-          >
+          <span className="phase-badge phase-badge--sm" style={{ gap: "5px", background: stage.color }}>
             {stage.label}
           </span>
           <span

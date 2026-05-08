@@ -112,72 +112,15 @@ export const Settings: React.FC = () => {
               <FileText size={20} /> 데이터 관리
             </h2>
 
-            {/* 요약 */}
-            <div
-              style={{
-                display: "flex",
-                gap: "12px",
-                marginTop: "12px",
-                marginBottom: "16px",
-              }}
-            >
-              <div
-                style={{
-                  flex: 1,
-                  padding: "12px 14px",
-                  background: "rgba(92, 107, 192, 0.06)",
-                  borderRadius: "var(--radius-sm)",
-                  border: "1px solid rgba(92, 107, 192, 0.12)",
-                }}
-              >
-                <div
-                  style={{
-                    fontSize: "var(--text-xs)",
-                    fontWeight: 700,
-                    color: "var(--text-secondary)",
-                    marginBottom: "4px",
-                  }}
-                >
-                  등록 환자
-                </div>
-                <div
-                  style={{
-                    fontSize: "var(--text-xl)",
-                    fontWeight: 900,
-                    color: "var(--text-primary)",
-                  }}
-                >
-                  {patients.length}명
-                </div>
+            {/* 요약 — [audit #18] stat-tile 클래스 */}
+            <div style={{ display: "flex", gap: "12px", marginTop: "12px", marginBottom: "16px" }}>
+              <div className="stat-tile">
+                <p className="stat-tile__label">등록 환자</p>
+                <p className="stat-tile__value">{patients.length}명</p>
               </div>
-              <div
-                style={{
-                  flex: 1,
-                  padding: "12px 14px",
-                  background: "rgba(92, 107, 192, 0.06)",
-                  borderRadius: "var(--radius-sm)",
-                  border: "1px solid rgba(92, 107, 192, 0.12)",
-                }}
-              >
-                <div
-                  style={{
-                    fontSize: "var(--text-xs)",
-                    fontWeight: 700,
-                    color: "var(--text-secondary)",
-                    marginBottom: "4px",
-                  }}
-                >
-                  측정 기록
-                </div>
-                <div
-                  style={{
-                    fontSize: "var(--text-xl)",
-                    fontWeight: 900,
-                    color: "var(--text-primary)",
-                  }}
-                >
-                  {totalHistoryCount}건
-                </div>
+              <div className="stat-tile">
+                <p className="stat-tile__label">측정 기록</p>
+                <p className="stat-tile__value">{totalHistoryCount}건</p>
               </div>
             </div>
 

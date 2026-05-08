@@ -46,20 +46,7 @@ export const PlayerHeader: React.FC<PlayerHeaderProps> = ({
     return (
       <>
         <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
-          <span
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "6px",
-              padding: "0.3rem 0.75rem",
-              borderRadius: "var(--radius-pill)",
-              background: breakMeta.color,
-              color: "#fff",
-              fontSize: "var(--text-xs)",
-              fontWeight: 800,
-              letterSpacing: "0.05em",
-            }}
-          >
+          <span className="phase-badge icon-text icon-text--sm" style={{ background: breakMeta.color }}>
             <BreakIcon size={13} />
             {breakMeta.label}
           </span>
@@ -106,17 +93,7 @@ export const PlayerHeader: React.FC<PlayerHeaderProps> = ({
   return (
     <>
       <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
-        <span
-          style={{
-            padding: "0.3rem 0.75rem",
-            borderRadius: "var(--radius-pill)",
-            background: phase.color,
-            color: "#fff",
-            fontSize: "var(--text-xs)",
-            fontWeight: 800,
-            letterSpacing: "0.05em",
-          }}
-        >
+        <span className="phase-badge" style={{ background: phase.color }}>
           {phase.label}
         </span>
         <span
