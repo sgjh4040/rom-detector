@@ -82,21 +82,26 @@ export const Index: React.FC = () => {
   //totalSteps: 측정해야 할 총 단계 수
 
   const handleSelectPatient = (p: Patient) => {
+    // 다른 페이지(Settings, Trends 등)에서도 해당 환자 맥락을 유지하기 위해
+    // localStorage 세션을 최근 측정 기록 또는 최소 정보로 갱신
+    // (history 는 newest-first 정렬 보장 — patientHistory 의 방어적 정렬)
+    const history = getPatientHistory(p.id);
+    const latest = history[0];
+
     setPatientId(p.id);
     setName(p.name);
     setAge(p.age.toString());
     setPainArea(p.painArea || "");
-    setVasScore(p.vasScore || 0);
+    // [audit #1] 환자 카드 메타에 표시되는 VAS 는 최신 측정값을 우선.
+    // 등록 시점 VAS 는 fallback (측정 기록이 0건일 때만 사용).
+    setVasScore(latest?.vasScore ?? p.vasScore ?? 0);
     setIsAddingNew(false);
     // 환자를 새로 선택하면 요약 카드부터 보여준다
     setIsStartingNewMeasurement(false);
 
-    // 다른 페이지(Settings, Trends 등)에서도 해당 환자 맥락을 유지하기 위해
-    // localStorage 세션을 최근 측정 기록 또는 최소 정보로 갱신
-    const history = getPatientHistory(p.id);
-    if (history.length > 0) {
+    if (latest) {
       // 최근 측정 기록이 있으면 그대로 세션으로 복원 (Results, CES 등에서 활용)
-      saveRomSession(history[0]);
+      saveRomSession(latest);
     } else {
       // 측정 기록이 없으면 환자 정보만 담은 최소 세션
       saveRomSession({
