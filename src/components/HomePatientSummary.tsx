@@ -7,6 +7,8 @@ import {
   calculateSeverity,
 } from "../lib/romData";
 import type { Severity, Side } from "../lib/romTypes";
+import { SEVERITY_COLORS } from "../lib/severityMeta";
+import { SeverityBadge } from "./SeverityBadge";
 import { AreaChart, Area, ResponsiveContainer, YAxis } from "recharts";
 
 interface Props {
@@ -22,20 +24,9 @@ interface JointStat {
   worst: Severity;
 }
 
-// 심각도별 색상 — 빨강=심각, 주황=중등도, 앰버=경도, 그린=정상
-const SEVERITY_COLORS: Record<Severity, string> = {
-  정상: "var(--success)",
-  경도제한: "var(--warning)",
-  중등도제한: "#FB923C",
-  심각한제한: "var(--danger)",
-};
-
-const SEVERITY_LABELS: Record<Severity, string> = {
-  정상: "정상",
-  경도제한: "경도",
-  중등도제한: "중등도",
-  심각한제한: "심각",
-};
+// [audit #37] SEVERITY_COLORS / SEVERITY_LABELS 는 lib/severityMeta.ts 단일 진실원에서 import.
+// 점 시각화(L173-174)는 색상값 직접 사용하므로 SEVERITY_COLORS 만 import,
+// 배지 라벨은 SeverityBadge 컴포넌트에 위임.
 
 const worstSeverity = (severities: Severity[]): Severity => {
   if (severities.includes("심각한제한")) return "심각한제한";
@@ -176,15 +167,7 @@ export const HomePatientSummary: React.FC<Props> = ({ patientId }) => {
                   />
                 ))}
               </div>
-              <span
-                className="joint-row__badge"
-                style={{
-                  background: `${SEVERITY_COLORS[j.worst]}1F`,
-                  color: SEVERITY_COLORS[j.worst],
-                }}
-              >
-                {SEVERITY_LABELS[j.worst]}
-              </span>
+              <SeverityBadge severity={j.worst} variant="tint" />
             </div>
           ))}
         </div>

@@ -2,6 +2,8 @@ import React from "react";
 import { JOINTS, calculateSeverity } from "../lib/romData";
 import { AlertTriangle, CheckCircle } from "lucide-react";
 import type { RomSession, Side } from "../lib/romData";
+import { SEVERITY_COLORS } from "../lib/severityMeta";
+import { SeverityBadge } from "./SeverityBadge";
 
 interface JointSideResultProps {
   session: RomSession;
@@ -44,13 +46,11 @@ export const JointSideResult: React.FC<JointSideResultProps> = ({
   });
   const hasLimitation = results.some((r) => r.severity !== "정상");
 
+  // [audit #37] severity 색상은 lib/severityMeta.ts 단일 진실원에서 가져온다.
+  // 이전엔 중등도제한이 var(--warning) (앰버) 으로 경도와 같은 톤이었으나,
+  // SEVERITY_COLORS 통일로 #FB923C (오렌지) 로 명확히 분리된다.
   const severityBgColor = (s: string) =>
-    ({
-      정상: "var(--success)",
-      경도제한: "var(--warning)",
-      중등도제한: "var(--warning)",
-      심각한제한: "var(--danger)",
-    })[s] ?? "#9CA3AF";
+    SEVERITY_COLORS[s as keyof typeof SEVERITY_COLORS] ?? "#9CA3AF";
 
   // 강조 색상은 var(--danger) 또는 var(--warning) 가 들어옴 — 실제 픽스드 값으로 매핑
   // (CSS var + alpha 조합은 인라인 style에서 동작하지 않아 직접 rgba 사용)
@@ -124,16 +124,7 @@ export const JointSideResult: React.FC<JointSideResultProps> = ({
               {res.name}
             </p>
             <div>
-              <span
-                className={`badge ${res.severity === "정상" ? "badge-success" : res.severity === "심각한제한" ? "badge-danger" : "badge-warning"}`}
-                style={{
-                  fontSize: "var(--text-2xs)",
-                  padding: "0.2rem 0.5rem",
-                  fontWeight: 800,
-                }}
-              >
-                {res.severity}
-              </span>
+              <SeverityBadge severity={res.severity} variant="fill" />
             </div>
           </div>
 

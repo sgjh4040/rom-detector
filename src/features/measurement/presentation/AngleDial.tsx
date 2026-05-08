@@ -3,20 +3,14 @@
 import React from "react";
 import { calculateSeverity } from "../../../lib/romCalculations";
 import type { Severity } from "../../../lib/romTypes";
+// [audit #37] severity 색상은 lib/severityMeta.ts 단일 진실원에서 import.
+import { SEVERITY_COLORS } from "../../../lib/severityMeta";
 
 interface Props {
   value: number;
   maxVal: number;
   normalVal: number;
 }
-
-// 심각도별 호 색상
-const SEVERITY_COLORS: Record<Severity, string> = {
-  정상: "var(--success)",
-  경도제한: "var(--warning)",
-  중등도제한: "#FB923C",
-  심각한제한: "var(--danger)",
-};
 
 // SVG 반원 기하 — 왼쪽 시작점에서 오른쪽 끝점까지 위로 볼록한 반원
 const CX = 110;
