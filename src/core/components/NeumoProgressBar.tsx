@@ -19,7 +19,7 @@ interface NeumoProgressBarProps {
 export const NeumoProgressBar: React.FC<NeumoProgressBarProps> = ({
     label,
     percentage,
-    color = '#6366f1',
+    color = 'var(--primary)',
     sublabel,
 }) => {
     return (

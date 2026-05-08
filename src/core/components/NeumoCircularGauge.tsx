@@ -60,8 +60,8 @@ export const NeumoCircularGauge: React.FC<NeumoCircularGaugeProps> = ({
                 />
                 <defs>
                     <linearGradient id="neumo-gauge-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stopColor="#6366f1" />
-                        <stop offset="100%" stopColor="#a855f7" />
+                        <stop offset="0%" style={{ stopColor: 'var(--primary)' }} />
+                        <stop offset="100%" style={{ stopColor: 'var(--accent-purple)' }} />
                     </linearGradient>
                 </defs>
             </svg>

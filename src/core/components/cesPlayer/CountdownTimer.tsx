@@ -23,7 +23,7 @@ export const CountdownTimer: React.FC<CountdownTimerProps> = ({
 
   const bg = isBreak && breakMeta ? breakMeta.bgColor : "rgba(28,63,111,0.05)";
   const color = isWarning
-    ? "#f87171"
+    ? "var(--danger)"
     : isBreak && breakMeta
       ? breakMeta.color
       : "var(--ink-strong)";
@@ -55,7 +55,7 @@ export const CountdownTimer: React.FC<CountdownTimerProps> = ({
         <p
           style={{
             fontSize: "var(--text-sm)",
-            color: "#f87171",
+            color: "var(--danger)",
             fontWeight: 800,
             marginTop: "0.5rem",
             animation: "pulse-slow 0.5s infinite",

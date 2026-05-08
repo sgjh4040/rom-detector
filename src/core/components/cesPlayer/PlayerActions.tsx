@@ -65,7 +65,7 @@ export const PlayerActions: React.FC<PlayerActionsProps> = ({
           onClick={onTogglePause}
           style={{
             ...primaryButtonBase,
-            background: isPaused ? "#4ade80" : "var(--warning)",
+            background: isPaused ? "var(--success)" : "var(--warning)",
           }}
         >
           {isPaused ? (

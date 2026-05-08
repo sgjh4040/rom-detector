@@ -8,6 +8,11 @@
     --primary-light: #C5CAE9;
     --primary-glow: rgba(92, 107, 192, 0.25);
     --primary-gradient: linear-gradient(135deg, #5C6BC0, #7986CB);
+    /* primary 위에 옅게 깔리는 배경 (10% alpha) — 인라인 hex 통일 (audit #17) */
+    --primary-bg-soft: rgba(92, 107, 192, 0.1);
+
+    /* 보조 강조 (그라데이션·아이콘용) — NeumoCircularGauge 등 */
+    --accent-purple: #A855F7;
 
     /* ── Semantic ───────────────────────────────────────── */
     /*

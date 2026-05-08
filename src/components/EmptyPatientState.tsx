@@ -87,8 +87,8 @@ export const EmptyPatientState: React.FC<EmptyPatientStateProps> = ({
                   width: "32px",
                   height: "32px",
                   borderRadius: "var(--radius-xs)",
-                  background: "rgba(99, 102, 241, 0.1)",
-                  color: "#6366f1",
+                  background: "var(--primary-bg-soft)",
+                  color: "var(--primary)",
                   marginBottom: "0.25rem",
                 }}
               >
