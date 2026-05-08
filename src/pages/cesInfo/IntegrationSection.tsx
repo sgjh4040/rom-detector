@@ -13,7 +13,7 @@ export const IntegrationSection: React.FC<IntegrationSectionProps> = ({
 }) => {
   return (
     <section className="card integrate-section p-6 mt-8">
-      <h3 className="section-title mb-6 flex items-center gap-2">
+      <h3 className="section-title mb-6 icon-text">
         <span className="icon text-primary">
           <Activity size={24} />
         </span>{" "}
@@ -31,12 +31,12 @@ export const IntegrationSection: React.FC<IntegrationSectionProps> = ({
             <p className="text-sm opacity-70 mb-3">{ex.description}</p>
             <div className="ex-meta flex gap-3">
               {ex.sets && (
-                <span className="meta-tag flex items-center gap-1">
+                <span className="meta-tag icon-text icon-text--sm">
                   <Repeat size={12} /> {ex.sets}세트
                 </span>
               )}
               {ex.reps && (
-                <span className="meta-tag flex items-center gap-1">
+                <span className="meta-tag icon-text icon-text--sm">
                   <Hash size={12} /> {ex.reps}회
                 </span>
               )}

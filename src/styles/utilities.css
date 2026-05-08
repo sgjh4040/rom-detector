@@ -28,6 +28,15 @@
 .gap-6 { gap: 1.5rem; }
 .gap-8 { gap: 2rem; }
 
+/* ── Icon + Label 표준 정렬 (audit #28) ─────────────────
+ * 아이콘 + 텍스트 조합(버튼/배지/뱃지/메타) 어디든 같은 정렬·간격 사용.
+ * 기본 0.5rem 간격, 작은(0.25rem) / 큰(0.75rem) 변형 제공.
+ * 사용 예: <button className="icon-text"><Camera /> 사진으로 측정</button>
+ */
+.icon-text { display: inline-flex; align-items: center; gap: 0.5rem; }
+.icon-text--sm { gap: 0.25rem; }
+.icon-text--lg { gap: 0.75rem; }
+
 /* ── Spacing ─────────────────────────────────────────── */
 .m-0 { margin: 0; }
 .mt-2 { margin-top: 0.5rem; }

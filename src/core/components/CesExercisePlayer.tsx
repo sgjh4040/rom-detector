@@ -130,7 +130,7 @@ export const CesExercisePlayer: React.FC<CesExercisePlayerProps> = ({
         >
           {current.tools && (
             <span
-              className="flex items-center gap-1"
+              className="icon-text icon-text--sm"
               style={{
                 fontSize: "var(--text-sm)",
                 fontWeight: 700,

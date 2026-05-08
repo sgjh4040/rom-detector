@@ -78,7 +78,7 @@ export const CesStageCard: React.FC<Props> = ({
         }}
       >
         <span
-          className="flex items-center gap-2"
+          className="icon-text"
           style={{ fontSize: "var(--text-base)", fontWeight: 700, color: meta.color }}
         >
           {meta.icon} {meta.label}
@@ -118,7 +118,7 @@ export const CesStageCard: React.FC<Props> = ({
                 <h3 style={{ marginBottom: "0.5rem" }}>{current.name}</h3>
                 {current.tools && (
                   <p
-                    className="flex items-center gap-1"
+                    className="icon-text icon-text--sm"
                     style={{
                       fontSize: "var(--text-sm)",
                       color: meta.color,

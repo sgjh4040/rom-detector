@@ -254,7 +254,7 @@ export const Results: React.FC = () => {
             }}
           >
             <div className="panel-header">
-              <h3 className="flex items-center gap-2"><TrendingUp size={20} /> 경과 관찰 (초기 대비)</h3>
+              <h3 className="icon-text"><TrendingUp size={20} /> 경과 관찰 (초기 대비)</h3>
               <span className="badge badge-primary">
                 총 {history.length}회 측정
               </span>

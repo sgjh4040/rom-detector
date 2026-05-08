@@ -21,22 +21,22 @@ const ExerciseStageItem: React.FC<{ ex: CesExercise; idx: number }> = ({ ex, idx
       <p className="text-sm opacity-70 mb-3">{ex.description}</p>
       <div className="ex-meta flex flex-wrap gap-3">
         {ex.tools && (
-          <span className="meta-tag flex items-center gap-1">
+          <span className="meta-tag icon-text icon-text--sm">
             <Wrench size={12} /> {ex.tools}
           </span>
         )}
         {ex.holdSeconds && (
-          <span className="meta-tag flex items-center gap-1">
+          <span className="meta-tag icon-text icon-text--sm">
             <Timer size={12} /> {ex.holdSeconds}초
           </span>
         )}
         {ex.sets && (
-          <span className="meta-tag flex items-center gap-1">
+          <span className="meta-tag icon-text icon-text--sm">
             <Repeat size={12} /> {ex.sets}세트
           </span>
         )}
         {ex.reps && (
-          <span className="meta-tag flex items-center gap-1">
+          <span className="meta-tag icon-text icon-text--sm">
             <Hash size={12} /> {ex.reps}회
           </span>
         )}
@@ -56,7 +56,7 @@ export const ProtocolColumn: React.FC<ProtocolColumnProps> = ({ protocol }) => {
       {PROTOCOL_STAGES.map((stage) => (
         <section key={stage} className="card protocol-section p-6">
           <div className="flex justify-between items-center mb-4">
-            <h3 className="section-title flex items-center gap-2">
+            <h3 className="section-title icon-text">
               <span className="icon">{STAGE_LABELS[stage].icon}</span>
               {STAGE_LABELS[stage].label}
             </h3>

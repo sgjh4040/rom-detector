@@ -34,7 +34,7 @@ export const MeasurementPanel: React.FC<MeasurementPanelProps> = ({
                     <h3 className="text-xl font-bold text-slate-800">
                         {activeMov?.name ?? '동작 선택'}
                     </h3>
-                    <div className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-full border border-slate-200 shadow-sm">
+                    <div className="icon-text bg-white px-3 py-1.5 rounded-full border border-slate-200 shadow-sm">
                         <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
                         <span className="text-sm font-medium text-slate-600">
                             정상 범위 <span className="font-bold text-slate-900 ml-1">{activeMov?.normalRange}°</span>

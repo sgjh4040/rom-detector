@@ -80,7 +80,7 @@ export const JointSideResult: React.FC<JointSideResultProps> = ({
           {joint.isSymmetric ? "" : ` — ${side}`}
         </h3>
         <span
-          className={`badge flex items-center gap-1 ${hasLimitation ? "badge-warning" : "badge-success"}`}
+          className={`badge icon-text icon-text--sm ${hasLimitation ? "badge-warning" : "badge-success"}`}
         >
           {hasLimitation ? <><AlertTriangle size={14} /> 제한 있음</> : <><CheckCircle size={14} /> 정상</>}
         </span>
@@ -140,7 +140,7 @@ export const JointSideResult: React.FC<JointSideResultProps> = ({
           >
             {res.isQualitative ? (
               <div
-                className="flex items-center gap-1"
+                className="icon-text icon-text--sm"
                 style={{
                   fontSize: "var(--text-base)",
                   fontWeight: 800,

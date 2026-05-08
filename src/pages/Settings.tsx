@@ -108,7 +108,7 @@ export const Settings: React.FC = () => {
 
           {/* 데이터 관리 카드 */}
           <div className="card settings-card">
-            <h2 className="flex items-center gap-2">
+            <h2 className="icon-text">
               <FileText size={20} /> 데이터 관리
             </h2>
 

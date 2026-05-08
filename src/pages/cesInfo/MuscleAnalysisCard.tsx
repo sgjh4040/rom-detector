@@ -16,7 +16,7 @@ export const MuscleAnalysisCard: React.FC<MuscleAnalysisCardProps> = ({
 }) => {
   return (
     <section className="card muscle-map-card p-6 h-full">
-      <h3 className="section-title mb-4 flex items-center gap-2">
+      <h3 className="section-title mb-4 icon-text">
         <span className="icon text-primary">
           <Brain size={24} />
         </span>{" "}
@@ -24,7 +24,7 @@ export const MuscleAnalysisCard: React.FC<MuscleAnalysisCardProps> = ({
       </h3>
       <div className="space-y-6">
         <div>
-          <h4 className="flex items-center gap-2 text-red-400 font-bold mb-2">
+          <h4 className="icon-text text-red-400 font-bold mb-2">
             <span className="w-2 h-2 rounded-full bg-red-400"></span>
             과활성 (짧아짐)
           </h4>
@@ -37,7 +37,7 @@ export const MuscleAnalysisCard: React.FC<MuscleAnalysisCardProps> = ({
           </div>
         </div>
         <div>
-          <h4 className="flex items-center gap-2 text-green-400 font-bold mb-2">
+          <h4 className="icon-text text-green-400 font-bold mb-2">
             <span className="w-2 h-2 rounded-full bg-green-400"></span>
             저활성 (약해짐)
           </h4>

@@ -150,7 +150,7 @@ export const CesPlayerPage: React.FC = () => {
         <div className="action-bar justify-center mt-6 flex gap-4">
           <button
             onClick={restart}
-            className="btn btn-primary flex items-center gap-2"
+            className="btn btn-primary icon-text"
           >
             <RotateCcw size={18} /> 다시 시작
           </button>
