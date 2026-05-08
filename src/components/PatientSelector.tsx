@@ -1,7 +1,7 @@
 import React from "react";
 import type { Patient } from "../lib/romTypes";
 import { getPatientHistory } from "../lib/patientHistory";
-import { Settings, Plus } from "lucide-react";
+import { Settings, Plus, Trash2 } from "lucide-react";
 
 interface PatientSelectorProps {
   patients: Patient[];
@@ -160,51 +160,112 @@ export const PatientSelector: React.FC<PatientSelectorProps> = ({
         </div>
       )}
 
+      {/* [audit] 환자 관리 모드 — 행을 명확히 두 영역으로 분리:
+          좌측 환자 선택 카드 (button, 호버 효과) + 우측 빨간 outline 삭제 버튼.
+          이전엔 한 카드 안에 두 액션이 묶여 "한 버튼"처럼 보이던 문제 해소. */}
       {isManaging && (
         <div
-          className="panel"
           style={{
-            background: "var(--bg-color)",
-            padding: "1rem",
-            border: "1px solid #ddd",
+            display: "flex",
+            flexDirection: "column",
+            gap: "0.5rem",
           }}
         >
-          <div className="flex flex-col gap-2">
-            {patients
-              .slice()
-              .reverse()
-              .map((p) => (
-                <div
-                  key={p.id}
-                  className="flex justify-between items-center p-2 bg-white rounded-md shadow-sm"
+          {patients
+            .slice()
+            .reverse()
+            .map((p) => (
+              <div
+                key={p.id}
+                style={{
+                  display: "flex",
+                  alignItems: "stretch",
+                  gap: "0.5rem",
+                }}
+              >
+                <button
+                  type="button"
+                  onClick={() => {
+                    handleSelectPatient(p);
+                    setIsManaging(false);
+                  }}
+                  style={{
+                    flex: 1,
+                    minHeight: "44px",
+                    padding: "0.6rem 0.9rem",
+                    background: "rgba(255, 255, 255, 0.85)",
+                    border: "1px solid rgba(0, 0, 0, 0.06)",
+                    borderRadius: "var(--radius-xs)",
+                    textAlign: "left",
+                    cursor: "pointer",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "2px",
+                    transition: "border-color 0.15s, box-shadow 0.15s",
+                  }}
+                  className="patient-mgmt-row__select"
                 >
-                  <div
-                    onClick={() => {
-                      handleSelectPatient(p);
-                      setIsManaging(false);
+                  <span
+                    style={{
+                      fontSize: "var(--text-sm)",
+                      fontWeight: 800,
+                      color: "var(--text-primary)",
                     }}
-                    style={{ cursor: "pointer" }}
                   >
-                    <strong>{p.name}</strong>{" "}
+                    {p.name}{" "}
                     <span
                       style={{
                         color: "var(--text-secondary)",
-                        fontSize: "var(--text-sm)",
+                        fontWeight: 600,
+                        fontSize: "var(--text-xs)",
                       }}
                     >
                       ({p.age}세)
                     </span>
-                  </div>
-                  <button
-                    className="btn btn-danger btn-small"
-                    style={{ padding: "0.2rem 0.4rem", fontSize: "var(--text-xs)" }}
-                    onClick={() => handleDeletePatient(p.id)}
-                  >
+                  </span>
+                  {p.painArea && (
+                    <span
+                      style={{
+                        fontSize: "var(--text-2xs)",
+                        color: "var(--text-secondary)",
+                        opacity: 0.75,
+                      }}
+                    >
+                      {p.painArea}
+                      {p.vasScore !== undefined && ` · VAS ${p.vasScore}`}
+                    </span>
+                  )}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleDeletePatient(p.id)}
+                  aria-label={`${p.name} 삭제`}
+                  style={{
+                    minHeight: "44px",
+                    minWidth: "44px",
+                    padding: "0 0.85rem",
+                    background: "rgba(239, 68, 68, 0.08)",
+                    border: "1px solid rgba(239, 68, 68, 0.3)",
+                    borderRadius: "var(--radius-xs)",
+                    color: "var(--danger)",
+                    fontSize: "var(--text-xs)",
+                    fontWeight: 700,
+                    cursor: "pointer",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: "0.35rem",
+                    transition: "background 0.15s",
+                  }}
+                  className="patient-mgmt-row__delete"
+                >
+                  <Trash2 size={15} />
+                  <span style={{ display: "var(--del-label-display, inline)" }}>
                     삭제
-                  </button>
-                </div>
-              ))}
-          </div>
+                  </span>
+                </button>
+              </div>
+            ))}
         </div>
       )}
     </div>
