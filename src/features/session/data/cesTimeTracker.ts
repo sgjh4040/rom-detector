@@ -1,8 +1,9 @@
 // cesTimeTracker.ts — CES 단계별 수행 시간 데이터 관리
 // [PRD 4-0] 200줄 이하 / [PRD 2-3] any 금지
 import type { CesStage } from '../../../lib/ces/cesTypes';
+import { STORAGE_KEYS } from '../../../lib/storageKeys';
 
-const STORAGE_KEY = 'ces_history_durations';
+const STORAGE_KEY = STORAGE_KEYS.CES_HISTORY_DURATIONS;
 
 /**
  * 한 단계의 기본 목표 시간 (초). 5분 = 300초.

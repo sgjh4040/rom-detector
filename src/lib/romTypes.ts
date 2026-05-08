@@ -3,6 +3,8 @@
 // [PRD 4-0] 200줄 규칙 준수 / [PRD 2-3] any 절대 금지
 // ────────────────────────────────────────────────────────
 
+import { STORAGE_KEYS } from './storageKeys';
+
 /** 관절 하나의 운동 동작 */
 export interface Movement {
     id: string;
@@ -112,7 +114,7 @@ export const getNextMeasurement = (
 // localStorage 유틸리티
 // ────────────────────────────────────────────────────────
 
-const SESSION_STORAGE_KEY = 'rom_session'; // [PRD 4-3] 매직 스트링 금지
+const SESSION_STORAGE_KEY = STORAGE_KEYS.CURRENT_SESSION; // [PRD 4-3 / audit #22]
 
 /** localStorage에서 세션을 안전하게 불러오기 [PRD 3-1] */
 export const loadRomSession = (): RomSession | null => {

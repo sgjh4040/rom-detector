@@ -1,6 +1,8 @@
 import type { Patient, RomSession } from './romTypes';
+import { loadRomSession, clearRomSession } from './romTypes';
+import { STORAGE_KEYS, patientHistoryKey } from './storageKeys';
 
-const PATIENTS_KEY = 'rom_patients';
+const PATIENTS_KEY = STORAGE_KEYS.PATIENTS;
 
 /** 전체 환자 목록 불러오기 */
 export const getPatients = (): Patient[] => {
@@ -35,7 +37,7 @@ export const savePatient = (patient: Patient): void => {
  *  (수동 import / seed / 외부 편집된 데이터에도 일관된 순서 제공) */
 export const getPatientHistory = (patientId: string): RomSession[] => {
     try {
-        const key = `rom_history_${patientId}`;
+        const key = patientHistoryKey(patientId);
         const saved = localStorage.getItem(key);
         if (!saved) return [];
         const parsed: RomSession[] = JSON.parse(saved);
@@ -64,7 +66,7 @@ export const addSessionToHistory = (patientId: string, session: RomSession): voi
         // 최근 순으로 정렬
         history.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
-        localStorage.setItem(`rom_history_${patientId}`, JSON.stringify(history));
+        localStorage.setItem(patientHistoryKey(patientId), JSON.stringify(history));
 
         // 환자의 마지막 측정일 업데이트
         const patients = getPatients();
@@ -86,7 +88,7 @@ export const clearAllPatientsAndHistory = (): void => {
     try {
         const patients = getPatients();
         patients.forEach(p => {
-            localStorage.removeItem(`rom_history_${p.id}`);
+            localStorage.removeItem(patientHistoryKey(p.id));
         });
         localStorage.removeItem(PATIENTS_KEY);
     } catch (error) {
@@ -103,15 +105,12 @@ export const deletePatient = (patientId: string): void => {
         localStorage.setItem(PATIENTS_KEY, JSON.stringify(filtered));
 
         // 2. 해당 환자의 히스토리 삭제
-        localStorage.removeItem(`rom_history_${patientId}`);
+        localStorage.removeItem(patientHistoryKey(patientId));
 
-        // 3. 현재 세션이 해당 환자라면 삭제
-        const currentSession = localStorage.getItem('rom_session');
-        if (currentSession) {
-            const parsed = JSON.parse(currentSession);
-            if (parsed.patientId === patientId) {
-                localStorage.removeItem('rom_session');
-            }
+        // 3. 현재 세션이 해당 환자라면 삭제 (audit #3 잔여 정리: 직접 localStorage 접근 → lib 래퍼)
+        const currentSession = loadRomSession();
+        if (currentSession && currentSession.patientId === patientId) {
+            clearRomSession();
         }
     } catch (error) {
         console.error('환자 삭제 실패:', error);
