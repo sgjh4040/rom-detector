@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Download, Trash2, FileText, Users } from "lucide-react";
 import { AppLayout } from "../components/AppLayout";
+import { ConfirmDialog } from "../components/ConfirmDialog";
 import { loadRomSession, clearRomSession } from "../lib/romTypes";
 import {
   getPatients,
@@ -50,6 +51,8 @@ export const Settings: React.FC = () => {
   const session = loadRomSession();
   const [patients, setPatients] = useState(getPatients());
   const [isDeleting, setIsDeleting] = useState(false);
+  // [audit #24] native confirm 대신 ConfirmDialog 사용
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const totalHistoryCount = patients.reduce(
     (sum, p) => sum + getPatientHistory(p.id).length,
@@ -69,10 +72,11 @@ export const Settings: React.FC = () => {
       alert("삭제할 데이터가 없어요.");
       return;
     }
-    const ok = confirm(
-      `정말 모든 환자 ${patients.length}명과 측정 기록 ${totalHistoryCount}건을 삭제할까요?\n이 작업은 되돌릴 수 없어요.`,
-    );
-    if (!ok) return;
+    setShowDeleteConfirm(true);
+  };
+
+  const handleConfirmDeleteAll = () => {
+    setShowDeleteConfirm(false);
     setIsDeleting(true);
     deleteAllData();
     setPatients([]);
@@ -259,6 +263,18 @@ export const Settings: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* [audit #24] 전체 데이터 삭제 확인 다이얼로그 */}
+      <ConfirmDialog
+        open={showDeleteConfirm}
+        title="모든 데이터를 삭제할까요?"
+        description={`환자 ${patients.length}명과 측정 기록 ${totalHistoryCount}건이 사라집니다.\n이 작업은 되돌릴 수 없어요.`}
+        confirmLabel="삭제"
+        cancelLabel="취소"
+        variant="danger"
+        onConfirm={handleConfirmDeleteAll}
+        onCancel={() => setShowDeleteConfirm(false)}
+      />
     </AppLayout>
   );
 };

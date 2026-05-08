@@ -15,6 +15,7 @@ import { JointSelector } from "../components/JointSelector";
 import { AppLayout } from "../components/AppLayout";
 import { EmptyPatientState } from "../components/EmptyPatientState";
 import { HomePatientSummary } from "../components/HomePatientSummary";
+import { ConfirmDialog } from "../components/ConfirmDialog";
 import { Settings, Play, LineChart } from "lucide-react";
 
 type SideMode = "좌측만" | "우측만" | "양쪽";
@@ -70,6 +71,9 @@ export const Index: React.FC = () => {
     useState(false);
   // 기존 환자 선택 시 요약 카드 → 측정 설정 폼으로 전환 여부
   // 첫 진입은 요약 카드만 보이고, 버튼을 눌러야 폼이 펼쳐진다
+
+  // [audit #24] 환자 개별 삭제 확인 — id + 이름을 다이얼로그가 표시하도록 보관
+  const [pendingDelete, setPendingDelete] = useState<{ id: string; name: string } | null>(null);
 
   const sides = SIDE_MODE_MAP[sideMode];
   // 고른 방향(좌/우/양쪽)에 따라 실제로 측정할 쪽을 결정
@@ -136,10 +140,18 @@ export const Index: React.FC = () => {
   };
 
   const handleDeletePatient = (id: string) => {
-    if (!confirm("정말 삭제하시겠습니까?")) return;
+    const target = patients.find((p) => p.id === id);
+    if (!target) return;
+    setPendingDelete({ id, name: target.name });
+  };
+
+  const handleConfirmDeletePatient = () => {
+    if (!pendingDelete) return;
+    const { id } = pendingDelete;
     deletePatient(id);
     setPatients(getPatients()); // 화면 새로고침
     if (patientId === id) handleNewPatient();
+    setPendingDelete(null);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -389,6 +401,22 @@ export const Index: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* [audit #24] 환자 개별 삭제 확인 다이얼로그 */}
+      <ConfirmDialog
+        open={pendingDelete !== null}
+        title="환자를 삭제할까요?"
+        description={
+          pendingDelete
+            ? `${pendingDelete.name} 님과 모든 측정 기록이 사라집니다.\n이 작업은 되돌릴 수 없어요.`
+            : undefined
+        }
+        confirmLabel="삭제"
+        cancelLabel="취소"
+        variant="danger"
+        onConfirm={handleConfirmDeletePatient}
+        onCancel={() => setPendingDelete(null)}
+      />
     </AppLayout>
   );
 };
