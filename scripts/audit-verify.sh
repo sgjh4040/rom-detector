@@ -93,11 +93,27 @@ else
   report "#22" "storageKeys.ts" "❌" "미생성"
 fi
 
-if grep -q "DEFAULT_GOAL_SECONDS" src/features/session/data/cesTimeTracker.ts 2>/dev/null \
-   && [ ! -f src/lib/clinicalConstants.ts ]; then
-  report "#23" "DEFAULT_GOAL_SECONDS 단일 진실원" "❌" "clinicalConstants.ts 미생성"
+if [ -f src/lib/cesConfig.ts ] \
+   && grep -q "DEFAULT_PHASE_GOAL_SECONDS" src/lib/cesConfig.ts 2>/dev/null; then
+  report "#23" "CES 매직넘버 단일 진실원 (cesConfig.ts)" "✅" "DEFAULT_PHASE/TOTAL_GOAL_SECONDS"
 else
-  report "#23" "DEFAULT_GOAL_SECONDS 단일 진실원" "✅" ""
+  report "#23" "CES 매직넘버 단일 진실원 (cesConfig.ts)" "❌" "cesConfig.ts 미생성"
+fi
+
+# #15 — CSS 안에 정확 매핑 가능한 비표준 fontSize 값 잔존 검사 (토큰 1:1 대응)
+n=$(grep -rohE "font-size: *(0\.75rem|0\.875rem|1\.125rem|1\.5rem|2rem|2\.5rem) *;" src/styles/ 2>/dev/null | wc -l | tr -d ' ')
+if [ "$n" -eq 0 ]; then
+  report "#15" "fontSize 토큰 매핑 (CSS, 정확값)" "✅" ""
+else
+  report "#15" "fontSize 토큰 매핑 (CSS, 정확값)" "❌" "${n}건 잔존"
+fi
+
+# #16 — CSS 안에 정확 매핑 가능한 비표준 borderRadius 값 잔존 검사
+n=$(grep -rohE "border-radius: *(50%|9999px|999px|32px|24px|16px|12px|8px) *;" src/styles/ 2>/dev/null | wc -l | tr -d ' ')
+if [ "$n" -eq 0 ]; then
+  report "#16" "borderRadius 토큰 매핑 (CSS, 정확값)" "✅" ""
+else
+  report "#16" "borderRadius 토큰 매핑 (CSS, 정확값)" "❌" "${n}건 잔존"
 fi
 
 if grep -q "Human Body Atlas SVGs" src/pages/Settings.tsx 2>/dev/null; then
