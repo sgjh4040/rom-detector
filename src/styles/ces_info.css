@@ -93,7 +93,10 @@
   border: 1px solid rgba(0, 0, 0, 0.05) !important;
   color: var(--text-primary);
 }
-.info-mode .exercise-info-item:hover { transform: translateY(-1px); border-color: rgba(0, 0, 0, 0.1) !important; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06); }
+/* [audit #30] hover sticky 회피 */
+@media (hover: hover) {
+  .info-mode .exercise-info-item:hover { transform: translateY(-1px); border-color: rgba(0, 0, 0, 0.1) !important; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06); }
+}
 .info-mode .exercise-info-item h4 { color: var(--text-primary) !important; }
 .info-mode .exercise-info-item p { color: var(--text-secondary); }
 .info-mode .ex-num { color: rgba(0, 0, 0, 0.15) !important; }
@@ -110,10 +113,13 @@
   box-shadow: 0 4px 12px rgba(92, 107, 192, 0.25);
   transition: all 0.2s ease;
 }
-.info-mode .btn-complete:hover {
-  background: #4a5cb0;
-  transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(92, 107, 192, 0.3);
+/* [audit #30] hover sticky 회피 */
+@media (hover: hover) {
+  .info-mode .btn-complete:hover {
+    background: #4a5cb0;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(92, 107, 192, 0.3);
+  }
 }
 .info-mode .btn-close-circle {
   background: rgba(0, 0, 0, 0.04);

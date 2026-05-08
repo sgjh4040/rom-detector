@@ -69,8 +69,11 @@
     transition: all var(--transition-base);
 }
 
-.panel.clickable:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
-    border-color: var(--primary);
+/* [audit #30] hover sticky 회피 */
+@media (hover: hover) {
+    .panel.clickable:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-lg);
+        border-color: var(--primary);
+    }
 }

@@ -147,9 +147,12 @@
     transition: all var(--transition-base);
 }
 
-.stat-card:hover {
-    box-shadow: var(--shadow-md);
-    transform: translateY(-2px);
+/* [audit #30] hover sticky 회피 */
+@media (hover: hover) {
+    .stat-card:hover {
+        box-shadow: var(--shadow-md);
+        transform: translateY(-2px);
+    }
 }
 
 .stat-value {

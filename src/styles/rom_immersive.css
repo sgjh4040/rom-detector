@@ -323,14 +323,17 @@
     box-shadow: var(--shadow-sm);
 }
 
-.rom-photo-btn:hover {
-    background: var(--glass-bg-strong);
-    box-shadow: var(--shadow-md);
-    transform: translateY(-1px);
-}
-
 .rom-photo-btn:active {
     transform: translateY(0);
+}
+
+/* [audit #30] hover sticky 회피 */
+@media (hover: hover) {
+    .rom-photo-btn:hover {
+        background: var(--glass-bg-strong);
+        box-shadow: var(--shadow-md);
+        transform: translateY(-1px);
+    }
 }
 
 .rom-photo-btn--open {
@@ -423,9 +426,12 @@
     box-shadow: var(--shadow-primary);
 }
 
-.rom-footer__next:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 24px rgba(92, 107, 192, 0.35);
+/* [audit #30] hover sticky 회피 */
+@media (hover: hover) {
+    .rom-footer__next:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 24px rgba(92, 107, 192, 0.35);
+    }
 }
 
 .rom-footer__next:active {

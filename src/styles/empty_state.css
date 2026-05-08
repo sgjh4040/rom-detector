@@ -135,10 +135,13 @@
   margin-top: 0.5rem;
 }
 
-.empty-state__cta:hover {
-  background: #4a5cb0;
-  transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(92, 107, 192, 0.25);
+/* [audit #30] hover sticky 회피 */
+@media (hover: hover) {
+  .empty-state__cta:hover {
+    background: #4a5cb0;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(92, 107, 192, 0.25);
+  }
 }
 
 .empty-state__cta--block {

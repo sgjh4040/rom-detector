@@ -312,11 +312,6 @@
     box-shadow: var(--shadow-primary);
 }
 
-.btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 24px rgba(92, 107, 192, 0.35);
-}
-
 .btn-primary:active {
     transform: translateY(0);
     box-shadow: 0 2px 8px rgba(92, 107, 192, 0.2);
@@ -332,12 +327,6 @@
     box-shadow: var(--shadow-sm);
 }
 
-.btn-secondary:hover {
-    background: var(--glass-bg-strong);
-    box-shadow: var(--shadow-md);
-    transform: translateY(-1px);
-}
-
 .btn-secondary:active {
     transform: translateY(0);
 }
@@ -351,14 +340,26 @@
     box-shadow: var(--shadow-sm);
 }
 
-.btn-outline:hover {
-    background: var(--glass-bg-strong);
-    box-shadow: var(--shadow-md);
-    transform: translateY(-1px);
-}
-
 .btn-outline:active {
     transform: translateY(0);
+}
+
+/* [audit #30] hover 효과는 마우스 가능 환경에서만 발화 — 모바일 터치 sticky 회피 */
+@media (hover: hover) {
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 24px rgba(92, 107, 192, 0.35);
+    }
+    .btn-secondary:hover {
+        background: var(--glass-bg-strong);
+        box-shadow: var(--shadow-md);
+        transform: translateY(-1px);
+    }
+    .btn-outline:hover {
+        background: var(--glass-bg-strong);
+        box-shadow: var(--shadow-md);
+        transform: translateY(-1px);
+    }
 }
 
 .btn-large {

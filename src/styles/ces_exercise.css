@@ -37,8 +37,11 @@
     transition: transform var(--transition-base);
 }
 
-.ex-tray-item:hover {
-    transform: translateY(-2px);
+/* [audit #30] hover sticky 회피 */
+@media (hover: hover) {
+    .ex-tray-item:hover {
+        transform: translateY(-2px);
+    }
 }
 
 .ex-tray-thumb {

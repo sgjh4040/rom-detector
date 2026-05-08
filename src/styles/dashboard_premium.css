@@ -325,10 +325,13 @@
     transition: all var(--transition-base);
 }
 
-.btn-complete:hover {
-    background: rgba(255, 255, 255, 0.12);
-    border-color: rgba(255, 255, 255, 0.2);
-    transform: translateY(-2px);
+/* [audit #30] hover sticky 회피 — 마우스 환경만 */
+@media (hover: hover) {
+    .btn-complete:hover {
+        background: rgba(255, 255, 255, 0.12);
+        border-color: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+    }
 }
 
 .btn-complete.is-primary {
