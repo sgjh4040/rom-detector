@@ -290,12 +290,19 @@ export const Index: React.FC = () => {
 
             {showForm && (
             <form onSubmit={handleSubmit}>
-              {/* 기존 환자에서 "새 측정 시작"을 눌러 들어온 경우, 돌아가기 링크 제공 */}
+              {/* 기존 환자에서 "새 측정 시작"을 눌러 들어온 경우, 돌아가기 버튼 제공.
+                  스타일은 다른 페이지(Trends/Results/Settings) 와 동일한 outline pill 로 통일.
+                  텍스트는 페이지 이동이 아닌 같은 페이지 내 상태 전환이라 의미를 명확히 유지. */}
               {isStartingNewMeasurement && !isAddingNew && (
                 <button
                   type="button"
-                  className="patient-summary__back"
+                  className="btn btn-outline btn-small mb-3"
                   onClick={() => setIsStartingNewMeasurement(false)}
+                  style={{
+                    padding: "6px 14px",
+                    borderRadius: "var(--radius-xs)",
+                    fontSize: "var(--text-sm)",
+                  }}
                 >
                   ← 환자 정보로 돌아가기
                 </button>
