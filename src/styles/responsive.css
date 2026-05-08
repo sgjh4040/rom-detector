@@ -102,6 +102,13 @@
     .app-main-with-sidebar {
         padding-bottom: calc(72px + env(safe-area-inset-bottom));
     }
+
+    /* [audit #4] .bg-full-viewport 가 min-height:100vh 라 부모(.app-main)의
+       padding-bottom 영역까지 콘텐츠가 침범 → VAS 슬라이더 등 폼 마지막
+       요소가 fixed bottom nav 에 가려짐. 컨테이너 자체에도 padding 부여 */
+    .bg-full-viewport {
+        padding-bottom: calc(72px + env(safe-area-inset-bottom));
+    }
 }
 
 /* ── Tablet & Desktop ────────────────────────────────── */
