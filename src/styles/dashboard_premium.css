@@ -337,11 +337,13 @@
     box-shadow: 0 4px 12px rgba(92, 107, 192, 0.3);
 }
 
-/* 운동 완료 — 보조 액션이라 outline 스타일로 위계 분리 */
+/* 운동 완료 — 보조 액션이라 outline 스타일로 위계 분리.
+   [audit #34] 보라 primary 옆에서 너무 흐릿해 안 보이던 문제 해소:
+   bg 4%→10%, border 25%→40%, color 85%→100% 로 가시성 보강. 위계(fill vs outline)는 유지. */
 .btn-complete.is-success {
-    background: rgba(255, 255, 255, 0.04);
-    border-color: rgba(255, 255, 255, 0.25);
-    color: rgba(255, 255, 255, 0.85);
+    background: rgba(255, 255, 255, 0.10);
+    border-color: rgba(255, 255, 255, 0.40);
+    color: #fff;
     box-shadow: none;
 }
 
