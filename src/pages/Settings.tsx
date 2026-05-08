@@ -168,13 +168,13 @@ export const Settings: React.FC = () => {
           <div className="card settings-card">
             <h2>오픈소스 라이선스</h2>
             <div className="license-info">
-              <h3>Human Body Atlas SVGs</h3>
+              <h3>인체 해부 SVG (Human Body Atlas)</h3>
               <p>
-                This app uses anatomical SVG graphics provided by
-                flutter_body_atlas.
+                이 앱은 flutter_body_atlas 가 제공하는 인체 해부 SVG 그래픽을
+                사용합니다.
               </p>
               <p>
-                <strong>License:</strong> CC BY 4.0
+                <strong>라이선스:</strong> CC BY 4.0
               </p>
               <p>
                 <a
@@ -182,7 +182,7 @@ export const Settings: React.FC = () => {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  License Link
+                  라이선스 보기
                 </a>
               </p>
               <div className="license-note">
