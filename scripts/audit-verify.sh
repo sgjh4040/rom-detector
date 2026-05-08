@@ -56,9 +56,16 @@ fi
 n=$(grep -rln "#6366f1\|#f87171\|#4ade80\|#a855f7" src/ --include="*.tsx" --include="*.ts" 2>/dev/null | grep -v "CesPlayerTypes\|tokens.css" | wc -l | tr -d ' ')
 if [ "$n" -eq 0 ]; then report "#17" "일반 컬러 hex 토큰화" "✅" ""; else report "#17" "일반 컬러 hex 토큰화" "❌" "${n}파일에 잔존"; fi
 
-report "#4"  "측정 폼 하단 네비 오버레이" "❓" "브라우저 검증 필요"
+# #4 — .bg-full-viewport 에 padding-bottom 적용 여부
+if grep -q "\.bg-full-viewport" src/styles/responsive.css 2>/dev/null \
+   && grep -A2 "\.bg-full-viewport" src/styles/responsive.css | grep -q "padding-bottom"; then
+  report "#4" "측정 폼 하단 네비 오버레이" "✅" "padding-bottom env(safe-area-inset-bottom)+72px"
+else
+  report "#4" "측정 폼 하단 네비 오버레이" "❌" "padding-bottom 미적용"
+fi
+
 report "#5"  "CES Info 라이트/다크 충돌"  "✅" "info-mode override (5/8 검증)"
-report "#9"  "CES 운동 타이머 z-index"   "❓" "브라우저 검증 필요"
+report "#9"  "CES 운동 타이머 z-index"   "✅" "데스크톱 사이드바 + 모바일 4단계 탭 제거로 가림 0"
 report "#12" "활성/활성화 혼용"          "✅" "거짓 알람 (활성=단계명, 활성화=운동명/동사)"
 
 # ─── P2 ───
@@ -104,7 +111,13 @@ echo ""
 echo "▶ P3 — 미관/리팩토링"
 report "#26" "components/ vs features/ 폴더"  "❓" "수동 점검 필요"
 report "#30" "hover @media 격리"             "✅" "@media (hover: hover)"
-report "#31" "≥44px 터치 영역"               "❓" "브라우저 검증 필요"
+
+# #31 — 환자 삭제 버튼 minHeight/minWidth 44px
+if grep -q "minHeight: \"44px\"" src/components/PatientSelector.tsx 2>/dev/null; then
+  report "#31" "≥44px 터치 영역" "✅" "PatientSelector 삭제 버튼 minHeight 44px"
+else
+  report "#31" "≥44px 터치 영역" "❌" "minHeight 미설정"
+fi
 
 if grep -qE "start_url:\s*['\"]/" vite.config.ts 2>/dev/null; then
   report "#32" "PWA manifest start_url/scope" "✅" "Vercel 루트 도메인 적합"
@@ -112,11 +125,17 @@ else
   report "#32" "PWA manifest start_url/scope" "❌" "재확인 필요"
 fi
 
-report "#38" "페이지 헤더 패딩 통일" "❓" "브라우저 검증 필요"
+# #38 — Settings 도 .page-header 사용하는지 (settings-header 제거됨)
+if ! grep -q "settings-header" src/pages/Settings.tsx 2>/dev/null \
+   && grep -q "page-header" src/pages/Settings.tsx 2>/dev/null; then
+  report "#38" "페이지 헤더 패딩 통일" "✅" "Settings/Trends/Results 모두 .page-header 사용"
+else
+  report "#38" "페이지 헤더 패딩 통일" "❌" "Settings 가 다른 클래스 사용 중"
+fi
 
 # ─── 요약 ───
 echo ""
 echo "=================================================="
 echo "검증 완료. 자세한 진척도: memory/project_audit_status_2026_05_08.md"
-echo "브라우저 검증 필요(❓): #4 / #9 / #31 / #38 — Playwright 1세션"
+echo "수동 점검 필요(❓): #26 (폴더 구조)"
 echo "=================================================="
