@@ -2,21 +2,12 @@
 // [PRD 4-0] 200줄 이하 / [PRD 2-3] any 금지
 import type { CesStage } from '../../../lib/ces/cesTypes';
 import { STORAGE_KEYS } from '../../../lib/storageKeys';
+import {
+    DEFAULT_PHASE_GOAL_SECONDS,
+    DEFAULT_TOTAL_GOAL_SECONDS,
+} from '../../../lib/cesConfig';
 
 const STORAGE_KEY = STORAGE_KEYS.CES_HISTORY_DURATIONS;
-
-/**
- * 한 단계의 기본 목표 시간 (초). 5분 = 300초.
- *
- * ⚠️ [audit #23] 이 값은 **fallback 전용** 이며 정상 흐름에서는 호출되지 않는다.
- * 실제 사용처(NeumoDashboard)에서는 `computePhaseGoals(session)` 으로 처방의
- * 운동 시간 합을 계산해 `phaseGoals[stage]` / `phaseGoals.total` 을 항상
- * 명시적으로 전달한다 — 즉 default value 는 안전망일 뿐.
- *
- * 따라서 이 값을 변경해도 대시보드 진행률은 바뀌지 않으며, 함수 직접 호출 시
- * (테스트/스크립트) 처방이 없을 때만 5분 기준으로 평가된다.
- */
-const DEFAULT_GOAL_SECONDS = 300;
 
 export interface PhaseDurations {
     inhibit: number;
@@ -83,13 +74,13 @@ export const updatePhaseDuration = (stage: CesStage, additionalSeconds: number, 
  *
  * @param stage CES 단계
  * @param sessionCreatedAt 세션 ID (createdAt)
- * @param goalSeconds 목표 초 — 생략 시 DEFAULT_GOAL_SECONDS(300) 폴백.
+ * @param goalSeconds 목표 초 — 생략 시 DEFAULT_PHASE_GOAL_SECONDS(300) 폴백.
  *                    처방이 비어 있을 때(= 0)는 0%를 반환한다.
  */
 export const getPhasePercentage = (
     stage: CesStage,
     sessionCreatedAt?: string,
-    goalSeconds: number = DEFAULT_GOAL_SECONDS,
+    goalSeconds: number = DEFAULT_PHASE_GOAL_SECONDS,
 ): number => {
     const history = loadCesHistory();
     const key = sessionCreatedAt || 'latest';
@@ -104,12 +95,12 @@ export const getPhasePercentage = (
  *
  * @param sessionCreatedAt 세션 ID (createdAt)
  * @param totalGoalSeconds 4단계 전체 합산 목표 초.
- *                         생략 시 `DEFAULT_GOAL_SECONDS * 4`(= 1200초) 폴백.
+ *                         생략 시 `DEFAULT_TOTAL_GOAL_SECONDS`(= 1200초) 폴백.
  *                         처방이 비어 있을 때(= 0)는 0%를 반환한다.
  */
 export const getTotalCompletionPercentage = (
     sessionCreatedAt?: string,
-    totalGoalSeconds: number = DEFAULT_GOAL_SECONDS * 4,
+    totalGoalSeconds: number = DEFAULT_TOTAL_GOAL_SECONDS,
 ): number => {
     const history = loadCesHistory();
     const key = sessionCreatedAt || 'latest';
