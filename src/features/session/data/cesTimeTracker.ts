@@ -3,7 +3,19 @@
 import type { CesStage } from '../../../lib/ces/cesTypes';
 
 const STORAGE_KEY = 'ces_history_durations';
-const DEFAULT_GOAL_SECONDS = 300; // 5분
+
+/**
+ * 한 단계의 기본 목표 시간 (초). 5분 = 300초.
+ *
+ * ⚠️ [audit #23] 이 값은 **fallback 전용** 이며 정상 흐름에서는 호출되지 않는다.
+ * 실제 사용처(NeumoDashboard)에서는 `computePhaseGoals(session)` 으로 처방의
+ * 운동 시간 합을 계산해 `phaseGoals[stage]` / `phaseGoals.total` 을 항상
+ * 명시적으로 전달한다 — 즉 default value 는 안전망일 뿐.
+ *
+ * 따라서 이 값을 변경해도 대시보드 진행률은 바뀌지 않으며, 함수 직접 호출 시
+ * (테스트/스크립트) 처방이 없을 때만 5분 기준으로 평가된다.
+ */
+const DEFAULT_GOAL_SECONDS = 300;
 
 export interface PhaseDurations {
     inhibit: number;

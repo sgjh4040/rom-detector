@@ -3,6 +3,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import type { CesRoutine, CesPlayerStep } from '../../lib/ces/CesPlayerTypes';
 import type { CesStage } from '../../lib/ces/cesTypes';
 import { updatePhaseDuration } from '../../features/session/data/cesTimeTracker';
+import { COUNTDOWN_WARNING_SECONDS } from '../components/cesPlayer/helpers';
 
 export interface UseCesPlayerReturn {
     currentStep: CesPlayerStep;
@@ -126,7 +127,7 @@ export const useCesPlayer = (routine: CesRoutine, sessionCreatedAt?: string): Us
 
     /** 카운트다운 완료 시 스텝 전환 부작용 처리 */
     useEffect(() => {
-        if (countdown <= 3 && countdown > 0 && !beepFiredRef.current) {
+        if (countdown <= COUNTDOWN_WARNING_SECONDS && countdown > 0 && !beepFiredRef.current) {
             beepFiredRef.current = true;
             playBeep();
         }

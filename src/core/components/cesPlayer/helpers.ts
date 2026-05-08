@@ -16,3 +16,13 @@ export const fmtMMSS = (total: number): string => {
 };
 
 export const pad = (n: number): string => String(n).padStart(2, "0");
+
+/**
+ * 카운트다운 경고 임계값 (초). 남은 시간이 이 값 이하 + 0초 초과일 때
+ * - CountdownTimer 가 빨간 색 + "곧 다음 운동" 안내 + pulse 애니메이션 발동
+ * - useCesPlayer 가 비프(beep) 사운드 1회 재생
+ *
+ * 두 곳에서 동일 값을 참조해야 시각/청각 경고가 동시에 발화된다.
+ * (audit #23 — 매직 넘버 통합)
+ */
+export const COUNTDOWN_WARNING_SECONDS = 3;

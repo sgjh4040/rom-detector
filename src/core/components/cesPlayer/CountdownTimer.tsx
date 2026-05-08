@@ -1,7 +1,7 @@
 // CountdownTimer.tsx — CesPlayer 큰 카운트다운 박스 (mm:ss + 3초 미만 경고)
 import React from "react";
 import type { BREAK_META } from "../../../lib/ces/CesPlayerTypes";
-import { pad } from "./helpers";
+import { pad, COUNTDOWN_WARNING_SECONDS } from "./helpers";
 
 type BreakMetaValue = (typeof BREAK_META)[keyof typeof BREAK_META];
 
@@ -19,7 +19,7 @@ export const CountdownTimer: React.FC<CountdownTimerProps> = ({
 }) => {
   const mins = Math.floor(countdown / 60);
   const secs = countdown % 60;
-  const isWarning = countdown <= 3 && countdown > 0;
+  const isWarning = countdown <= COUNTDOWN_WARNING_SECONDS && countdown > 0;
 
   const bg = isBreak && breakMeta ? breakMeta.bgColor : "rgba(28,63,111,0.05)";
   const color = isWarning
