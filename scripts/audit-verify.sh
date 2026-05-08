@@ -44,8 +44,17 @@ if [ "$n" -eq 0 ]; then report "#6" "CES Info 영문 라벨" "✅" ""; else repo
 n=$(grep -rn "INHIBIT\b\|LENGTHEN\b\|ACTIVATE\b\|INTEGRATE\b" src/ --include="*.tsx" 2>/dev/null | grep -v "type\|import\|//\|comment" | wc -l | tr -d ' ')
 if [ "$n" -eq 0 ]; then report "#7" "CES Player 영문 단독 라벨" "✅" ""; else report "#7" "CES Player 영문 단독 라벨" "❌" "${n}건"; fi
 
-n=$(grep -rln "#fbbf24\|#60a5fa\|#f87171\|#4ade80\|#6366f1\|#a855f7" src/ --include="*.tsx" --include="*.ts" 2>/dev/null | grep -v "CesPlayerTypes" | wc -l | tr -d ' ')
-if [ "$n" -eq 0 ]; then report "#11" "CES 4단계 색상 hex (PHASE_META 외)" "✅" ""; else report "#11" "CES 4단계 색상 hex (PHASE_META 외)" "❌" "${n}파일에 분산"; fi
+# #11 은 PHASE_META.color 단일 진실원 사용 강제. 검증: NeumoDashboard 가 STAGE_COLORS import 하는지.
+if grep -q "STAGE_COLORS" src/features/trends/presentation/NeumoDashboard.tsx 2>/dev/null \
+   && grep -q "PHASE_META\[currentStep" src/core/components/CesPlayerController.tsx 2>/dev/null; then
+  report "#11" "CES 4단계 색상 통일 (STAGE_COLORS/PHASE_META)" "✅" "NeumoDashboard + CesPlayer 모두 사용"
+else
+  report "#11" "CES 4단계 색상 통일 (STAGE_COLORS/PHASE_META)" "❌" "단일 import 미적용"
+fi
+
+# #17 일반 컬러 hex 토큰 미사용 — tokens.css 외 파일에 hex 직접 박힘 검사
+n=$(grep -rln "#6366f1\|#f87171\|#4ade80\|#a855f7" src/ --include="*.tsx" --include="*.ts" 2>/dev/null | grep -v "CesPlayerTypes\|tokens.css" | wc -l | tr -d ' ')
+if [ "$n" -eq 0 ]; then report "#17" "일반 컬러 hex 토큰화" "✅" ""; else report "#17" "일반 컬러 hex 토큰화" "❌" "${n}파일에 잔존"; fi
 
 report "#4"  "측정 폼 하단 네비 오버레이" "❓" "브라우저 검증 필요"
 report "#5"  "CES Info 라이트/다크 충돌"  "✅" "info-mode override (5/8 검증)"
