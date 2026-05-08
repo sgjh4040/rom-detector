@@ -4,15 +4,11 @@ import {
   JOINTS,
   loadRomSession,
   calculateSeverity,
-  //   EXERCISES,
-  //   FALLBACK_STRETCHING,
-  //   FALLBACK_STRENGTHENING,
   addSessionToHistory,
   getPatientHistory,
   savePatient,
 } from "../lib/romData";
 import type { Side } from "../lib/romData";
-// import { ExerciseCard } from "../components/ExerciseCard";
 import { JointSideResult } from "../components/JointSideResult";
 import { AppLayout } from "../components/AppLayout";
 import { EmptyState } from "../components/EmptyState";
@@ -78,31 +74,6 @@ export const Results: React.FC = () => {
 
   // 첫 측정인지 확인
   const isFirstTime = history.length <= 1;
-
-  // 제한된 관절 찾기
-  // const jointsWithLimitation = selectedJointIds.filter((jid) =>
-  //   selectedSides.some((side) => {
-  //     const joint = JOINTS.find((j) => j.id === jid);
-  //     return joint?.movements.some((m) => {
-  //       const measured = session.measurements?.[jid]?.[side]?.[m.id] ?? 0;
-  //       const severity = m.isQualitative
-  //         ? measured === 1
-  //           ? "심각한제한"
-  //           : "정상"
-  //         : calculateSeverity(measured, m.normalRange);
-  //       return severity !== "정상";
-  //     });
-  //   }),
-  // );
-
-  // const exIds =
-  //   jointsWithLimitation.length > 0 ? jointsWithLimitation : selectedJointIds;
-  // const stretches = exIds.flatMap((id) =>
-  //   (EXERCISES[id] ?? []).filter((e) => e.type === "stretching"),
-  // );
-  // const strength = exIds.flatMap((id) =>
-  //   (EXERCISES[id] ?? []).filter((e) => e.type === "strengthening"),
-  // );
 
   // (jointId, side) 조합별 제한/정상 집계 — 정렬 + 요약 + 렌더용
   interface JointSideStat {
