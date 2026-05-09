@@ -15,6 +15,8 @@ import { TimerCard } from "./cesProtocol/TimerCard";
 import { StageTabs } from "./cesProtocol/StageTabs";
 import { JointSideHeader } from "./cesProtocol/JointSideHeader";
 import { MuscleBalanceCard } from "./cesProtocol/MuscleBalanceCard";
+import { EmptyState } from "../components/EmptyState";
+import { Dumbbell } from "lucide-react";
 
 export const CesProtocol: React.FC = () => {
   const navigate = useNavigate();
@@ -62,10 +64,25 @@ export const CesProtocol: React.FC = () => {
       setActiveJointSide(jointSideList[0].id);
   }, [jointSideList, activeJointSide]);
 
-  // [PRD 4-2] Early return
+  // [PRD 4-2] Early return — 측정 세션이 없을 때.
+  // 이전 구현은 렌더 중 navigate("/") 후 return null 이라 한 프레임 빈 화면이
+  // 보이고 React 안티패턴 경고도 났음 (F1, 2026-05-09).
+  // Results.tsx 와 동일하게 EmptyState 안내 후 사용자가 홈으로 이동 (audit #21).
   if (!session) {
-    navigate("/");
-    return null;
+    return (
+      <EmptyState
+        size="md"
+        fullScreen
+        icon={<Dumbbell size={48} strokeWidth={1.8} />}
+        title="측정 세션이 없어요"
+        description="ROM 측정을 먼저 완료하면 CES 재활 프로토콜이 표시됩니다."
+        cta={{
+          label: "홈으로 돌아가기",
+          variant: "pill",
+          onClick: () => navigate("/"),
+        }}
+      />
+    );
   }
   if (jointSideList.length === 0)
     return <div className="container">Loading...</div>;
