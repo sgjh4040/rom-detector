@@ -14,9 +14,9 @@ import { PainAssessment } from "../features/measurement/presentation/PainAssessm
 import { JointSelector } from "../features/measurement/presentation/JointSelector";
 import { AppLayout } from "../core/components/AppLayout";
 import { EmptyPatientState } from "../features/session/presentation/EmptyPatientState";
-import { HomePatientSummary } from "../features/session/presentation/HomePatientSummary";
+import { PatientSummaryCard } from "../features/session/presentation/PatientSummaryCard";
 import { ConfirmDialog } from "../core/components/ConfirmDialog";
-import { Settings, Play, LineChart } from "lucide-react";
+import { Settings } from "lucide-react";
 
 type SideMode = "좌측만" | "우측만" | "양쪽";
 const SIDE_MODE_MAP: Record<SideMode, Side[]> = {
@@ -243,61 +243,18 @@ export const Index: React.FC = () => {
               </div>
             )}
 
-            {showSummary && (
-              <div className="patient-summary">
-                <div className="patient-summary__info">
-                  <h2 className="patient-summary__name">
-                    {name}
-                    <span className="patient-summary__age"> ({age}세)</span>
-                  </h2>
-                  <div className="patient-summary__meta">
-                    {painArea && <span>{painArea}</span>}
-                    {painArea && <span className="dot">·</span>}
-                    <span>VAS {vasScore}</span>
-                    {historyCount > 0 && (
-                      <>
-                        <span className="dot">·</span>
-                        <span>측정 {historyCount}회</span>
-                      </>
-                    )}
-                  </div>
-                  {lastMeasuredAt && (
-                    <p className="patient-summary__last">
-                      최근 측정:{" "}
-                      {new Date(lastMeasuredAt).toLocaleDateString("ko-KR", {
-                        month: "long",
-                        day: "numeric",
-                      })}
-                    </p>
-                  )}
-                </div>
-                <div className="patient-summary__actions">
-                  <button
-                    type="button"
-                    className="btn btn-primary btn-large"
-                    onClick={() => setIsStartingNewMeasurement(true)}
-                  >
-                    <Play size={18} /> 새 측정 시작
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-outline btn-large"
-                    onClick={() =>
-                      navigate(`/trends?patientId=${patientId}`)
-                    }
-                    disabled={historyCount === 0}
-                    style={
-                      historyCount === 0
-                        ? { opacity: 0.5, cursor: "not-allowed" }
-                        : undefined
-                    }
-                  >
-                    <LineChart size={18} />
-                    {historyCount === 0 ? "측정 기록 없음" : "측정 기록 보기"}
-                  </button>
-                </div>
-                {patientId && <HomePatientSummary patientId={patientId} />}
-              </div>
+            {showSummary && patientId && (
+              <PatientSummaryCard
+                patientId={patientId}
+                name={name}
+                age={age}
+                painArea={painArea}
+                vasScore={vasScore}
+                historyCount={historyCount}
+                lastMeasuredAt={lastMeasuredAt}
+                onStartMeasurement={() => setIsStartingNewMeasurement(true)}
+                onViewTrends={() => navigate(`/trends?patientId=${patientId}`)}
+              />
             )}
 
             {showForm && (
