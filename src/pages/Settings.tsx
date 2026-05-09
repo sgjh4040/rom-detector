@@ -1,7 +1,6 @@
 // Settings.tsx — 앱 설정 및 데이터 관리 화면 (PRD 4-0: 200줄 이하)
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Download, Trash2, FileText, Users } from "lucide-react";
 import { AppLayout } from "../core/components/AppLayout";
 import { ConfirmDialog } from "../core/components/ConfirmDialog";
 import { loadRomSession, clearRomSession } from "../lib/romTypes";
@@ -11,6 +10,8 @@ import {
   clearAllPatientsAndHistory,
 } from "../lib/romData";
 import { clearCesHistory } from "../features/session/data/cesTimeTracker";
+import { DataManagementCard } from "./settings/DataManagementCard";
+import { LicenseCard } from "./settings/LicenseCard";
 
 /** 현재 localStorage의 환자/히스토리/세션을 JSON으로 묶어 파일로 다운로드 */
 const exportAllData = (): void => {
@@ -117,91 +118,15 @@ export const Settings: React.FC = () => {
             </p>
           </div>
 
-          {/* 데이터 관리 카드 */}
-          <div className="card settings-card">
-            <h2 className="icon-text">
-              <FileText size={20} /> 데이터 관리
-            </h2>
+          <DataManagementCard
+            patientCount={patients.length}
+            totalHistoryCount={totalHistoryCount}
+            isDeleting={isDeleting}
+            onExport={handleExport}
+            onRequestDeleteAll={handleDeleteAll}
+          />
 
-            {/* 요약 — [audit #18] stat-tile 클래스 */}
-            <div style={{ display: "flex", gap: "12px", marginTop: "12px", marginBottom: "16px" }}>
-              <div className="stat-tile">
-                <p className="stat-tile__label">등록 환자</p>
-                <p className="stat-tile__value">{patients.length}명</p>
-              </div>
-              <div className="stat-tile">
-                <p className="stat-tile__label">측정 기록</p>
-                <p className="stat-tile__value">{totalHistoryCount}건</p>
-              </div>
-            </div>
-
-            {/* 내보내기 */}
-            <button
-              type="button"
-              className="btn btn-outline w-full flex items-center justify-center gap-2"
-              style={{ marginBottom: "10px", padding: "12px" }}
-              onClick={handleExport}
-            >
-              <Download size={18} /> 데이터 내보내기 (JSON)
-            </button>
-
-            {/* 전체 삭제 */}
-            <button
-              type="button"
-              className="btn btn-outline w-full flex items-center justify-center gap-2"
-              style={{
-                padding: "12px",
-                color: "var(--danger)",
-                borderColor: "rgba(239, 68, 68, 0.3)",
-              }}
-              onClick={handleDeleteAll}
-              disabled={isDeleting}
-            >
-              <Trash2 size={18} /> 모든 환자 데이터 삭제
-            </button>
-
-            <p
-              style={{
-                fontSize: "var(--text-xs)",
-                color: "var(--text-secondary)",
-                marginTop: "10px",
-                lineHeight: 1.5,
-                opacity: 0.75,
-              }}
-            >
-              <Users size={12} style={{ display: "inline", marginRight: "4px" }} />
-              환자 정보와 측정 기록은 이 기기에만 저장돼요. 앱을 지우거나 브라우저
-              저장소를 비우면 복구할 수 없어요.
-            </p>
-          </div>
-
-          {/* 오픈소스 라이선스 섹션 */}
-          <div className="card settings-card">
-            <h2>오픈소스 라이선스</h2>
-            <div className="license-info">
-              <h3>인체 해부 SVG (Human Body Atlas)</h3>
-              <p>
-                이 앱은 flutter_body_atlas 가 제공하는 인체 해부 SVG 그래픽을
-                사용합니다.
-              </p>
-              <p>
-                <strong>라이선스:</strong> CC BY 4.0
-              </p>
-              <p>
-                <a
-                  href="https://creativecommons.org/licenses/by/4.0/"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  라이선스 보기
-                </a>
-              </p>
-              <div className="license-note">
-                원본 그래픽은 본 웹 앱의 동적 색상 하이라이트 기능에 맞게
-                재조정되었습니다.
-              </div>
-            </div>
-          </div>
+          <LicenseCard />
 
           {/* 앱 정보 섹션 */}
           <div

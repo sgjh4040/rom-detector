@@ -1,13 +1,10 @@
+// ImageAngleMeasurer.tsx — 사진 위 3점 클릭으로 관절 각도 측정 (PRD §9-2).
+// audit #13: 단계 안내(Steps) + 결과(Result) 분리. 본체는 Canvas + 빈 상태만.
 import React from "react";
 import { useAngleMeasurer } from "./useAngleMeasurer";
-import { RotateCcw, Pointer, CheckCircle, Camera } from "lucide-react";
-
-// [PRD 4-3] 매직 스트링 금지
-const STEP_GUIDE = [
-  "① 팔 끝점 A 클릭",
-  "② 관절 중심 클릭",
-  "③ 팔 끝점 B 클릭",
-] as const;
+import { RotateCcw, Camera } from "lucide-react";
+import { Steps } from "./imageAngleMeasurer/Steps";
+import { Result } from "./imageAngleMeasurer/Result";
 
 interface Props {
   /** 각도 확정 시 호출 — 측정값을 입력란에 자동 반영 */
@@ -38,7 +35,7 @@ export const ImageAngleMeasurer: React.FC<Props> = ({ onAngleConfirmed }) => {
         boxShadow: "var(--shadow-raised-sm)",
       }}
     >
-      {/* 상단 버튼 */}
+      {/* 상단 버튼 — 사진 불러오기 + 다시 */}
       <div className="flex gap-3 mb-4">
         <label
           className="btn btn-outline"
@@ -74,45 +71,7 @@ export const ImageAngleMeasurer: React.FC<Props> = ({ onAngleConfirmed }) => {
 
       {imageDataUrl ? (
         <>
-          {/* 단계 안내 */}
-          <div
-            style={{
-              marginBottom: "1rem",
-              padding: "1rem",
-              backgroundColor: "var(--bg)",
-              borderRadius: "var(--radius-md)",
-              boxShadow: "var(--shadow-pressed)",
-            }}
-          >
-            <p
-              style={{
-                fontSize: "var(--text-sm)",
-                fontWeight: 600,
-                marginBottom: "0.5rem",
-                color: "var(--primary)",
-              }}
-            >
-              {points.length < 3
-                ? <><Pointer size={16} className="inline mr-1" /> {STEP_GUIDE[points.length]}</>
-                : <><CheckCircle size={16} className="inline mr-1" /> 측정 완료!</>}
-            </p>
-            <div className="flex gap-2">
-              {STEP_GUIDE.map((_, i) => (
-                <span
-                  key={i}
-                  className={`badge ${i < points.length ? "badge-success" : "badge-outline"}`}
-                  style={{
-                    flex: 1,
-                    fontSize: "var(--text-xs)",
-                    textAlign: "center",
-                    padding: "0.4rem",
-                  }}
-                >
-                  {i < points.length ? "✓" : `${i + 1}`}
-                </span>
-              ))}
-            </div>
-          </div>
+          <Steps pointCount={points.length} />
 
           {/* Canvas */}
           <div
@@ -135,56 +94,13 @@ export const ImageAngleMeasurer: React.FC<Props> = ({ onAngleConfirmed }) => {
             />
           </div>
 
-          {/* 각도 결과 & 사용 버튼 */}
           {calculatedAngle !== null && (
-            <div
-              style={{
-                marginTop: "1.25rem",
-                padding: "1.25rem",
-                backgroundColor: "var(--bg)",
-                borderRadius: "var(--radius-md)",
-                textAlign: "center",
-                boxShadow: "var(--shadow-raised)",
-              }}
-            >
-              <div className="flex justify-between items-center mb-2">
-                <span
-                  style={{ fontSize: "var(--text-sm)", color: "var(--text-secondary)" }}
-                >
-                  측정된 각도
-                </span>
-                <button
-                  type="button"
-                  className={`btn ${isInverted ? "btn-primary" : "btn-outline"}`}
-                  style={{
-                    fontSize: "var(--text-xs)",
-                    padding: "0.25rem 0.75rem",
-                    height: "auto",
-                  }}
-                  onClick={toggleInversion}
-                >
-                  <RotateCcw size={14} /> 호 반전 {isInverted ? "(외각)" : "(내각)"}
-                </button>
-              </div>
-              <p
-                style={{
-                  fontSize: "var(--text-3xl)",
-                  fontWeight: 900,
-                  color: "var(--primary)",
-                  lineHeight: 1,
-                  marginBottom: "1rem",
-                }}
-              >
-                {calculatedAngle}°
-              </p>
-              <button
-                type="button"
-                className="btn btn-primary btn-large w-full"
-                onClick={() => onAngleConfirmed(calculatedAngle)}
-              >
-                이 측정값 저장하기
-              </button>
-            </div>
+            <Result
+              angle={calculatedAngle}
+              isInverted={isInverted}
+              onToggleInversion={toggleInversion}
+              onSave={() => onAngleConfirmed(calculatedAngle)}
+            />
           )}
         </>
       ) : (
@@ -197,7 +113,12 @@ export const ImageAngleMeasurer: React.FC<Props> = ({ onAngleConfirmed }) => {
             color: "var(--text-secondary)",
           }}
         >
-          <p className="flex justify-center" style={{ fontSize: "var(--text-2xl)", marginBottom: "0.5rem" }}><Camera size={32} /></p>
+          <p
+            className="flex justify-center"
+            style={{ fontSize: "var(--text-2xl)", marginBottom: "0.5rem" }}
+          >
+            <Camera size={32} />
+          </p>
           <p style={{ fontSize: "var(--text-sm)", lineHeight: 1.5 }}>
             사진을 불러오면 3점을 클릭해서
             <br />
