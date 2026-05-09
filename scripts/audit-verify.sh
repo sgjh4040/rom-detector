@@ -125,11 +125,16 @@ fi
 # ─── P3 ───
 echo ""
 echo "▶ P3 — 미관/리팩토링"
-report "#26" "components/ vs features/ 폴더"  "❓" "수동 점검 필요"
+# #26 — src/components/ 폴더가 사라지고 PRD §1 구조 (core/ + features/*/presentation/) 만 남았는지
+if [ ! -d "src/components" ]; then
+  report "#26" "components/ vs features/ 폴더"  "✅" "src/components/ 삭제, PRD §1 준수 (2026-05-09 f27307f)"
+else
+  report "#26" "components/ vs features/ 폴더"  "❌" "src/components/ 잔존"
+fi
 report "#30" "hover @media 격리"             "✅" "@media (hover: hover)"
 
-# #31 — 환자 삭제 버튼 minHeight/minWidth 44px
-if grep -q "minHeight: \"44px\"" src/components/PatientSelector.tsx 2>/dev/null; then
+# #31 — 환자 삭제 버튼 minHeight/minWidth 44px (#26 이후 PatientSelector 위치 이동됨)
+if grep -q "minHeight: \"44px\"" src/features/session/presentation/PatientSelector.tsx 2>/dev/null; then
   report "#31" "≥44px 터치 영역" "✅" "PatientSelector 삭제 버튼 minHeight 44px"
 else
   report "#31" "≥44px 터치 영역" "❌" "minHeight 미설정"
@@ -153,5 +158,5 @@ fi
 echo ""
 echo "=================================================="
 echo "검증 완료. 자세한 진척도: memory/project_audit_status_2026_05_08.md"
-echo "수동 점검 필요(❓): #26 (폴더 구조)"
+echo "잔여 본격 작업: #13 (200줄+ 13파일), #18 2차 (인라인 style 312건)"
 echo "=================================================="
