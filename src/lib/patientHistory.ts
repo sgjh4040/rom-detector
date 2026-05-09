@@ -55,20 +55,25 @@ export const hasPatientHistory = (patientId: string): boolean => {
     return getPatientHistory(patientId).length > 0;
 };
 
-/** 새로운 측정 세션을 히스토리에 추가 */
+/** 새로운 측정 세션을 히스토리에 추가.
+ *  React StrictMode (dev) 에서 useEffect 가 두 번 실행되어도 안전하도록
+ *  중복 측정만 push 를 건너뛰고, 환자의 lastMeasuredAt 갱신은 항상 실행한다.
+ *  (이전 구현은 early return 으로 lastMeasuredAt 이 누락된 채 끝나는 경우 있었음 — F2) */
 export const addSessionToHistory = (patientId: string, session: RomSession): void => {
     try {
         const history = getPatientHistory(patientId);
-        // 중복 저장 방지 (createdAt 기준)
-        if (history.some(s => s.createdAt === session.createdAt)) return;
+        // 중복 저장 방지 (createdAt 기준) — push/sort 만 건너뛰고 lastMeasuredAt 갱신은 계속
+        const isDuplicate = history.some(s => s.createdAt === session.createdAt);
 
-        history.push(session);
-        // 최근 순으로 정렬
-        history.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+        if (!isDuplicate) {
+            history.push(session);
+            // 최근 순으로 정렬
+            history.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
-        localStorage.setItem(patientHistoryKey(patientId), JSON.stringify(history));
+            localStorage.setItem(patientHistoryKey(patientId), JSON.stringify(history));
+        }
 
-        // 환자의 마지막 측정일 업데이트
+        // 환자의 마지막 측정일은 항상 최신으로 보정 (중복 호출에도 idempotent)
         const patients = getPatients();
         const patient = patients.find(p => p.id === patientId);
         if (patient) {

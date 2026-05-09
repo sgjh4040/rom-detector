@@ -6,6 +6,7 @@ import {
   calculateSeverity,
   addSessionToHistory,
   getPatientHistory,
+  getPatients,
   savePatient,
 } from "../lib/romData";
 import type { Side } from "../lib/romData";
@@ -21,19 +22,26 @@ export const Results: React.FC = () => {
   // 현재 측정된 ROM 데이터 불러오기
   const session = useMemo(() => loadRomSession(), []);
 
-  // 환자 정보 저장 및 히스토리 추가
+  // 환자 정보 upsert + 히스토리 추가.
+  // F2 수정 (2026-05-09):
+  //  - 기존 환자가 있으면 createdAt(등록일) / lastMeasuredAt 을 **보존**한다.
+  //    (이전 구현은 매 측정마다 createdAt 을 측정 시각으로 덮어써 등록일이 사라졌음)
+  //  - painArea 는 측정 폼 빈 값으로 진입한 경우 기존 값을 유지 (의도치 않은 손실 방지).
+  //  - vasScore 는 통증 0 이 의도된 입력일 수 있어 그대로 반영.
+  //  - lastMeasuredAt 은 직후 addSessionToHistory 가 idempotent 하게 갱신한다.
   useEffect(() => {
-    if (session && session.patientId) {
-      savePatient({
-        id: session.patientId,
-        name: session.patientName,
-        age: session.patientAge,
-        painArea: session.painArea,
-        vasScore: session.vasScore,
-        createdAt: new Date().toISOString(),
-      });
-      addSessionToHistory(session.patientId, session);
-    }
+    if (!session?.patientId) return;
+    const existing = getPatients().find((p) => p.id === session.patientId);
+    savePatient({
+      id: session.patientId,
+      name: session.patientName,
+      age: session.patientAge,
+      painArea: session.painArea || existing?.painArea || "",
+      vasScore: session.vasScore,
+      createdAt: existing?.createdAt ?? new Date().toISOString(),
+      lastMeasuredAt: existing?.lastMeasuredAt,
+    });
+    addSessionToHistory(session.patientId, session);
   }, [session]);
 
   // 세션이 없으면 안내를 노출하고 사용자가 직접 이동하도록 함 (audit #21).
