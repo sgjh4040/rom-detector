@@ -1,6 +1,6 @@
 import React from "react";
-import type { Patient } from "../lib/romTypes";
-import { getPatientHistory } from "../lib/patientHistory";
+import type { Patient } from "../../../lib/romTypes";
+import { getPatientHistory } from "../../../lib/patientHistory";
 import { Settings, Plus, Trash2 } from "lucide-react";
 
 interface PatientSelectorProps {

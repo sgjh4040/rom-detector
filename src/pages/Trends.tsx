@@ -6,7 +6,7 @@ import { TrendGraph } from "../features/trends/presentation/TrendGraph";
 import { NeumoDashboard } from "../features/trends/presentation/NeumoDashboard";
 import { JointTrendCard, formatDate } from "../features/trends/presentation/JointTrendCard";
 import { HistoryItem } from "../features/trends/presentation/HistoryItem";
-import { AppLayout } from "../components/AppLayout";
+import { AppLayout } from "../core/components/AppLayout";
 import "../styles/Trends.css";
 
 /** 상단 뷰 모드 세그먼트 컨트롤 (대시보드 / 상세 차트) */

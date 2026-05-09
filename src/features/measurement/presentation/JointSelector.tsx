@@ -1,5 +1,5 @@
 import React from 'react';
-import { JOINTS } from '../lib/romData';
+import { JOINTS } from '../../../lib/romData';
 
 interface JointSelectorProps {
     selectedJointIds: string[];

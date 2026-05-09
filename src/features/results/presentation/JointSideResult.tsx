@@ -1,9 +1,9 @@
 import React from "react";
-import { JOINTS, calculateSeverity } from "../lib/romData";
+import { JOINTS, calculateSeverity } from "../../../lib/romData";
 import { AlertTriangle, CheckCircle } from "lucide-react";
-import type { RomSession, Side } from "../lib/romData";
-import { SEVERITY_COLORS } from "../lib/severityMeta";
-import { SeverityBadge } from "./SeverityBadge";
+import type { RomSession, Side } from "../../../lib/romData";
+import { SEVERITY_COLORS } from "../../../lib/severityMeta";
+import { SeverityBadge } from "../../../core/components/SeverityBadge";
 
 interface JointSideResultProps {
   session: RomSession;

@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Home, Settings, TrendingUp, Dumbbell, Activity } from "lucide-react";
-import { hasPatientHistory } from "../lib/patientHistory";
+import { hasPatientHistory } from "../../lib/patientHistory";
 
 interface NavItem {
   path: string;

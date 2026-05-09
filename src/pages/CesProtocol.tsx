@@ -15,7 +15,7 @@ import { TimerCard } from "./cesProtocol/TimerCard";
 import { StageTabs } from "./cesProtocol/StageTabs";
 import { JointSideHeader } from "./cesProtocol/JointSideHeader";
 import { MuscleBalanceCard } from "./cesProtocol/MuscleBalanceCard";
-import { EmptyState } from "../components/EmptyState";
+import { EmptyState } from "../core/components/EmptyState";
 import { Dumbbell } from "lucide-react";
 
 export const CesProtocol: React.FC = () => {

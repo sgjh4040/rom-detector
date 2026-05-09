@@ -5,10 +5,10 @@ import {
   getPatientHistory,
   JOINTS,
   calculateSeverity,
-} from "../lib/romData";
-import type { Severity, Side } from "../lib/romTypes";
-import { SEVERITY_COLORS } from "../lib/severityMeta";
-import { SeverityBadge } from "./SeverityBadge";
+} from "../../../lib/romData";
+import type { Severity, Side } from "../../../lib/romTypes";
+import { SEVERITY_COLORS } from "../../../lib/severityMeta";
+import { SeverityBadge } from "../../../core/components/SeverityBadge";
 import { AreaChart, Area, ResponsiveContainer, YAxis } from "recharts";
 
 interface Props {

@@ -1,5 +1,5 @@
 import React from 'react';
-import type { Exercise } from '../lib/romData';
+import type { Exercise } from '../../../lib/romData';
 import { PlayCircle } from 'lucide-react';
 
 interface ExerciseCardProps { exercise: Exercise; }

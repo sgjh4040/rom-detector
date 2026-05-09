@@ -15,7 +15,7 @@ import type { CesStage } from '../../../lib/ces/cesTypes';
 import { STAGE_COLORS } from '../../../lib/ces/CesPlayerTypes';
 import type { RomSession } from '../../../lib/romTypes';
 import { saveRomSession } from '../../../lib/romTypes';
-import { EmptyState } from '../../../components/EmptyState';
+import { EmptyState } from '../../../core/components/EmptyState';
 
 interface NeumoDashboardProps {
     sessions: RomSession[];

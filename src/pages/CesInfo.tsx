@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { AlertCircle } from "lucide-react";
 import { ALL_CES_DATA } from "../lib/ces";
 import { JOINTS } from "../lib/romData";
-import { EmptyState } from "../components/EmptyState";
+import { EmptyState } from "../core/components/EmptyState";
 import { JointSidebar } from "./cesInfo/JointSidebar";
 import { MovementTabs } from "./cesInfo/MovementTabs";
 import { MuscleAnalysisCard } from "./cesInfo/MuscleAnalysisCard";

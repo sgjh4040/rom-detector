@@ -1,5 +1,5 @@
 import React from "react";
-import type { Severity } from "../lib/romData";
+import type { Severity } from "../../../lib/romData";
 
 interface RomGaugeProps {
   label: string;

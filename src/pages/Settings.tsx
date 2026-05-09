@@ -2,8 +2,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Download, Trash2, FileText, Users } from "lucide-react";
-import { AppLayout } from "../components/AppLayout";
-import { ConfirmDialog } from "../components/ConfirmDialog";
+import { AppLayout } from "../core/components/AppLayout";
+import { ConfirmDialog } from "../core/components/ConfirmDialog";
 import { loadRomSession, clearRomSession } from "../lib/romTypes";
 import {
   getPatients,

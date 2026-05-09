@@ -4,8 +4,8 @@
 // - fill: 배경=색 / 텍스트=흰색 — 강조용 (결과 페이지 동작별 배지)
 // - tint: 배경=색×12% / 텍스트=색 / 보더 색 — 부드러운 표시 (홈 칩 등)
 import React from "react";
-import type { Severity } from "../lib/romTypes";
-import { SEVERITY_COLORS, SEVERITY_SHORT_LABELS } from "../lib/severityMeta";
+import type { Severity } from "../../lib/romTypes";
+import { SEVERITY_COLORS, SEVERITY_SHORT_LABELS } from "../../lib/severityMeta";
 
 interface SeverityBadgeProps {
   severity: Severity;

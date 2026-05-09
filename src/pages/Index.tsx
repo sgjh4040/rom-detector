@@ -9,13 +9,13 @@ import {
 } from "../lib/romData";
 import type { Side, Patient, RomSession } from "../lib/romData";
 import { loadRomSession, clearRomSession } from "../lib/romTypes";
-import { PatientSelector } from "../components/PatientSelector";
-import { PainAssessment } from "../components/PainAssessment";
-import { JointSelector } from "../components/JointSelector";
-import { AppLayout } from "../components/AppLayout";
-import { EmptyPatientState } from "../components/EmptyPatientState";
-import { HomePatientSummary } from "../components/HomePatientSummary";
-import { ConfirmDialog } from "../components/ConfirmDialog";
+import { PatientSelector } from "../features/session/presentation/PatientSelector";
+import { PainAssessment } from "../features/measurement/presentation/PainAssessment";
+import { JointSelector } from "../features/measurement/presentation/JointSelector";
+import { AppLayout } from "../core/components/AppLayout";
+import { EmptyPatientState } from "../features/session/presentation/EmptyPatientState";
+import { HomePatientSummary } from "../features/session/presentation/HomePatientSummary";
+import { ConfirmDialog } from "../core/components/ConfirmDialog";
 import { Settings, Play, LineChart } from "lucide-react";
 
 type SideMode = "좌측만" | "우측만" | "양쪽";

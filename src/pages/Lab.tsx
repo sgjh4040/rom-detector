@@ -1,8 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { RomGauge } from "../components/RomGauge";
-import { JointSideResult } from "../components/JointSideResult";
-import { AppLayout } from "../components/AppLayout";
+import { RomGauge } from "../features/results/presentation/RomGauge";
+import { JointSideResult } from "../features/results/presentation/JointSideResult";
+import { AppLayout } from "../core/components/AppLayout";
 import { loadRomSession } from "../lib/romTypes";
 import type { RomSession } from "../lib/romTypes";
 

@@ -1,6 +1,6 @@
 import React from "react";
 import { UserPlus, Activity, Dumbbell, LineChart, Printer } from "lucide-react";
-import { EmptyState } from "./EmptyState";
+import { EmptyState } from "../../../core/components/EmptyState";
 
 interface EmptyPatientStateProps {
   onAddPatient: () => void;

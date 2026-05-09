@@ -10,9 +10,9 @@ import {
   savePatient,
 } from "../lib/romData";
 import type { Side } from "../lib/romData";
-import { JointSideResult } from "../components/JointSideResult";
-import { AppLayout } from "../components/AppLayout";
-import { EmptyState } from "../components/EmptyState";
+import { JointSideResult } from "../features/results/presentation/JointSideResult";
+import { AppLayout } from "../core/components/AppLayout";
+import { EmptyState } from "../core/components/EmptyState";
 import { TrendingUp, Dumbbell, FileSearch } from "lucide-react";
 
 export const Results: React.FC = () => {
