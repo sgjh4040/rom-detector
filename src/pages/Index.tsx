@@ -10,15 +10,16 @@ import {
 import type { Side, Patient, RomSession } from "../lib/romData";
 import { loadRomSession, clearRomSession } from "../lib/romTypes";
 import { PatientSelector } from "../features/session/presentation/PatientSelector";
-import { PainAssessment } from "../features/measurement/presentation/PainAssessment";
-import { JointSelector } from "../features/measurement/presentation/JointSelector";
+import {
+  NewMeasurementForm,
+  type SideMode,
+} from "../features/measurement/presentation/NewMeasurementForm";
 import { AppLayout } from "../core/components/AppLayout";
 import { EmptyPatientState } from "../features/session/presentation/EmptyPatientState";
 import { PatientSummaryCard } from "../features/session/presentation/PatientSummaryCard";
 import { ConfirmDialog } from "../core/components/ConfirmDialog";
 import { Settings } from "lucide-react";
 
-type SideMode = "좌측만" | "우측만" | "양쪽";
 const SIDE_MODE_MAP: Record<SideMode, Side[]> = {
   좌측만: ["좌측"],
   우측만: ["우측"],
@@ -258,102 +259,30 @@ export const Index: React.FC = () => {
             )}
 
             {showForm && (
-            <form onSubmit={handleSubmit}>
-              {/* 기존 환자에서 "새 측정 시작"을 눌러 들어온 경우, 돌아가기 버튼 제공.
-                  스타일은 다른 페이지(Trends/Results/Settings) 와 동일한 outline pill 로 통일.
-                  텍스트는 페이지 이동이 아닌 같은 페이지 내 상태 전환이라 의미를 명확히 유지. */}
-              {isStartingNewMeasurement && !isAddingNew && (
-                <button
-                  type="button"
-                  className="btn btn-outline btn-small mb-3"
-                  onClick={() => setIsStartingNewMeasurement(false)}
-                  style={{
-                    padding: "6px 14px",
-                    borderRadius: "var(--radius-xs)",
-                    fontSize: "var(--text-sm)",
-                  }}
-                >
-                  ← 환자 정보로 돌아가기
-                </button>
-              )}
-              <div className="grid grid-cols-2 gap-4 mb-4">
-                <div className="form-group">
-                  <label className="form-label">이름</label>
-                  <input
-                    type="text"
-                    className="form-input"
-                    placeholder="성함"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                  />
-                </div>
-                <div className="form-group">
-                  <label className="form-label">나이</label>
-                  <input
-                    type="number"
-                    className="form-input"
-                    placeholder="세"
-                    value={age}
-                    onChange={(e) => setAge(e.target.value)}
-                  />
-                </div>
-              </div>
-
-              <PainAssessment
+              <NewMeasurementForm
+                name={name}
+                setName={setName}
+                age={age}
+                setAge={setAge}
                 painArea={painArea}
                 setPainArea={setPainArea}
                 vasScore={vasScore}
                 setVasScore={setVasScore}
-              />
-
-              <div className="form-group mt-6">
-                <label className="form-label mb-3 block">방향 선택</label>
-                <div className="grid grid-cols-3 gap-3">
-                  {(Object.keys(SIDE_MODE_MAP) as SideMode[]).map((mode) => {
-                    const selected = sideMode === mode;
-                    return (
-                      <button
-                        key={mode}
-                        type="button"
-                        className={`btn ${selected ? "btn-primary" : "btn-outline"}`}
-                        onClick={() => setSideMode(mode)}
-                      >
-                        {selected ? "✓ " : ""}
-                        {mode}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-
-              <JointSelector
+                sideMode={sideMode}
+                setSideMode={setSideMode}
                 selectedJointIds={selectedJointIds}
-                toggleJoint={(id) =>
+                toggleJoint={(id: string) =>
                   setSelectedJointIds((prev) =>
                     prev.includes(id)
                       ? prev.filter((i) => i !== id)
                       : [...prev, id],
                   )
                 }
+                totalSteps={totalSteps}
+                showBackButton={isStartingNewMeasurement && !isAddingNew}
+                onBack={() => setIsStartingNewMeasurement(false)}
+                onSubmit={handleSubmit}
               />
-
-              <div className="mt-4">
-                <button
-                  type="submit"
-                  className="btn btn-primary btn-large w-full"
-                  disabled={totalSteps === 0}
-                  style={
-                    totalSteps === 0
-                      ? { opacity: 0.5, cursor: "not-allowed" }
-                      : undefined
-                  }
-                >
-                  {totalSteps === 0
-                    ? "관절을 먼저 선택해주세요"
-                    : `측정 시작하기 (${totalSteps}단계)`}
-                </button>
-              </div>
-            </form>
             )}
           </div>
         </div>
