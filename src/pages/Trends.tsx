@@ -1,82 +1,20 @@
+// Trends.tsx — 측정 기록 페이지 (대시보드 / 상세 차트 / 평가 히스토리).
+// audit #13: ViewSegment / ChartsView 분리. 본체는 라우팅+orchestrator.
 import React, { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { LayoutDashboard, BarChart3 } from "lucide-react";
-import { getPatientHistory, JOINTS, saveRomSession } from "../lib/romData";
-import { TrendGraph } from "../features/trends/presentation/TrendGraph";
+import { getPatientHistory, saveRomSession } from "../lib/romData";
 import { NeumoDashboard } from "../features/trends/presentation/NeumoDashboard";
-import { JointTrendCard, formatDate } from "../features/trends/presentation/JointTrendCard";
 import { HistoryItem } from "../features/trends/presentation/HistoryItem";
 import { AppLayout } from "../core/components/AppLayout";
+import { ViewSegment, type TrendsViewMode } from "./trends/ViewSegment";
+import { ChartsView } from "./trends/ChartsView";
 import "../styles/Trends.css";
-
-/** 상단 뷰 모드 세그먼트 컨트롤 (대시보드 / 상세 차트) */
-interface ViewSegmentProps {
-  value: "dashboard" | "charts";
-  onChange: (value: "dashboard" | "charts") => void;
-}
-
-const ViewSegment: React.FC<ViewSegmentProps> = ({ value, onChange }) => {
-  const items: Array<{
-    key: "dashboard" | "charts";
-    label: string;
-    icon: React.ReactNode;
-  }> = [
-    { key: "charts", label: "상세 차트", icon: <BarChart3 size={15} /> },
-    { key: "dashboard", label: "대시보드", icon: <LayoutDashboard size={15} /> },
-  ];
-  return (
-    <div
-      role="tablist"
-      style={{
-        display: "inline-flex",
-        padding: "4px",
-        background: "rgba(0, 0, 0, 0.05)",
-        borderRadius: "var(--radius-pill)",
-        border: "1px solid rgba(0, 0, 0, 0.06)",
-        gap: "2px",
-      }}
-    >
-      {items.map((item) => {
-        const active = value === item.key;
-        return (
-          <button
-            key={item.key}
-            type="button"
-            role="tab"
-            aria-selected={active}
-            onClick={() => onChange(item.key)}
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "6px",
-              padding: "8px 16px",
-              borderRadius: "var(--radius-pill)",
-              border: "none",
-              cursor: "pointer",
-              fontSize: "var(--text-sm)",
-              fontWeight: 800,
-              color: active ? "#ffffff" : "var(--text-secondary)",
-              background: active
-                ? "var(--primary-gradient)"
-                : "transparent",
-              boxShadow: active ? "0 4px 14px rgba(92, 107, 192, 0.3)" : "none",
-              transition: "all 0.2s ease",
-            }}
-          >
-            {item.icon}
-            <span>{item.label}</span>
-          </button>
-        );
-      })}
-    </div>
-  );
-};
 
 export const Trends: React.FC = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const patientId = searchParams.get("patientId");
-  const [viewMode, setViewMode] = useState<"dashboard" | "charts">("charts");
+  const [viewMode, setViewMode] = useState<TrendsViewMode>("charts");
   const showCharts = viewMode === "charts";
 
   const history = patientId ? getPatientHistory(patientId) : [];
@@ -104,7 +42,10 @@ export const Trends: React.FC = () => {
       <AppLayout patientId={patientId ?? undefined}>
         <div className="container p-8 text-center neumo-inset">
           <h2>환자 데이터를 찾을 수 없습니다.</h2>
-          <button className="btn btn-primary mt-4" onClick={() => navigate("/")}>
+          <button
+            className="btn btn-primary mt-4"
+            onClick={() => navigate("/")}
+          >
             메인으로
           </button>
         </div>
@@ -124,149 +65,99 @@ export const Trends: React.FC = () => {
           overflow: "visible",
         }}
       >
-      <div
-        className="container"
-        style={{
-          maxWidth: "1000px",
-          margin: "0 auto",
-          display: "flex",
-          flexDirection: "column",
-          overflow: "visible",
-        }}
-      >
         <div
-          className="page-header"
+          className="container"
           style={{
-            paddingTop: "20px",
-            marginBottom: "20px",
+            maxWidth: "1000px",
+            margin: "0 auto",
             display: "flex",
-            flexWrap: "wrap",
-            justifyContent: "space-between",
-            alignItems: "flex-start",
-            gap: "16px",
-          }}
-        >
-          <div style={{ minWidth: 0 }}>
-            <button
-              className="btn btn-outline btn-small mb-3"
-              onClick={() => navigate(-1)}
-              style={{
-                padding: "6px 14px",
-                borderRadius: "var(--radius-xs)",
-                fontSize: "var(--text-sm)",
-              }}
-            >
-              ← 뒤로가기
-            </button>
-            <h1
-              className="text-3xl font-black tracking-tighter opacity-90"
-              style={{ fontSize: "var(--text-2xl)", marginBottom: "4px" }}
-            >
-              측정 기록
-            </h1>
-            <p className="opacity-70 text-base font-bold">
-              {patient.patientName} ({patient.patientAge}세)
-            </p>
-          </div>
-          <div style={{ flexShrink: 0 }}>
-            <ViewSegment value={viewMode} onChange={setViewMode} />
-          </div>
-        </div>
-
-        {!showCharts ? (
-          <div
-            className="neumo-card mb-6"
-            style={{ borderRadius: "var(--radius-lg)", padding: "16px" }}
-          >
-            <NeumoDashboard
-              sessions={history}
-              selectedSessionId={selectedSessionId}
-              onSelectSession={(id) => setSelectedSessionId(id || null)}
-            />
-          </div>
-        ) : (
-          <div
-            className="mb-16"
-            style={{ display: "flex", flexDirection: "column", gap: "24px" }}
-          >
-            {/* VAS 통증 지수 — targetValue=0 (무통)이 목표선 */}
-            <div
-              className="card neumo-card"
-              style={{ padding: "20px 16px 8px", borderRadius: "var(--radius-lg)" }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "baseline",
-                  padding: "4px 8px 12px",
-                }}
-              >
-                <h3 className="text-xl font-black" style={{ letterSpacing: "-0.01em" }}>
-                  통증 지수 변화
-                </h3>
-                <span
-                  style={{
-                    fontSize: "var(--text-xs)",
-                    fontWeight: 700,
-                    color: "var(--text-secondary)",
-                    opacity: 0.7,
-                  }}
-                >
-                  낮을수록 좋음 · 목표 0
-                </span>
-              </div>
-              <TrendGraph
-                data={reversedHistory.map((s, idx) => ({
-                  // [audit #36] 회차 + 날짜 병기로 시간 간격 정보 보존. 다른 차트와 동일 포맷.
-                  label: `${idx + 1}회 (${formatDate(s.createdAt)})`,
-                  value: s.vasScore || 0,
-                }))}
-                normalRange={10}
-                targetValue={0}
-                unit=""
-              />
-            </div>
-
-            {JOINTS.map((joint) => (
-              <JointTrendCard
-                key={joint.id}
-                joint={joint}
-                history={reversedHistory}
-              />
-            ))}
-          </div>
-        )}
-
-        <div
-          className="panel neumo-inset"
-          style={{
-            borderRadius: "var(--radius-lg)",
-            marginTop: "24px",
-            padding: "24px 16px",
+            flexDirection: "column",
             overflow: "visible",
           }}
         >
-          <h3
-            className="text-xl font-black opacity-85"
-            style={{ marginBottom: "20px", paddingLeft: "8px" }}
-          >
-            평가 히스토리 ({history.length}건)
-          </h3>
           <div
-            style={{ display: "flex", flexDirection: "column", gap: "20px" }}
+            className="page-header"
+            style={{
+              paddingTop: "20px",
+              marginBottom: "20px",
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: "space-between",
+              alignItems: "flex-start",
+              gap: "16px",
+            }}
           >
-            {history.map((s, i) => (
-              <HistoryItem
-                key={s.createdAt}
-                session={s}
-                index={i}
-                total={history.length}
+            <div style={{ minWidth: 0 }}>
+              <button
+                className="btn btn-outline btn-small mb-3"
+                onClick={() => navigate(-1)}
+                style={{
+                  padding: "6px 14px",
+                  borderRadius: "var(--radius-xs)",
+                  fontSize: "var(--text-sm)",
+                }}
+              >
+                ← 뒤로가기
+              </button>
+              <h1
+                className="text-3xl font-black tracking-tighter opacity-90"
+                style={{ fontSize: "var(--text-2xl)", marginBottom: "4px" }}
+              >
+                측정 기록
+              </h1>
+              <p className="opacity-70 text-base font-bold">
+                {patient.patientName} ({patient.patientAge}세)
+              </p>
+            </div>
+            <div style={{ flexShrink: 0 }}>
+              <ViewSegment value={viewMode} onChange={setViewMode} />
+            </div>
+          </div>
+
+          {!showCharts ? (
+            <div
+              className="neumo-card mb-6"
+              style={{ borderRadius: "var(--radius-lg)", padding: "16px" }}
+            >
+              <NeumoDashboard
+                sessions={history}
+                selectedSessionId={selectedSessionId}
+                onSelectSession={(id) => setSelectedSessionId(id || null)}
               />
-            ))}
+            </div>
+          ) : (
+            <ChartsView reversedHistory={reversedHistory} />
+          )}
+
+          <div
+            className="panel neumo-inset"
+            style={{
+              borderRadius: "var(--radius-lg)",
+              marginTop: "24px",
+              padding: "24px 16px",
+              overflow: "visible",
+            }}
+          >
+            <h3
+              className="text-xl font-black opacity-85"
+              style={{ marginBottom: "20px", paddingLeft: "8px" }}
+            >
+              평가 히스토리 ({history.length}건)
+            </h3>
+            <div
+              style={{ display: "flex", flexDirection: "column", gap: "20px" }}
+            >
+              {history.map((s, i) => (
+                <HistoryItem
+                  key={s.createdAt}
+                  session={s}
+                  index={i}
+                  total={history.length}
+                />
+              ))}
+            </div>
           </div>
         </div>
-      </div>
       </div>
     </AppLayout>
   );
