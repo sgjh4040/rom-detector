@@ -83,6 +83,9 @@
 
 /* ── Colors ──────────────────────────────────────────── */
 .text-secondary { color: var(--text-secondary); }
+.text-primary { color: var(--primary); }
+.text-success { color: var(--success); }
+.text-danger { color: var(--danger); }
 .text-white { color: #fff; }
 .text-red-400 { color: var(--danger); }
 .text-red-500 { color: var(--danger); }

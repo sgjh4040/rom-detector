@@ -231,6 +231,15 @@ a:hover {
     transform: scale(0.95);
 }
 
+/* 페이지 헤더의 "← 뒤로가기" 텍스트 outline pill (audit #18).
+   기존 .btn-back (원형 글래스) 와 구분되는 텍스트형 변형.
+   Index/Settings/Results/Trends/측정 폼 등에서 페이지 진입 후 돌아갈 때 사용. */
+.btn-back-text {
+    padding: 6px 14px;
+    border-radius: var(--radius-xs);
+    font-size: var(--text-sm);
+}
+
 .license-info h3 {
     color: var(--primary);
     margin-bottom: 0.5rem;

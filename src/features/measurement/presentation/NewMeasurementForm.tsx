@@ -60,13 +60,8 @@ export const NewMeasurementForm: React.FC<NewMeasurementFormProps> = ({
       {showBackButton && (
         <button
           type="button"
-          className="btn btn-outline btn-small mb-3"
+          className="btn btn-outline btn-small btn-back-text mb-3"
           onClick={onBack}
-          style={{
-            padding: "6px 14px",
-            borderRadius: "var(--radius-xs)",
-            fontSize: "var(--text-sm)",
-          }}
         >
           ← 환자 정보로 돌아가기
         </button>

@@ -86,13 +86,8 @@ export const Results: React.FC = () => {
             <div>
               <button
                 type="button"
-                className="btn btn-outline btn-small mb-3"
+                className="btn btn-outline btn-small btn-back-text mb-3"
                 onClick={() => navigate(-1)}
-                style={{
-                  padding: "6px 14px",
-                  borderRadius: "var(--radius-xs)",
-                  fontSize: "var(--text-sm)",
-                }}
               >
                 ← 뒤로가기
               </button>

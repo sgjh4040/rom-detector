@@ -41,16 +41,10 @@ export const RomGauge: React.FC<RomGaugeProps> = ({
       <div style={{ textAlign: "left", flex: 1 }}>
         <h4 style={{ marginBottom: "0.25rem" }}>{label}</h4>
         <div style={{ display: "flex", gap: "1rem", fontSize: "var(--text-sm)" }}>
-          <span
-            className="tabular-nums"
-            style={{ color: "var(--text-secondary)" }}
-          >
+          <span className="tabular-nums text-secondary">
             정상: {normal}°
           </span>
-          <span
-            className="tabular-nums font-bold"
-            style={{ color: "var(--text-primary)" }}
-          >
+          <span className="tabular-nums font-bold text-primary">
             측정: {measured}°
           </span>
         </div>

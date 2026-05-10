@@ -23,10 +23,7 @@ export const MuscleBalanceCard: React.FC<MuscleBalanceCardProps> = ({
       </h3>
       <div className="balance-grid">
         <div className="balance-card">
-          <p
-            className="balance-title icon-text icon-text--sm"
-            style={{ color: "var(--danger)" }}
-          >
+          <p className="balance-title icon-text icon-text--sm text-danger">
             <AlertTriangle size={18} /> 과활성 (뭉친 근육)
           </p>
           <div className="flex flex-wrap gap-2">
@@ -48,10 +45,7 @@ export const MuscleBalanceCard: React.FC<MuscleBalanceCardProps> = ({
           </div>
         </div>
         <div className="balance-card">
-          <p
-            className="balance-title icon-text icon-text--sm"
-            style={{ color: "var(--success)" }}
-          >
+          <p className="balance-title icon-text icon-text--sm text-success">
             <CheckCircle size={18} /> 저활성 (약한 근육)
           </p>
           <div className="flex flex-wrap gap-2">

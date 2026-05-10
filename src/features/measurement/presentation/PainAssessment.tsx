@@ -48,7 +48,7 @@ export const PainAssessment: React.FC<PainAssessmentProps> = ({
                     onChange={(e) => setVasScore(parseInt(e.target.value, 10))}
                 />
 
-                <div className="flex justify-between text-xs font-bold px-2" style={{ color: 'var(--text-secondary)' }}>
+                <div className="flex justify-between text-xs font-bold px-2 text-secondary">
                     <span>무통 (0)</span>
                     <span>중간 (5)</span>
                     <span>극심 (10)</span>

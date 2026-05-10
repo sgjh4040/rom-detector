@@ -23,15 +23,11 @@ export const StatRow: React.FC<StatRowProps> = ({
         </div>
         <div className="stat-card">
           <p className="stat-label">제한 동작</p>
-          <p className="stat-value" style={{ color: "var(--danger)" }}>
-            {totalLimited}
-          </p>
+          <p className="stat-value text-danger">{totalLimited}</p>
         </div>
         <div className="stat-card">
           <p className="stat-label">정상 동작</p>
-          <p className="stat-value" style={{ color: "var(--success)" }}>
-            {totalNormal}
-          </p>
+          <p className="stat-value text-success">{totalNormal}</p>
         </div>
       </div>
 
