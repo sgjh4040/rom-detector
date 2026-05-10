@@ -72,7 +72,11 @@ report "#12" "활성/활성화 혼용"          "✅" "거짓 알람 (활성=단
 echo ""
 echo "▶ P2 — 일관성"
 big_files=$(find src -name "*.tsx" -o -name "*.ts" 2>/dev/null | xargs wc -l 2>/dev/null | awk '$1 > 200 && $2 != "total"' | wc -l | tr -d ' ')
-report "#13" "200줄+ 파일" "❌" "$big_files파일 잔존 (자세히: wc -l 명령)"
+if [ "$big_files" = "0" ]; then
+  report "#13" "200줄+ 파일" "✅" "13파일 모두 200줄 이하 달성 (2026-05-10)"
+else
+  report "#13" "200줄+ 파일" "❌" "$big_files파일 잔존 (자세히: wc -l 명령)"
+fi
 
 if grep -q "@tailwindcss/postcss" package.json 2>/dev/null; then
   report "#14" "Tailwind PostCSS 플러그인" "✅" "@tailwindcss/postcss 설치됨"
@@ -158,5 +162,5 @@ fi
 echo ""
 echo "=================================================="
 echo "검증 완료. 자세한 진척도: memory/project_audit_status_2026_05_08.md"
-echo "잔여 본격 작업: #13 (200줄+ 13파일), #18 2차 (인라인 style 312건)"
+echo "잔여 본격 작업: #18 2차 (인라인 style 47파일 312건) — 마지막 1건"
 echo "=================================================="
