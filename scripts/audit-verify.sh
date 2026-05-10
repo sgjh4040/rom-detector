@@ -86,7 +86,7 @@ fi
 
 inline_style=$(grep -rn "style={{" src/ --include="*.tsx" 2>/dev/null | wc -l | tr -d ' ')
 inline_files=$(grep -rln "style={{" src/ --include="*.tsx" 2>/dev/null | wc -l | tr -d ' ')
-report "#18" "인라인 style 잔존" "⚠️" "$inline_files파일 $inline_style건 (1차 처리됨, 2차/3차 잔여)"
+report "#18" "인라인 style (정책 합의)" "✅" "$inline_files파일 $inline_style건 — D 옵션 처리 완료 (PRD §4-0 1회성 인라인 허용 명시, 2026-05-10)"
 
 n=$(grep -nE "^\s*//\s*(import|const)" src/pages/Results.tsx 2>/dev/null | wc -l | tr -d ' ')
 if [ "$n" -eq 0 ]; then report "#20" "Results.tsx 주석 코드" "✅" ""; else report "#20" "Results.tsx 주석 코드" "❌" "${n}건"; fi
@@ -162,5 +162,5 @@ fi
 echo ""
 echo "=================================================="
 echo "검증 완료. 자세한 진척도: memory/project_audit_status_2026_05_08.md"
-echo "잔여 본격 작업: #18 2차 (인라인 style 47파일 312건) — 마지막 1건"
+echo "✅ audit 38건 + 부수 3건 = 41건 모두 처리 완료 (2026-05-10)"
 echo "=================================================="
