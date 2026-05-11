@@ -16,3 +16,14 @@ export const DEFAULT_PHASE_GOAL_SECONDS = 300;
 
 /** CES 4단계(억제/신장/활성/통합) 의 폴백 총 목표 시간 = 단계당 5분 × 4 = 20분 */
 export const DEFAULT_TOTAL_GOAL_SECONDS = DEFAULT_PHASE_GOAL_SECONDS * 4;
+
+/**
+ * CES 운동 영상 호스팅 베이스 URL (Cloudflare R2)
+ *
+ * 사용처: `CesVideoPlayer` — 운동 데이터의 `youtubeId` 값이 mp4 파일명이면
+ * `${VIDEO_BASE_URL}/${파일명}` 으로 조합해 재생한다.
+ *
+ * 환경별 분리 필요 시 `.env` 의 `VITE_VIDEO_BASE_URL` 로 옮기기.
+ * 베이스 URL 자체는 퍼블릭이라 코드에 박혀도 보안 영향 없음.
+ */
+export const VIDEO_BASE_URL = 'https://pub-1b5fd3953576465eba5c84f2ce1fe492.r2.dev';

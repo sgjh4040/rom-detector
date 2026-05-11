@@ -2,7 +2,24 @@
 import React, { useRef, useEffect } from 'react';
 import { Coffee, ArrowRight } from 'lucide-react';
 
+import { VIDEO_BASE_URL } from '../../lib/cesConfig';
 import { YoutubePlayer } from './YoutubePlayer';
+
+/**
+ * `videoUrl` 값 → 재생 소스 결정
+ *  - YouTube ID (11자, `.` 없음, `youtu` 미포함) → YouTube iframe
+ *  - mp4 파일명 (예: `36.kn_inh_flex1.mp4`) → `${VIDEO_BASE_URL}/${파일명}`
+ *  - 절대 URL (`http://`, `https://`) → 그대로
+ *  - 빈 문자열 → 플레이스홀더
+ */
+const resolveVideoSrc = (raw: string): { kind: 'youtube' | 'mp4' | 'empty'; src: string } => {
+    if (!raw) return { kind: 'empty', src: '' };
+    if (raw.startsWith('http://') || raw.startsWith('https://')) {
+        return raw.includes('youtu') ? { kind: 'youtube', src: raw } : { kind: 'mp4', src: raw };
+    }
+    if (raw.length === 11 && !raw.includes('.')) return { kind: 'youtube', src: raw };
+    return { kind: 'mp4', src: `${VIDEO_BASE_URL}/${raw}` };
+};
 
 interface CesVideoPlayerProps {
     videoUrl: string;
@@ -44,10 +61,8 @@ export const CesVideoPlayer: React.FC<CesVideoPlayerProps> = ({
         ? (breakKind === 'transition' ? '#0e7490' : '#475569') // cyan-700 / slate-600
         : (PLACEHOLDER_COLORS[bgIdx] ?? '#1a1a2e');
 
-    const isYoutube =
-        !isBreak &&
-        videoUrl &&
-        ((videoUrl.length === 11 && !videoUrl.includes('.')) || videoUrl.includes('youtu'));
+    const resolved = isBreak ? { kind: 'empty' as const, src: '' } : resolveVideoSrc(videoUrl);
+    const resolvedNext = !isBreak && nextVideoUrl ? resolveVideoSrc(nextVideoUrl) : null;
 
     return (
         <div
@@ -108,21 +123,19 @@ export const CesVideoPlayer: React.FC<CesVideoPlayerProps> = ({
                         </p>
                     )}
                 </div>
-            ) : videoUrl ? (
-                isYoutube ? (
-                    <YoutubePlayer youtubeId={videoUrl} title={exerciseName} />
-                ) : (
-                    <video
-                        ref={videoRef}
-                        autoPlay
-                        loop
-                        muted
-                        playsInline
-                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                    >
-                        <source src={videoUrl} type="video/mp4" />
-                    </video>
-                )
+            ) : resolved.kind === 'youtube' ? (
+                <YoutubePlayer youtubeId={resolved.src} title={exerciseName} />
+            ) : resolved.kind === 'mp4' ? (
+                <video
+                    ref={videoRef}
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                >
+                    <source src={resolved.src} type="video/mp4" />
+                </video>
             ) : (
                 /* 영상 없을 때 플레이스홀더 */
                 <div
@@ -153,10 +166,10 @@ export const CesVideoPlayer: React.FC<CesVideoPlayerProps> = ({
                 </div>
             )}
 
-            {/* 다음 영상 pre-loading (숨김 video 태그) */}
-            {!isBreak && nextVideoUrl && (
+            {/* 다음 영상 pre-loading (숨김 video 태그) — mp4만 preload, YouTube은 iframe 이라 의미 없음 */}
+            {resolvedNext?.kind === 'mp4' && (
                 <video style={{ display: 'none' }} preload="auto" muted>
-                    <source src={nextVideoUrl} type="video/mp4" />
+                    <source src={resolvedNext.src} type="video/mp4" />
                 </video>
             )}
         </div>

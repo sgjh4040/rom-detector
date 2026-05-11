@@ -10,7 +10,7 @@ export const KNEE_CES: JointCesData = {
     protocol: {
         flexion: {
             inhibit: [
-                ex('kn_inh_flex1', '대퇴사두근 SMR', '폼롤러를 허벅지 앞쪽에 대고 엎드려 대퇴 전면 전체를 롤링합니다.', '', { tools: '폼롤러', holdSeconds: 40 }),
+                ex('kn_inh_flex1', '대퇴사두근 SMR', '폼롤러를 허벅지 앞쪽에 대고 엎드려 대퇴 전면 전체를 롤링합니다.', '36.kn_inh_flex1.mp4', { tools: '폼롤러', holdSeconds: 40 }),
                 ex('kn_inh_flex2', 'IT밴드 SMR', '폼롤러를 허벅지 외측에 대고 옆으로 누워 무릎 위까지 롤링합니다.', '', { tools: '폼롤러', holdSeconds: 40 })
             ],
             lengthen: [
