@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import type { CesExercise, CesStage } from "../../lib/ces/cesTypes";
-import { YoutubePlayer } from "./YoutubePlayer";
+import { CesExerciseVideo } from "./CesExerciseVideo";
 import { CircleSlash, Accessibility, CheckCircle2, Activity, ChevronUp, ChevronDown, Wrench } from "lucide-react";
 import { STAGE_COLORS } from "../../lib/ces/CesPlayerTypes";
 
@@ -110,8 +110,8 @@ export const CesStageCard: React.FC<Props> = ({
           {/* 현재 운동 */}
           {current && (
             <>
-              <YoutubePlayer
-                youtubeId={current.youtubeId}
+              <CesExerciseVideo
+                source={current.youtubeId}
                 title={current.name}
               />
               <div style={{ marginTop: "1rem" }}>

@@ -4,6 +4,7 @@ import React from "react";
 import type { CesExercise } from "../../../lib/ces/cesTypes";
 import { PlayCircle } from "lucide-react";
 import { formatExMeta } from "./helpers";
+import { resolveThumbnailSrc } from "../../../lib/ces/videoResolver";
 
 interface ExerciseListItemProps {
   exercise: CesExercise;
@@ -19,10 +20,8 @@ export const ExerciseListItem: React.FC<ExerciseListItemProps> = ({
   categoryCode,
   onClick,
 }) => {
-  const hasVideo = !!exercise.youtubeId;
-  const thumbUrl = hasVideo
-    ? `https://img.youtube.com/vi/${exercise.youtubeId}/mqdefault.jpg`
-    : null;
+  const thumbSrc = resolveThumbnailSrc(exercise.youtubeId);
+  const hasThumb = thumbSrc.kind !== "none";
 
   return (
     <button
@@ -50,8 +49,9 @@ export const ExerciseListItem: React.FC<ExerciseListItemProps> = ({
         transition: "all 0.15s ease",
       }}
     >
-      {/* 좌측: 썸네일 or 카테고리 닷 */}
-      {thumbUrl ? (
+      {/* 좌측: 썸네일 or 카테고리 닷
+           — YouTube ID → mqdefault.jpg / mp4 → preload="metadata" 로 첫 프레임 */}
+      {hasThumb ? (
         <div
           style={{
             width: "56px",
@@ -62,16 +62,33 @@ export const ExerciseListItem: React.FC<ExerciseListItemProps> = ({
             position: "relative",
           }}
         >
-          <img
-            src={thumbUrl}
-            alt=""
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              opacity: isActive ? 1 : 0.75,
-            }}
-          />
+          {thumbSrc.kind === "youtube-img" ? (
+            <img
+              src={thumbSrc.imgSrc}
+              alt=""
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                opacity: isActive ? 1 : 0.75,
+              }}
+            />
+          ) : (
+            <video
+              src={thumbSrc.videoSrc}
+              preload="metadata"
+              muted
+              playsInline
+              // 첫 프레임만 시각적으로 노출 — 클릭은 부모 <button> 이 처리
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                opacity: isActive ? 1 : 0.75,
+                pointerEvents: "none",
+              }}
+            />
+          )}
           {!isActive && (
             <div
               style={{

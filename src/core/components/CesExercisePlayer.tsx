@@ -3,7 +3,7 @@
 // orchestrator 만 남김. CesProtocol.tsx 가 이 컴포넌트를 사용한다.
 import React, { useEffect, useRef } from "react";
 import type { CesExercise } from "../../lib/ces/cesTypes";
-import { YoutubePlayer } from "./YoutubePlayer";
+import { CesExerciseVideo } from "./CesExerciseVideo";
 import { PlayerHeader } from "./cesExercisePlayer/PlayerHeader";
 import { ExerciseListItem } from "./cesExercisePlayer/ExerciseListItem";
 import { STAGE_CODE_MAP } from "./cesExercisePlayer/helpers";
@@ -61,7 +61,7 @@ export const CesExercisePlayer: React.FC<CesExercisePlayerProps> = ({
           boxShadow: current.youtubeId ? "0 10px 30px rgba(0,0,0,0.1)" : "none",
         }}
       >
-        <YoutubePlayer youtubeId={current.youtubeId} title={current.name} />
+        <CesExerciseVideo source={current.youtubeId} title={current.name} />
       </div>
 
       {/* 운동 리스트 — 깔끔한 행 스타일. 유튜브 ID 있으면 미니 썸네일, 없으면 카테고리 닷 */}
