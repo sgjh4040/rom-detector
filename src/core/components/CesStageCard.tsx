@@ -110,10 +110,19 @@ export const CesStageCard: React.FC<Props> = ({
           {/* 현재 운동 */}
           {current && (
             <>
-              <CesExerciseVideo
-                source={current.youtubeId}
-                title={current.name}
-              />
+              <div
+                style={{
+                  width: "100%",
+                  aspectRatio: "16 / 9",
+                  borderRadius: "var(--radius-sm)",
+                  overflow: "hidden",
+                }}
+              >
+                <CesExerciseVideo
+                  source={current.youtubeId}
+                  title={current.name}
+                />
+              </div>
               <div style={{ marginTop: "1rem" }}>
                 <h3 style={{ marginBottom: "0.5rem" }}>{current.name}</h3>
                 {current.tools && (

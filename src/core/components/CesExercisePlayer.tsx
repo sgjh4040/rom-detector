@@ -59,6 +59,9 @@ export const CesExercisePlayer: React.FC<CesExercisePlayerProps> = ({
           borderRadius: "var(--radius-sm)",
           background: current.youtubeId ? "#000" : "transparent",
           boxShadow: current.youtubeId ? "0 10px 30px rgba(0,0,0,0.1)" : "none",
+          width: "100%",
+          aspectRatio: "16 / 9",
+          flexShrink: 0, // 부모 flex 컨테이너에서 압축되지 않도록 — 16:9 비율 유지
         }}
       >
         <CesExerciseVideo source={current.youtubeId} title={current.name} />
