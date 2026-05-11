@@ -45,7 +45,7 @@ export const CesExercisePlayer: React.FC<CesExercisePlayerProps> = ({
   const categoryCode = STAGE_CODE_MAP[stageId] || "R";
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col">
       <PlayerHeader
         current={current}
         stageId={stageId}
@@ -60,11 +60,12 @@ export const CesExercisePlayer: React.FC<CesExercisePlayerProps> = ({
           background: current.youtubeId ? "#000" : "transparent",
           boxShadow: current.youtubeId ? "0 10px 30px rgba(0,0,0,0.1)" : "none",
           width: "100%",
+          maxWidth: "720px", // wide screen 에서 너무 커지지 않도록 — 운동 리스트 가시성 확보
           aspectRatio: "16 / 9",
           flexShrink: 0, // 부모 flex 컨테이너에서 압축되지 않도록 — 16:9 비율 유지
         }}
       >
-        <CesExerciseVideo source={current.youtubeId} title={current.name} />
+        <CesExerciseVideo source={current.youtubeId} title={current.name} clickToPlay />
       </div>
 
       {/* 운동 리스트 — 깔끔한 행 스타일. 유튜브 ID 있으면 미니 썸네일, 없으면 카테고리 닷 */}

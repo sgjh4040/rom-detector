@@ -113,6 +113,7 @@ export const CesStageCard: React.FC<Props> = ({
               <div
                 style={{
                   width: "100%",
+                  maxWidth: "720px",
                   aspectRatio: "16 / 9",
                   borderRadius: "var(--radius-sm)",
                   overflow: "hidden",
