@@ -25,7 +25,8 @@ export const resolveVideoSrc = (raw: string): VideoSource => {
     if (raw.length === 11 && !raw.includes('.')) {
         return { kind: 'youtube', src: raw };
     }
-    return { kind: 'mp4', src: `${VIDEO_BASE_URL}/${raw}` };
+    // R2 파일명 — 공백/한글/특수문자 안전하게 인코딩
+    return { kind: 'mp4', src: `${VIDEO_BASE_URL}/${encodeURIComponent(raw)}` };
 };
 
 /**
