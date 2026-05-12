@@ -22,7 +22,7 @@ export const SHOULDER_CES: JointCesData = {
                 ex('sh_len_flex2', '흉추 신전 스트레칭', '폼롤러를 등 어깨뼈 높이에 놓고 양손을 뒤통수에 받친 채 천천히 뒤로 누워 흉추를 신전합니다.', 'f_oZmt8uT6Q', { tools: '폼롤러', holdSeconds: 30 })
             ],
             activate: [
-                ex('sh_act_flex1', '어깨 굽힘 운동 (밴드)', '선 자세에서 밴드를 손에 묶고 팔꿈치를 편상태에서 팔을 귀옆까지 올립니다. .', '', { sets: 3, reps: 12 }),
+                ex('sh_act_flex1', '어깨 굽힘 운동 (밴드)', '선 자세에서 밴드를 손에 묶고 팔꿈치를 편상태에서 팔을 귀옆까지 올립니다. .', '', { sets: 3, reps: 12, targetMuscles: ['하부승모근', '전거근', '후방삼각근'] }),
                 ex('sh_act_flex2', '전거근 활성화 (Push-Up Plus)', '팔굽혀펴기 자세에서 상체를 완전히 올린 뒤 견갑골을 앞으로 더 밀어냅니다.', 'RFbjeyq_ZPc', { sets: 3, reps: 10 })
             ],
         },
@@ -69,7 +69,7 @@ export const SHOULDER_CES: JointCesData = {
                 ex('sh_len_ir1', '후방 관절낭 스트레칭 (Cross-Body)', '한팔을 가슴 앞으로 뻗고 반대 손으로 팔꿈치를 잡아 몸 쪽으로 30초 당깁니다.', '', { holdSeconds: 30, sets: 2 })
             ],
             activate: [
-                ex('sh_act_ir1', '밴드 내회전', '밴드를 고정하고 팔꿈치 90° 상태에서 안쪽으로 천천히 당깁니다.', '', { tools: '탄성 밴드', sets: 3, reps: 15 })
+                ex('sh_act_ir1', '밴드 내회전', '밴드를 고정하고 팔꿈치 90° 상태에서 안쪽으로 천천히 당깁니다.', '', { tools: '탄성 밴드', sets: 3, reps: 15, targetMuscles: ['견갑하근'] })
             ],
         },
         external_rotation: {
@@ -80,12 +80,12 @@ export const SHOULDER_CES: JointCesData = {
                 ex('sh_len_er1', '외회전 스트레칭(봉)', '봉을 이용해 한쪽손을 옆구리에 붙이고 반대쪽손으로 한쪽손을 밀어 몸 바깥쪽으로 돌아가게 만듭니다.', '', { tools: '봉', holdSeconds: 30, sets: 2 })
             ],
             activate: [
-                ex('sh_act_er1', '밴드 외회전', '팔꿈치를 옆구리에 고정하고 밴드를 바깥쪽으로 천천히 당깁니다.', '', { tools: '탄성 밴드', sets: 3, reps: 15 })
+                ex('sh_act_er1', '밴드 외회전', '팔꿈치를 옆구리에 고정하고 밴드를 바깥쪽으로 천천히 당깁니다.', '', { tools: '탄성 밴드', sets: 3, reps: 15, targetMuscles: ['극하근', '소원근', '후방삼각근'] })
             ],
         },
     },
     integrate: [
-        ex('sh_int1', '케이블 외회전 투 프레스', '밴드로 외회전 동작 후 팔을 위로 프레스하여 어깨 전체 협응을 훈련합니다.', '', { tools: '탄성 밴드', sets: 3, reps: 10 }),
-        ex('sh_int2', 'Y-T-W 복합 동작', '엎드린 상태에서 Y → T → W 순으로 연속 동작하며 어깨 안정화 근육군을 통합 활성화합니다.', '', { sets: 2, reps: 8 }),
+        ex('sh_int1', '케이블 외회전 투 프레스', '밴드로 외회전 동작 후 팔을 위로 프레스하여 어깨 전체 협응을 훈련합니다.', '', { tools: '탄성 밴드', sets: 3, reps: 10, targetMuscles: ['극하근', '삼각근', '상부승모근', '하부승모근'] }),
+        ex('sh_int2', 'Y-T-W 복합 동작', '엎드린 상태에서 Y → T → W 순으로 연속 동작하며 어깨 안정화 근육군을 통합 활성화합니다.', '', { sets: 2, reps: 8, targetMuscles: ['하부승모근', '중부승모근', '후방삼각근', '극하근'] }),
     ],
 };

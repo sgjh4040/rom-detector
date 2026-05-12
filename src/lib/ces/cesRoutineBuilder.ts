@@ -33,8 +33,10 @@ export const DEFAULT_REST_SECONDS = 30;
 export const DEFAULT_TRANSITION_SECONDS = 15;
 
 /** 타겟 근육 ID 조회 함수 시그니처 — UI 쪽에서 주입.
- *  [v3 — 2026-05-12] phase 인자 추가: CES 4단계마다 fallback 대상 근육이 달라야 함. */
-export type GetTargetMuscles = (exerciseName: string, phase: CesPhase) => string[];
+ *  [v4 — 2026-05-12] exercise 객체 통째로 전달.
+ *  - exercise.targetMuscles 메타가 있으면 최우선 사용
+ *  - 없으면 exercise.name 매칭 → stage fallback (helpers.ts 가 처리) */
+export type GetTargetMuscles = (exercise: CesExercise, phase: CesPhase) => string[];
 
 /**
  * 한 운동을 세트 단위 exercise 스텝 + 사이 set-rest 브레이크로 분할.
@@ -56,7 +58,7 @@ const expandExerciseIntoSteps = (
     const remainder = fullSeconds - baseSetSeconds * safeSets;
 
     let stepCount = startStepCount;
-    const targetSvgIds = getTargetMuscles(ex.name, phase);
+    const targetSvgIds = getTargetMuscles(ex, phase);
     const restSec = ex.restSeconds ?? DEFAULT_REST_SECONDS;
 
     for (let s = 1; s <= safeSets; s++) {

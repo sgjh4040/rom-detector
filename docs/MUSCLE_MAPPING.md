@@ -1,32 +1,39 @@
-# 근육 색칠 매핑 가이드 (v3)
+# 근육 색칠 매핑 가이드 (v4)
 
-> **v3 — 2026-05-12 — 운동 이름 매칭 + stage fallback 결합.**
-> v2(2026-05-12 오전, 관절-방향 단위 동일 색칠) 는 CES 4단계(억제/신장/활성/통합) 마다 타겟이 달라야 한다는 요구와 맞지 않아 폐기. 운동 이름 직접 매칭으로 운동별 다른 부위 색칠 + stage 기반 fallback 도입.
-> 옛 매뉴얼(`~/Projects/자료들/muscle_mapping_manual.md`) 의 v1 구조(한글→영어 매핑 Flutter 측, GitHub Pages) 는 더 이상 사용하지 않습니다.
+> **v4 — 2026-05-12 — `targetMuscles` 메타 우선 + 운동 이름 매칭 + stage fallback.**
+> v3 는 운동 이름에 한글 근육명 없는 운동(예: "어깨 굽힘 운동", "스쿼트") 의 정확도가 떨어졌음. v4 는 `CesExercise.targetMuscles` 라는 명시적 메타 필드를 우선순위 1로 도입. 운동 이름은 환자 화면에 보이는 그대로 깔끔하게 유지 + 데이터/표시 분리.
+>
+> v2(관절-방향 동일 색칠), v1(Flutter 측 매핑, GitHub Pages) 는 모두 폐기.
 
 ---
 
-## 개요 (v3 데이터 흐름)
+## 개요 (v4 데이터 흐름)
 
 ```
 운동 데이터 (knee.ts, shoulder.ts, …)
-  ├─ ex(id, name, description, videoFile, …)
-  │      └─ name = "대퇴사두근 SMR", "IT밴드 SMR", "햄스트링 컬 (밴드)", …
+  ├─ ex(id, name, description, videoFile, { …, targetMuscles?: string[] })
+  │      ├─ name = "어깨 굽힘 운동 (밴드)", "스텝업", …   ← 환자 UI 표시
+  │      └─ targetMuscles = ['하부승모근','전거근','후방삼각근']  ← v4 메타 (명시적)
   │
   └─ muscleMap.{movement}.overactive/underactive  ← stage fallback 용
             │
             ▼ analyzeMuscles()
        analysis.{overactive/underactive}Muscles[]
             │
-            ▼ getTargetMuscleIds(exerciseName, analysis, stage)
-            │      1) 운동 이름에서 한글 근육 키워드 추출 (muscleMapping.ts 키 매칭)
-            │         → 매칭 있으면 그것만 SVG ID 변환 ★ 가장 정확
-            │      2) 매칭 없으면 stage 기반 fallback:
-            │            - inhibit/lengthen → overactive 만
-            │            - activate         → underactive 만
-            │            - integrate        → over + under 전체
+            ▼ getTargetMuscleIds(exercise, analysis, stage)
             │
-       SVG ID[]    예: ['rectus_femoris_l', 'rectus_femoris_r']
+            │   ★ 매칭 우선순위 3단계:
+            │
+            │   1) exercise.targetMuscles 메타 (명시적, 가장 정확)
+            │        → ['하부승모근','전거근','후방삼각근'] → SVG ID
+            │   2) exercise.name 키워드 매칭 (muscleMapping.ts 키 기반)
+            │        → "대퇴사두근 SMR" → 대퇴사두근만
+            │   3) stage 기반 fallback (CES 원리)
+            │        - inhibit/lengthen → overactive 만 (풀거나 늘림)
+            │        - activate         → underactive 만 (깨움)
+            │        - integrate        → over + under 전체 (협응)
+            │
+       SVG ID[]    예: ['trapezius_lower_l', 'trapezius_lower_r', …]
             │
             ▼ BodyAnatomySvg → postMessage({muscles, color}, '*')
        Flutter iframe
@@ -36,8 +43,9 @@
 ```
 
 핵심:
-- **운동마다 다른 색칠** — `대퇴사두근 SMR` 과 `IT밴드 SMR` 은 같은 inhibit 단계여도 색칠 부위가 다르다.
-- **stage 마다 다른 색** — `PHASE_META` 의 색 (inhibit 오렌지, lengthen 시안, activate 핑크, integrate 그린).
+- **메타가 1순위** — 운동에 `targetMuscles` 박아두면 운동 이름이나 stage 와 상관없이 그것만 색칠. 통합 운동(스쿼트/스텝업/플랭크 등) 에 특히 유용.
+- **운동 이름은 환자 친화** — `"어깨 굽힘 운동 (밴드)"` 같은 직관적 이름 그대로. 환자에게 한글 근육명 노출 X (메타로 분리).
+- **stage 마다 다른 색** — inhibit 오렌지 / lengthen 시안 / activate 핑크 / integrate 그린.
 - **SSOT** — 한글→영어 매핑 로직은 React 측 `src/lib/ces/muscleMapping.ts` 한 파일에만 존재. Flutter 는 SVG ID 받아서 색칠만 하는 얇은 껍데기.
 
 ---
@@ -46,16 +54,32 @@
 
 ### 1. 새 운동 추가 (영상 + 운동 데이터)
 
-운동 추가 시 색칠을 정확하게 만들려면 **운동 이름에 타겟 한글 근육명을 명시하는 것이 핵심**.
+색칠 정확도 ↑ 두 가지 길:
 
-1. `src/lib/ces/{joint}.ts` 의 `ex(id, name, ...)` 추가 시 `name` 에 타겟 근육명 포함 (예: `"대퇴사두근 SMR"`, `"햄스트링 컬 (밴드)"`).
-   - 그 한글이 `muscleMapping.ts` 의 키와 매칭되면 자동으로 정확한 부위 색칠됨.
-2. `muscleMap.{movement}.overactive/underactive` 도 정확히 채울 것 — 통합 운동(스쿼트/스텝업 등 이름에 근육명 없는 운동) 의 fallback 용이고, 사이드바 "근육 밸런스" 카드에도 표시됨.
-3. (선택) R2 에 mp4 업로드 후 `youtubeId` 자리에 파일명 박기.
+**(a) 운동 이름에 한글 근육명이 자연스럽게 들어있는 경우** — 추가 작업 없음.
+   - 예: `"대퇴사두근 SMR"`, `"햄스트링 컬 (밴드)"`, `"광배근 밴드 풀다운"`
+   - 운동 이름에서 자동 매칭됨.
 
-> **예외:** 운동 이름에 새 한글 근육명이 등장했는데 `MUSCLE_TO_SVG` 에 매핑 없으면 dev 콘솔에 `[muscleMapping] 매핑 없음: "…"` 경고 출력. → 작업 2번으로 이동.
+**(b) 운동 이름에 근육명 없거나 의도와 다른 경우** — `targetMuscles` 메타 박기.
+   - 예: `"어깨 굽힘 운동 (밴드)"`, `"스텝업"`, `"플랭크"`, `"버드독"`
+   - 운동 이름은 환자가 보기 편한 그대로 두고, 메타로 정확한 타겟 표시:
 
-> **운동 이름에 근육명 없는 통합 운동** (예: 스쿼트, 스텝업): stage 기반 fallback 으로 자동 처리됨 (의도된 동작).
+   ```ts
+   ex('sh_act_flex1', '어깨 굽힘 운동 (밴드)', '...', '',
+      { tools: '탄성 밴드', sets: 3, reps: 12,
+        targetMuscles: ['하부승모근', '전거근', '후방삼각근'] }),  // ← v4 메타
+   ```
+
+   - 통합 운동(integrate) 은 대부분 메타가 필요. 현재 박힌 메타 예시:
+     - 스텝업/스쿼트 → `['대퇴사두근','슬굴곡근','대둔근']`
+     - 플랭크 → `['복직근','복횡근','외복사근','척추기립근']`
+     - 버드독 → `['척추기립근','복횡근','대둔근']`
+
+또한:
+- `muscleMap.{movement}.overactive/underactive` 도 정확히 채울 것 — fallback + 사이드바 "근육 밸런스" 카드 표시용.
+- (선택) R2 에 mp4 업로드 후 `youtubeId` 자리에 파일명 박기.
+
+> **예외:** `targetMuscles` 또는 운동 이름에 새 한글 근육명이 등장했는데 `MUSCLE_TO_SVG` 에 매핑 없으면 dev 콘솔에 `[muscleMapping] 매핑 없음: "…"` 경고 출력. → 작업 2번으로 이동.
 
 ### 2. 새 한글 근육명 매핑 추가
 
@@ -123,10 +147,13 @@ v2 부터 fallback "코어" 제거됨. 그래도 잘못된 영역이 색칠된�
 - Vercel 캐시 새로고침: 브라우저 `Cmd + Shift + R`.
 
 ### 운동마다 색칠이 같음 (v2 잔재)
-v3 부터 운동 이름 직접 매칭으로 운동별 다른 부위 색칠 가능. 운동 이름에 한글 근육명이 들어있는지 확인하고, 없으면 `name` 에 추가하거나 `muscleMapping.ts` 키워드로 등록.
+v3+ 부터 운동 이름 직접 매칭으로 운동별 다른 부위 색칠 가능. v4 부터는 `targetMuscles` 메타로 더 명시적 제어 가능.
 
 ### 통합 운동(스쿼트 등) 색칠 부위가 너무 광범위
-stage 기반 fallback (integrate = over + under 전체) 동작 중. 정확하게 좁히려면 운동 이름에 명시적 한글 근육명 추가 (예: `"스쿼트 — 대퇴사두근+햄스트링"`). 또는 향후 운동에 `targetMuscles` 메타 필드 추가하는 큰 리팩토링 가능.
+v4 부터 통합 운동에 `targetMuscles` 메타가 기본 박혀있음. 특정 운동이 너무 광범위하면 그 운동의 메타를 좁혀서 수정. 메타 없는 운동은 stage fallback 으로 처리되니까 추가하면 정확해짐.
+
+### `targetMuscles` 메타 vs 운동 이름 — 어느 게 우선?
+**메타가 항상 우선.** 운동 이름에 한글 근육명이 있더라도 메타에 다른 값을 박으면 메타가 색칠됨. 둘이 충돌하지 않게 의도에 맞게 둘 중 하나만 정확히 설정 권장.
 
 ---
 

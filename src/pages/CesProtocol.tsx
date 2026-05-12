@@ -93,10 +93,10 @@ export const CesProtocol: React.FC = () => {
   const exercises = analysis[activeStage];
   const currentEx = exercises[activeIndex] || exercises[0];
 
-  // v3: 운동마다 다른 색칠 — 운동 이름 매칭 우선 + stage 기반 fallback.
+  // v4: 매칭 3단계 — targetMuscles 메타 → 운동 이름 → stage fallback.
   const targetMuscles = useMemo(
     () =>
-      currentEx ? getTargetMuscleIds(currentEx.name, analysis, activeStage) : [],
+      currentEx ? getTargetMuscleIds(currentEx, analysis, activeStage) : [],
     [currentEx, analysis, activeStage],
   );
 
@@ -108,11 +108,11 @@ export const CesProtocol: React.FC = () => {
   // 대시보드 phase 목표와 1:1 로 매칭된다.
   const handleStartPlayer = () => {
     // routine builder 는 각 step 의 `targetSvgIds` 를 박는다.
-    // 운동마다 그 운동 이름 + phase 기반 — `/ces-player` 에서 step 진입할
-    // 때마다 다른 부위 색칠 (예: inhibit 대퇴사두근 → activate 햄스트링).
+    // 운동마다 그 운동의 메타/이름 + phase 기반 — `/ces-player` 에서 step
+    // 진입할 때마다 다른 부위 색칠.
     const customRoutine = buildRoutineFromAnalysis(analysis, {
-      getTargetMuscles: (name, phase) =>
-        getTargetMuscleIds(name, analysis, phase.toLowerCase() as CesStage),
+      getTargetMuscles: (exercise, phase) =>
+        getTargetMuscleIds(exercise, analysis, phase.toLowerCase() as CesStage),
     });
     navigate("/ces-player", { state: { customRoutine } });
   };

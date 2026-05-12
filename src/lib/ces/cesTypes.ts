@@ -17,6 +17,14 @@ export interface CesExercise {
     holdSeconds?: number;
     /** 이 운동의 세트 간 휴식 시간 override (초). 지정하지 않으면 전역 기본값(30초) 사용 */
     restSeconds?: number;
+    /**
+     * [v4 — 2026-05-12] 명시적 타깃 근육 한글 목록.
+     * - `muscleMapping.ts` 의 키와 일치해야 SVG ID 로 변환됨.
+     * - 지정 시 색칠 우선순위 1 — 운동 이름/stage fallback 무시.
+     * - 지정 안 하면 v3 로직(운동 이름 매칭 → stage fallback) 그대로.
+     * - 통합 운동(스쿼트/스텝업) 처럼 이름에 근육명 없는 경우 권장.
+     */
+    targetMuscles?: string[];
 }
 
 /** CES 단계 타입 */

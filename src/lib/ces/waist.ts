@@ -45,7 +45,7 @@ export const WAIST_CES: JointCesData = {
         },
     },
     integrate: [
-        ex('ws_int1', '버드독 (Bird-Dog)', '네발기기 자세에서 반대쪽 팔과 다리를 동시에 뻗어 코어의 안정성을 유지합니다.', '', { sets: 3, reps: 10 }),
-        ex('ws_int2', '플랭크', '팔꿈치로 몸을 지탱하며 머리부터 발끝까지 일직선을 유지하여 코어 전체를 통합합니다.', '', { holdSeconds: 30, sets: 3 }),
+        ex('ws_int1', '버드독 (Bird-Dog)', '네발기기 자세에서 반대쪽 팔과 다리를 동시에 뻗어 코어의 안정성을 유지합니다.', '', { sets: 3, reps: 10, targetMuscles: ['척추기립근', '복횡근', '대둔근'] }),
+        ex('ws_int2', '플랭크', '팔꿈치로 몸을 지탱하며 머리부터 발끝까지 일직선을 유지하여 코어 전체를 통합합니다.', '', { holdSeconds: 30, sets: 3, targetMuscles: ['복직근', '복횡근', '외복사근', '척추기립근'] }),
     ],
 };
