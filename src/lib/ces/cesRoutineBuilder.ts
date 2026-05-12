@@ -32,8 +32,9 @@ export const DEFAULT_REST_SECONDS = 30;
 /** 운동 간 기본 전환 시간 (초) */
 export const DEFAULT_TRANSITION_SECONDS = 15;
 
-/** 타겟 근육 ID 조회 함수 시그니처 — UI 쪽에서 주입 */
-export type GetTargetMuscles = (exerciseName: string) => string[];
+/** 타겟 근육 ID 조회 함수 시그니처 — UI 쪽에서 주입.
+ *  [v3 — 2026-05-12] phase 인자 추가: CES 4단계마다 fallback 대상 근육이 달라야 함. */
+export type GetTargetMuscles = (exerciseName: string, phase: CesPhase) => string[];
 
 /**
  * 한 운동을 세트 단위 exercise 스텝 + 사이 set-rest 브레이크로 분할.
@@ -55,7 +56,7 @@ const expandExerciseIntoSteps = (
     const remainder = fullSeconds - baseSetSeconds * safeSets;
 
     let stepCount = startStepCount;
-    const targetSvgIds = getTargetMuscles(ex.name);
+    const targetSvgIds = getTargetMuscles(ex.name, phase);
     const restSec = ex.restSeconds ?? DEFAULT_REST_SECONDS;
 
     for (let s = 1; s <= safeSets; s++) {

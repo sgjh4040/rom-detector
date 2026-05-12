@@ -1,22 +1,33 @@
-# 근육 색칠 매핑 가이드 (v2)
+# 근육 색칠 매핑 가이드 (v3)
 
-> **v2 — 2026-05-12 — SSOT 통합 후 신규 매뉴얼.**
-> 옛 매뉴얼(`~/Projects/자료들/muscle_mapping_manual.md`) 은 GitHub Pages + 한글→영어 매핑 Flutter 측에 두던 v1 구조라 더 이상 사용하지 않습니다.
+> **v3 — 2026-05-12 — 운동 이름 매칭 + stage fallback 결합.**
+> v2(2026-05-12 오전, 관절-방향 단위 동일 색칠) 는 CES 4단계(억제/신장/활성/통합) 마다 타겟이 달라야 한다는 요구와 맞지 않아 폐기. 운동 이름 직접 매칭으로 운동별 다른 부위 색칠 + stage 기반 fallback 도입.
+> 옛 매뉴얼(`~/Projects/자료들/muscle_mapping_manual.md`) 의 v1 구조(한글→영어 매핑 Flutter 측, GitHub Pages) 는 더 이상 사용하지 않습니다.
 
 ---
 
-## 개요 (v2 데이터 흐름)
+## 개요 (v3 데이터 흐름)
 
 ```
 운동 데이터 (knee.ts, shoulder.ts, …)
-  └─ muscleMap.{movement}.overactive/underactive  ←  ★ 진실의 원천 (운동 본질)
+  ├─ ex(id, name, description, videoFile, …)
+  │      └─ name = "대퇴사두근 SMR", "IT밴드 SMR", "햄스트링 컬 (밴드)", …
+  │
+  └─ muscleMap.{movement}.overactive/underactive  ← stage fallback 용
             │
             ▼ analyzeMuscles()
-       analysis.overactiveMuscles[],  analysis.underactiveMuscles[]
-            │                                     예: ['대퇴사두근(대퇴직근 포함)', 'IT밴드·대퇴근막장근', …]
-            ▼ getTargetMuscleIds()  =  resolveAnalysisToSvgIds()
-       SVG ID[]                                    예: ['rectus_femoris_l', 'rectus_femoris_r', 'iliotibial_tract_l', …]
-            │                                     ★ 변환은 React 측에서 끝남
+       analysis.{overactive/underactive}Muscles[]
+            │
+            ▼ getTargetMuscleIds(exerciseName, analysis, stage)
+            │      1) 운동 이름에서 한글 근육 키워드 추출 (muscleMapping.ts 키 매칭)
+            │         → 매칭 있으면 그것만 SVG ID 변환 ★ 가장 정확
+            │      2) 매칭 없으면 stage 기반 fallback:
+            │            - inhibit/lengthen → overactive 만
+            │            - activate         → underactive 만
+            │            - integrate        → over + under 전체
+            │
+       SVG ID[]    예: ['rectus_femoris_l', 'rectus_femoris_r']
+            │
             ▼ BodyAnatomySvg → postMessage({muscles, color}, '*')
        Flutter iframe
             │
@@ -24,7 +35,10 @@
        flutter_body_atlas 패키지가 색칠
 ```
 
-핵심: **모든 한글→영어 매핑 로직이 React 측 `src/lib/ces/muscleMapping.ts` 한 파일에 모임 (SSOT).** Flutter 는 받은 SVG ID 들을 그대로 색칠하는 얇은 껍데기.
+핵심:
+- **운동마다 다른 색칠** — `대퇴사두근 SMR` 과 `IT밴드 SMR` 은 같은 inhibit 단계여도 색칠 부위가 다르다.
+- **stage 마다 다른 색** — `PHASE_META` 의 색 (inhibit 오렌지, lengthen 시안, activate 핑크, integrate 그린).
+- **SSOT** — 한글→영어 매핑 로직은 React 측 `src/lib/ces/muscleMapping.ts` 한 파일에만 존재. Flutter 는 SVG ID 받아서 색칠만 하는 얇은 껍데기.
 
 ---
 
@@ -32,13 +46,16 @@
 
 ### 1. 새 운동 추가 (영상 + 운동 데이터)
 
-운동 추가는 muscleMap 만 정확하면 색칠은 자동으로 따라옴. **별도 매핑 작업 필요 없음.**
+운동 추가 시 색칠을 정확하게 만들려면 **운동 이름에 타겟 한글 근육명을 명시하는 것이 핵심**.
 
-1. `src/lib/ces/{joint}.ts` 의 `muscleMap` 에 새 movement / 근육 추가
-2. (선택) R2 에 mp4 업로드 후 `youtubeId` 자리에 파일명 박기
-3. 끝 — 색칠은 분석 결과를 자동으로 따라간다.
+1. `src/lib/ces/{joint}.ts` 의 `ex(id, name, ...)` 추가 시 `name` 에 타겟 근육명 포함 (예: `"대퇴사두근 SMR"`, `"햄스트링 컬 (밴드)"`).
+   - 그 한글이 `muscleMapping.ts` 의 키와 매칭되면 자동으로 정확한 부위 색칠됨.
+2. `muscleMap.{movement}.overactive/underactive` 도 정확히 채울 것 — 통합 운동(스쿼트/스텝업 등 이름에 근육명 없는 운동) 의 fallback 용이고, 사이드바 "근육 밸런스" 카드에도 표시됨.
+3. (선택) R2 에 mp4 업로드 후 `youtubeId` 자리에 파일명 박기.
 
-> **예외:** 운동 데이터에 등장한 한글 근육명이 `MUSCLE_TO_SVG` 매핑에 없으면 dev 콘솔에 `[muscleMapping] 매핑 없음: "…"` 경고 출력. → 작업 2번으로 이동.
+> **예외:** 운동 이름에 새 한글 근육명이 등장했는데 `MUSCLE_TO_SVG` 에 매핑 없으면 dev 콘솔에 `[muscleMapping] 매핑 없음: "…"` 경고 출력. → 작업 2번으로 이동.
+
+> **운동 이름에 근육명 없는 통합 운동** (예: 스쿼트, 스텝업): stage 기반 fallback 으로 자동 처리됨 (의도된 동작).
 
 ### 2. 새 한글 근육명 매핑 추가
 
@@ -105,8 +122,11 @@ v2 부터 fallback "코어" 제거됨. 그래도 잘못된 영역이 색칠된�
 - `public/flutter_atlas/` 가 빌드 결과로 갱신됐는지 확인. `git status` 에 잡혀야 푸쉬 후 배포 반영.
 - Vercel 캐시 새로고침: 브라우저 `Cmd + Shift + R`.
 
-### 단일 운동마다 다른 부위 색칠 원함 (현재는 관절-방향 단위)
-현재는 한 관절-방향(예: 무릎 굴곡) 내 모든 처방 근육을 같이 색칠. 운동별로 다르게 하려면 `muscleAnalysis` 가 movement 단위로 결과를 보존하도록 확장 필요 (향후 과제).
+### 운동마다 색칠이 같음 (v2 잔재)
+v3 부터 운동 이름 직접 매칭으로 운동별 다른 부위 색칠 가능. 운동 이름에 한글 근육명이 들어있는지 확인하고, 없으면 `name` 에 추가하거나 `muscleMapping.ts` 키워드로 등록.
+
+### 통합 운동(스쿼트 등) 색칠 부위가 너무 광범위
+stage 기반 fallback (integrate = over + under 전체) 동작 중. 정확하게 좁히려면 운동 이름에 명시적 한글 근육명 추가 (예: `"스쿼트 — 대퇴사두근+햄스트링"`). 또는 향후 운동에 `targetMuscles` 메타 필드 추가하는 큰 리팩토링 가능.
 
 ---
 
