@@ -22,7 +22,7 @@ export const SHOULDER_CES: JointCesData = {
                 ex('sh_len_flex2', '흉추 신전 스트레칭', '폼롤러를 등 어깨뼈 높이에 놓고 양손을 뒤통수에 받친 채 천천히 뒤로 누워 흉추를 신전합니다.', 'f_oZmt8uT6Q', { tools: '폼롤러', holdSeconds: 30 })
             ],
             activate: [
-                ex('sh_act_flex1', '어깨 굽힘 운동 (밴드)', '선 자세에서 밴드를 손에 묶고 팔꿈치를 편상태에서 팔을 귀옆까지 올립니다. .', '', { sets: 3, reps: 12, targetMuscles: ['하부승모근', '전거근', '후방삼각근'] }),
+                ex('sh_act_flex1', '어깨 굽힘 운동 (밴드)', '선 자세에서 밴드를 손에 묶고 팔꿈치를 편상태에서 팔을 귀옆까지 올립니다. .', '', { sets: 3, reps: 12, targetMuscles: ['전방삼각근', '후방삼각근'] }),
                 ex('sh_act_flex2', '전거근 활성화 (Push-Up Plus)', '팔굽혀펴기 자세에서 상체를 완전히 올린 뒤 견갑골을 앞으로 더 밀어냅니다.', 'RFbjeyq_ZPc', { sets: 3, reps: 10 })
             ],
         },
