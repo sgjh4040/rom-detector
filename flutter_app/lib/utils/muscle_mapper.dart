@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_body_atlas/flutter_body_atlas.dart';
 
+/// CES 단계별 강조 색 + SVG ID → MuscleInfo 변환 (thin shell).
+///
+/// [v2 — 2026-05-12] 한글 → 영어 매핑을 React 측으로 이전 (`src/lib/ces/muscleMapping.ts`).
+/// Flutter 는 이미 영어 SVG ID 로 변환된 입력을 받아 색칠만 담당한다.
+/// 단일 진실의 원천(SSOT)을 React 에 둠으로써 매핑 추가/수정 시 Flutter 재빌드 불필요.
 class MuscleMapper {
   static final MuscleResolver _resolver = const MuscleResolver();
 
+  /// CES 단계별 강조 색 (이 부분은 패키지 위젯이 직접 활용한다면 유지)
   static Color getHighlightColor(String cesPhase) {
     switch (cesPhase.toLowerCase()) {
       case 'inhibit':
@@ -19,58 +25,58 @@ class MuscleMapper {
     }
   }
 
-  static List<MuscleInfo> getTargetMuscles(List<String> muscleIds) {
-    List<MuscleInfo> parts = [];
-    final map = <String, List<String>>{
-      'chest': ['pectoralis_major_l', 'pectoralis_major_r'],
-      '소흉근': ['pectoralis_major_l', 'pectoralis_major_r'],
-      '대흉근': ['pectoralis_major_l', 'pectoralis_major_r'],
-      '전방삼각근': ['anterior_deltoid_l', 'anterior_deltoid_r'],
-      '삼각근': ['lateral_deltoid_l', 'lateral_deltoid_r'],
-      '광배근': ['latissimus_dorsi_l', 'latissimus_dorsi_r'],
-      '상부승모근': ['trapezius_upper_l', 'trapezius_upper_r'],
-      '견갑거근': ['trapezius_upper_l', 'trapezius_upper_r'],
-      '극하근': ['infraspinatus_l', 'infraspinatus_r'],
-      '견갑하근': ['infraspinatus_l', 'infraspinatus_r'],
-      '하부승모근': ['trapezius_lower_l', 'trapezius_lower_r'],
-      '장요근': ['pectineus_l', 'pectineus_r'], // closest to hip flexor
-      'Y자': ['trapezius_lower_l', 'trapezius_lower_r'], // Y-Raise
-      'T자': ['trapezius_middle_l', 'trapezius_middle_r'], // T-Raise
-      '케이블': ['lateral_deltoid_l', 'lateral_deltoid_r'],
-    };
+  /// 그룹 ID(`back`, `core`, `glutes`, ...) → 그룹 내 MuscleInfo 리스트.
+  /// React 측 매핑에서 광범위 부위 표시용으로 사용된다 (예: 척추기립근 → `back`).
+  static List<MuscleInfo>? _tryGroup(String id) {
+    switch (id) {
+      case 'hamstrings':
+        return MuscleCatalog.hamstrings;
+      case 'legs':
+        return MuscleCatalog.legs;
+      case 'glutes':
+        return MuscleCatalog.glutes;
+      case 'core':
+        return MuscleCatalog.core;
+      case 'arms':
+        return MuscleCatalog.arms;
+      case 'neck':
+        return MuscleCatalog.neck;
+      case 'back':
+        return MuscleCatalog.back;
+      case 'shoulders':
+        return MuscleCatalog.shoulders;
+      case 'chest':
+        return MuscleCatalog.chest;
+      case 'adductors':
+        return MuscleCatalog.adductors;
+      default:
+        return null;
+    }
+  }
 
-    for (var id in muscleIds) {
-      if (map.containsKey(id)) {
-        for (var svgId in map[id]!) {
-          final exact = _resolver.tryById(svgId);
-          if (exact != null) parts.add(exact);
+  /// SVG ID 배열 → `MuscleInfo` 리스트.
+  /// - 그룹 ID 면 카탈로그 그룹 전체 전개
+  /// - 개별 ID 면 `_resolver.tryById` 로 해결
+  /// - 매칭 실패한 ID 는 무시 (이전 'core 강제 색칠' fallback 제거 — 회색 유지)
+  static List<MuscleInfo> getTargetMuscles(List<String> svgIds) {
+    final parts = <MuscleInfo>[];
+    final seen = <String>{};
+    for (final id in svgIds) {
+      if (id.isEmpty) continue;
+      // 1) 그룹 ID 먼저 시도
+      final group = _tryGroup(id);
+      if (group != null) {
+        for (final m in group) {
+          if (seen.add(m.id)) parts.add(m);
         }
-      } else {
-        // Special logic for catalog groups
-        if (id == '전경골근' || id == '후경골근') {
-          parts.addAll(MuscleCatalog.legs.where((m) => m.aliases.contains('shin')));
-        } else if (id == '비복근' || id == '가자미근' || id == 'calves') {
-          parts.addAll(MuscleCatalog.legs.where((m) => m.aliases.contains('calf')));
-        } else if (id == '비골근') {
-          parts.addAll(MuscleCatalog.legs.where((m) => m.aliases.contains('peroneus longus')));
-        } else if (id == '대둔근' || id == '중둔근' || id == 'glutes') {
-          parts.addAll(MuscleCatalog.glutes);
-        } else if (id == '복횡근' || id == '코어' || id == '전거근' || id == '흉추') {
-          parts.addAll(MuscleCatalog.core);
-        } else if (id == 'quads') {
-          parts.addAll(MuscleCatalog.legs.where((m) => m.aliases.contains('quad')));
-        } else if (id == 'hamstrings') {
-          parts.addAll(MuscleCatalog.hamstrings);
-        } else {
-          final exact = _resolver.tryById(id);
-          if (exact != null) {
-            parts.add(exact);
-          } else {
-            // Default fallback
-            parts.addAll(MuscleCatalog.core);
-          }
-        }
+        continue;
       }
+      // 2) 개별 ID 시도
+      final exact = _resolver.tryById(id);
+      if (exact != null && seen.add(exact.id)) {
+        parts.add(exact);
+      }
+      // 3) 매칭 실패 → 무시 (개발 콘솔에서만 확인 가능)
     }
     return parts;
   }

@@ -9,7 +9,7 @@ import { buildRoutineFromAnalysis } from "../lib/ces/cesRoutineBuilder";
 import type { CesStage } from "../lib/ces/cesTypes";
 import { type CesPhase } from "../lib/ces/CesPlayerTypes";
 import type { Side } from "../lib/romTypes";
-import { getTargetMuscles } from "./cesProtocol/helpers";
+import { getTargetMuscleIds } from "./cesProtocol/helpers";
 import { useCesProtocolTimer } from "./cesProtocol/useCesProtocolTimer";
 import { TimerCard } from "./cesProtocol/TimerCard";
 import { StageTabs } from "./cesProtocol/StageTabs";
@@ -93,10 +93,8 @@ export const CesProtocol: React.FC = () => {
   const exercises = analysis[activeStage];
   const currentEx = exercises[activeIndex] || exercises[0];
 
-  const targetMuscles = useMemo(() => {
-    if (!currentEx) return ["코어"];
-    return getTargetMuscles(currentEx.name);
-  }, [currentEx]);
+  // v2: 운동 이름 매칭이 아닌 분석 결과 직접 변환 (muscleMapping.ts SSOT)
+  const targetMuscles = useMemo(() => getTargetMuscleIds(analysis), [analysis]);
 
   // ── 데이터 연동: 빌더에 위임 ──
   //
@@ -105,8 +103,11 @@ export const CesProtocol: React.FC = () => {
   // 스텝의 durationSeconds 합은 cesGoalCalculator.exerciseSeconds 와 일치해서
   // 대시보드 phase 목표와 1:1 로 매칭된다.
   const handleStartPlayer = () => {
+    // routine builder 는 step 별 `targetSvgIds` 를 박는다.
+    // v2: exerciseName 무시하고 analysis 전체 근육 ID 반환 (관절-방향 단위 동일 색칠).
+    const svgIds = getTargetMuscleIds(analysis);
     const customRoutine = buildRoutineFromAnalysis(analysis, {
-      getTargetMuscles,
+      getTargetMuscles: () => svgIds,
     });
     navigate("/ces-player", { state: { customRoutine } });
   };
