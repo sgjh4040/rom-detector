@@ -1,16 +1,41 @@
-/* index.css — 디자인 시스템 진입점 (import only) */
+/* index.css — 디자인 시스템 진입점
+ *
+ * Cascade Layer 전략 (redesign-spike, 2026-05-17):
+ *   theme < base < legacy < components < utilities
+ *
+ * 의도:
+ *   - Tailwind preflight (base) 는 가장 낮음 → 레거시 h1/ul/img 스타일이 살아남음
+ *   - 레거시 CSS 는 base 보다 위 → 기존 페이지들이 깨지지 않음
+ *   - Tailwind utility 와 component 는 최상위 → 신규 페이지의 rounded-lg/mx-auto 등이 항상 이김
+ *   - unlayered (redesign-tokens.css 의 :root override) → 최강 → --radius-lg 8px 강제
+ *
+ * 결과: 신규 페이지는 깨끗하게 동작, 레거시 페이지는 그대로 유지.
+ */
+
+@layer theme, base, legacy, components, utilities;
+
 @import "tailwindcss";
-@import './styles/tokens.css';
-@import './styles/base.css';
-@import './styles/components.css';
-@import './styles/empty_state.css';
-@import './styles/utilities.css';
-@import './styles/responsive.css';
-@import './styles/dashboard.css';
-@import './styles/dashboard_premium.css';
-@import './styles/ces_exercise.css';
-@import './styles/ces_info.css';
-@import './styles/ces_player.css';
-@import './styles/rom_immersive.css';
-@import './styles/fancy_selector.css';
-@import './styles/neumorphism.css';
+
+/* 폰트 */
+@import '@fontsource-variable/geist/index.css';
+@import '@fontsource-variable/geist-mono/index.css';
+@import 'pretendard/dist/web/variable/pretendardvariable.css';
+
+/* 레거시 CSS — 전부 @layer legacy 로 격리 */
+@import './styles/tokens.css'           layer(legacy);
+@import './styles/base.css'             layer(legacy);
+@import './styles/components.css'       layer(legacy);
+@import './styles/empty_state.css'      layer(legacy);
+@import './styles/utilities.css'        layer(legacy);
+@import './styles/responsive.css'       layer(legacy);
+@import './styles/dashboard.css'        layer(legacy);
+@import './styles/dashboard_premium.css' layer(legacy);
+@import './styles/ces_exercise.css'     layer(legacy);
+@import './styles/ces_info.css'         layer(legacy);
+@import './styles/ces_player.css'       layer(legacy);
+@import './styles/rom_immersive.css'    layer(legacy);
+@import './styles/fancy_selector.css'   layer(legacy);
+@import './styles/neumorphism.css'      layer(legacy);
+
+/* === 신규 디자인 시스템 (unlayered, 최우선) === */
+@import './styles/redesign-tokens.css';
