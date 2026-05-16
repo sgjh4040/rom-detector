@@ -135,19 +135,10 @@
   min-height: 100vh;
 }
 
-/* base.css 의 unlayered `a { color: var(--primary) }` (보라) 오버라이드.
- * 새 셸 안의 모든 링크는 부모 색상 상속 (foreground 또는 명시 클래스). */
+/* 셸 안의 링크는 부모 색상 상속 (foreground 또는 명시 클래스). */
 [data-redesign="true"] a {
   color: inherit;
 }
 
-/* base.css 의 `h1 { color: var(--text-primary); font-weight: 800; ... }` 가
- * Tailwind 의 text-2xl/font-semibold 와 다툼. 셸 안에서는 Tailwind 가 이김.
- * :where() 로 specificity 를 0 으로 떨궈서 Tailwind utility (0,1,0) 가 자연스럽게 이긴다. */
-:where([data-redesign="true"]) :is(h1, h2, h3) {
-  font-weight: inherit;
-  font-size: inherit;
-  color: inherit;
-  letter-spacing: inherit;
-  line-height: inherit;
-}
+/* h1/h2/h3 override 는 layer 정리 후 불필요해짐.
+ * 레거시 h1 스타일은 @layer legacy 에 격리됨, Tailwind utility 가 항상 이김. */
