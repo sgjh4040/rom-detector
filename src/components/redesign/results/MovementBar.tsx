@@ -39,7 +39,7 @@ export const MovementBar: React.FC<MovementBarProps> = ({
           {name}
         </span>
         <span
-          className="inline-flex w-fit items-center rounded-md px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider"
+          className="inline-flex w-fit items-center rounded-md px-1.5 py-0.5 text-[11px] font-bold"
           style={{
             background: `${color}1f`,
             color,
@@ -72,7 +72,7 @@ export const MovementBar: React.FC<MovementBarProps> = ({
         ) : (
           <>
             {/* 라벨 — 0° 와 정상 범위 */}
-            <div className="flex justify-between text-[11px] font-semibold text-[var(--color-muted-foreground)] mb-2">
+            <div className="flex justify-between text-xs font-medium text-[var(--color-muted-foreground)] mb-2">
               <span>0°</span>
               <span>정상 {normalRange}°</span>
             </div>
@@ -106,7 +106,7 @@ export const MovementBar: React.FC<MovementBarProps> = ({
               >
                 {measured}°
               </span>
-              <span className="text-[11px] font-medium text-[var(--color-muted-foreground)]">
+              <span className="text-xs font-medium text-[var(--color-muted-foreground)]">
                 {isLimited ? (
                   <>정상 대비 {percent}% · {remaining}° 부족</>
                 ) : (

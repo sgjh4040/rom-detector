@@ -65,18 +65,16 @@ export const PatientCard: React.FC<PatientCardProps> = ({
         </span>
         {patient.age != null && (
           <span className="text-xs font-medium text-[var(--color-muted-foreground)]">
-            {patient.age}
+            {patient.age}세
           </span>
         )}
       </div>
-      <div className="mt-0.5 flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-[var(--color-muted-foreground)]">
+      <div className="mt-0.5 flex items-center gap-1.5 text-xs font-medium text-[var(--color-muted-foreground)]">
         <span>{fmtDate(patient.lastMeasuredAt)}</span>
         {patient.painArea && (
           <>
             <span className="text-[var(--color-border)]">·</span>
-            <span className="truncate normal-case tracking-normal font-medium">
-              {patient.painArea}
-            </span>
+            <span className="truncate">{patient.painArea}</span>
           </>
         )}
       </div>

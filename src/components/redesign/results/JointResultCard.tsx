@@ -66,12 +66,12 @@ export const JointResultCard: React.FC<JointResultCardProps> = ({
           )}
         </h3>
         {hasLimitation ? (
-          <span className="inline-flex items-center gap-1 rounded-md bg-[var(--color-destructive)]/10 px-2 py-0.5 text-[11px] font-bold uppercase tracking-wider text-[var(--color-destructive)]">
+          <span className="inline-flex items-center gap-1 rounded-md bg-[var(--color-destructive)]/10 px-2 py-0.5 text-xs font-bold text-[var(--color-destructive)]">
             <AlertTriangle className="size-3" />
             제한 있음
           </span>
         ) : (
-          <span className="inline-flex items-center gap-1 rounded-md bg-[oklch(0.65_0.15_150)]/10 px-2 py-0.5 text-[11px] font-bold uppercase tracking-wider text-[oklch(0.45_0.15_150)]">
+          <span className="inline-flex items-center gap-1 rounded-md bg-[oklch(0.65_0.15_150)]/10 px-2 py-0.5 text-xs font-bold text-[oklch(0.45_0.15_150)]">
             <CheckCircle className="size-3" />
             정상
           </span>

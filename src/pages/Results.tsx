@@ -1,7 +1,7 @@
 // Results.tsx — 측정 결과 평가 리포트 (redesign-spike, Athletic + Garmin tone)
 import React, { useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Dumbbell, FileSearch, Printer, TrendingUp } from "lucide-react";
+import { AlertTriangle, ArrowLeft, CheckCircle, Dumbbell, FileSearch, Printer, TrendingUp } from "lucide-react";
 import {
   loadRomSession,
   addSessionToHistory,
@@ -78,11 +78,11 @@ export const Results: React.FC = () => {
           <div className="flex items-start justify-between gap-3">
             <div className="min-w-0">
               <h1 className="text-3xl font-extrabold tracking-tight text-[var(--color-foreground)]">
-                REPORT
+                평가 리포트
               </h1>
-              <p className="mt-1 text-xs font-semibold uppercase tracking-wider text-[var(--color-muted-foreground)]">
+              <p className="mt-1 text-sm font-medium text-[var(--color-muted-foreground)]">
                 {patientName}
-                {patientAge ? ` · ${patientAge}` : ""}
+                {patientAge ? ` · ${patientAge}세` : ""}
                 {session.painArea ? ` · ${session.painArea}` : ""}
                 {session.vasScore !== undefined ? ` · VAS ${session.vasScore}` : ""}
               </p>
@@ -99,42 +99,27 @@ export const Results: React.FC = () => {
           </div>
         </div>
 
-        {/* 3-Stat 그리드 — JOINTS / LIMITED / NORMAL */}
+        {/* 3-Stat 그리드 */}
         <Card className="grid grid-cols-3 divide-x divide-[var(--color-border)]">
-          <Stat label="JOINTS" value={selectedJointIds.length} />
+          <Stat label="측정 관절" value={selectedJointIds.length} sub="개" />
           <Stat
-            label="LIMITED"
+            label="제한 동작"
             value={totalLimited}
+            sub="개"
             valueColor={
               totalLimited > 0 ? "var(--color-destructive)" : undefined
             }
           />
           <Stat
-            label="NORMAL"
+            label="정상 동작"
             value={totalNormal}
+            sub="개"
             valueColor={totalNormal > 0 ? "oklch(0.55 0.15 150)" : undefined}
           />
         </Card>
 
-        {/* 요약 문장 */}
-        <div
-          className="rounded-xl border p-4 text-sm font-semibold leading-relaxed"
-          style={
-            totalLimited > 0
-              ? {
-                  background: "color-mix(in oklch, var(--color-destructive) 6%, var(--color-card))",
-                  borderColor: "color-mix(in oklch, var(--color-destructive) 25%, transparent)",
-                  color: "var(--color-foreground)",
-                }
-              : {
-                  background: "color-mix(in oklch, oklch(0.55 0.15 150) 6%, var(--color-card))",
-                  borderColor: "color-mix(in oklch, oklch(0.55 0.15 150) 25%, transparent)",
-                  color: "var(--color-foreground)",
-                }
-          }
-        >
-          {summarySentence}
-        </div>
+        {/* 요약 배너 — 아이콘 + 굵은 헤더 + 본문 */}
+        <SummaryBanner totalLimited={totalLimited} summarySentence={summarySentence} />
 
         {/* 경과 관찰 링크 카드 */}
         {!isFirstTime && (
@@ -156,8 +141,8 @@ export const Results: React.FC = () => {
                 </div>
               </div>
             </div>
-            <span className="text-xs font-semibold uppercase tracking-wider text-[var(--color-accent)]">
-              VIEW →
+            <span className="text-xs font-semibold text-[var(--color-accent)]">
+              보기 →
             </span>
           </button>
         )}
@@ -201,17 +186,68 @@ export const Results: React.FC = () => {
 const Stat: React.FC<{
   label: string;
   value: React.ReactNode;
+  sub?: React.ReactNode;
   valueColor?: string;
-}> = ({ label, value, valueColor }) => (
-  <div className="flex flex-col gap-1 p-4">
-    <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--color-muted-foreground)]">
+}> = ({ label, value, sub, valueColor }) => (
+  <div className="flex flex-col gap-1.5 p-4">
+    <div className="text-xs font-semibold text-[var(--color-muted-foreground)]">
       {label}
     </div>
-    <div
-      className="font-mono text-4xl font-bold tabular-nums leading-none"
-      style={{ color: valueColor ?? "var(--color-foreground)" }}
-    >
-      {value}
+    <div className="flex items-baseline gap-1">
+      <span
+        className="font-mono text-4xl font-bold tabular-nums leading-none"
+        style={{ color: valueColor ?? "var(--color-foreground)" }}
+      >
+        {value}
+      </span>
+      {sub && (
+        <span className="text-sm font-mono font-semibold text-[var(--color-muted-foreground)]">
+          {sub}
+        </span>
+      )}
     </div>
   </div>
 );
+
+const SummaryBanner: React.FC<{
+  totalLimited: number;
+  summarySentence: string;
+}> = ({ totalLimited, summarySentence }) => {
+  const isLimited = totalLimited > 0;
+  const accent = isLimited ? "var(--color-destructive)" : "oklch(0.55 0.15 150)";
+
+  return (
+    <div
+      className="rounded-xl border-l-4 p-4"
+      style={{
+        background: `color-mix(in oklch, ${accent} 8%, var(--color-card))`,
+        borderLeftColor: accent,
+        borderTop: `1px solid color-mix(in oklch, ${accent} 20%, transparent)`,
+        borderRight: `1px solid color-mix(in oklch, ${accent} 20%, transparent)`,
+        borderBottom: `1px solid color-mix(in oklch, ${accent} 20%, transparent)`,
+      }}
+    >
+      <div className="flex items-start gap-3">
+        <div
+          className="flex size-9 shrink-0 items-center justify-center rounded-lg"
+          style={{ background: `color-mix(in oklch, ${accent} 18%, transparent)`, color: accent }}
+        >
+          {isLimited ? <AlertTriangle className="size-5" /> : <CheckCircle className="size-5" />}
+        </div>
+        <div className="min-w-0 flex-1">
+          <div
+            className="text-sm font-bold leading-tight"
+            style={{ color: accent }}
+          >
+            {isLimited
+              ? `제한 동작 ${totalLimited}개 발견`
+              : "전 동작 정상 범위 도달"}
+          </div>
+          <p className="mt-1 text-sm font-medium leading-relaxed text-[var(--color-foreground)]">
+            {summarySentence}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};

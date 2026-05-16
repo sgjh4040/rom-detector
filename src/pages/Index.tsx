@@ -79,14 +79,16 @@ export const Index: React.FC = () => {
   return (
     <AppShell>
       <div className="flex flex-col gap-5">
-        {/* 헤더 — Athletic 톤: 굵은 헤딩 + UPPERCASE 메타 */}
+        {/* 헤더 */}
         <div className="flex items-end justify-between">
           <div>
             <h1 className="text-3xl font-extrabold tracking-tight text-[var(--color-foreground)]">
-              PATIENTS
+              환자
             </h1>
-            <p className="mt-1 text-xs font-semibold uppercase tracking-wider text-[var(--color-muted-foreground)]">
-              {patients.length === 0 ? "Register your first patient" : `${patients.length} active`}
+            <p className="mt-1 text-sm font-medium text-[var(--color-muted-foreground)]">
+              {patients.length === 0
+                ? "첫 환자를 등록해 시작하세요"
+                : `등록된 환자 ${patients.length}명`}
             </p>
           </div>
           <div className="flex items-center gap-1.5">

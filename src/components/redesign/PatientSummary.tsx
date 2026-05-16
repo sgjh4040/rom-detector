@@ -26,10 +26,10 @@ const fmtLast = (iso?: string): string => {
   const d = new Date(iso);
   const now = new Date();
   const days = Math.floor((now.getTime() - d.getTime()) / (1000 * 60 * 60 * 24));
-  if (days === 0) return "TODAY";
-  if (days === 1) return "1d";
-  if (days < 30) return `${days}d`;
-  return `${Math.floor(days / 30)}mo`;
+  if (days === 0) return "오늘";
+  if (days === 1) return "어제";
+  if (days < 30) return `${days}일`;
+  return `${Math.floor(days / 30)}달`;
 };
 
 const Stat: React.FC<{
@@ -39,7 +39,7 @@ const Stat: React.FC<{
   accent?: boolean;
 }> = ({ label, value, sub, accent }) => (
   <div className="flex flex-col gap-1">
-    <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--color-muted-foreground)]">
+    <div className="text-xs font-semibold text-[var(--color-muted-foreground)]">
       {label}
     </div>
     <div className="flex items-baseline gap-1">
@@ -79,22 +79,22 @@ export const PatientSummary: React.FC<PatientSummaryProps> = ({
         </h2>
         {age && (
           <span className="text-sm font-semibold text-[var(--color-muted-foreground)]">
-            {age}
+            {age}세
           </span>
         )}
       </div>
       {painArea && (
-        <p className="mt-1 text-xs font-semibold uppercase tracking-wider text-[var(--color-muted-foreground)]">
-          {painArea}
+        <p className="mt-1 text-sm font-medium text-[var(--color-muted-foreground)]">
+          주 호소 · {painArea}
         </p>
       )}
     </div>
 
-    {/* 3-stat 그리드 — Strava 스타일 */}
+    {/* 3-stat 그리드 */}
     <div className="grid grid-cols-3 gap-4 p-5 pt-4">
-      <Stat label="VAS" value={vasScore} sub="/ 10" accent />
-      <Stat label="SESSIONS" value={historyCount} sub="회" />
-      <Stat label="LAST" value={fmtLast(lastMeasuredAt)} />
+      <Stat label="VAS 통증" value={vasScore} sub="/ 10" accent />
+      <Stat label="측정" value={historyCount} sub="회" />
+      <Stat label="최근" value={fmtLast(lastMeasuredAt)} />
     </div>
 
     {/* VAS progress bar — 오렌지 */}
