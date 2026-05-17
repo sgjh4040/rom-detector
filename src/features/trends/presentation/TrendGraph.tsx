@@ -51,7 +51,7 @@ export const TrendGraph: React.FC<TrendGraphProps> = ({
   return (
     <div className="w-full" style={{ height: 220 }}>
       <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={data} margin={{ top: 12, right: 60, bottom: 0, left: -8 }}>
+        <LineChart data={data} margin={{ top: 12, right: 60, bottom: 0, left: 0 }}>
           <CartesianGrid strokeDasharray="3 3" opacity={0.15} />
           <XAxis
             dataKey="label"
@@ -67,7 +67,7 @@ export const TrendGraph: React.FC<TrendGraphProps> = ({
             tick={{ fontSize: 11, fontWeight: 600, fill: "var(--color-muted-foreground)" }}
             tickLine={false}
             axisLine={{ stroke: "var(--color-border)" }}
-            width={32}
+            width={42}
           />
           <Tooltip
             cursor={{
