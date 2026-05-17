@@ -1,87 +1,102 @@
-import React, { useState } from 'react';
-import { Camera } from 'lucide-react';
-import { ImageAngleMeasurer } from '../../../core/components/ImageAngleMeasurer';
-import type { Movement } from '../../../lib/romData';
+// FastInputControls.tsx — 빠른 입력 (25/50/75/목표치) + 사진 측정 (redesign-spike).
+import React, { useState } from "react";
+import { Camera, X } from "lucide-react";
+import { ImageAngleMeasurer } from "../../../core/components/ImageAngleMeasurer";
+import type { Movement } from "../../../lib/romData";
+import { cn } from "../../../lib/cn";
 
 interface FastInputControlsProps {
-    activeMov: Movement | undefined;
-    activeVal: number;
-    handleFast: (pct: number) => void;
-    handlePhoto: (angle: number) => void;
+  activeMov: Movement | undefined;
+  activeVal: number;
+  handleFast: (pct: number) => void;
+  handlePhoto: (angle: number) => void;
 }
 
 export const FastInputControls: React.FC<FastInputControlsProps> = ({
-    activeMov,
-    activeVal,
-    handleFast,
-    handlePhoto
+  activeMov,
+  activeVal,
+  handleFast,
+  handlePhoto,
 }) => {
-    const [showPhoto, setShowPhoto] = useState(false);
+  const [showPhoto, setShowPhoto] = useState(false);
+  const maxVal = activeMov?.normalRange ?? 180;
+  const isNormalSelected = activeVal === maxVal && activeVal > 0;
 
-    const onPhotoConfirmed = (angle: number) => {
-        handlePhoto(angle);
-        setShowPhoto(false);
-    };
+  const onPhotoConfirmed = (angle: number) => {
+    handlePhoto(angle);
+    setShowPhoto(false);
+  };
 
-    const maxVal = activeMov?.normalRange ?? 180;
-    const isNormalSelected = activeVal === maxVal && activeVal > 0;
-
-    return (
-        <>
-            {/* Segmented Control */}
-            <div className="rom-seg">
-                {[25, 50, 75].map(pct => {
-                    const targetVal = Math.round((maxVal * pct) / 100);
-                    const isSelected = activeVal === targetVal && activeVal > 0;
-
-                    return (
-                        <button
-                            key={pct}
-                            onClick={() => handleFast(pct)}
-                            className={`rom-seg__btn ${isSelected ? 'rom-seg__btn--active' : ''}`}
-                        >
-                            {pct}%
-                        </button>
-                    );
-                })}
-                <button
-                    onClick={() => handleFast(100)}
-                    className={`rom-seg__btn ${isNormalSelected ? 'rom-seg__btn--normal' : ''}`}
-                >
-                    목표치
-                </button>
-            </div>
-
-            {/* Photo Button — [audit #35] 라벨이 "카메라로 정밀 분석하기" 였을 때
-                사용자가 AI 자동 인식 같은 기능을 기대하던 문제 해소. 실제 동작은
-                "사진 업로드 → 3점 클릭 → 두 벡터 사잇각 계산" 이라 라벨/부제로 명시. */}
+  return (
+    <div className="flex flex-col gap-3">
+      {/* 빠른 입력 segmented control */}
+      <div
+        role="radiogroup"
+        aria-label="빠른 각도 입력"
+        className="grid grid-cols-4 gap-1 rounded-lg border border-[var(--color-border)] bg-[var(--color-muted)] p-1"
+      >
+        {[25, 50, 75].map((pct) => {
+          const target = Math.round((maxVal * pct) / 100);
+          const selected = activeVal === target && activeVal > 0;
+          return (
             <button
-                onClick={() => setShowPhoto(!showPhoto)}
-                className={`rom-photo-btn ${showPhoto ? 'rom-photo-btn--open' : ''}`}
+              key={pct}
+              type="button"
+              role="radio"
+              aria-checked={selected}
+              onClick={() => handleFast(pct)}
+              className={cn(
+                "rounded-md py-1.5 text-sm font-semibold transition-all",
+                selected
+                  ? "bg-[var(--color-card)] text-[var(--color-foreground)] shadow-[0_1px_2px_rgba(0,0,0,0.06)]"
+                  : "text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)]",
+              )}
             >
-                <Camera style={{ width: 18, height: 18 }} />
-                {showPhoto ? '사진 측정 닫기' : '사진으로 측정하기'}
+              {pct}%
             </button>
-            {!showPhoto && (
-                <p
-                    style={{
-                        fontSize: 'var(--text-xs)',
-                        color: 'var(--text-secondary)',
-                        textAlign: 'center',
-                        marginTop: '0.4rem',
-                        opacity: 0.75,
-                        lineHeight: 1.4,
-                    }}
-                >
-                    사진을 올리고 3점을 찍으면 각도가 자동 계산됩니다
-                </p>
-            )}
+          );
+        })}
+        <button
+          type="button"
+          onClick={() => handleFast(100)}
+          aria-checked={isNormalSelected}
+          role="radio"
+          className={cn(
+            "rounded-md py-1.5 text-sm font-bold transition-all",
+            isNormalSelected
+              ? "bg-[oklch(0.55_0.15_150)] text-white shadow-[0_1px_2px_rgba(0,0,0,0.06)]"
+              : "text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)]",
+          )}
+        >
+          목표치
+        </button>
+      </div>
 
-            {showPhoto && (
-                <div className="rom-photo-wrap">
-                    <ImageAngleMeasurer onAngleConfirmed={onPhotoConfirmed} />
-                </div>
-            )}
-        </>
-    );
+      {/* 사진 측정 */}
+      <button
+        type="button"
+        onClick={() => setShowPhoto(!showPhoto)}
+        className={cn(
+          "flex h-10 items-center justify-center gap-1.5 rounded-lg border text-sm font-bold transition-colors",
+          showPhoto
+            ? "border-[var(--color-foreground)] bg-[var(--color-foreground)] text-[var(--color-background)]"
+            : "border-[var(--color-border)] bg-[var(--color-card)] text-[var(--color-foreground)] hover:bg-[var(--color-muted)]",
+        )}
+      >
+        {showPhoto ? <X className="size-4" /> : <Camera className="size-4" />}
+        {showPhoto ? "사진 측정 닫기" : "사진으로 측정하기"}
+      </button>
+      {!showPhoto && (
+        <p className="text-center text-xs font-medium text-[var(--color-muted-foreground)]">
+          사진을 올리고 3점을 찍으면 각도가 자동 계산됩니다
+        </p>
+      )}
+
+      {showPhoto && (
+        <div className="rounded-lg border border-[var(--color-border)] bg-[var(--color-muted)]/30 p-3">
+          <ImageAngleMeasurer onAngleConfirmed={onPhotoConfirmed} />
+        </div>
+      )}
+    </div>
+  );
 };
