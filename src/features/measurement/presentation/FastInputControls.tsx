@@ -62,9 +62,9 @@ export const FastInputControls: React.FC<FastInputControlsProps> = ({
           aria-checked={isNormalSelected}
           role="radio"
           className={cn(
-            "rounded-md py-1.5 text-sm font-bold transition-all",
+            "rounded-md py-1.5 text-sm font-semibold transition-all",
             isNormalSelected
-              ? "bg-[oklch(0.55_0.15_150)] text-white shadow-[0_1px_2px_rgba(0,0,0,0.06)]"
+              ? "bg-[var(--color-card)] text-[var(--color-foreground)] shadow-[0_1px_2px_rgba(0,0,0,0.06)]"
               : "text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)]",
           )}
         >

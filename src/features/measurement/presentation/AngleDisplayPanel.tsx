@@ -37,8 +37,10 @@ export const AngleDisplayPanel: React.FC<AngleDisplayPanelProps> = ({
         </div>
       </div>
 
-      {/* 각도 다이얼 */}
-      <AngleDial value={activeVal} maxVal={maxVal} normalVal={normalVal} />
+      {/* 각도 다이얼 — flex-col stretch 안에서도 가운데 정렬되도록 wrapper 로 폭 제한 */}
+      <div className="mx-auto w-full max-w-[360px]">
+        <AngleDial value={activeVal} maxVal={maxVal} normalVal={normalVal} />
+      </div>
 
       {/* 슬라이더 — 정상 도달 시 그린, 그 외 가민 블루 */}
       <div className="relative pt-2">
