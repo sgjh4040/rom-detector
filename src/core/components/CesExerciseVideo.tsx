@@ -114,7 +114,7 @@ export const CesExerciseVideo: React.FC<Props> = ({
                             width: '88px',
                             height: '88px',
                             borderRadius: '50%',
-                            background: 'var(--primary)',
+                            background: 'var(--color-accent)',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',

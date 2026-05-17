@@ -1,72 +1,71 @@
-// MuscleBalanceCard.tsx — CesProtocol 메인 패널 하단의 과활성/저활성 근육 밸런스 카드.
+// MuscleBalanceCard.tsx — CesProtocol 메인 하단 근육 밸런스 카드 (redesign-spike).
 import React from "react";
 import { AlertTriangle, CheckCircle } from "lucide-react";
 
 interface MuscleBalanceCardProps {
-  /** 과활성(Overactive) 근육 목록 — 빨간 칩 */
   overactiveMuscles: string[];
-  /** 저활성(Underactive) 근육 목록 — 녹색 칩 */
   underactiveMuscles: string[];
 }
+
+const Chip: React.FC<{ label: string; color: string }> = ({ label, color }) => (
+  <span
+    className="inline-flex items-center rounded-md px-2 py-0.5 text-xs font-bold"
+    style={{
+      background: `${color}1f`,
+      color,
+      border: `1px solid ${color}33`,
+    }}
+  >
+    {label}
+  </span>
+);
 
 export const MuscleBalanceCard: React.FC<MuscleBalanceCardProps> = ({
   overactiveMuscles,
   underactiveMuscles,
-}) => {
-  return (
-    <div className="muscle-balance-box">
-      <h3
-        className="main-title"
-        style={{ fontSize: "var(--text-lg)", marginBottom: "1.5rem" }}
-      >
-        근육 밸런스 (Muscle Balance)
-      </h3>
-      <div className="balance-grid">
-        <div className="balance-card">
-          <p className="balance-title icon-text icon-text--sm text-danger">
-            <AlertTriangle size={18} /> 과활성 (뭉친 근육)
-          </p>
-          <div className="flex flex-wrap gap-2">
-            {overactiveMuscles.map((m) => (
-              <span
-                key={m}
-                style={{
-                  fontSize: "var(--text-sm)",
-                  padding: "0.3rem 0.6rem",
-                  background: "rgba(240,62,62,0.1)",
-                  color: "var(--danger)",
-                  borderRadius: "var(--radius-xs)",
-                  fontWeight: 700,
-                }}
-              >
-                {m}
-              </span>
-            ))}
-          </div>
+}) => (
+  <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-card)] p-5">
+    <h3 className="text-base font-bold tracking-tight text-[var(--color-foreground)]">
+      근육 밸런스
+      <span className="ml-1.5 text-xs font-medium text-[var(--color-muted-foreground)]">
+        Muscle Balance
+      </span>
+    </h3>
+    <div className="mt-4 grid gap-4 sm:grid-cols-2">
+      <div>
+        <div className="flex items-center gap-1.5 text-xs font-bold text-[var(--color-destructive)]">
+          <AlertTriangle className="size-3.5" />
+          과활성 (뭉친 근육)
         </div>
-        <div className="balance-card">
-          <p className="balance-title icon-text icon-text--sm text-success">
-            <CheckCircle size={18} /> 저활성 (약한 근육)
-          </p>
-          <div className="flex flex-wrap gap-2">
-            {underactiveMuscles.map((m) => (
-              <span
-                key={m}
-                style={{
-                  fontSize: "var(--text-sm)",
-                  padding: "0.3rem 0.6rem",
-                  background: "rgba(46,204,136,0.1)",
-                  color: "var(--success)",
-                  borderRadius: "var(--radius-xs)",
-                  fontWeight: 700,
-                }}
-              >
-                {m}
-              </span>
-            ))}
-          </div>
+        <div className="mt-2 flex flex-wrap gap-1.5">
+          {overactiveMuscles.length === 0 ? (
+            <span className="text-xs text-[var(--color-muted-foreground)]">
+              없음
+            </span>
+          ) : (
+            overactiveMuscles.map((m) => (
+              <Chip key={m} label={m} color="var(--color-destructive)" />
+            ))
+          )}
+        </div>
+      </div>
+      <div>
+        <div className="flex items-center gap-1.5 text-xs font-bold text-[oklch(0.45_0.15_150)]">
+          <CheckCircle className="size-3.5" />
+          저활성 (약한 근육)
+        </div>
+        <div className="mt-2 flex flex-wrap gap-1.5">
+          {underactiveMuscles.length === 0 ? (
+            <span className="text-xs text-[var(--color-muted-foreground)]">
+              없음
+            </span>
+          ) : (
+            underactiveMuscles.map((m) => (
+              <Chip key={m} label={m} color="oklch(0.45 0.15 150)" />
+            ))
+          )}
         </div>
       </div>
     </div>
-  );
-};
+  </div>
+);
