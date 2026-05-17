@@ -2,19 +2,32 @@ import * as React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Activity, Home, LineChart, Dumbbell, Settings as SettingsIcon } from "lucide-react";
 import { cn } from "../../lib/cn";
+import { getPatients } from "../../lib/patientHistory";
 
-type NavItem = { path: string; icon: React.ReactNode; label: string };
+type NavItem = { path: string; icon: React.ReactNode; label: string; requiresPatient?: boolean };
 
 const NAV: NavItem[] = [
   { path: "/", icon: <Home className="size-5" />, label: "홈" },
-  { path: "/measure", icon: <Activity className="size-5" />, label: "측정" },
-  { path: "/results", icon: <LineChart className="size-5" />, label: "결과" },
-  { path: "/ces", icon: <Dumbbell className="size-5" />, label: "CES" },
+  { path: "/measure", icon: <Activity className="size-5" />, label: "측정", requiresPatient: true },
+  { path: "/results", icon: <LineChart className="size-5" />, label: "결과", requiresPatient: true },
+  { path: "/ces", icon: <Dumbbell className="size-5" />, label: "CES", requiresPatient: true },
   { path: "/settings", icon: <SettingsIcon className="size-5" />, label: "설정" },
 ];
 
+// 환자 유무에 따라 노출할 nav 를 결정 — 환자 없으면 측정/결과/CES 비활성
+const useVisibleNav = (pathname: string): NavItem[] => {
+  const [hasPatients, setHasPatients] = React.useState<boolean>(
+    () => getPatients().length > 0,
+  );
+  React.useEffect(() => {
+    setHasPatients(getPatients().length > 0);
+  }, [pathname]);
+  return hasPatients ? NAV : NAV.filter((i) => !i.requiresPatient);
+};
+
 export const TopNav: React.FC = () => {
   const { pathname } = useLocation();
+  const visibleNav = useVisibleNav(pathname);
   return (
     <header className="sticky top-0 z-40 w-full border-b border-[var(--color-border)] bg-[var(--color-background)]/95 backdrop-blur supports-[backdrop-filter]:bg-[var(--color-background)]/80">
       <div className="mx-auto flex h-14 max-w-3xl items-center justify-between px-4">
@@ -28,7 +41,7 @@ export const TopNav: React.FC = () => {
           <span className="text-base font-semibold tracking-tight">ROM Detector</span>
         </Link>
         <nav className="hidden md:flex items-center gap-1">
-          {NAV.slice(1).map((item) => (
+          {visibleNav.slice(1).map((item) => (
             <Link
               key={item.path}
               to={item.path}
@@ -50,10 +63,14 @@ export const TopNav: React.FC = () => {
 
 export const MobileBottomNav: React.FC = () => {
   const { pathname } = useLocation();
+  const visibleNav = useVisibleNav(pathname);
   return (
     <nav className="md:hidden fixed bottom-0 inset-x-0 z-40 border-t border-[var(--color-border)] bg-[var(--color-background)]/95 backdrop-blur pb-[env(safe-area-inset-bottom)]">
-      <div className="mx-auto grid max-w-3xl grid-cols-5">
-        {NAV.map((item) => {
+      <div
+        className="mx-auto grid max-w-3xl"
+        style={{ gridTemplateColumns: `repeat(${visibleNav.length}, minmax(0, 1fr))` }}
+      >
+        {visibleNav.map((item) => {
           const active = pathname === item.path.split("?")[0];
           return (
             <Link
