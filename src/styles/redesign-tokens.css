@@ -140,5 +140,45 @@
   color: inherit;
 }
 
+/* === VAS 슬라이더 thumb (range input, vendor prefix 필요) ===
+ * --vas-color 인라인 스타일로 동적 색상 전달.
+ */
+.vas-range {
+  height: 24px;
+}
+.vas-range::-webkit-slider-runnable-track {
+  height: 24px;
+  background: transparent;
+}
+.vas-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #fff;
+  border: 3px solid var(--vas-color, var(--color-accent));
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  margin-top: 1px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.vas-range::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+}
+.vas-range::-moz-range-track {
+  height: 24px;
+  background: transparent;
+}
+.vas-range::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #fff;
+  border: 3px solid var(--vas-color, var(--color-accent));
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+}
+
 /* h1/h2/h3 override 는 layer 정리 후 불필요해짐.
  * 레거시 h1 스타일은 @layer legacy 에 격리됨, Tailwind utility 가 항상 이김. */

@@ -1,15 +1,12 @@
-// NewMeasurementForm.tsx — 측정 시작 폼 (audit #13 Phase 2)
-//
-// 이름/나이/통증/방향/관절 입력 + 측정 시작 버튼.
-// 이전에는 src/pages/Index.tsx 가 직접 인라인으로 렌더했으나
-// PRD §4-0 (200줄) 준수를 위해 분리.
-//
-// 패턴: controlled component — 모든 폼 state 는 부모가 관리하고 props 로 받는다.
-// 이는 Index.tsx 의 환자 선택 흐름(handleSelectPatient) 이 폼 state 를
-// 자동으로 채우는 기존 동작을 보존하기 위함.
+// NewMeasurementForm.tsx — 측정 시작 폼 (redesign-spike).
+// controlled component — 모든 폼 state 는 부모(Index.tsx)가 관리.
 import React from "react";
+import { ArrowLeft, Play } from "lucide-react";
 import { PainAssessment } from "./PainAssessment";
 import { JointSelector } from "./JointSelector";
+import { Input } from "../../../components/redesign/ui/Input";
+import { Button } from "../../../components/redesign/ui/Button";
+import { cn } from "../../../lib/cn";
 
 export type SideMode = "좌측만" | "우측만" | "양쪽";
 
@@ -29,7 +26,6 @@ interface NewMeasurementFormProps {
   selectedJointIds: string[];
   toggleJoint: (id: string) => void;
   totalSteps: number;
-  /** 기존 환자에서 "새 측정 시작" 으로 들어왔을 때만 노출되는 돌아가기 버튼 */
   showBackButton: boolean;
   onBack: () => void;
   onSubmit: (e: React.FormEvent) => void;
@@ -53,35 +49,50 @@ export const NewMeasurementForm: React.FC<NewMeasurementFormProps> = ({
   onBack,
   onSubmit,
 }) => {
+  const canSubmit = totalSteps > 0;
+
   return (
-    <form onSubmit={onSubmit}>
-      {/* 같은 페이지 내 상태 전환이라 "← 환자 정보로 돌아가기" 라는 문구를
-          유지 — 페이지 이동이 아님을 명확히. */}
+    <form onSubmit={onSubmit} className="flex flex-col gap-6">
       {showBackButton && (
-        <button
+        <Button
           type="button"
-          className="btn btn-outline btn-small btn-back-text mb-3"
+          variant="ghost"
+          size="sm"
           onClick={onBack}
+          className="-ml-2 self-start text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)]"
         >
-          ← 환자 정보로 돌아가기
-        </button>
+          <ArrowLeft className="size-4" />환자 정보로 돌아가기
+        </Button>
       )}
-      <div className="grid grid-cols-2 gap-4 mb-4">
-        <div className="form-group">
-          <label className="form-label">이름</label>
-          <input
+
+      {/* 이름·나이 */}
+      <div className="grid grid-cols-2 gap-3">
+        <div className="flex flex-col gap-1.5">
+          <label
+            htmlFor="patientName"
+            className="text-sm font-semibold text-[var(--color-foreground)]"
+          >
+            이름
+          </label>
+          <Input
+            id="patientName"
             type="text"
-            className="form-input"
             placeholder="성함"
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
         </div>
-        <div className="form-group">
-          <label className="form-label">나이</label>
-          <input
+        <div className="flex flex-col gap-1.5">
+          <label
+            htmlFor="patientAge"
+            className="text-sm font-semibold text-[var(--color-foreground)]"
+          >
+            나이
+          </label>
+          <Input
+            id="patientAge"
             type="number"
-            className="form-input"
+            inputMode="numeric"
             placeholder="세"
             value={age}
             onChange={(e) => setAge(e.target.value)}
@@ -89,6 +100,9 @@ export const NewMeasurementForm: React.FC<NewMeasurementFormProps> = ({
         </div>
       </div>
 
+      <Divider />
+
+      {/* 통증 부위 + VAS */}
       <PainAssessment
         painArea={painArea}
         setPainArea={setPainArea}
@@ -96,19 +110,34 @@ export const NewMeasurementForm: React.FC<NewMeasurementFormProps> = ({
         setVasScore={setVasScore}
       />
 
-      <div className="form-group mt-6">
-        <label className="form-label mb-3 block">방향 선택</label>
-        <div className="grid grid-cols-3 gap-3">
+      <Divider />
+
+      {/* 측정 방향 — segmented control */}
+      <div className="flex flex-col gap-2">
+        <label className="text-sm font-semibold text-[var(--color-foreground)]">
+          측정 방향
+        </label>
+        <div
+          role="radiogroup"
+          aria-label="측정 방향"
+          className="grid grid-cols-3 gap-1 rounded-lg border border-[var(--color-border)] bg-[var(--color-muted)] p-1"
+        >
           {SIDE_MODES.map((mode) => {
             const selected = sideMode === mode;
             return (
               <button
                 key={mode}
                 type="button"
-                className={`btn ${selected ? "btn-primary" : "btn-outline"}`}
+                role="radio"
+                aria-checked={selected}
                 onClick={() => setSideMode(mode)}
+                className={cn(
+                  "rounded-md px-3 py-1.5 text-sm font-semibold transition-all",
+                  selected
+                    ? "bg-[var(--color-card)] text-[var(--color-foreground)] shadow-[0_1px_2px_rgba(0,0,0,0.06)]"
+                    : "text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)]",
+                )}
               >
-                {selected ? "✓ " : ""}
                 {mode}
               </button>
             );
@@ -116,27 +145,35 @@ export const NewMeasurementForm: React.FC<NewMeasurementFormProps> = ({
         </div>
       </div>
 
+      <Divider />
+
+      {/* 관절 선택 */}
       <JointSelector
         selectedJointIds={selectedJointIds}
         toggleJoint={toggleJoint}
       />
 
-      <div className="mt-4">
-        <button
-          type="submit"
-          className="btn btn-primary btn-large w-full"
-          disabled={totalSteps === 0}
-          style={
-            totalSteps === 0
-              ? { opacity: 0.5, cursor: "not-allowed" }
-              : undefined
-          }
-        >
-          {totalSteps === 0
-            ? "관절을 먼저 선택해주세요"
-            : `측정 시작하기 (${totalSteps}단계)`}
-        </button>
-      </div>
+      {/* 제출 */}
+      <Button
+        type="submit"
+        size="lg"
+        disabled={!canSubmit}
+        className={cn(
+          "w-full",
+          canSubmit
+            ? "bg-[var(--color-accent)] hover:bg-[var(--color-accent)]/90 text-[var(--color-accent-foreground)]"
+            : "",
+        )}
+      >
+        {canSubmit && <Play className="size-4" />}
+        {canSubmit
+          ? `측정 시작 · ${totalSteps}단계`
+          : "관절을 먼저 선택해주세요"}
+      </Button>
     </form>
   );
 };
+
+const Divider: React.FC = () => (
+  <hr className="border-0 border-t border-[var(--color-border)]" />
+);
