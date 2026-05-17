@@ -135,7 +135,7 @@ export const CesPlayerPage: React.FC = () => {
         </section>
 
         {/* ── B 영역: 컨트롤러 ── */}
-        <section className="rounded-xl border border-[var(--color-border)] bg-[var(--color-card)] p-4">
+        <section className="rounded-xl border border-[var(--color-border)] bg-[var(--color-card)] p-4 lg:sticky lg:top-4 lg:self-start">
           <CesPlayerController
             currentStep={currentStep}
             nextStep={nextStep}
@@ -156,11 +156,11 @@ export const CesPlayerPage: React.FC = () => {
         </section>
 
         {/* ── C 영역: 해부 SVG ── */}
-        <section className="hidden lg:flex flex-col rounded-xl border border-[var(--color-border)] bg-[var(--color-muted)]/30 p-3">
+        <section className="hidden lg:flex flex-col rounded-xl border border-[var(--color-border)] bg-[var(--color-muted)]/30 p-3 lg:sticky lg:top-4 lg:self-start lg:h-[calc(100vh-2rem)]">
           <p className="text-[10px] font-bold uppercase tracking-wider text-[var(--color-muted-foreground)] mb-2">
             Target Muscles
           </p>
-          <div className="flex-1 flex items-center justify-center">
+          <div className="flex-1 flex items-center justify-center min-h-0">
             <BodyAnatomySvg
               highlightIds={highlightIds}
               cesPhase={currentPhase}

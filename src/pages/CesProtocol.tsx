@@ -122,9 +122,9 @@ export const CesProtocol: React.FC = () => {
       </header>
 
       {/* 2-column 레이아웃 — 모바일에선 stack, 데스크톱(lg)에서 사이드바 */}
-      <div className="mx-auto grid max-w-6xl gap-6 px-4 py-6 lg:grid-cols-[320px_1fr]">
-        {/* 사이드바 */}
-        <aside className="flex flex-col gap-4">
+      <div className="mx-auto grid max-w-6xl gap-6 px-4 py-6 lg:grid-cols-[320px_1fr] lg:items-start">
+        {/* 사이드바 — 데스크톱에서는 sticky 로 스크롤 따라옴 (헤더 sticky 높이 보정) */}
+        <aside className="flex flex-col gap-4 lg:sticky lg:top-[72px] lg:self-start lg:max-h-[calc(100vh-88px)] lg:overflow-y-auto lg:pr-1">
           {/* 인체 도해 — 데스크톱에서만 노출 (모바일은 공간 절약) */}
           <div className="hidden lg:flex items-center justify-center rounded-xl border border-[var(--color-border)] bg-[var(--color-muted)]/30 p-3 h-[300px]">
             <BodyAnatomySvg
