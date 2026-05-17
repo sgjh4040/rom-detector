@@ -1,8 +1,9 @@
-// JointSidebar.tsx — CesInfo 좌측 관절 선택 사이드바 (모바일에선 가로 칩 셀렉터로 변환).
-// 상체/하체 그룹별로 관절 칩을 렌더 + 하단에 프로토콜 시작/닫기 액션.
+// JointSidebar.tsx — CesInfo 좌측 관절 사이드바 (redesign-spike).
 import React from "react";
+import { ChevronRight, X, Play } from "lucide-react";
 import { JOINTS } from "../../lib/romData";
 import { JOINT_ICONS, UPPER_BODY, LOWER_BODY } from "./helpers";
+import { cn } from "../../lib/cn";
 
 interface JointSidebarProps {
   selectedJointId: string;
@@ -11,55 +12,94 @@ interface JointSidebarProps {
   onClose: () => void;
 }
 
+const JointButton: React.FC<{
+  joint: { id: string; name: string };
+  isActive: boolean;
+  onSelect: () => void;
+}> = ({ joint, isActive, onSelect }) => (
+  <button
+    type="button"
+    onClick={onSelect}
+    className={cn(
+      "flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-semibold transition-colors",
+      isActive
+        ? "bg-[var(--color-foreground)] text-[var(--color-background)]"
+        : "text-[var(--color-foreground)] hover:bg-[var(--color-muted)]",
+    )}
+  >
+    <span
+      className={cn(
+        "flex size-5 items-center justify-center",
+        isActive ? "text-[var(--color-background)]" : "text-[var(--color-muted-foreground)]",
+      )}
+    >
+      {JOINT_ICONS[joint.id]}
+    </span>
+    {joint.name.split(" (")[0]}
+  </button>
+);
+
 export const JointSidebar: React.FC<JointSidebarProps> = ({
   selectedJointId,
   onSelect,
   onStartProtocol,
   onClose,
-}) => {
-  return (
-    <div className="ces-sidebar">
-      <div className="sidebar-logo">
-        <span>●</span> CES 참고
+}) => (
+  <aside className="flex flex-col gap-4 p-4 lg:h-[calc(100svh-3.5rem)] lg:sticky lg:top-14 lg:overflow-y-auto">
+    <div className="flex items-center justify-between">
+      <h2 className="text-base font-bold tracking-tight text-[var(--color-foreground)]">
+        CES 참고
+      </h2>
+      <button
+        type="button"
+        onClick={onClose}
+        aria-label="닫기"
+        className="flex size-8 items-center justify-center rounded-md text-[var(--color-muted-foreground)] hover:bg-[var(--color-muted)] hover:text-[var(--color-foreground)] transition-colors"
+      >
+        <X className="size-4" />
+      </button>
+    </div>
+
+    <div>
+      <div className="mb-2 px-3 text-[10px] font-bold uppercase tracking-wider text-[var(--color-muted-foreground)]">
+        상체
       </div>
-      <div className="sidebar-menu mt-8">
-        <div className="menu-group-label text-[10px] opacity-40 font-bold mb-2 ml-4 tracking-widest">
-          상체
-        </div>
+      <div className="flex flex-col gap-0.5">
         {JOINTS.filter((j) => UPPER_BODY.includes(j.id)).map((j) => (
-          <button
+          <JointButton
             key={j.id}
-            className={`sidebar-item ${selectedJointId === j.id ? "is-active" : ""}`}
-            onClick={() => onSelect(j.id)}
-          >
-            <span className="item-icon">{JOINT_ICONS[j.id]}</span>
-            <span className="item-label">{j.name.split(" (")[0]}</span>
-          </button>
+            joint={j}
+            isActive={selectedJointId === j.id}
+            onSelect={() => onSelect(j.id)}
+          />
         ))}
-
-        <div className="menu-group-label text-[10px] opacity-40 font-bold mb-2 ml-4 mt-6 tracking-widest">
-          하체
-        </div>
-        {JOINTS.filter((j) => LOWER_BODY.includes(j.id)).map((j) => (
-          <button
-            key={j.id}
-            className={`sidebar-item ${selectedJointId === j.id ? "is-active" : ""}`}
-            onClick={() => onSelect(j.id)}
-          >
-            <span className="item-icon">{JOINT_ICONS[j.id]}</span>
-            <span className="item-label">{j.name.split(" (")[0]}</span>
-          </button>
-        ))}
-      </div>
-
-      <div className="sidebar-actions mt-auto">
-        <button className="btn-complete" onClick={onStartProtocol}>
-          프로토콜 시작 <span>›</span>
-        </button>
-        <button className="btn-close-circle" onClick={onClose} aria-label="닫기">
-          ✕
-        </button>
       </div>
     </div>
-  );
-};
+
+    <div>
+      <div className="mb-2 px-3 text-[10px] font-bold uppercase tracking-wider text-[var(--color-muted-foreground)]">
+        하체
+      </div>
+      <div className="flex flex-col gap-0.5">
+        {JOINTS.filter((j) => LOWER_BODY.includes(j.id)).map((j) => (
+          <JointButton
+            key={j.id}
+            joint={j}
+            isActive={selectedJointId === j.id}
+            onSelect={() => onSelect(j.id)}
+          />
+        ))}
+      </div>
+    </div>
+
+    <button
+      type="button"
+      onClick={onStartProtocol}
+      className="mt-auto flex h-11 items-center justify-center gap-1.5 rounded-lg bg-[var(--color-accent)] text-sm font-bold text-[var(--color-accent-foreground)] hover:bg-[var(--color-accent)]/90 transition-colors"
+    >
+      <Play className="size-4" />
+      프로토콜 시작
+      <ChevronRight className="size-4" />
+    </button>
+  </aside>
+);

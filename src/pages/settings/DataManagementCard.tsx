@@ -1,7 +1,6 @@
-// DataManagementCard.tsx — Settings 페이지의 데이터 관리 섹션 (audit #13).
-// 등록 환자/측정 기록 건수 + 내보내기/전체삭제 버튼.
+// DataManagementCard.tsx — Settings 페이지 데이터 관리 섹션 (redesign-spike).
 import React from "react";
-import { Download, Trash2, FileText, Users } from "lucide-react";
+import { Download, Trash2, FileText } from "lucide-react";
 
 interface DataManagementCardProps {
   patientCount: number;
@@ -17,73 +16,63 @@ export const DataManagementCard: React.FC<DataManagementCardProps> = ({
   isDeleting,
   onExport,
   onRequestDeleteAll,
-}) => {
-  return (
-    <div className="card settings-card">
-      <h2 className="icon-text">
-        <FileText size={20} /> 데이터 관리
-      </h2>
+}) => (
+  <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-card)] p-5">
+    <h2 className="flex items-center gap-2 text-base font-bold tracking-tight text-[var(--color-foreground)]">
+      <FileText className="size-4 text-[var(--color-muted-foreground)]" />
+      데이터 관리
+    </h2>
 
-      {/* 요약 — [audit #18] stat-tile 클래스 */}
-      <div
-        style={{
-          display: "flex",
-          gap: "12px",
-          marginTop: "12px",
-          marginBottom: "16px",
-        }}
-      >
-        <div className="stat-tile">
-          <p className="stat-tile__label">등록 환자</p>
-          <p className="stat-tile__value">{patientCount}명</p>
+    {/* 요약 stat 타일 */}
+    <div className="mt-4 grid grid-cols-2 gap-3">
+      <div className="rounded-lg border border-[var(--color-border)] bg-[var(--color-muted)]/40 p-3">
+        <div className="text-xs font-semibold text-[var(--color-muted-foreground)]">
+          등록 환자
         </div>
-        <div className="stat-tile">
-          <p className="stat-tile__label">측정 기록</p>
-          <p className="stat-tile__value">{totalHistoryCount}건</p>
+        <div className="mt-1 font-mono text-2xl font-bold tabular-nums text-[var(--color-foreground)]">
+          {patientCount}
+          <span className="ml-0.5 text-sm font-mono text-[var(--color-muted-foreground)]">
+            명
+          </span>
         </div>
       </div>
+      <div className="rounded-lg border border-[var(--color-border)] bg-[var(--color-muted)]/40 p-3">
+        <div className="text-xs font-semibold text-[var(--color-muted-foreground)]">
+          측정 기록
+        </div>
+        <div className="mt-1 font-mono text-2xl font-bold tabular-nums text-[var(--color-foreground)]">
+          {totalHistoryCount}
+          <span className="ml-0.5 text-sm font-mono text-[var(--color-muted-foreground)]">
+            건
+          </span>
+        </div>
+      </div>
+    </div>
 
-      {/* 내보내기 */}
+    {/* 액션 버튼 */}
+    <div className="mt-4 flex flex-col gap-2">
       <button
         type="button"
-        className="btn btn-outline w-full flex items-center justify-center gap-2"
-        style={{ marginBottom: "10px", padding: "12px" }}
         onClick={onExport}
+        className="flex h-10 items-center justify-center gap-1.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-card)] text-sm font-bold text-[var(--color-foreground)] hover:bg-[var(--color-muted)] transition-colors"
       >
-        <Download size={18} /> 데이터 내보내기 (JSON)
+        <Download className="size-4" />
+        데이터 내보내기 (JSON)
       </button>
-
-      {/* 전체 삭제 */}
       <button
         type="button"
-        className="btn btn-outline w-full flex items-center justify-center gap-2"
-        style={{
-          padding: "12px",
-          color: "var(--danger)",
-          borderColor: "rgba(239, 68, 68, 0.3)",
-        }}
         onClick={onRequestDeleteAll}
         disabled={isDeleting}
+        className="flex h-10 items-center justify-center gap-1.5 rounded-lg border border-[var(--color-destructive)]/30 bg-[var(--color-card)] text-sm font-bold text-[var(--color-destructive)] hover:bg-[var(--color-destructive)]/10 transition-colors disabled:opacity-50"
       >
-        <Trash2 size={18} /> 모든 환자 데이터 삭제
+        <Trash2 className="size-4" />
+        모든 환자 데이터 삭제
       </button>
-
-      <p
-        style={{
-          fontSize: "var(--text-xs)",
-          color: "var(--text-secondary)",
-          marginTop: "10px",
-          lineHeight: 1.5,
-          opacity: 0.75,
-        }}
-      >
-        <Users
-          size={12}
-          style={{ display: "inline", marginRight: "4px" }}
-        />
-        환자 정보와 측정 기록은 이 기기에만 저장돼요. 앱을 지우거나 브라우저
-        저장소를 비우면 복구할 수 없어요.
-      </p>
     </div>
-  );
-};
+
+    <p className="mt-3 text-xs leading-relaxed text-[var(--color-muted-foreground)]">
+      환자 정보와 측정 기록은 이 기기에만 저장돼요.
+      앱을 지우거나 브라우저 저장소를 비우면 복구할 수 없어요.
+    </p>
+  </div>
+);

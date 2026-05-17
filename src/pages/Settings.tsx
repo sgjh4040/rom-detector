@@ -1,19 +1,21 @@
-// Settings.tsx — 앱 설정 및 데이터 관리 화면 (PRD 4-0: 200줄 이하)
+// Settings.tsx — 앱 설정 및 데이터 관리 (redesign-spike, Athletic Garmin).
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AppLayout } from "../core/components/AppLayout";
+import { ArrowLeft } from "lucide-react";
 import { ConfirmDialog } from "../core/components/ConfirmDialog";
-import { loadRomSession, clearRomSession } from "../lib/romTypes";
+import { clearRomSession } from "../lib/romTypes";
 import {
   getPatients,
   getPatientHistory,
   clearAllPatientsAndHistory,
 } from "../lib/romData";
 import { clearCesHistory } from "../features/session/data/cesTimeTracker";
+import { AppShell } from "../components/redesign/AppShell";
+import { Button } from "../components/redesign/ui/Button";
 import { DataManagementCard } from "./settings/DataManagementCard";
 import { LicenseCard } from "./settings/LicenseCard";
 
-/** 현재 localStorage의 환자/히스토리/세션을 JSON으로 묶어 파일로 다운로드 */
+/** localStorage 환자/히스토리/세션 → JSON 다운로드 */
 const exportAllData = (): void => {
   const patients = getPatients();
   const historyByPatient: Record<string, unknown> = {};
@@ -31,16 +33,14 @@ const exportAllData = (): void => {
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
-  const date = new Date().toISOString().slice(0, 10);
-  a.download = `rom-detector-export-${date}.json`;
+  a.download = `rom-detector-export-${new Date().toISOString().slice(0, 10)}.json`;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
 };
 
-/** 모든 환자/히스토리/세션/CES 누적시간을 localStorage에서 제거.
- *  매직 스트링/직접 접근 금지 — lib 래퍼만 사용. */
+/** 모든 환자/히스토리/세션/CES 누적시간 제거 */
 const deleteAllData = (): void => {
   clearAllPatientsAndHistory();
   clearCesHistory();
@@ -49,10 +49,8 @@ const deleteAllData = (): void => {
 
 export const Settings: React.FC = () => {
   const navigate = useNavigate();
-  const session = loadRomSession();
   const [patients, setPatients] = useState(getPatients());
   const [isDeleting, setIsDeleting] = useState(false);
-  // [audit #24] native confirm 대신 ConfirmDialog 사용
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const totalHistoryCount = patients.reduce(
@@ -87,58 +85,44 @@ export const Settings: React.FC = () => {
   };
 
   return (
-    <AppLayout patientId={session?.patientId}>
-      <div className="bg-full-viewport page-bg-settings">
-        <div className="container">
-          {/* 상단 헤더 — Trends/Results 와 동일한 .page-header 패턴 (audit #38) */}
-          <div
-            className="page-header"
-            style={{ paddingTop: "20px", marginBottom: "20px" }}
+    <AppShell>
+      <div className="flex flex-col gap-5">
+        {/* 헤더 */}
+        <div>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => navigate(-1)}
+            className="-ml-2 mb-2 text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)]"
           >
-            <button
-              type="button"
-              className="btn btn-outline btn-small btn-back-text mb-3"
-              onClick={() => navigate(-1)}
-            >
-              ← 뒤로가기
-            </button>
-            <h1
-              className="text-3xl font-black tracking-tighter opacity-90"
-              style={{ fontSize: "var(--text-2xl)", marginBottom: "4px" }}
-            >
-              설정
-            </h1>
-            <p className="opacity-70 text-base font-bold">
-              데이터 관리 · 라이선스 · 앱 정보
-            </p>
-          </div>
+            <ArrowLeft className="size-4" />
+            뒤로가기
+          </Button>
+          <h1 className="text-3xl font-extrabold tracking-tight text-[var(--color-foreground)]">
+            설정
+          </h1>
+          <p className="mt-1 text-sm font-medium text-[var(--color-muted-foreground)]">
+            데이터 관리 · 라이선스 · 앱 정보
+          </p>
+        </div>
 
-          <DataManagementCard
-            patientCount={patients.length}
-            totalHistoryCount={totalHistoryCount}
-            isDeleting={isDeleting}
-            onExport={handleExport}
-            onRequestDeleteAll={handleDeleteAll}
-          />
+        <DataManagementCard
+          patientCount={patients.length}
+          totalHistoryCount={totalHistoryCount}
+          isDeleting={isDeleting}
+          onExport={handleExport}
+          onRequestDeleteAll={handleDeleteAll}
+        />
 
-          <LicenseCard />
+        <LicenseCard />
 
-          {/* 앱 정보 섹션 */}
-          <div
-            style={{
-              textAlign: "center",
-              marginTop: "3rem",
-              fontSize: "var(--text-sm)",
-              color: "var(--text-secondary)",
-            }}
-          >
-            <p>ROM 측정기 및 CES 재활 루틴 앱</p>
-            <p>버전 1.0.0</p>
-          </div>
+        {/* 앱 정보 */}
+        <div className="mt-2 text-center text-xs text-[var(--color-muted-foreground)]">
+          <p>ROM 측정기 및 CES 재활 루틴 앱</p>
+          <p className="mt-0.5 font-mono">버전 1.0.0</p>
         </div>
       </div>
 
-      {/* [audit #24] 전체 데이터 삭제 확인 다이얼로그 */}
       <ConfirmDialog
         open={showDeleteConfirm}
         title="모든 데이터를 삭제할까요?"
@@ -149,6 +133,6 @@ export const Settings: React.FC = () => {
         onConfirm={handleConfirmDeleteAll}
         onCancel={() => setShowDeleteConfirm(false)}
       />
-    </AppLayout>
+    </AppShell>
   );
 };
