@@ -1,151 +1,135 @@
-import React from 'react';
+// TrendGraph.tsx — recharts 라인 차트 (redesign-spike, Garmin 톤).
+import React from "react";
 import {
-    CartesianGrid,
-    Line,
-    LineChart,
-    ReferenceLine,
-    ResponsiveContainer,
-    Tooltip,
-    XAxis,
-    YAxis,
-} from 'recharts';
-import '../../../styles/Trends.css';
+  CartesianGrid,
+  Line,
+  LineChart,
+  ReferenceLine,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 interface DataPoint {
-    label: string;
-    value: number;
+  label: string;
+  value: number;
 }
 
 interface TrendGraphProps {
-    data: DataPoint[];
-    /** Y축 상한 기준 (차트 스케일 계산용) */
-    normalRange?: number;
-    /** 기준선을 그릴 값 — 지정하지 않으면 normalRange 위치에 그린다.
-     *  VAS 처럼 "낮을수록 좋음" 지표는 targetValue={0}을 전달해서 기준선을 하단에 그린다. */
-    targetValue?: number;
-    unit?: string;
+  data: DataPoint[];
+  normalRange?: number;
+  targetValue?: number;
+  unit?: string;
 }
 
 export const TrendGraph: React.FC<TrendGraphProps> = ({
-    data,
-    normalRange = 180,
-    targetValue,
-    unit = '°',
+  data,
+  normalRange = 180,
+  targetValue,
+  unit = "°",
 }) => {
-    if (data.length === 0) {
-        return (
-            <div className="flex items-center justify-center p-8 opacity-40">
-                데이터가 없습니다.
-            </div>
-        );
-    }
-
-    const referenceValue = targetValue ?? normalRange;
-    const referenceLabel =
-        targetValue !== undefined
-            ? `목표 ${targetValue}${unit}`
-            : `정상 ${normalRange}${unit}`;
-
-    const maxVal = Math.max(...data.map((d) => d.value), normalRange, referenceValue);
-    const yMax = Math.ceil(maxVal * 1.1);
-
+  if (data.length === 0) {
     return (
-        <div
-            className="relative w-full neumo-inset rounded-3xl"
-            style={{ padding: '32px 16px 16px', overflow: 'visible' }}
-        >
-            <div style={{ width: '100%', height: 220 }}>
-                <ResponsiveContainer width="100%" height="100%">
-                    <LineChart
-                        data={data}
-                        margin={{ top: 8, right: 60, bottom: 0, left: -8 }}
-                    >
-                        <CartesianGrid strokeDasharray="3 3" opacity={0.08} />
-                        <XAxis
-                            dataKey="label"
-                            stroke="currentColor"
-                            opacity={0.6}
-                            tick={{ fontSize: 11, fontWeight: 700, fill: 'currentColor' }}
-                            tickLine={false}
-                            axisLine={{ opacity: 0.2 }}
-                        />
-                        <YAxis
-                            stroke="currentColor"
-                            opacity={0.6}
-                            domain={[0, yMax]}
-                            allowDecimals={false}
-                            tick={{ fontSize: 11, fontWeight: 600, fill: 'currentColor' }}
-                            tickLine={false}
-                            axisLine={{ opacity: 0.2 }}
-                            width={32}
-                        />
-                        <Tooltip
-                            cursor={{
-                                stroke: '#000000',
-                                strokeWidth: 1,
-                                strokeDasharray: '2 2',
-                                opacity: 0.4,
-                            }}
-                            contentStyle={{
-                                background: '#ffffff',
-                                border: '1px solid rgba(0, 0, 0, 0.06)',
-                                borderRadius: 10,
-                                padding: '6px 10px',
-                                fontSize: 13,
-                                fontWeight: 700,
-                                color: '#000000',
-                                boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.15)',
-                            }}
-                            labelStyle={{
-                                color: 'var(--text-secondary)',
-                                fontWeight: 600,
-                                fontSize: 11,
-                                marginBottom: 2,
-                            }}
-                            formatter={(value) => [`${value}${unit}`, '값']}
-                        />
-                        <ReferenceLine
-                            y={referenceValue}
-                            stroke="var(--success)"
-                            strokeDasharray="6 6"
-                            strokeWidth={1.5}
-                            opacity={0.6}
-                            label={{
-                                value: referenceLabel,
-                                position: 'right',
-                                fill: 'var(--success)',
-                                fontSize: 11,
-                                fontWeight: 700,
-                                opacity: 0.9,
-                            }}
-                        />
-                        <Line
-                            type="monotone"
-                            dataKey="value"
-                            stroke="#000000"
-                            strokeWidth={3}
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            dot={{
-                                fill: '#ffffff',
-                                stroke: '#000000',
-                                strokeWidth: 1.5,
-                                r: 3,
-                            }}
-                            activeDot={{
-                                fill: '#000000',
-                                stroke: '#000000',
-                                strokeWidth: 1.5,
-                                r: 5,
-                            }}
-                            style={{
-                                filter:
-                                    'drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.2))',
-                            }}
-                        />
-                    </LineChart>
-                </ResponsiveContainer>
-            </div>
-        </div>
+      <div className="flex items-center justify-center p-8 text-sm text-[var(--color-muted-foreground)]">
+        데이터가 없습니다
+      </div>
     );
+  }
+
+  const referenceValue = targetValue ?? normalRange;
+  const referenceLabel =
+    targetValue !== undefined
+      ? `목표 ${targetValue}${unit}`
+      : `정상 ${normalRange}${unit}`;
+  const maxVal = Math.max(...data.map((d) => d.value), normalRange, referenceValue);
+  const yMax = Math.ceil(maxVal * 1.1);
+
+  // 한 점만 있을 때는 dot 만 보여줘서 차트 형태 유지
+  const isSinglePoint = data.length === 1;
+
+  return (
+    <div className="w-full" style={{ height: 220 }}>
+      <ResponsiveContainer width="100%" height="100%">
+        <LineChart data={data} margin={{ top: 12, right: 60, bottom: 0, left: -8 }}>
+          <CartesianGrid strokeDasharray="3 3" opacity={0.15} />
+          <XAxis
+            dataKey="label"
+            stroke="var(--color-muted-foreground)"
+            tick={{ fontSize: 11, fontWeight: 600, fill: "var(--color-muted-foreground)" }}
+            tickLine={false}
+            axisLine={{ stroke: "var(--color-border)" }}
+          />
+          <YAxis
+            stroke="var(--color-muted-foreground)"
+            domain={[0, yMax]}
+            allowDecimals={false}
+            tick={{ fontSize: 11, fontWeight: 600, fill: "var(--color-muted-foreground)" }}
+            tickLine={false}
+            axisLine={{ stroke: "var(--color-border)" }}
+            width={32}
+          />
+          <Tooltip
+            cursor={{
+              stroke: "var(--color-foreground)",
+              strokeWidth: 1,
+              strokeDasharray: "2 2",
+              opacity: 0.3,
+            }}
+            contentStyle={{
+              background: "var(--color-card)",
+              border: "1px solid var(--color-border)",
+              borderRadius: 8,
+              padding: "6px 10px",
+              fontSize: 12,
+              fontWeight: 700,
+              color: "var(--color-foreground)",
+              boxShadow: "0 4px 12px rgba(0, 0, 0, 0.08)",
+            }}
+            labelStyle={{
+              color: "var(--color-muted-foreground)",
+              fontWeight: 600,
+              fontSize: 11,
+              marginBottom: 2,
+            }}
+            formatter={(value) => [`${value}${unit}`, "값"]}
+          />
+          <ReferenceLine
+            y={referenceValue}
+            stroke="var(--color-accent)"
+            strokeDasharray="6 6"
+            strokeWidth={1.5}
+            opacity={0.7}
+            label={{
+              value: referenceLabel,
+              position: "right",
+              fill: "var(--color-accent)",
+              fontSize: 11,
+              fontWeight: 700,
+            }}
+          />
+          <Line
+            type="monotone"
+            dataKey="value"
+            stroke="var(--color-foreground)"
+            strokeWidth={2.5}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            dot={{
+              fill: "var(--color-card)",
+              stroke: "var(--color-foreground)",
+              strokeWidth: 2,
+              r: isSinglePoint ? 5 : 3.5,
+            }}
+            activeDot={{
+              fill: "var(--color-accent)",
+              stroke: "var(--color-accent)",
+              strokeWidth: 2,
+              r: 5,
+            }}
+          />
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
+  );
 };
