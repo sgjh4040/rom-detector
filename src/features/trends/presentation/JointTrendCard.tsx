@@ -88,8 +88,8 @@ export const JointTrendCard: React.FC<JointTrendCardProps> = ({
 
       {isExpanded && (
         <div className="border-t border-[var(--color-border)] p-4 flex flex-col gap-4">
-          {/* Sparkline 그리드 */}
-          <div className="sparkline-grid">
+          {/* Sparkline 그리드 — 모바일 2열 / 데스크톱 3열 */}
+          <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
             {allSeries.map((s) => (
               <SparklineCard
                 key={s.key}
