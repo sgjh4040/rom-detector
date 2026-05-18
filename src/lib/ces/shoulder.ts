@@ -66,7 +66,7 @@ export const SHOULDER_CES: JointCesData = {
                 ex('sh_inh_ir1', '극하근 SMR', '마사지 볼을 어깨뼈 후면(극하와)에 대고 압박합니다.', '', { tools: '마사지 볼', holdSeconds: 40 })
             ],
             lengthen: [
-                ex('sh_len_ir1', '후방 관절낭 스트레칭 (Cross-Body)', '한팔을 가슴 앞으로 뻗고 반대 손으로 팔꿈치를 잡아 몸 쪽으로 30초 당깁니다.', '', { holdSeconds: 30, sets: 2 })
+                ex('sh_len_ir1', '후방 관절낭 스트레칭 (Cross-Body)', '누운자세에서 한팔을 가슴 앞으로 뻗고 반대 손으로 팔꿈치를 잡아 몸 쪽으로 30초 당깁니다.', '', { holdSeconds: 30, sets: 2 })
             ],
             activate: [
                 ex('sh_act_ir1', '밴드 내회전', '밴드를 고정하고 팔꿈치 90° 상태에서 안쪽으로 천천히 당깁니다.', '', { tools: '탄성 밴드', sets: 3, reps: 15, targetMuscles: ['견갑하근'] })
