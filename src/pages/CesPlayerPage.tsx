@@ -88,34 +88,32 @@ export const CesPlayerPage: React.FC = () => {
       className="min-h-svh bg-[var(--color-background)] text-[var(--color-foreground)] font-sans"
     >
       <div className="mx-auto grid max-w-7xl gap-4 p-4 lg:grid-cols-[1fr_360px_220px] lg:min-h-[640px] lg:items-stretch">
-        {/* ── A 영역: 비디오 — 비디오 박스는 16:9 유지하고 컬럼 가운데 정렬 ── */}
-        <section className="flex flex-col gap-3 min-w-0">
+        {/* ── A 영역: 비디오 — 셋(progress + 비디오 + 진행률) 을 그룹으로 묶어 컬럼 가운데 정렬 ── */}
+        <section className="flex flex-col gap-3 min-w-0 lg:justify-center">
           <StoryProgressBar
             exercises={customRoutine.exercises}
             currentStepIndex={stepIndex}
             stepProgress={stepProgress}
             onGoToStep={goToStep}
           />
-          <div className="lg:flex-1 lg:flex lg:items-center lg:justify-center min-h-0">
-            <CesVideoPlayer
-              videoUrl={currentStep.kind === "exercise" ? currentStep.videoUrl : ""}
-              nextVideoUrl={
-                nextStep && nextStep.kind === "exercise"
-                  ? nextStep.videoUrl
-                  : undefined
-              }
-              exerciseName={
-                currentStep.kind === "exercise" ? currentStep.exerciseName : "휴식"
-              }
-              isBreak={isBreak}
-              breakKind={
-                currentStep.kind === "break" ? currentStep.breakKind : undefined
-              }
-              upcomingExerciseName={
-                currentStep.kind === "break" ? currentStep.toExercise : undefined
-              }
-            />
-          </div>
+          <CesVideoPlayer
+            videoUrl={currentStep.kind === "exercise" ? currentStep.videoUrl : ""}
+            nextVideoUrl={
+              nextStep && nextStep.kind === "exercise"
+                ? nextStep.videoUrl
+                : undefined
+            }
+            exerciseName={
+              currentStep.kind === "exercise" ? currentStep.exerciseName : "휴식"
+            }
+            isBreak={isBreak}
+            breakKind={
+              currentStep.kind === "break" ? currentStep.breakKind : undefined
+            }
+            upcomingExerciseName={
+              currentStep.kind === "break" ? currentStep.toExercise : undefined
+            }
+          />
           {/* 현재 스텝 진행률 */}
           <div>
             <div className="flex items-center justify-between text-xs font-medium text-[var(--color-muted-foreground)] mb-1">
