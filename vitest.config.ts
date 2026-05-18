@@ -1,11 +1,13 @@
 import { defineConfig } from 'vitest/config';
+import react from '@vitejs/plugin-react';
 
 export default defineConfig({
+  plugins: [react()], // .tsx 컴포넌트 테스트용 — JSX 변환 + Fast Refresh
   test: {
-    // 명시 import 강제 — IDE 자동완성/리네임 안전
     globals: false,
-    // lib 함수 단위 테스트만 — DOM 안 씀
-    environment: 'node',
+    // jsdom — 컴포넌트 테스트에서 document 필요. node 함수 테스트는 영향 없음.
+    environment: 'jsdom',
+    setupFiles: ['./src/test/setup.ts'],
     include: ['src/**/*.{test,spec}.{ts,tsx}'],
     exclude: ['e2e/**', 'node_modules/**', 'dist/**'],
     reporters: 'default',
