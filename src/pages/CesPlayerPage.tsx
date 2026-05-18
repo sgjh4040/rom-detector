@@ -87,8 +87,8 @@ export const CesPlayerPage: React.FC = () => {
       data-redesign="true"
       className="min-h-svh bg-[var(--color-background)] text-[var(--color-foreground)] font-sans"
     >
-      <div className="mx-auto grid max-w-7xl gap-4 p-4 lg:grid-cols-[1fr_360px_220px]">
-        {/* ── A 영역: 비디오 ── */}
+      <div className="mx-auto grid max-w-7xl gap-4 p-4 lg:grid-cols-[1fr_360px_220px] lg:min-h-[640px] lg:items-stretch">
+        {/* ── A 영역: 비디오 — 비디오 박스는 16:9 유지하고 컬럼 가운데 정렬 ── */}
         <section className="flex flex-col gap-3 min-w-0">
           <StoryProgressBar
             exercises={customRoutine.exercises}
@@ -96,24 +96,26 @@ export const CesPlayerPage: React.FC = () => {
             stepProgress={stepProgress}
             onGoToStep={goToStep}
           />
-          <CesVideoPlayer
-            videoUrl={currentStep.kind === "exercise" ? currentStep.videoUrl : ""}
-            nextVideoUrl={
-              nextStep && nextStep.kind === "exercise"
-                ? nextStep.videoUrl
-                : undefined
-            }
-            exerciseName={
-              currentStep.kind === "exercise" ? currentStep.exerciseName : "휴식"
-            }
-            isBreak={isBreak}
-            breakKind={
-              currentStep.kind === "break" ? currentStep.breakKind : undefined
-            }
-            upcomingExerciseName={
-              currentStep.kind === "break" ? currentStep.toExercise : undefined
-            }
-          />
+          <div className="lg:flex-1 lg:flex lg:items-center lg:justify-center min-h-0">
+            <CesVideoPlayer
+              videoUrl={currentStep.kind === "exercise" ? currentStep.videoUrl : ""}
+              nextVideoUrl={
+                nextStep && nextStep.kind === "exercise"
+                  ? nextStep.videoUrl
+                  : undefined
+              }
+              exerciseName={
+                currentStep.kind === "exercise" ? currentStep.exerciseName : "휴식"
+              }
+              isBreak={isBreak}
+              breakKind={
+                currentStep.kind === "break" ? currentStep.breakKind : undefined
+              }
+              upcomingExerciseName={
+                currentStep.kind === "break" ? currentStep.toExercise : undefined
+              }
+            />
+          </div>
           {/* 현재 스텝 진행률 */}
           <div>
             <div className="flex items-center justify-between text-xs font-medium text-[var(--color-muted-foreground)] mb-1">
@@ -134,8 +136,8 @@ export const CesPlayerPage: React.FC = () => {
           </div>
         </section>
 
-        {/* ── B 영역: 컨트롤러 ── */}
-        <section className="rounded-xl border border-[var(--color-border)] bg-[var(--color-card)] p-4 lg:sticky lg:top-4 lg:self-start">
+        {/* ── B 영역: 컨트롤러 — 컬럼 stretch + 콘텐츠 수직 가운데 ── */}
+        <section className="rounded-xl border border-[var(--color-border)] bg-[var(--color-card)] p-4 lg:flex lg:flex-col lg:justify-center">
           <CesPlayerController
             currentStep={currentStep}
             nextStep={nextStep}
@@ -155,8 +157,8 @@ export const CesPlayerPage: React.FC = () => {
           />
         </section>
 
-        {/* ── C 영역: 해부 SVG ── */}
-        <section className="hidden lg:flex flex-col rounded-xl border border-[var(--color-border)] bg-[var(--color-muted)]/30 p-3 lg:sticky lg:top-4 lg:self-start lg:h-[calc(100vh-2rem)]">
+        {/* ── C 영역: 해부 SVG — 컬럼 stretch 로 인체 그림 세로 길게 ── */}
+        <section className="hidden lg:flex flex-col rounded-xl border border-[var(--color-border)] bg-[var(--color-muted)]/30 p-3">
           <p className="text-[10px] font-bold uppercase tracking-wider text-[var(--color-muted-foreground)] mb-2">
             Target Muscles
           </p>
