@@ -1,28 +1,44 @@
 import * as React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Activity, Home, LineChart, Dumbbell, Settings as SettingsIcon } from "lucide-react";
+import { Activity, Home, TrendingUp, Dumbbell, Settings as SettingsIcon } from "lucide-react";
 import { cn } from "../../lib/cn";
-import { getPatients } from "../../lib/patientHistory";
+import { getPatients, hasPatientHistory } from "../../lib/patientHistory";
+import { loadRomSession } from "../../lib/romTypes";
 
-type NavItem = { path: string; icon: React.ReactNode; label: string; requiresPatient?: boolean };
+type NavItem = { path: string; icon: React.ReactNode; label: string };
 
-const NAV: NavItem[] = [
-  { path: "/", icon: <Home className="size-5" />, label: "홈" },
-  { path: "/measure", icon: <Activity className="size-5" />, label: "측정", requiresPatient: true },
-  { path: "/results", icon: <LineChart className="size-5" />, label: "결과", requiresPatient: true },
-  { path: "/ces", icon: <Dumbbell className="size-5" />, label: "CES", requiresPatient: true },
-  { path: "/settings", icon: <SettingsIcon className="size-5" />, label: "설정" },
-];
+const HOME_ITEM: NavItem = { path: "/", icon: <Home className="size-5" />, label: "홈" };
+const SETTINGS_ITEM: NavItem = { path: "/settings", icon: <SettingsIcon className="size-5" />, label: "설정" };
 
-// 환자 유무에 따라 노출할 nav 를 결정 — 환자 없으면 측정/결과/CES 비활성
+// 옛 main 의 AppLayout 동작 복원:
+// - 환자 없음: 홈/설정
+// - 환자 있음: 홈/측정기록/설정
+// - 환자 있고 측정기록 있음: 홈/측정기록/CES/설정
+// activeId 는 마지막 세션 patientId → fallback 으로 첫 번째 환자.
+const buildNav = (): NavItem[] => {
+  const patients = getPatients();
+  if (patients.length === 0) return [HOME_ITEM, SETTINGS_ITEM];
+
+  const activeId = loadRomSession()?.patientId ?? patients[0].id;
+  const items: NavItem[] = [HOME_ITEM];
+  items.push({
+    path: `/trends?patientId=${activeId}`,
+    icon: <TrendingUp className="size-5" />,
+    label: "측정기록",
+  });
+  if (hasPatientHistory(activeId)) {
+    items.push({ path: "/ces", icon: <Dumbbell className="size-5" />, label: "CES" });
+  }
+  items.push(SETTINGS_ITEM);
+  return items;
+};
+
 const useVisibleNav = (pathname: string): NavItem[] => {
-  const [hasPatients, setHasPatients] = React.useState<boolean>(
-    () => getPatients().length > 0,
-  );
+  const [items, setItems] = React.useState<NavItem[]>(() => buildNav());
   React.useEffect(() => {
-    setHasPatients(getPatients().length > 0);
+    setItems(buildNav());
   }, [pathname]);
-  return hasPatients ? NAV : NAV.filter((i) => !i.requiresPatient);
+  return items;
 };
 
 export const TopNav: React.FC = () => {
@@ -41,20 +57,23 @@ export const TopNav: React.FC = () => {
           <span className="text-base font-semibold tracking-tight">ROM Detector</span>
         </Link>
         <nav className="hidden md:flex items-center gap-1">
-          {visibleNav.slice(1).map((item) => (
-            <Link
-              key={item.path}
-              to={item.path}
-              className={cn(
-                "rounded-md px-2.5 py-1.5 text-sm font-medium transition-colors",
-                pathname === item.path
-                  ? "bg-[var(--color-muted)] text-[var(--color-foreground)]"
-                  : "text-[var(--color-muted-foreground)] hover:bg-[var(--color-muted)] hover:text-[var(--color-foreground)]",
-              )}
-            >
-              {item.label}
-            </Link>
-          ))}
+          {visibleNav.slice(1).map((item) => {
+            const activePath = item.path.split("?")[0];
+            return (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={cn(
+                  "rounded-md px-2.5 py-1.5 text-sm font-medium transition-colors",
+                  pathname === activePath
+                    ? "bg-[var(--color-muted)] text-[var(--color-foreground)]"
+                    : "text-[var(--color-muted-foreground)] hover:bg-[var(--color-muted)] hover:text-[var(--color-foreground)]",
+                )}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
         </nav>
       </div>
     </header>
