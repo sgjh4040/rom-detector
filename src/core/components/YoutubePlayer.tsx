@@ -14,7 +14,7 @@ export const YoutubePlayer: React.FC<Props> = ({ youtubeId, title }) => {
         return (
             <div style={{
                 width: '100%',
-                aspectRatio: '21/9',
+                aspectRatio: '16/9',
                 background: 'linear-gradient(135deg, #f0f2f8 0%, #e8eaf0 100%)',
                 borderRadius: 'var(--radius-sm)',
                 display: 'flex',
