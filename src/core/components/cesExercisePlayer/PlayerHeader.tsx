@@ -1,5 +1,4 @@
-// PlayerHeader.tsx — CesExercisePlayer 의 4행 헤더 (audit #13 분리).
-// 1행: 단계 뱃지 + 순번  /  2행: 운동 이름  /  3행: 도구 + 메타  /  4행: 설명.
+// PlayerHeader.tsx — CesExercisePlayer 헤더 (redesign-spike).
 import React from "react";
 import type { CesExercise } from "../../../lib/ces/cesTypes";
 import { Wrench } from "lucide-react";
@@ -18,97 +17,49 @@ export const PlayerHeader: React.FC<PlayerHeaderProps> = ({
   activeIndex,
   total,
 }) => {
-  const stage = STAGE_LABEL_MAP[stageId] ?? { label: stageId, color: "var(--primary)" };
+  const stage =
+    STAGE_LABEL_MAP[stageId] ?? { label: stageId, color: "var(--color-foreground)" };
+  const meta = formatExMeta(current);
 
   return (
-    <div className="main-header">
+    <div className="mb-4">
       {/* 1행: 단계 뱃지 + 순번 */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "8px",
-          marginBottom: "8px",
-        }}
-      >
+      <div className="flex items-center gap-2 mb-2">
         <span
-          className="phase-badge phase-badge--sm"
-          style={{ gap: "5px", background: stage.color }}
+          className="inline-flex items-center rounded-md px-2 py-0.5 text-xs font-bold text-white"
+          style={{ background: stage.color }}
         >
           {stage.label}
         </span>
-        <span
-          style={{
-            fontSize: "var(--text-xs)",
-            fontWeight: 700,
-            color: "var(--text-secondary)",
-            opacity: 0.7,
-          }}
-        >
+        <span className="text-xs font-semibold text-[var(--color-muted-foreground)]">
           {activeIndex + 1} / {total}
         </span>
       </div>
 
       {/* 2행: 운동 이름 (크게) */}
-      <h2
-        style={{
-          fontSize: "var(--text-xl)",
-          fontWeight: 900,
-          color: "var(--text-primary)",
-          letterSpacing: "-0.02em",
-          lineHeight: 1.3,
-          marginBottom: "6px",
-        }}
-      >
+      <h2 className="text-xl font-extrabold tracking-tight text-[var(--color-foreground)] leading-snug mb-1.5">
         {current.name}
       </h2>
 
-      {/* 3행: 도구 + 시간/세트 메타 (한 줄) */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "0.5rem",
-          flexWrap: "wrap",
-          marginBottom: "8px",
-        }}
-      >
+      {/* 3행: 도구 + 시간/세트 메타 */}
+      <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm font-semibold mb-1.5">
         {current.tools && (
-          <span
-            className="icon-text icon-text--sm"
-            style={{
-              fontSize: "var(--text-sm)",
-              fontWeight: 700,
-              color: "var(--text-secondary)",
-            }}
-          >
-            <Wrench size={13} /> {current.tools}
+          <span className="inline-flex items-center gap-1 text-[var(--color-muted-foreground)]">
+            <Wrench className="size-3.5" />
+            {current.tools}
           </span>
         )}
-        {(current.tools && formatExMeta(current)) && (
-          <span style={{ color: "var(--text-secondary)", opacity: 0.4 }}>·</span>
+        {current.tools && meta && (
+          <span className="text-[var(--color-border)]">·</span>
         )}
-        <span
-          style={{
-            fontSize: "var(--text-sm)",
-            fontWeight: 700,
-            color: "var(--primary)",
-          }}
-        >
-          {formatExMeta(current)}
-        </span>
+        {meta && (
+          <span className="text-[var(--color-accent)]">{meta}</span>
+        )}
       </div>
 
       {/* 4행: 설명 */}
       {current.description && (
-        <p
-          style={{
-            fontSize: "var(--text-sm)",
-            color: "var(--text-secondary)",
-            lineHeight: 1.6,
-            marginBottom: "4px",
-          }}
-        >
+        <p className="text-sm leading-relaxed text-[var(--color-muted-foreground)]">
           {current.description}
         </p>
       )}

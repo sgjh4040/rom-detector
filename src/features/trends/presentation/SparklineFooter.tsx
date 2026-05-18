@@ -1,5 +1,4 @@
-// SparklineFooter.tsx — SparklineCard 의 하단 차트 영역 (audit #13).
-// 분기: n>=2 → SVG sparkline / n=1 + normalRange → 정상 대비 progress bar / 그 외 → "측정 1회".
+// SparklineFooter.tsx — SparklineCard 하단 차트 영역 (redesign-spike).
 import React from "react";
 
 interface DataPoint {
@@ -12,7 +11,7 @@ interface SparklineFooterProps {
   unit: string;
   lowerIsBetter: boolean;
   normalRange?: number;
-  /** 델타 색상 (개선/악화/변화없음) — 부모 카드에서 계산해 주입 */
+  /** 델타 색상 (부모가 계산) */
   deltaColor: string;
 }
 
@@ -30,18 +29,16 @@ export const SparklineFooter: React.FC<SparklineFooterProps> = ({
   const hasMultiplePoints = data.length > 1;
   const latestValue = data[data.length - 1].value;
 
-  // n>=2: SVG sparkline 라인
+  // n>=2: SVG 라인
   if (hasMultiplePoints) {
     const values = data.map((d) => d.value);
     const minVal = Math.min(...values);
     const maxVal = Math.max(...values);
     const range = maxVal - minVal || 1;
-
     const getX = (i: number): number =>
       PADDING + (i / (data.length - 1)) * (WIDTH - PADDING * 2);
     const getY = (v: number): number =>
       PADDING + (1 - (v - minVal) / range) * (HEIGHT - PADDING * 2);
-
     const pathD = data
       .map((d, i) => `${i === 0 ? "M" : "L"} ${getX(i)},${getY(d.value)}`)
       .join(" ");
@@ -52,8 +49,8 @@ export const SparklineFooter: React.FC<SparklineFooterProps> = ({
         height={HEIGHT}
         viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
         preserveAspectRatio="none"
-        style={{ display: "block", marginTop: "auto" }}
-        aria-hidden="true"
+        className="block mt-auto"
+        aria-hidden
       >
         <path
           d={pathD}
@@ -62,7 +59,6 @@ export const SparklineFooter: React.FC<SparklineFooterProps> = ({
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
-          opacity={0.9}
         />
         {data.map((d, i) => (
           <circle
@@ -77,7 +73,7 @@ export const SparklineFooter: React.FC<SparklineFooterProps> = ({
     );
   }
 
-  // n=1 + normalRange 있음: 정상 대비 progress bar
+  // n=1 + normalRange: 정상 대비 progress bar
   if (normalRange !== undefined) {
     const ratio = lowerIsBetter
       ? (normalRange - latestValue) / normalRange
@@ -85,45 +81,14 @@ export const SparklineFooter: React.FC<SparklineFooterProps> = ({
     const widthPct = Math.max(0, Math.min(100, ratio * 100));
 
     return (
-      <div
-        style={{
-          marginTop: "auto",
-          height: HEIGHT,
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "flex-end",
-          gap: 4,
-        }}
-        aria-hidden="true"
-      >
-        <div
-          style={{
-            height: 4,
-            borderRadius: 4,
-            background: "rgba(0, 0, 0, 0.06)",
-            overflow: "hidden",
-          }}
-        >
+      <div className="mt-auto flex flex-col gap-1" style={{ height: HEIGHT }}>
+        <div className="h-1 w-full overflow-hidden rounded-full bg-[var(--color-muted)] mt-auto">
           <div
-            style={{
-              height: "100%",
-              width: `${widthPct}%`,
-              background: "var(--text-primary)",
-              opacity: 0.5,
-              borderRadius: 4,
-            }}
+            className="h-full rounded-full bg-[var(--color-foreground)] opacity-50"
+            style={{ width: `${widthPct}%` }}
           />
         </div>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "flex-end",
-            fontSize: "var(--text-2xs)",
-            fontWeight: 700,
-            color: "var(--text-secondary)",
-            opacity: 0.6,
-          }}
-        >
+        <div className="flex justify-end text-[10px] font-semibold text-[var(--color-muted-foreground)]">
           정상 {normalRange}
           {unit}
         </div>
@@ -131,22 +96,12 @@ export const SparklineFooter: React.FC<SparklineFooterProps> = ({
     );
   }
 
-  // n=1, normalRange 없음: "측정 1회" 안내
+  // n=1, normalRange 없음
   return (
     <div
-      style={{
-        height: HEIGHT,
-        marginTop: "auto",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        fontSize: "var(--text-2xs)",
-        fontWeight: 700,
-        color: "var(--text-secondary)",
-        opacity: 0.35,
-        letterSpacing: "0.04em",
-      }}
-      aria-hidden="true"
+      className="mt-auto flex items-center justify-center text-[10px] font-semibold text-[var(--color-muted-foreground)] opacity-60"
+      style={{ height: HEIGHT }}
+      aria-hidden
     >
       측정 1회
     </div>

@@ -1,15 +1,14 @@
-// ExerciseListItem.tsx — CesExercisePlayer 의 단일 운동 row (audit #13 분리).
-// 좌측: 썸네일/카테고리 닷  /  중앙: 카테고리 코드 + 이름 + 도구  /  우측: 시간/세트.
+// ExerciseListItem.tsx — CesExercisePlayer 단일 운동 row (redesign-spike).
 import React from "react";
 import type { CesExercise } from "../../../lib/ces/cesTypes";
 import { PlayCircle } from "lucide-react";
 import { formatExMeta } from "./helpers";
 import { resolveThumbnailSrc } from "../../../lib/ces/videoResolver";
+import { cn } from "../../../lib/cn";
 
 interface ExerciseListItemProps {
   exercise: CesExercise;
   isActive: boolean;
-  /** 단계 한 글자 카테고리 코드 (H/L/A/I) — 부모가 STAGE_CODE_MAP 으로 계산 */
   categoryCode: string;
   onClick: () => void;
 }
@@ -27,51 +26,24 @@ export const ExerciseListItem: React.FC<ExerciseListItemProps> = ({
     <button
       type="button"
       onClick={onClick}
-      style={{
-        display: "flex",
-        alignItems: "center",
-        gap: "12px",
-        width: "100%",
-        padding: "12px 14px",
-        borderRadius: "var(--radius-md)",
-        border: isActive
-          ? "2px solid var(--primary)"
-          : "1px solid rgba(0, 0, 0, 0.06)",
-        background: isActive
-          ? "rgba(92, 107, 192, 0.08)"
-          : "rgba(255, 255, 255, 0.65)",
-        boxShadow: isActive
-          ? "0 4px 14px rgba(92, 107, 192, 0.12)"
-          : "0 1px 3px rgba(0, 0, 0, 0.03)",
-        cursor: "pointer",
-        textAlign: "left",
-        fontFamily: "inherit",
-        transition: "all 0.15s ease",
-      }}
+      className={cn(
+        "flex w-full items-center gap-3 rounded-lg border px-3 py-2.5 text-left transition-all",
+        isActive
+          ? "border-[var(--color-accent)] bg-[var(--color-accent)]/8"
+          : "border-[var(--color-border)] bg-[var(--color-card)] hover:bg-[var(--color-muted)]",
+      )}
     >
-      {/* 좌측: 썸네일 or 카테고리 닷
-           — YouTube ID → mqdefault.jpg / mp4 → preload="metadata" 로 첫 프레임 */}
+      {/* 좌측: 썸네일 or 카테고리 닷 */}
       {hasThumb ? (
-        <div
-          style={{
-            width: "56px",
-            height: "38px",
-            borderRadius: "var(--radius-xs)",
-            overflow: "hidden",
-            flexShrink: 0,
-            position: "relative",
-          }}
-        >
+        <div className="relative h-10 w-[60px] shrink-0 overflow-hidden rounded-md">
           {thumbSrc.kind === "youtube-img" ? (
             <img
               src={thumbSrc.imgSrc}
               alt=""
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                opacity: isActive ? 1 : 0.75,
-              }}
+              className={cn(
+                "h-full w-full object-cover transition-opacity",
+                isActive ? "opacity-100" : "opacity-75",
+              )}
             />
           ) : (
             <video
@@ -79,103 +51,68 @@ export const ExerciseListItem: React.FC<ExerciseListItemProps> = ({
               preload="metadata"
               muted
               playsInline
-              // 첫 프레임만 시각적으로 노출 — 클릭은 부모 <button> 이 처리
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                opacity: isActive ? 1 : 0.75,
-                pointerEvents: "none",
-              }}
+              className={cn(
+                "h-full w-full object-cover pointer-events-none transition-opacity",
+                isActive ? "opacity-100" : "opacity-75",
+              )}
             />
           )}
           {!isActive && (
-            <div
-              style={{
-                position: "absolute",
-                inset: 0,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                background: "rgba(0,0,0,0.3)",
-              }}
-            >
-              <PlayCircle size={18} color="white" />
+            <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+              <PlayCircle className="size-4 text-white" />
             </div>
           )}
         </div>
       ) : (
         <span
-          style={{
-            width: "10px",
-            height: "10px",
-            borderRadius: "var(--radius-circle)",
-            background: isActive ? "var(--primary)" : "rgba(0,0,0,0.15)",
-            flexShrink: 0,
-            marginLeft: "2px",
-            transition: "background 0.15s",
-          }}
+          className={cn(
+            "size-2.5 shrink-0 rounded-full ml-0.5 transition-colors",
+            isActive
+              ? "bg-[var(--color-accent)]"
+              : "bg-[var(--color-border)]",
+          )}
         />
       )}
 
-      {/* 중앙: 운동명 + 도구 */}
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "baseline",
-            gap: "6px",
-          }}
-        >
+      {/* 중앙: 카테고리 코드 + 운동명 + 도구 */}
+      <div className="min-w-0 flex-1">
+        <div className="flex items-baseline gap-1.5">
           <span
-            style={{
-              fontSize: "var(--text-xs)",
-              fontWeight: 800,
-              color: "var(--primary)",
-              opacity: 0.7,
-            }}
+            className={cn(
+              "text-[11px] font-bold",
+              isActive
+                ? "text-[var(--color-accent)]"
+                : "text-[var(--color-muted-foreground)]",
+            )}
           >
             {categoryCode}
           </span>
           <span
-            style={{
-              fontSize: "var(--text-sm)",
-              fontWeight: isActive ? 800 : 700,
-              color: isActive
-                ? "var(--text-primary)"
-                : "var(--text-secondary)",
-              whiteSpace: "nowrap",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-            }}
+            className={cn(
+              "truncate text-sm",
+              isActive
+                ? "font-bold text-[var(--color-foreground)]"
+                : "font-semibold text-[var(--color-foreground)]/80",
+            )}
           >
             {exercise.name}
           </span>
         </div>
         {exercise.tools && (
-          <span
-            style={{
-              fontSize: "var(--text-xs)",
-              fontWeight: 600,
-              color: "var(--text-secondary)",
-              opacity: 0.65,
-            }}
-          >
+          <div className="text-xs font-medium text-[var(--color-muted-foreground)]">
             {exercise.tools}
-          </span>
+          </div>
         )}
       </div>
 
       {/* 우측: 시간/세트 정보 */}
       <span
-        style={{
-          fontSize: "var(--text-xs)",
-          fontWeight: 700,
-          color: isActive ? "var(--primary)" : "var(--text-secondary)",
-          whiteSpace: "nowrap",
-          flexShrink: 0,
-          opacity: isActive ? 1 : 0.7,
-        }}
+        className={cn(
+          "shrink-0 whitespace-nowrap text-xs font-bold",
+          isActive
+            ? "text-[var(--color-accent)]"
+            : "text-[var(--color-muted-foreground)]",
+        )}
       >
         {formatExMeta(exercise)}
       </span>

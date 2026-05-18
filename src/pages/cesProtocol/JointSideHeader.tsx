@@ -1,5 +1,6 @@
-// JointSideHeader.tsx — CesProtocol 메인 상단의 관절/방향 select + 환자 요약 라벨.
+// JointSideHeader.tsx — CesProtocol 메인 상단 관절·방향 select + 환자 메타 (redesign-spike).
 import React from "react";
+import { ChevronDown } from "lucide-react";
 
 interface JointSideOption {
   id: string;
@@ -7,7 +8,6 @@ interface JointSideOption {
 }
 
 interface JointSideHeaderProps {
-  /** 선택 가능한 관절·방향 목록 */
   jointSideList: JointSideOption[];
   activeJointSide: string;
   onChange: (id: string) => void;
@@ -21,31 +21,13 @@ export const JointSideHeader: React.FC<JointSideHeaderProps> = ({
   onChange,
   patientName,
   patientAge,
-}) => {
-  return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        marginBottom: "1.25rem",
-        gap: "12px",
-      }}
-    >
+}) => (
+  <div className="flex items-center justify-between gap-3">
+    <div className="relative">
       <select
-        className="form-select"
-        style={{
-          width: "auto",
-          boxShadow: "none",
-          fontWeight: 800,
-          fontSize: "var(--text-lg)",
-          padding: "0.5rem 2rem 0.5rem 0.75rem",
-          borderRadius: "var(--radius-xs)",
-          border: "1px solid rgba(0,0,0,0.08)",
-          background: "rgba(255,255,255,0.7)",
-        }}
         value={activeJointSide}
         onChange={(e) => onChange(e.target.value)}
+        className="appearance-none rounded-lg border border-[var(--color-border)] bg-[var(--color-card)] py-2 pl-3.5 pr-9 text-lg font-extrabold text-[var(--color-foreground)] cursor-pointer hover:bg-[var(--color-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-ring)] focus:ring-offset-2"
       >
         {jointSideList.map((js) => (
           <option key={js.id} value={js.id}>
@@ -53,18 +35,13 @@ export const JointSideHeader: React.FC<JointSideHeaderProps> = ({
           </option>
         ))}
       </select>
-      <span
-        style={{
-          fontSize: "var(--text-xs)",
-          fontWeight: 700,
-          color: "var(--text-secondary)",
-          opacity: 0.7,
-          whiteSpace: "nowrap",
-        }}
-      >
+      <ChevronDown className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 size-4 text-[var(--color-muted-foreground)]" />
+    </div>
+    {(patientName || patientAge) && (
+      <span className="text-xs font-medium text-[var(--color-muted-foreground)] whitespace-nowrap">
         {patientName ?? "환자"}
         {patientAge ? ` · ${patientAge}세` : ""}
       </span>
-    </div>
-  );
-};
+    )}
+  </div>
+);

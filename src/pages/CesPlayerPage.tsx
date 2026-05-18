@@ -1,13 +1,13 @@
-// CesPlayerPage.tsx — NTC 스타일 CES 플레이어 메인 페이지 (PRD 4-0: 200줄 이하)
+// CesPlayerPage.tsx — NTC 스타일 CES 가이드 플레이어 (redesign-spike).
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { PartyPopper, RotateCcw } from "lucide-react";
 import { useCesPlayer } from "../core/utils/useCesPlayer";
 import { CesVideoPlayer } from "../core/components/CesVideoPlayer";
 import { CesPlayerController } from "../core/components/CesPlayerController";
 import { BodyAnatomySvg } from "../core/components/BodyAnatomySvg";
 import { MOCK_ROUTINE, PHASE_META } from "../lib/ces/CesPlayerTypes";
 import type { CesRoutine } from "../lib/ces/CesPlayerTypes";
-import { PartyPopper, RotateCcw } from "lucide-react";
 import { loadRomSession } from "../lib/romTypes";
 import {
   StoryProgressBar,
@@ -18,11 +18,8 @@ export const CesPlayerPage: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // 이전 페이지에서 넘어온 실제 루틴이 있으면 사용, 없으면 데모 루틴 표출
   const customRoutine =
     (location.state?.customRoutine as CesRoutine) || MOCK_ROUTINE;
-
-  // 현재 환자 세션 — 운동 시간을 회차별로 누적 기록하기 위해 createdAt 사용
   const session = loadRomSession();
 
   const {
@@ -43,20 +40,31 @@ export const CesPlayerPage: React.FC = () => {
 
   if (isFinished) {
     return (
-      <div className="ces-player-finish">
-        <div className="icon flex justify-center text-primary mb-4">
-          <PartyPopper size={64} />
+      <div
+        data-redesign="true"
+        className="min-h-svh flex flex-col items-center justify-center bg-[var(--color-background)] text-[var(--color-foreground)] font-sans p-6 text-center"
+      >
+        <div className="flex size-16 items-center justify-center rounded-full bg-[var(--color-accent)]/15 text-[var(--color-accent)] mb-4">
+          <PartyPopper className="size-9" />
         </div>
-        <h1 className="page-title mb-2">운동 완료!</h1>
-        <p>루틴을 모두 마쳤습니다.</p>
-        <div className="action-bar justify-center mt-6 flex gap-4">
+        <h1 className="text-3xl font-extrabold tracking-tight">운동 완료!</h1>
+        <p className="mt-2 text-sm font-medium text-[var(--color-muted-foreground)]">
+          루틴을 모두 마쳤습니다.
+        </p>
+        <div className="mt-6 flex gap-2">
           <button
+            type="button"
             onClick={restart}
-            className="btn btn-primary icon-text"
+            className="flex h-11 items-center gap-1.5 rounded-lg bg-[var(--color-accent)] px-5 text-sm font-bold text-[var(--color-accent-foreground)] hover:bg-[var(--color-accent)]/90 transition-colors"
           >
-            <RotateCcw size={18} /> 다시 시작
+            <RotateCcw className="size-4" />
+            다시 시작
           </button>
-          <button onClick={() => navigate("/ces")} className="btn btn-outline">
+          <button
+            type="button"
+            onClick={() => navigate("/ces")}
+            className="flex h-11 items-center rounded-lg border border-[var(--color-border)] bg-[var(--color-card)] px-5 text-sm font-bold text-[var(--color-foreground)] hover:bg-[var(--color-muted)] transition-colors"
+          >
             CES 프로토콜로
           </button>
         </div>
@@ -65,7 +73,6 @@ export const CesPlayerPage: React.FC = () => {
   }
 
   const isBreak = currentStep.kind === "break";
-  // 브레이크 중에도 해부 SVG 가 비지 않게 가장 가까운 운동의 타겟 근육을 유지
   const anchorExerciseStep = isBreak
     ? findNearestExerciseStep(customRoutine.exercises, stepIndex + 1)
     : currentStep;
@@ -76,35 +83,28 @@ export const CesPlayerPage: React.FC = () => {
   const currentPhase = currentStep.cesPhase;
 
   return (
-    <div className="ces-player">
-      {/* ── A 영역: 비디오 플레이어 ────────────────────────────── */}
-      <div className="ces-player-video">
-        <div style={{ width: "100%", maxWidth: "760px" }}>
-          <div className="video-header">
-            <div className="video-brand">
-              {/* <span>● medicalmotion</span> */}
-            </div>
-            <StoryProgressBar
-              exercises={customRoutine.exercises}
-              currentStepIndex={stepIndex}
-              stepProgress={stepProgress}
-              onGoToStep={goToStep}
-            />
-          </div>
-
+    <div
+      data-redesign="true"
+      className="min-h-svh bg-[var(--color-background)] text-[var(--color-foreground)] font-sans"
+    >
+      <div className="mx-auto grid max-w-7xl gap-4 p-4 lg:grid-cols-[1fr_360px_220px] lg:min-h-[640px] lg:items-stretch">
+        {/* ── A 영역: 비디오 — 셋(progress + 비디오 + 진행률) 을 그룹으로 묶어 컬럼 가운데 정렬, SVG 컬럼과 톤 통일 ── */}
+        <section className="flex flex-col gap-3 min-w-0 rounded-xl border border-[var(--color-border)] bg-[var(--color-muted)]/30 p-3 lg:justify-center">
+          <StoryProgressBar
+            exercises={customRoutine.exercises}
+            currentStepIndex={stepIndex}
+            stepProgress={stepProgress}
+            onGoToStep={goToStep}
+          />
           <CesVideoPlayer
-            videoUrl={
-              currentStep.kind === "exercise" ? currentStep.videoUrl : ""
-            }
+            videoUrl={currentStep.kind === "exercise" ? currentStep.videoUrl : ""}
             nextVideoUrl={
               nextStep && nextStep.kind === "exercise"
                 ? nextStep.videoUrl
                 : undefined
             }
             exerciseName={
-              currentStep.kind === "exercise"
-                ? currentStep.exerciseName
-                : "휴식"
+              currentStep.kind === "exercise" ? currentStep.exerciseName : "휴식"
             }
             isBreak={isBreak}
             breakKind={
@@ -114,63 +114,60 @@ export const CesPlayerPage: React.FC = () => {
               currentStep.kind === "break" ? currentStep.toExercise : undefined
             }
           />
+          {/* 현재 스텝 진행률 */}
+          <div>
+            <div className="flex items-center justify-between text-xs font-medium text-[var(--color-muted-foreground)] mb-1">
+              <span>{isBreak ? "브레이크 진행률" : "현재 스텝 진행률"}</span>
+              <span className="font-bold tabular-nums text-[var(--color-foreground)]">
+                {Math.round(stepProgress)}%
+              </span>
+            </div>
+            <div className="h-1 w-full overflow-hidden rounded-full bg-[var(--color-muted)]">
+              <div
+                className="h-full rounded-full transition-all duration-500"
+                style={{
+                  background: PHASE_META[currentPhase].color,
+                  width: `${stepProgress}%`,
+                }}
+              />
+            </div>
+          </div>
+        </section>
 
-          <div className="progress-track">
-            <div
-              className="progress-bar"
-              style={{
-                background: PHASE_META[currentPhase].color,
-                width: `${stepProgress}%`,
-              }}
+        {/* ── B 영역: 컨트롤러 — 컬럼 stretch + 콘텐츠 수직 가운데 ── */}
+        <section className="rounded-xl border border-[var(--color-border)] bg-[var(--color-card)] p-4 lg:flex lg:flex-col lg:justify-center">
+          <CesPlayerController
+            currentStep={currentStep}
+            nextStep={nextStep}
+            countdown={countdown}
+            progress={progress}
+            stepProgress={stepProgress}
+            stepIndex={stepIndex}
+            totalSteps={totalSteps}
+            isPaused={isPaused}
+            isFinished={isFinished}
+            sessionCreatedAt={session?.createdAt}
+            allSteps={customRoutine.exercises}
+            onTogglePause={togglePause}
+            onExit={() => navigate("/ces")}
+            onRestart={restart}
+            onSkipBreak={skipBreak}
+          />
+        </section>
+
+        {/* ── C 영역: 해부 SVG — 컬럼 stretch 로 인체 그림 세로 길게 ── */}
+        <section className="hidden lg:flex flex-col rounded-xl border border-[var(--color-border)] bg-[var(--color-muted)]/30 p-3">
+          <p className="text-[10px] font-bold uppercase tracking-wider text-[var(--color-muted-foreground)] mb-2">
+            Target Muscles
+          </p>
+          <div className="flex-1 flex items-center justify-center min-h-0">
+            <BodyAnatomySvg
+              highlightIds={highlightIds}
+              cesPhase={currentPhase}
+              showGroupButtons={false}
             />
           </div>
-          <div className="progress-meta">
-            <p>{isBreak ? "브레이크 진행률" : "현재 스텝 진행률"}</p>
-            <span>{Math.round(stepProgress)}%</span>
-          </div>
-        </div>
-      </div>
-
-      {/* ── B 영역: 컨트롤러 ───────────────────────────────────── */}
-      <div className="ces-player-ctrl">
-        <CesPlayerController
-          currentStep={currentStep}
-          nextStep={nextStep}
-          countdown={countdown}
-          progress={progress}
-          stepProgress={stepProgress}
-          stepIndex={stepIndex}
-          totalSteps={totalSteps}
-          isPaused={isPaused}
-          isFinished={isFinished}
-          sessionCreatedAt={session?.createdAt}
-          allSteps={customRoutine.exercises}
-          onTogglePause={togglePause}
-          onExit={() => navigate("/ces")}
-          onRestart={restart}
-          onSkipBreak={skipBreak}
-        />
-      </div>
-
-      {/* ── C 영역: 해부 SVG 맵 ───────────────────────────────── */}
-      <div className="ces-player-anatomy">
-        <p
-          style={{
-            fontSize: "var(--text-2xs)",
-            color: "var(--text-secondary)",
-            fontWeight: 700,
-            textTransform: "uppercase",
-            letterSpacing: "0.08em",
-            marginBottom: "0.5rem",
-          }}
-        >
-          Target Muscles
-        </p>
-        <BodyAnatomySvg
-          highlightIds={highlightIds}
-          cesPhase={currentPhase}
-          showGroupButtons={false}
-        />
+        </section>
       </div>
     </div>
   );

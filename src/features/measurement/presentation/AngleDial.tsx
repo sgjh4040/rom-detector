@@ -76,10 +76,10 @@ export const AngleDial: React.FC<Props> = ({ value, maxVal, normalVal }) => {
             y1={normalTickInner.y}
             x2={normalTickOuter.x}
             y2={normalTickOuter.y}
-            stroke="var(--primary)"
+            stroke="var(--color-foreground)"
             strokeWidth="2.5"
             strokeLinecap="round"
-            opacity="0.85"
+            opacity="0.5"
           />
         )}
         {/* 현재 값 호 */}

@@ -1,14 +1,15 @@
-// Trends.tsx — 측정 기록 페이지 (대시보드 / 상세 차트 / 평가 히스토리).
-// audit #13: ViewSegment / ChartsView 분리. 본체는 라우팅+orchestrator.
+// Trends.tsx — 측정 기록 페이지 (redesign-spike, Athletic Garmin 톤).
 import React, { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 import { getPatientHistory, saveRomSession } from "../lib/romData";
 import { NeumoDashboard } from "../features/trends/presentation/NeumoDashboard";
 import { HistoryItem } from "../features/trends/presentation/HistoryItem";
-import { AppLayout } from "../core/components/AppLayout";
+import { AppShell } from "../components/redesign/AppShell";
+import { Button } from "../components/redesign/ui/Button";
+import { Card } from "../components/redesign/ui/Card";
 import { ViewSegment, type TrendsViewMode } from "./trends/ViewSegment";
 import { ChartsView } from "./trends/ChartsView";
-import "../styles/Trends.css";
 
 export const Trends: React.FC = () => {
   const navigate = useNavigate();
@@ -18,142 +19,105 @@ export const Trends: React.FC = () => {
   const showCharts = viewMode === "charts";
 
   const history = patientId ? getPatientHistory(patientId) : [];
-  const reversedHistory = [...history].reverse(); // 오래된 순
+  const reversedHistory = [...history].reverse();
 
   const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
     history.length > 0 ? history[0].createdAt : null,
   );
 
-  // 트렌드 페이지에서 고른 회차를 active `rom_session` 으로 동기화한다.
-  // - 네비의 "CES" 탭이나 어디에서 CES 재활을 시작해도, 지금 보고 있는 회차에
-  //   시간이 누적되도록 보장한다.
-  // - 화면이 처음 열릴 때(= selectedSessionId 가 최신) 도 최신 세션으로 동기화되므로
-  //   "최신 회차 = 기본 선택" 케이스도 일관되게 처리된다.
+  // 트렌드 페이지에서 고른 회차를 active rom_session 으로 동기화
   useEffect(() => {
     if (!selectedSessionId) return;
     const picked = history.find((s) => s.createdAt === selectedSessionId);
-    if (picked) {
-      saveRomSession(picked);
-    }
+    if (picked) saveRomSession(picked);
   }, [selectedSessionId, history]);
 
   if (!patientId || history.length === 0) {
     return (
-      <AppLayout patientId={patientId ?? undefined}>
-        <div className="container p-8 text-center neumo-inset">
-          <h2>환자 데이터를 찾을 수 없습니다.</h2>
-          <button
-            className="btn btn-primary mt-4"
+      <AppShell>
+        <Card className="p-10 text-center">
+          <h2 className="text-base font-bold text-[var(--color-foreground)]">
+            환자 데이터를 찾을 수 없습니다
+          </h2>
+          <p className="mt-1 text-sm text-[var(--color-muted-foreground)]">
+            먼저 측정을 완료하면 경과 관찰이 표시됩니다
+          </p>
+          <Button
             onClick={() => navigate("/")}
+            className="mt-4 mx-auto"
           >
-            메인으로
-          </button>
-        </div>
-      </AppLayout>
+            홈으로
+          </Button>
+        </Card>
+      </AppShell>
     );
   }
 
   const patient = history[0];
 
   return (
-    <AppLayout patientId={patientId}>
-      <div
-        className="bg-full-viewport page-bg-results pb-20 neumo-container"
-        style={{
-          minHeight: "100vh",
-          padding: "0 20px 80px",
-          overflow: "visible",
-        }}
-      >
-        <div
-          className="container"
-          style={{
-            maxWidth: "1000px",
-            margin: "0 auto",
-            display: "flex",
-            flexDirection: "column",
-            overflow: "visible",
-          }}
-        >
-          <div
-            className="page-header"
-            style={{
-              paddingTop: "20px",
-              marginBottom: "20px",
-              display: "flex",
-              flexWrap: "wrap",
-              justifyContent: "space-between",
-              alignItems: "flex-start",
-              gap: "16px",
-            }}
+    <AppShell>
+      <div className="flex flex-col gap-5">
+        {/* 헤더 */}
+        <div>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => navigate(-1)}
+            className="-ml-2 mb-2 text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)]"
           >
-            <div style={{ minWidth: 0 }}>
-              <button
-                className="btn btn-outline btn-small btn-back-text mb-3"
-                onClick={() => navigate(-1)}
-              >
-                ← 뒤로가기
-              </button>
-              <h1
-                className="text-3xl font-black tracking-tighter opacity-90"
-                style={{ fontSize: "var(--text-2xl)", marginBottom: "4px" }}
-              >
-                측정 기록
+            <ArrowLeft className="size-4" />
+            뒤로가기
+          </Button>
+          <div className="flex flex-wrap items-end justify-between gap-3">
+            <div>
+              <h1 className="text-3xl font-extrabold tracking-tight text-[var(--color-foreground)]">
+                경과 관찰
               </h1>
-              <p className="opacity-70 text-base font-bold">
-                {patient.patientName} ({patient.patientAge}세)
+              <p className="mt-1 text-sm font-medium text-[var(--color-muted-foreground)]">
+                {patient.patientName}
+                {patient.patientAge ? ` · ${patient.patientAge}세` : ""}
+                <span className="ml-1.5 text-[var(--color-border)]">·</span>
+                <span className="ml-1.5">{history.length}회 측정</span>
               </p>
             </div>
-            <div style={{ flexShrink: 0 }}>
-              <ViewSegment value={viewMode} onChange={setViewMode} />
-            </div>
+            <ViewSegment value={viewMode} onChange={setViewMode} />
           </div>
+        </div>
 
-          {!showCharts ? (
-            <div
-              className="neumo-card mb-6"
-              style={{ borderRadius: "var(--radius-lg)", padding: "16px" }}
-            >
-              <NeumoDashboard
-                sessions={history}
-                selectedSessionId={selectedSessionId}
-                onSelectSession={(id) => setSelectedSessionId(id || null)}
+        {/* 본문 — 차트 또는 대시보드 */}
+        {showCharts ? (
+          <ChartsView reversedHistory={reversedHistory} />
+        ) : (
+          <Card className="p-4">
+            <NeumoDashboard
+              sessions={history}
+              selectedSessionId={selectedSessionId}
+              onSelectSession={(id) => setSelectedSessionId(id || null)}
+            />
+          </Card>
+        )}
+
+        {/* 평가 히스토리 */}
+        <div>
+          <h3 className="mb-3 text-sm font-bold text-[var(--color-foreground)]">
+            평가 히스토리{" "}
+            <span className="font-medium text-[var(--color-muted-foreground)]">
+              ({history.length}건)
+            </span>
+          </h3>
+          <div className="flex flex-col gap-2">
+            {history.map((s, i) => (
+              <HistoryItem
+                key={s.createdAt}
+                session={s}
+                index={i}
+                total={history.length}
               />
-            </div>
-          ) : (
-            <ChartsView reversedHistory={reversedHistory} />
-          )}
-
-          <div
-            className="panel neumo-inset"
-            style={{
-              borderRadius: "var(--radius-lg)",
-              marginTop: "24px",
-              padding: "24px 16px",
-              overflow: "visible",
-            }}
-          >
-            <h3
-              className="text-xl font-black opacity-85"
-              style={{ marginBottom: "20px", paddingLeft: "8px" }}
-            >
-              평가 히스토리 ({history.length}건)
-            </h3>
-            <div
-              style={{ display: "flex", flexDirection: "column", gap: "20px" }}
-            >
-              {history.map((s, i) => (
-                <HistoryItem
-                  key={s.createdAt}
-                  session={s}
-                  index={i}
-                  total={history.length}
-                />
-              ))}
-            </div>
+            ))}
           </div>
         </div>
       </div>
-    </AppLayout>
+    </AppShell>
   );
 };

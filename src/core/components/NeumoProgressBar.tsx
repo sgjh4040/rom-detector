@@ -1,109 +1,49 @@
-import React from 'react';
+// NeumoProgressBar.tsx — 가로 진행률 바 한 줄 (redesign-spike).
+import React from "react";
 
 interface NeumoProgressBarProps {
-    label: string;
-    percentage: number;
-    /** 바 채움 색상(단색) — 각 phase마다 다른 색으로 구분 */
-    color?: string;
-    /** 서브 텍스트 (예: "3:00 / 5:00") — 있으면 라벨 옆에 작게 표시 */
-    sublabel?: string;
+  label: string;
+  percentage: number;
+  /** 바 채움 색상 — 각 phase 의 stage color */
+  color?: string;
+  sublabel?: string;
 }
 
-/**
- * 가로 진행률 바 한 줄.
- * - 좌측: 작은 컬러 닷 + 라벨
- * - 중앙: 얇은(8px) 가로 바 (rounded full)
- * - 우측: 퍼센트 숫자 (중간 굵기)
- * 여러 개를 세로로 쌓아 리스트로 사용한다.
- */
 export const NeumoProgressBar: React.FC<NeumoProgressBarProps> = ({
-    label,
-    percentage,
-    color = 'var(--primary)',
-    sublabel,
-}) => {
-    return (
-        <div
-            style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '8px',
-                width: '100%',
-            }}
-        >
-            <div
-                style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    gap: '12px',
-                }}
-            >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', minWidth: 0 }}>
-                    <span
-                        aria-hidden="true"
-                        style={{
-                            width: '8px',
-                            height: '8px',
-                            borderRadius: 'var(--radius-circle)',
-                            background: color,
-                            flexShrink: 0,
-                        }}
-                    />
-                    <span
-                        style={{
-                            fontSize: 'var(--text-sm)',
-                            fontWeight: 800,
-                            color: 'var(--text-primary)',
-                            whiteSpace: 'nowrap',
-                        }}
-                    >
-                        {label}
-                    </span>
-                    {sublabel && (
-                        <span
-                            style={{
-                                fontSize: 'var(--text-xs)',
-                                fontWeight: 600,
-                                color: 'var(--text-secondary)',
-                                opacity: 0.7,
-                                whiteSpace: 'nowrap',
-                            }}
-                        >
-                            {sublabel}
-                        </span>
-                    )}
-                </div>
-                <span
-                    style={{
-                        fontSize: 'var(--text-base)',
-                        fontWeight: 900,
-                        color: 'var(--text-primary)',
-                        fontVariantNumeric: 'tabular-nums',
-                    }}
-                >
-                    {percentage}%
-                </span>
-            </div>
-            <div
-                style={{
-                    width: '100%',
-                    height: '8px',
-                    background: 'rgba(0, 0, 0, 0.06)',
-                    borderRadius: 'var(--radius-pill)',
-                    overflow: 'hidden',
-                }}
-            >
-                <div
-                    style={{
-                        width: `${percentage}%`,
-                        height: '100%',
-                        background: color,
-                        borderRadius: 'var(--radius-pill)',
-                        transition: 'width 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
-                    }}
-                />
-            </div>
-        </div>
-    );
-};
+  label,
+  percentage,
+  color = "var(--color-accent)",
+  sublabel,
+}) => (
+  <div className="flex w-full flex-col gap-2">
+    <div className="flex items-center justify-between gap-3">
+      <div className="flex min-w-0 items-center gap-2">
+        <span
+          aria-hidden
+          className="size-2 shrink-0 rounded-full"
+          style={{ background: color }}
+        />
+        <span className="text-sm font-bold whitespace-nowrap text-[var(--color-foreground)]">
+          {label}
+        </span>
+        {sublabel && (
+          <span className="text-xs font-medium whitespace-nowrap text-[var(--color-muted-foreground)]">
+            {sublabel}
+          </span>
+        )}
+      </div>
+      <span className="font-mono text-sm font-bold tabular-nums text-[var(--color-foreground)]">
+        {percentage}%
+      </span>
+    </div>
+    <div className="h-1.5 w-full overflow-hidden rounded-full bg-[var(--color-muted)]">
+      <div
+        className="h-full rounded-full transition-all duration-500"
+        style={{
+          width: `${percentage}%`,
+          background: color,
+        }}
+      />
+    </div>
+  </div>
+);

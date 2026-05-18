@@ -1,0 +1,184 @@
+/* redesign-tokens.css — physiolog-collab 톤 흡수 (Spike, 2026-05-17)
+ *
+ * Tailwind v4 `@theme` 블록으로 토큰 정의 → 모든 shadcn-style 유틸 클래스
+ * (bg-background, text-foreground, border-border, ring-ring, etc) 가 자동 매핑됨.
+ *
+ * Light / Dark 모두 OKLCH. Primary = 거의 블랙, Accent = Teal 청록 (의료 톤).
+ * 이 파일은 index.css 최하단에서 import 되어 기존 토큰을 오버라이드한다.
+ */
+
+@theme {
+  /* === Athletic Performance — Strava/WHOOP 톤 (2026-05-17) ===
+   * 화이트 BG + 짙은 잉크 + 스트라바 오렌지 단일 강조.
+   * 숫자는 mono tabular, 라벨은 UPPERCASE 와이드 트래킹. */
+  --color-background: oklch(1 0 0);
+  --color-foreground: oklch(0.12 0 0);           /* 짙은 잉크 — 잿빛 0.145 보다 강함 */
+  --color-card: oklch(1 0 0);
+  --color-card-foreground: oklch(0.12 0 0);
+  --color-popover: oklch(1 0 0);
+  --color-popover-foreground: oklch(0.12 0 0);
+  --color-muted: oklch(0.965 0 0);                /* 옅은 회색 — 인터랙티브 면 */
+  --color-muted-foreground: oklch(0.48 0 0);     /* 보조 텍스트 — 더 진하게 */
+  --color-border: oklch(0.90 0 0);                /* 보더는 좀 더 명확하게 */
+  --color-input: oklch(0.90 0 0);
+
+  /* Primary = 잉크 블랙 — 굵은 CTA */
+  --color-primary: oklch(0.12 0 0);
+  --color-primary-foreground: oklch(1 0 0);
+
+  --color-secondary: oklch(0.965 0 0);
+  --color-secondary-foreground: oklch(0.12 0 0);
+
+  /* Accent = Garmin 블루 #007CC2 — 단일 강조, 신뢰감 있는 수행 톤 */
+  --color-accent: oklch(0.55 0.17 240);
+  --color-accent-foreground: oklch(1 0 0);
+  --color-ring: oklch(0.55 0.17 240);
+
+  /* 통증·경고 */
+  --color-destructive: oklch(0.577 0.245 27.325);
+  --color-destructive-foreground: oklch(0.985 0 0);
+
+  /* CES 4단계 (시각 식별용) */
+  --color-stage-inhibit: oklch(0.65 0.10 230);
+  --color-stage-lengthen: oklch(0.70 0.10 180);
+  --color-stage-activate: oklch(0.72 0.13 80);
+  --color-stage-integrate: oklch(0.65 0.13 150);
+
+  /* 차트 */
+  --color-chart-1: oklch(0.205 0 0);
+  --color-chart-2: oklch(0.439 0 0);
+  --color-chart-3: oklch(0.708 0 0);
+  --color-chart-4: oklch(0.87 0 0);
+  --color-chart-5: oklch(0.72 0.12 195);
+
+  /* Radius */
+  --radius: 0.625rem;
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+
+  /* Fonts */
+  --font-sans: "Geist Variable", "Pretendard Variable", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", sans-serif;
+  --font-mono: "Geist Mono Variable", "SF Mono", Menlo, monospace;
+  --font-heading: "Geist Variable", "Pretendard Variable", -apple-system, sans-serif;
+}
+
+/* === Dark mode — Linear/WHOOP premium 톤 (2026-05-17) ===
+ * - 진정한 다크: BG 거의 순흑, 카드는 살짝 lift, 보더는 거의 안 보임
+ * - 액센트 = 일렉트릭 라임 (바이오 모니터·운동 트래커 톤)
+ * - 폰트 명도는 살짝 죽임 (off-white) — 진짜 검정 위 순백은 눈 피로
+ */
+.dark {
+  --color-background: oklch(0.13 0 0);            /* 거의 순흑 */
+  --color-foreground: oklch(0.97 0 0);            /* off-white */
+  --color-card: oklch(0.175 0 0);                  /* 살짝 lift */
+  --color-card-foreground: oklch(0.97 0 0);
+  --color-popover: oklch(0.175 0 0);
+  --color-popover-foreground: oklch(0.97 0 0);
+  --color-muted: oklch(0.22 0 0);                  /* 인터랙티브 hover 면 */
+  --color-muted-foreground: oklch(0.62 0 0);       /* 보조 텍스트 */
+  --color-border: oklch(1 0 0 / 7%);               /* 거의 안 보임, 면 분리만 */
+  --color-input: oklch(1 0 0 / 12%);
+
+  /* Primary = off-white (검정 BG 위 가장 강한 신호) */
+  --color-primary: oklch(0.97 0 0);
+  --color-primary-foreground: oklch(0.13 0 0);
+
+  --color-secondary: oklch(0.22 0 0);
+  --color-secondary-foreground: oklch(0.97 0 0);
+
+  /* Accent = 일렉트릭 라임 — 단일 강조 컬러, 아껴 쓸 것 */
+  --color-accent: oklch(0.87 0.20 130);            /* #A3E635 근방, 살짝 더 채도↑ */
+  --color-accent-foreground: oklch(0.13 0 0);
+  --color-ring: oklch(0.87 0.20 130);
+
+  --color-destructive: oklch(0.70 0.20 25);        /* 코랄 레드 — 다크 위 가독 */
+
+  --color-chart-1: oklch(0.97 0 0);                /* off-white primary line */
+  --color-chart-2: oklch(0.62 0 0);
+  --color-chart-3: oklch(0.43 0 0);
+  --color-chart-4: oklch(0.30 0 0);
+  --color-chart-5: oklch(0.87 0.20 130);            /* 라임 강조 시리즈 */
+}
+
+/* (Dark Premium 의 라디얼 그라데이션 BG 는 Athletic 톤에서 제거 — 화이트 평면 유지) */
+
+/* === Radius 토큰 강제 오버라이드 (2026-05-17) ===
+ * 레거시 tokens.css 의 친화적 토큰 (--radius-lg: 24px) 이 cascade layer
+ * 우선순위로 @theme 보다 이김. unlayered :root 에서 강제로 덮어 씀.
+ *
+ * Linear / Stripe / shadcn 표준에 맞춰 의료·프로 도구 톤:
+ *   버튼: 6~8px, 카드: 12px, 모달: 16px
+ */
+:root,
+.dark {
+  --radius:        0.5rem;   /* 8px — 기본 단위 */
+  --radius-xs:     4px;
+  --radius-sm:     6px;       /* small 버튼·뱃지 */
+  --radius-md:     8px;       /* 기본 버튼·인풋 */
+  --radius-lg:     8px;       /* large 버튼·인풋 */
+  --radius-xl:     12px;      /* 카드 */
+  --radius-2xl:    16px;      /* 모달·시트 */
+  --radius-pill:   9999px;
+  --radius-circle: 50%;
+}
+
+/* 스파이크 페이지(/) 전용 root reset — 기존 ces-dashboard 그라데이션 BG 무력화 */
+[data-redesign="true"] {
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01", "ss02", "cv11";
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+/* 셸 안의 링크는 부모 색상 상속 (foreground 또는 명시 클래스). */
+[data-redesign="true"] a {
+  color: inherit;
+}
+
+/* === VAS 슬라이더 thumb (range input, vendor prefix 필요) ===
+ * --vas-color 인라인 스타일로 동적 색상 전달.
+ */
+.vas-range {
+  height: 24px;
+}
+.vas-range::-webkit-slider-runnable-track {
+  height: 24px;
+  background: transparent;
+}
+.vas-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #fff;
+  border: 3px solid var(--vas-color, var(--color-accent));
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  margin-top: 1px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.vas-range::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+}
+.vas-range::-moz-range-track {
+  height: 24px;
+  background: transparent;
+}
+.vas-range::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #fff;
+  border: 3px solid var(--vas-color, var(--color-accent));
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+}
+
+/* h1/h2/h3 override 는 layer 정리 후 불필요해짐.
+ * 레거시 h1 스타일은 @layer legacy 에 격리됨, Tailwind utility 가 항상 이김. */

@@ -1,6 +1,7 @@
-// Results.tsx — 측정 결과 평가 리포트 페이지 (audit #13: 통계 가공 분리).
+// Results.tsx — 측정 결과 평가 리포트 (redesign-spike, Athletic + Garmin tone)
 import React, { useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
+import { AlertTriangle, ArrowLeft, CheckCircle, Dumbbell, FileSearch, Printer, TrendingUp } from "lucide-react";
 import {
   loadRomSession,
   addSessionToHistory,
@@ -8,23 +9,18 @@ import {
   getPatients,
   savePatient,
 } from "../lib/romData";
-import { JointSideResult } from "../features/results/presentation/JointSideResult";
-import { AppLayout } from "../core/components/AppLayout";
 import { EmptyState } from "../core/components/EmptyState";
-import { TrendingUp, Dumbbell, FileSearch } from "lucide-react";
 import { computeResultsSummary } from "./results/resultsSummary";
-import { StatRow } from "./results/StatRow";
+import { AppShell } from "../components/redesign/AppShell";
+import { Card } from "../components/redesign/ui/Card";
+import { Button } from "../components/redesign/ui/Button";
+import { JointResultCard } from "../components/redesign/results/JointResultCard";
 
 export const Results: React.FC = () => {
   const navigate = useNavigate();
   const session = useMemo(() => loadRomSession(), []);
 
-  // 환자 정보 upsert + 히스토리 추가.
-  // F2 수정 (2026-05-09):
-  //  - 기존 환자가 있으면 createdAt(등록일) / lastMeasuredAt 을 **보존**한다.
-  //  - painArea 는 측정 폼 빈 값으로 진입한 경우 기존 값을 유지.
-  //  - vasScore 는 통증 0 이 의도된 입력일 수 있어 그대로 반영.
-  //  - lastMeasuredAt 은 직후 addSessionToHistory 가 idempotent 하게 갱신.
+  // 환자 정보 upsert + 히스토리 추가 (기존 로직 그대로)
   useEffect(() => {
     if (!session?.patientId) return;
     const existing = getPatients().find((p) => p.id === session.patientId);
@@ -40,7 +36,6 @@ export const Results: React.FC = () => {
     addSessionToHistory(session.patientId, session);
   }, [session]);
 
-  // 세션이 없으면 안내 후 사용자가 직접 이동 (audit #21, F1 동일 패턴)
   if (!session) {
     return (
       <EmptyState
@@ -58,116 +53,201 @@ export const Results: React.FC = () => {
     );
   }
 
-  const {
-    selectedJointIds,
-    patientName,
-    patientAge,
-    patientId,
-  } = session;
+  const { selectedJointIds, patientName, patientAge, patientId } = session;
 
-  // 환자 히스토리 + 첫 측정 (변화량 계산용)
   const history = patientId ? getPatientHistory(patientId) : [];
-  const firstSession =
-    history.length > 0 ? history[history.length - 1] : undefined;
   const isFirstTime = history.length <= 1;
 
-  const {
-    sortedJointSideStats,
-    totalLimited,
-    totalNormal,
-    summarySentence,
-  } = computeResultsSummary(session);
+  const { sortedJointSideStats, totalLimited, totalNormal, summarySentence } =
+    computeResultsSummary(session);
 
   return (
-    <AppLayout patientId={patientId}>
-      <div className="bg-full-viewport page-bg-results">
-        <div className="container" style={{ maxWidth: "900px" }}>
-          <div className="page-header flex justify-between items-center">
-            <div>
-              <button
-                type="button"
-                className="btn btn-outline btn-small btn-back-text mb-3"
-                onClick={() => navigate(-1)}
-              >
-                ← 뒤로가기
-              </button>
-              <h1>평가 리포트 대시보드</h1>
-              <p>
-                {patientName} ({patientAge}세){" "}
-                {session.painArea && `| ${session.painArea}`}{" "}
-                {session.vasScore !== undefined && `| VAS: ${session.vasScore}`}
+    <AppShell>
+      <div className="flex flex-col gap-5">
+        {/* 헤더 */}
+        <div>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => navigate(-1)}
+            className="-ml-2 mb-2 text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)]"
+          >
+            <ArrowLeft className="size-4" />
+            뒤로가기
+          </Button>
+          <div className="flex items-start justify-between gap-3">
+            <div className="min-w-0">
+              <h1 className="text-3xl font-extrabold tracking-tight text-[var(--color-foreground)]">
+                평가 리포트
+              </h1>
+              <p className="mt-1 text-sm font-medium text-[var(--color-muted-foreground)]">
+                {patientName}
+                {patientAge ? ` · ${patientAge}세` : ""}
+                {session.painArea ? ` · ${session.painArea}` : ""}
+                {session.vasScore !== undefined ? ` · VAS ${session.vasScore}` : ""}
               </p>
             </div>
-            <button className="btn btn-secondary" onClick={() => window.print()}>
-              리포트 인쇄
-            </button>
-          </div>
-
-          <StatRow
-            jointCount={selectedJointIds.length}
-            totalLimited={totalLimited}
-            totalNormal={totalNormal}
-            summarySentence={summarySentence}
-          />
-
-          {!isFirstTime && (
-            <div
-              className="panel clickable mt-4"
-              onClick={() => navigate(`/trends?patientId=${patientId}`)}
-              style={{
-                border: "1px solid var(--primary)",
-                background: "var(--bg-color)",
-                cursor: "pointer",
-              }}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => window.print()}
+              className="shrink-0"
             >
-              <div className="panel-header">
-                <h3 className="icon-text">
-                  <TrendingUp size={20} /> 경과 관찰 (초기 대비)
-                </h3>
-                <span className="badge badge-primary">
-                  총 {history.length}회 측정
-                </span>
-              </div>
-              <p style={{ fontSize: "var(--text-sm)", padding: "0 1.25rem 1rem" }}>
-                첫 측정 대비 변화량 확인 (클릭 시 추이 분석)
-              </p>
-            </div>
-          )}
-
-          <div className="dashboard-layout single-col mt-6">
-            {sortedJointSideStats.map((stat, idx) => {
-              // 가장 제한이 큰 첫 카드에만 강조 — 심각한제한 포함 시 danger, 아니면 warning
-              const isWorst = idx === 0 && stat.limitedCount > 0;
-              const emphasisColor = isWorst
-                ? stat.hasSevere
-                  ? "var(--danger)"
-                  : "var(--warning)"
-                : undefined;
-              return (
-                <JointSideResult
-                  key={`${stat.jointId}-${stat.side}`}
-                  session={session}
-                  jointId={stat.jointId}
-                  side={stat.side}
-                  firstSession={firstSession}
-                  emphasisColor={emphasisColor}
-                />
-              );
-            })}
-          </div>
-
-          <div style={{ marginTop: "2rem" }}>
-            <div className="action-bar">
-              <button
-                className="btn btn-primary flex items-center justify-center gap-2"
-                onClick={() => navigate("/ces")}
-              >
-                <Dumbbell size={20} /> CES 재활 시작
-              </button>
-            </div>
+              <Printer className="size-4" />
+              인쇄
+            </Button>
           </div>
         </div>
+
+        {/* 3-Stat 그리드 */}
+        <Card className="grid grid-cols-3 divide-x divide-[var(--color-border)]">
+          <Stat label="측정 관절" value={selectedJointIds.length} sub="개" />
+          <Stat
+            label="제한 동작"
+            value={totalLimited}
+            sub="개"
+            valueColor={
+              totalLimited > 0 ? "var(--color-destructive)" : undefined
+            }
+          />
+          <Stat
+            label="정상 동작"
+            value={totalNormal}
+            sub="개"
+            valueColor={totalNormal > 0 ? "oklch(0.55 0.15 150)" : undefined}
+          />
+        </Card>
+
+        {/* 요약 배너 — 아이콘 + 굵은 헤더 + 본문 */}
+        <SummaryBanner totalLimited={totalLimited} summarySentence={summarySentence} />
+
+        {/* 경과 관찰 링크 카드 */}
+        {!isFirstTime && (
+          <button
+            type="button"
+            onClick={() => navigate(`/trends?patientId=${patientId}`)}
+            className="group flex w-full items-center justify-between rounded-xl border border-[var(--color-accent)]/30 bg-[var(--color-accent)]/5 p-4 text-left transition-colors hover:bg-[var(--color-accent)]/10"
+          >
+            <div className="flex items-center gap-3">
+              <div className="flex size-9 items-center justify-center rounded-md bg-[var(--color-accent)]/15 text-[var(--color-accent)]">
+                <TrendingUp className="size-4" />
+              </div>
+              <div>
+                <div className="text-sm font-bold text-[var(--color-foreground)]">
+                  경과 관찰
+                </div>
+                <div className="text-xs text-[var(--color-muted-foreground)]">
+                  첫 측정 대비 변화량 · 총 {history.length}회
+                </div>
+              </div>
+            </div>
+            <span className="text-xs font-semibold text-[var(--color-accent)]">
+              보기 →
+            </span>
+          </button>
+        )}
+
+        {/* 관절별 결과 카드들 */}
+        <div className="flex flex-col gap-3">
+          {sortedJointSideStats.map((stat, idx) => {
+            const isWorst = idx === 0 && stat.limitedCount > 0;
+            const emphasis = isWorst
+              ? stat.hasSevere
+                ? "danger"
+                : "warning"
+              : null;
+            return (
+              <JointResultCard
+                key={`${stat.jointId}-${stat.side}`}
+                session={session}
+                jointId={stat.jointId}
+                side={stat.side}
+                emphasis={emphasis as "danger" | "warning" | null}
+              />
+            );
+          })}
+        </div>
+
+        {/* CTA — CES 재활 시작 (가민 블루 강조) */}
+        <Button
+          onClick={() => navigate("/ces")}
+          size="lg"
+          className="w-full bg-[var(--color-accent)] hover:bg-[var(--color-accent)]/90 text-[var(--color-accent-foreground)]"
+        >
+          <Dumbbell className="size-4" />
+          CES 재활 시작
+        </Button>
       </div>
-    </AppLayout>
+    </AppShell>
+  );
+};
+
+// ─────────────────────────────────────────
+const Stat: React.FC<{
+  label: string;
+  value: React.ReactNode;
+  sub?: React.ReactNode;
+  valueColor?: string;
+}> = ({ label, value, sub, valueColor }) => (
+  <div className="flex flex-col gap-1.5 p-4">
+    <div className="text-xs font-semibold text-[var(--color-muted-foreground)]">
+      {label}
+    </div>
+    <div className="flex items-baseline gap-1">
+      <span
+        className="font-mono text-4xl font-bold tabular-nums leading-none"
+        style={{ color: valueColor ?? "var(--color-foreground)" }}
+      >
+        {value}
+      </span>
+      {sub && (
+        <span className="text-sm font-mono font-semibold text-[var(--color-muted-foreground)]">
+          {sub}
+        </span>
+      )}
+    </div>
+  </div>
+);
+
+const SummaryBanner: React.FC<{
+  totalLimited: number;
+  summarySentence: string;
+}> = ({ totalLimited, summarySentence }) => {
+  const isLimited = totalLimited > 0;
+  const accent = isLimited ? "var(--color-destructive)" : "oklch(0.55 0.15 150)";
+
+  return (
+    <div
+      className="rounded-xl border-l-4 p-4"
+      style={{
+        background: `color-mix(in oklch, ${accent} 8%, var(--color-card))`,
+        borderLeftColor: accent,
+        borderTop: `1px solid color-mix(in oklch, ${accent} 20%, transparent)`,
+        borderRight: `1px solid color-mix(in oklch, ${accent} 20%, transparent)`,
+        borderBottom: `1px solid color-mix(in oklch, ${accent} 20%, transparent)`,
+      }}
+    >
+      <div className="flex items-start gap-3">
+        <div
+          className="flex size-9 shrink-0 items-center justify-center rounded-lg"
+          style={{ background: `color-mix(in oklch, ${accent} 18%, transparent)`, color: accent }}
+        >
+          {isLimited ? <AlertTriangle className="size-5" /> : <CheckCircle className="size-5" />}
+        </div>
+        <div className="min-w-0 flex-1">
+          <div
+            className="text-sm font-bold leading-tight"
+            style={{ color: accent }}
+          >
+            {isLimited
+              ? `제한 동작 ${totalLimited}개 발견`
+              : "전 동작 정상 범위 도달"}
+          </div>
+          <p className="mt-1 text-sm font-medium leading-relaxed text-[var(--color-foreground)]">
+            {summarySentence}
+          </p>
+        </div>
+      </div>
+    </div>
   );
 };

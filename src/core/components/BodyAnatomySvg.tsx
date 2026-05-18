@@ -1,5 +1,6 @@
 // BodyAnatomySvg.tsx — flutter_body_atlas 패키지를 로드하는 iframe (PRD 4-0: 200줄 이하)
-import React, { useEffect, useRef, useCallback } from "react";
+import React, { useEffect, useRef, useCallback, useState } from "react";
+import { Loader2 } from "lucide-react";
 import type { CesPhase } from "../../lib/ces/CesPlayerTypes";
 import { PHASE_META } from "../../lib/ces/CesPlayerTypes";
 
@@ -12,7 +13,6 @@ interface BodyAnatomySvgProps {
 /**
  * [audit #19] 근육 색칠 정확도 디버깅용 로그 헬퍼.
  * import.meta.env.DEV 가드로 dev 서버에서만 출력하고 프로덕션 번들에서는 제거된다.
- * 새로운 진단 로그가 필요하면 여기에 dbg(...) 호출을 추가하면 prefix 가 자동 적용된다.
  */
 const dbg = (...args: unknown[]): void => {
   if (import.meta.env.DEV) {
@@ -26,46 +26,52 @@ export const BodyAnatomySvg: React.FC<BodyAnatomySvgProps> = ({
 }) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const lastMsgRef = useRef<string>("");
-  dbg("최종 highlightIds:", highlightIds);
+  const iframeLoadedRef = useRef<boolean>(false);
+  // 첫 비어있지 않은 highlightIds 가 Flutter 로 전송되기 전까지 true → 스피너 노출
+  const [isReady, setIsReady] = useState<boolean>(false);
+
   // Flutter 쪽에 데이터를 전송하는 핵심 함수
   const syncState = useCallback(
     (force = false) => {
       if (!iframeRef.current || !iframeRef.current.contentWindow) return;
+      // [5번 root fix] 비어있는 highlightIds 는 보내지 않음.
+      // 첫 mount 시 부모가 아직 prop 을 계산하지 않은 상태로 빈 배열을
+      // postMessage 해버리면 Flutter 가 빈 색칠을 적용하고 idle 해진다.
+      if (highlightIds.length === 0) return;
+      // iframe 자체가 load 되기 전이면 onLoad 핸들러가 다시 호출해 줄 것.
+      if (!iframeLoadedRef.current) return;
 
-      dbg("PHASE_META:", PHASE_META);
       const color = cesPhase ? PHASE_META[cesPhase].color : "#ff0000";
-      dbg("color:", color);
       const muscles = highlightIds.join(",");
-      dbg("muscles:", muscles);
       const msgStr = `${muscles}|${color}`;
-      dbg("msgStr1:", msgStr);
+      dbg("sync", { muscles, color, force });
 
-      // 이전 메시지와 동일하면 중복 전송하지 않음 (단, force가 true면 무조건 전송)
       if (!force && lastMsgRef.current === msgStr) return;
 
-      // Flutter 쪽에 데이터를 전송
       iframeRef.current.contentWindow.postMessage({ muscles, color }, "*");
       lastMsgRef.current = msgStr;
-      dbg("msgStr2:", msgStr);
+      setIsReady(true);
     },
     [highlightIds, cesPhase],
   );
 
-  // Prop 변경 시 즉각 반영 및 로드 대기(Flutter 엔진 부팅 시간 보완)
+  // Prop 변경 시 즉각 반영 + Flutter 엔진이 늦게 켜지는 케이스 보강 폴링
   useEffect(() => {
-    syncState(); // 즉시 1회 시도
-
-    // Flutter 엔진이 비동기로 늦게 켜지는 문제를 방지하기 위해 
-    // 처음 3초간 0.5초 간격으로 계속 `postMessage` 전송을 보장합니다.
+    syncState();
+    // 첫 비어있지 않은 sync 가 들어갈 때까지만 폴링 (Flutter 부팅 늦을 때 보강)
     let count = 0;
     const interval = setInterval(() => {
-      syncState(true); // 강제 전송
+      syncState(true);
       count++;
-      if (count > 6) clearInterval(interval); // 6회(3초) 이후 중단
+      if (count > 6) clearInterval(interval); // 3초
     }, 500);
-
     return () => clearInterval(interval);
   }, [syncState]);
+
+  const handleIframeLoad = () => {
+    iframeLoadedRef.current = true;
+    syncState(true);
+  };
 
   return (
     <div
@@ -84,10 +90,37 @@ export const BodyAnatomySvg: React.FC<BodyAnatomySvgProps> = ({
           height: "100%",
           border: "none",
           background: "transparent",
+          opacity: isReady ? 1 : 0,
+          transition: "opacity 0.2s ease",
         }}
         title="Flutter Body Atlas"
-        onLoad={() => syncState(true)} // 로딩 완료 시점에 첫 데이터 동기화 강제
+        onLoad={handleIframeLoad}
       />
+      {!isReady && (
+        <div
+          aria-label="신체 도해 로딩 중"
+          style={{
+            position: "absolute",
+            inset: 0,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "0.5rem",
+            color: "var(--color-muted-foreground)",
+            background: "transparent",
+            pointerEvents: "none",
+          }}
+        >
+          <Loader2
+            className="size-6 animate-spin"
+            style={{ color: "var(--color-accent)" }}
+          />
+          <span style={{ fontSize: "0.75rem", fontWeight: 600 }}>
+            신체 도해 준비 중…
+          </span>
+        </div>
+      )}
     </div>
   );
 };
