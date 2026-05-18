@@ -16,6 +16,7 @@ import { TimerCard } from "./cesProtocol/TimerCard";
 import { StageTabs } from "./cesProtocol/StageTabs";
 import { JointSideHeader } from "./cesProtocol/JointSideHeader";
 import { MuscleBalanceCard } from "./cesProtocol/MuscleBalanceCard";
+import { MobileTimerFooter } from "./cesProtocol/MobileTimerFooter";
 import { EmptyState } from "../core/components/EmptyState";
 
 export const CesProtocol: React.FC = () => {
@@ -93,6 +94,46 @@ export const CesProtocol: React.FC = () => {
     navigate("/ces-player", { state: { customRoutine } });
   };
 
+  // 데스크톱 사이드바·모바일 메인 양쪽에서 재사용되는 JSX 묶음
+  const stageTabsNode = (
+    <StageTabs
+      activeStage={activeStage}
+      stageCounts={{
+        inhibit: analysis.inhibit?.length ?? 0,
+        lengthen: analysis.lengthen?.length ?? 0,
+        activate: analysis.activate?.length ?? 0,
+        integrate: analysis.integrate?.length ?? 0,
+      }}
+      onSelect={(stage) => {
+        setActiveStage(stage);
+        setActiveIndex(0);
+      }}
+    />
+  );
+
+  const ctaButtonsNode = (
+    <div className="flex flex-col gap-2">
+      <button
+        type="button"
+        onClick={handleStartPlayer}
+        className="flex h-11 items-center justify-center gap-1.5 rounded-lg bg-[var(--color-accent)] text-sm font-bold text-[var(--color-accent-foreground)] hover:bg-[var(--color-accent)]/90 transition-colors"
+      >
+        <Play className="size-4" />
+        가이드 운동 시작
+        <ChevronRight className="size-4" />
+      </button>
+      <button
+        type="button"
+        onClick={() => navigate(`/trends?patientId=${session.patientId}`)}
+        className="flex h-11 items-center justify-center gap-1.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-card)] text-sm font-bold text-[var(--color-foreground)] hover:bg-[var(--color-muted)] transition-colors"
+      >
+        <CheckCircle2 className="size-4" />
+        운동 완료
+        <ChevronRight className="size-4" />
+      </button>
+    </div>
+  );
+
   return (
     <div
       data-redesign="true"
@@ -121,12 +162,12 @@ export const CesProtocol: React.FC = () => {
         </div>
       </header>
 
-      {/* 2-column 레이아웃 — 모바일에선 stack, 데스크톱(lg)에서 사이드바 */}
-      <div className="mx-auto grid max-w-6xl gap-6 px-4 py-6 lg:grid-cols-[320px_1fr] lg:items-start">
-        {/* 사이드바 — 데스크톱에서는 sticky 로 스크롤 따라옴 (헤더 sticky 높이 보정) */}
-        <aside className="flex flex-col gap-4 lg:sticky lg:top-[72px] lg:self-start lg:max-h-[calc(100vh-88px)] lg:overflow-y-auto lg:pr-1">
-          {/* 인체 도해 — 데스크톱에서만 노출 (모바일은 공간 절약) */}
-          <div className="hidden lg:flex items-center justify-center rounded-xl border border-[var(--color-border)] bg-[var(--color-muted)]/30 p-3 h-[300px]">
+      {/* 2-column 레이아웃 — 모바일에선 stack(메인만 노출), 데스크톱(lg)에서 사이드바 */}
+      <div className="mx-auto grid max-w-6xl gap-6 px-4 py-6 pb-24 lg:pb-6 lg:grid-cols-[320px_1fr] lg:items-start">
+        {/* 데스크톱 전용 사이드바 */}
+        <aside className="hidden lg:flex flex-col gap-4 lg:sticky lg:top-[72px] lg:self-start lg:max-h-[calc(100vh-88px)] lg:overflow-y-auto lg:pr-1">
+          {/* 인체 도해 */}
+          <div className="flex items-center justify-center rounded-xl border border-[var(--color-border)] bg-[var(--color-muted)]/30 p-3 h-[300px]">
             <BodyAnatomySvg
               highlightIds={targetMuscles}
               cesPhase={
@@ -141,47 +182,13 @@ export const CesProtocol: React.FC = () => {
             timerRunning={timerRunning}
             toggleTimer={toggleTimer}
             resetTimer={resetTimer}
-            currentEx={currentEx}
           />
 
-          <StageTabs
-            activeStage={activeStage}
-            stageCounts={{
-              inhibit: analysis.inhibit?.length ?? 0,
-              lengthen: analysis.lengthen?.length ?? 0,
-              activate: analysis.activate?.length ?? 0,
-              integrate: analysis.integrate?.length ?? 0,
-            }}
-            onSelect={(stage) => {
-              setActiveStage(stage);
-              setActiveIndex(0);
-            }}
-          />
-
-          {/* 액션 버튼 */}
-          <div className="flex flex-col gap-2">
-            <button
-              type="button"
-              onClick={handleStartPlayer}
-              className="flex h-11 items-center justify-center gap-1.5 rounded-lg bg-[var(--color-accent)] text-sm font-bold text-[var(--color-accent-foreground)] hover:bg-[var(--color-accent)]/90 transition-colors"
-            >
-              <Play className="size-4" />
-              가이드 운동 시작
-              <ChevronRight className="size-4" />
-            </button>
-            <button
-              type="button"
-              onClick={() => navigate(`/trends?patientId=${session.patientId}`)}
-              className="flex h-11 items-center justify-center gap-1.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-card)] text-sm font-bold text-[var(--color-foreground)] hover:bg-[var(--color-muted)] transition-colors"
-            >
-              <CheckCircle2 className="size-4" />
-              운동 완료
-              <ChevronRight className="size-4" />
-            </button>
-          </div>
+          {stageTabsNode}
+          {ctaButtonsNode}
         </aside>
 
-        {/* 메인 */}
+        {/* 메인 — 모바일은 영상 위 → 4단계 + CTA → 근육 밸런스 순 */}
         <main className="flex flex-col gap-5">
           <JointSideHeader
             jointSideList={jointSideList}
@@ -201,12 +208,26 @@ export const CesProtocol: React.FC = () => {
             onIndexChange={setActiveIndex}
           />
 
+          {/* 모바일 전용 — 4단계 탭 + CTA 가 영상 바로 밑에 */}
+          <div className="lg:hidden flex flex-col gap-3">
+            {stageTabsNode}
+            {ctaButtonsNode}
+          </div>
+
           <MuscleBalanceCard
             overactiveMuscles={analysis.overactiveMuscles}
             underactiveMuscles={analysis.underactiveMuscles}
           />
         </main>
       </div>
+
+      {/* 모바일 전용 footer — 타이머 시작/초기화 가 스크롤 따라옴 */}
+      <MobileTimerFooter
+        seconds={seconds}
+        timerRunning={timerRunning}
+        toggleTimer={toggleTimer}
+        resetTimer={resetTimer}
+      />
     </div>
   );
 };
