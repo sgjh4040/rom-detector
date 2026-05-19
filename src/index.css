@@ -24,7 +24,6 @@
 /* 레거시 CSS — 전부 @layer legacy 로 격리 */
 @import './styles/tokens.css'           layer(legacy);
 @import './styles/components.css'       layer(legacy);
-@import './styles/rom_immersive.css'    layer(legacy);
 
 /* === 신규 디자인 시스템 (unlayered, 최우선) === */
 @import './styles/redesign-tokens.css';

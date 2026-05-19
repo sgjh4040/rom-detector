@@ -59,8 +59,11 @@ export const AngleDial: React.FC<Props> = ({ value, maxVal, normalVal }) => {
   const isNormal = severity === "정상";
 
   return (
-    <div className="angle-dial">
-      <svg viewBox="0 0 220 130" className="angle-dial__svg">
+    <div className="relative w-full max-w-[300px] min-[481px]:max-w-[360px] mx-auto mt-2 mb-5">
+      <svg
+        viewBox="0 0 220 130"
+        className="w-full h-auto block overflow-visible"
+      >
         {/* 배경 반원 (연한 회색) */}
         <path
           d={`M ${START_X} ${START_Y} A ${R} ${R} 0 0 1 ${CX + R} ${CY}`}
@@ -108,16 +111,24 @@ export const AngleDial: React.FC<Props> = ({ value, maxVal, normalVal }) => {
       </svg>
 
       {/* 중앙 숫자 (SVG 밖 오버레이로 배치) */}
-      <div className="angle-dial__center">
-        <div className="angle-dial__value" style={{ color }}>
+      <div className="absolute left-1/2 top-[68%] -translate-x-1/2 -translate-y-1/2 text-center pointer-events-none leading-none">
+        <div
+          className="text-[2.2rem] min-[481px]:text-[2.8rem] font-black tabular-nums tracking-[-0.02em] transition-colors duration-[250ms]"
+          style={{ color }}
+        >
           {value}
-          <span className="angle-dial__unit">°</span>
+          <span className="text-[1.1rem] min-[481px]:text-[1.4rem] text-[var(--text-secondary)] ml-[0.1rem] font-bold">
+            °
+          </span>
         </div>
         {normalVal > 0 && (
-          <div className="angle-dial__target">
+          <div className="mt-[0.35rem] text-xs text-[var(--text-secondary)] font-semibold tracking-wide">
             {isNormal ? (
-              <span className="angle-dial__target--normal">
-                <span className="angle-dial__target-dot" style={{ background: color }} />
+              <span className="inline-flex items-center gap-[0.3rem] text-[#22C55E] font-extrabold">
+                <span
+                  className="w-1.5 h-1.5 rounded-full"
+                  style={{ background: color }}
+                />
                 정상 범위
               </span>
             ) : (
