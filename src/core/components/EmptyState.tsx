@@ -1,7 +1,8 @@
 // EmptyState.tsx — 앱 전반의 "데이터/기록 없음" 빈 상태 통합 컴포넌트.
 // 기존 4곳(EmptyPatientState / NeumoDashboard / CesInfo / Results)에서 제각각 구현되던
-// 빈 상태를 단일 컴포넌트로 통일. 모든 시각/CSS 는 components.css 의 .empty-state 클래스로 격리.
+// 빈 상태를 단일 컴포넌트로 통일. 시각은 Tailwind utility 로 인라인 (Phase 3 Tier 2a 마이그레이션).
 import React from "react";
+import { cn } from "../../lib/cn";
 
 interface EmptyStateCta {
   label: string;
@@ -29,6 +30,35 @@ interface EmptyStateProps {
   fullScreen?: boolean;
 }
 
+const INNER_SIZE_CLASSES: Record<"sm" | "md" | "lg", string> = {
+  sm: "max-w-[360px] px-5 py-6 gap-3",
+  md: "max-w-[520px] px-6 py-9 gap-4",
+  lg: "max-w-[560px] px-8 py-10 gap-5 bg-[var(--glass-bg-strong)] border border-white/45 rounded-lg shadow-[0_12px_32px_rgba(0,0,0,0.06)]",
+};
+
+const ICON_SIZE_CLASSES: Record<"sm" | "md" | "lg", string> = {
+  sm: "text-2xl opacity-55",
+  md: "text-3xl opacity-50 w-16 h-16",
+  lg: "w-[88px] h-[88px] rounded-full bg-gradient-to-br from-indigo-500/15 to-indigo-500/5 mb-1",
+};
+
+const TITLE_SIZE_CLASSES: Record<"sm" | "md" | "lg", string> = {
+  sm: "text-base",
+  md: "text-lg",
+  lg: "text-xl",
+};
+
+const DESC_SIZE_CLASSES: Record<"sm" | "md" | "lg", string> = {
+  sm: "text-xs opacity-85",
+  md: "text-sm opacity-80",
+  lg: "text-base",
+};
+
+const CTA_VARIANT_CLASSES: Record<"block" | "pill", string> = {
+  block: "w-full px-5 py-[0.85rem] rounded-md text-base",
+  pill: "px-7 py-3 rounded-full text-base",
+};
+
 export const EmptyState: React.FC<EmptyStateProps> = ({
   icon,
   title,
@@ -39,32 +69,62 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
   fullScreen,
 }) => {
   const inner = (
-    <div className="empty-state__inner" data-size={size}>
-      <div className="empty-state__icon" aria-hidden="true">
+    <div
+      className={cn(
+        "w-full flex flex-col items-center text-center gap-4",
+        INNER_SIZE_CLASSES[size],
+      )}
+    >
+      <div
+        className={cn(
+          "inline-flex items-center justify-center text-[var(--primary)]",
+          ICON_SIZE_CLASSES[size],
+        )}
+        aria-hidden="true"
+      >
         {icon}
       </div>
-      <h2 className="empty-state__title">{title}</h2>
-      {description && <p className="empty-state__desc">{description}</p>}
+      <h2
+        className={cn(
+          "font-black text-[var(--text-primary)] tracking-[-0.02em] m-0",
+          TITLE_SIZE_CLASSES[size],
+        )}
+      >
+        {title}
+      </h2>
+      {description && (
+        <p
+          className={cn(
+            "text-[var(--text-secondary)] font-semibold leading-relaxed m-0",
+            DESC_SIZE_CLASSES[size],
+          )}
+        >
+          {description}
+        </p>
+      )}
       {cta && (
         <button
           type="button"
-          className={`empty-state__cta empty-state__cta--${cta.variant ?? "block"}`}
+          className={cn(
+            "inline-flex items-center justify-center gap-2 bg-[var(--primary)] text-white border-0 font-extrabold cursor-pointer transition-all mt-2 hover:bg-[#4a5cb0] hover:-translate-y-px hover:shadow-[0_6px_16px_rgba(92,107,192,0.25)]",
+            CTA_VARIANT_CLASSES[cta.variant ?? "block"],
+          )}
           onClick={cta.onClick}
         >
           {cta.icon}
           {cta.label}
         </button>
       )}
-      {extra && <div className="empty-state__extra">{extra}</div>}
+      {extra && <div className="w-full">{extra}</div>}
     </div>
   );
 
   if (fullScreen) {
     return (
-      <div className="empty-state empty-state--fullscreen">
+      <div className="flex items-center justify-center min-h-screen px-5 py-8">
         {inner}
       </div>
     );
   }
-  return <div className="empty-state">{inner}</div>;
+  return <div className="flex items-center justify-center">{inner}</div>;
 };
