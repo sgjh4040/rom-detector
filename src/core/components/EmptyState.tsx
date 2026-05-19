@@ -49,7 +49,7 @@ const TITLE_SIZE_CLASSES: Record<"sm" | "md" | "lg", string> = {
 };
 
 const DESC_SIZE_CLASSES: Record<"sm" | "md" | "lg", string> = {
-  sm: "text-xs opacity-85",
+  sm: "text-xs opacity-[0.85]",
   md: "text-sm opacity-80",
   lg: "text-base",
 };

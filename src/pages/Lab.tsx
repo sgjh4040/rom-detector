@@ -94,7 +94,7 @@ export const Lab: React.FC = () => {
 
         <div className="mb-12">
           <h2 className="mb-6">🛠 JointSideResult 컴포넌트 테스트</h2>
-          <p className="mb-4 text-secondary">
+          <p className="mb-4 text-[var(--text-secondary)]">
             이 컴포넌트는 특정 관절(예: 어깨)의 모든 동작 결과와 게이지를
             리스트로 보여줍니다.
           </p>

@@ -70,7 +70,7 @@ export const JointSideResult: React.FC<JointSideResultProps> = ({
           {joint.isSymmetric ? "" : ` — ${side}`}
         </h3>
         <span
-          className={`badge icon-text icon-text--sm ${hasLimitation ? "badge-warning" : "badge-success"}`}
+          className={`badge inline-flex items-center gap-1 ${hasLimitation ? "badge-warning" : "badge-success"}`}
         >
           {hasLimitation ? (
             <>

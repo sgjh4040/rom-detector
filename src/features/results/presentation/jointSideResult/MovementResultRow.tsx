@@ -78,7 +78,7 @@ export const MovementResultRow: React.FC<MovementResultRowProps> = ({
       >
         {res.isQualitative ? (
           <div
-            className="icon-text icon-text--sm"
+            className="inline-flex items-center gap-1"
             style={{
               fontSize: "var(--text-base)",
               fontWeight: 800,
