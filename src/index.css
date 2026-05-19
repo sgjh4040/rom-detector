@@ -23,7 +23,6 @@
 
 /* 레거시 CSS — 전부 @layer legacy 로 격리 */
 @import './styles/tokens.css'           layer(legacy);
-@import './styles/base.css'             layer(legacy);
 @import './styles/components.css'       layer(legacy);
 @import './styles/empty_state.css'      layer(legacy);
 @import './styles/utilities.css'        layer(legacy);

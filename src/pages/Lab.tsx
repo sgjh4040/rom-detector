@@ -2,8 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { RomGauge } from "../features/results/presentation/RomGauge";
 import { JointSideResult } from "../features/results/presentation/JointSideResult";
-import { AppLayout } from "../core/components/AppLayout";
-import { loadRomSession } from "../lib/romTypes";
+import { AppShell } from "../components/redesign/AppShell";
 import type { RomSession } from "../lib/romTypes";
 
 const mockShoulderSession: RomSession = {
@@ -27,13 +26,17 @@ const mockShoulderSession: RomSession = {
 
 export const Lab: React.FC = () => {
   const navigate = useNavigate();
-  const session = loadRomSession();
 
   return (
-    <AppLayout patientId={session?.patientId}>
-      <div className="bg-full-viewport page-bg-home" style={{ padding: "2rem" }}>
-      <div className="container">
-        <div className="page-header flex justify-between items-center mb-8">
+    <AppShell>
+      <div className="flex flex-col gap-5">
+        <div
+          className="flex justify-between items-center rounded-lg border border-white/40 p-6 backdrop-blur-xl"
+          style={{
+            background: "var(--glass-bg-strong)",
+            boxShadow: "var(--shadow-md)",
+          }}
+        >
           <div>
             <h1>Component Lab</h1>
             <p>개별 컴포넌트 디자인 확인 페이지</p>
@@ -105,13 +108,12 @@ export const Lab: React.FC = () => {
         </div>
 
         <div className="mt-10 p-6 bg-white/50 rounded-xl border border-dashed border-primary/30">
-          <p className="text-center text-sm text-secondary">
+          <p className="text-center text-sm text-[var(--color-muted-foreground)]">
             💡 이 페이지는 개발/검토용 임시 페이지입니다. 실구동 시에는 보이지
             않게 처리될 수 있습니다.
           </p>
         </div>
       </div>
-      </div>
-    </AppLayout>
+    </AppShell>
   );
 };

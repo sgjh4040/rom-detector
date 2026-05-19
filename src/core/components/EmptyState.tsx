@@ -27,8 +27,6 @@ interface EmptyStateProps {
   size?: "sm" | "md" | "lg";
   /** 풀스크린 래퍼로 감쌀지 (홈 첫 진입 케이스에서 true). 부모가 이미 카드면 false */
   fullScreen?: boolean;
-  /** fullScreen 일 때 배경에 추가할 클래스 (예: page-bg-home) */
-  fullScreenBgClass?: string;
 }
 
 export const EmptyState: React.FC<EmptyStateProps> = ({
@@ -39,7 +37,6 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
   extra,
   size = "md",
   fullScreen,
-  fullScreenBgClass,
 }) => {
   const inner = (
     <div className="empty-state__inner" data-size={size}>
@@ -64,9 +61,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
 
   if (fullScreen) {
     return (
-      <div
-        className={`empty-state empty-state--fullscreen ${fullScreenBgClass ?? ""}`.trim()}
-      >
+      <div className="empty-state empty-state--fullscreen">
         {inner}
       </div>
     );
