@@ -1,5 +1,6 @@
 import React from "react";
 import type { Severity } from "../../../lib/romData";
+import { Badge } from "../../../components/redesign/ui/Badge";
 
 interface RomGaugeProps {
   label: string;
@@ -104,11 +105,17 @@ export const RomGauge: React.FC<RomGaugeProps> = ({
             textAlign: "center",
           }}
         >
-          <span
-            className={`badge ${severity === "정상" ? "badge-success" : severity === "심각한제한" ? "badge-danger" : "badge-warning"}`}
+          <Badge
+            variant={
+              severity === "정상"
+                ? "success"
+                : severity === "심각한제한"
+                  ? "destructive"
+                  : "warning"
+            }
           >
             {severity}
-          </span>
+          </Badge>
         </div>
       </div>
     </div>

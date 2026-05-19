@@ -2,6 +2,7 @@
 // 사진 위에 ① 팔 끝점 A → ② 관절 중심 → ③ 팔 끝점 B 클릭하도록 가이드.
 import React from "react";
 import { Pointer, CheckCircle } from "lucide-react";
+import { Badge } from "../../../components/redesign/ui/Badge";
 
 const STEP_GUIDE = [
   "① 팔 끝점 A 클릭",
@@ -46,18 +47,13 @@ export const Steps: React.FC<StepsProps> = ({ pointCount }) => {
       </p>
       <div className="flex gap-2">
         {STEP_GUIDE.map((_, i) => (
-          <span
+          <Badge
             key={i}
-            className={`badge ${i < pointCount ? "badge-success" : "badge-outline"}`}
-            style={{
-              flex: 1,
-              fontSize: "var(--text-xs)",
-              textAlign: "center",
-              padding: "0.4rem",
-            }}
+            variant={i < pointCount ? "success" : "outline"}
+            className="flex-1 justify-center"
           >
             {i < pointCount ? "✓" : `${i + 1}`}
-          </span>
+          </Badge>
         ))}
       </div>
     </div>

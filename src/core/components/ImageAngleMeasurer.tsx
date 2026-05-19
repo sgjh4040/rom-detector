@@ -5,6 +5,7 @@ import { useAngleMeasurer } from "./useAngleMeasurer";
 import { RotateCcw, Camera } from "lucide-react";
 import { Steps } from "./imageAngleMeasurer/Steps";
 import { Result } from "./imageAngleMeasurer/Result";
+import { Button } from "../../components/redesign/ui/Button";
 
 interface Props {
   /** 각도 확정 시 호출 — 측정값을 입력란에 자동 반영 */
@@ -37,19 +38,8 @@ export const ImageAngleMeasurer: React.FC<Props> = ({ onAngleConfirmed }) => {
     >
       {/* 상단 버튼 — 사진 불러오기 + 다시 */}
       <div className="flex gap-3 mb-4">
-        <label
-          className="btn btn-outline"
-          style={{
-            flex: 1,
-            textAlign: "center",
-            cursor: "pointer",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "8px",
-          }}
-        >
-          <Camera size={14} className="inline mr-1" /> 사진 불러오기
+        <label className="flex-1 inline-flex items-center justify-center gap-2 h-9 px-3.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-background)] text-sm font-bold text-[var(--color-foreground)] hover:bg-[var(--color-muted)] transition-colors cursor-pointer">
+          <Camera size={14} /> 사진 불러오기
           <input
             type="file"
             accept="image/*"
@@ -58,14 +48,14 @@ export const ImageAngleMeasurer: React.FC<Props> = ({ onAngleConfirmed }) => {
           />
         </label>
         {imageDataUrl && (
-          <button
+          <Button
             type="button"
-            className="btn btn-primary"
+            variant="default"
             onClick={resetPoints}
-            style={{ flex: 0, minWidth: "80px" }}
+            className="shrink-0 min-w-[80px]"
           >
             <RotateCcw size={14} /> 다시
-          </button>
+          </Button>
         )}
       </div>
 

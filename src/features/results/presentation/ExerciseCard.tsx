@@ -1,12 +1,14 @@
 import React from 'react';
 import type { Exercise } from '../../../lib/romData';
 import { PlayCircle } from 'lucide-react';
+import { Card } from '../../../components/redesign/ui/Card';
+import { Badge } from '../../../components/redesign/ui/Badge';
 
 interface ExerciseCardProps { exercise: Exercise; }
 
 /** TrackActive 스타일 운동 카드 — 이미지 상단 전체 + 하단 정보 */
 export const ExerciseCard: React.FC<ExerciseCardProps> = ({ exercise }) => (
-    <div className="card" style={{ padding: 0, overflow: 'hidden', marginBottom: '1rem' }}>
+    <Card className="overflow-hidden mb-4 p-0">
         {/* 이미지 + 플레이 오버레이 */}
         <div style={{ position: 'relative', width: '100%', aspectRatio: '16/9', backgroundColor: 'var(--primary-light)' }}>
             <img
@@ -29,11 +31,12 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({ exercise }) => (
                 </div>
             </div>
             {/* 유형 뱃지 */}
-            <span
-                className={`badge ${exercise.type === 'stretching' ? 'badge-success' : 'badge-warning'}`}
-                style={{ position: 'absolute', top: '0.6rem', left: '0.6rem' }}>
+            <Badge
+                variant={exercise.type === 'stretching' ? 'success' : 'warning'}
+                className="absolute top-2.5 left-2.5"
+            >
                 {exercise.type === 'stretching' ? '스트레칭' : '근력강화'}
-            </span>
+            </Badge>
         </div>
 
         {/* 텍스트 정보 */}
@@ -41,12 +44,12 @@ export const ExerciseCard: React.FC<ExerciseCardProps> = ({ exercise }) => (
             <div className="flex justify-between items-center mb-1">
                 <h3 style={{ fontSize: 'var(--text-base)' }}>{exercise.title}</h3>
                 {exercise.level && (
-                    <span className="badge badge-blue" style={{ fontSize: 'var(--text-xs)' }}>{exercise.level}</span>
+                    <Badge variant="accent">{exercise.level}</Badge>
                 )}
             </div>
             <p style={{ fontSize: 'var(--text-sm)', lineHeight: 1.55, color: 'var(--text-secondary)' }}>
                 {exercise.description}
             </p>
         </div>
-    </div>
+    </Card>
 );

@@ -1,6 +1,7 @@
 // Result.tsx — ImageAngleMeasurer 의 측정 각도 결과 + 호 반전/저장 버튼 (audit #13).
 import React from "react";
 import { RotateCcw } from "lucide-react";
+import { Button } from "../../../components/redesign/ui/Button";
 
 interface ResultProps {
   angle: number;
@@ -32,18 +33,14 @@ export const Result: React.FC<ResultProps> = ({
         >
           측정된 각도
         </span>
-        <button
+        <Button
           type="button"
-          className={`btn ${isInverted ? "btn-primary" : "btn-outline"}`}
-          style={{
-            fontSize: "var(--text-xs)",
-            padding: "0.25rem 0.75rem",
-            height: "auto",
-          }}
+          variant={isInverted ? "default" : "outline"}
+          size="sm"
           onClick={onToggleInversion}
         >
           <RotateCcw size={14} /> 호 반전 {isInverted ? "(외각)" : "(내각)"}
-        </button>
+        </Button>
       </div>
       <p
         style={{
@@ -56,13 +53,15 @@ export const Result: React.FC<ResultProps> = ({
       >
         {angle}°
       </p>
-      <button
+      <Button
         type="button"
-        className="btn btn-primary btn-large w-full"
+        variant="default"
+        size="lg"
         onClick={onSave}
+        className="w-full"
       >
         이 측정값 저장하기
-      </button>
+      </Button>
     </div>
   );
 };

@@ -15,6 +15,12 @@ const badgeVariants = cva(
           "border border-[var(--color-border)] text-[var(--color-foreground)]",
         muted:
           "bg-[var(--color-muted)] text-[var(--color-muted-foreground)]",
+        success:
+          "bg-[var(--success-bg)] text-[var(--success-text)] border border-[rgba(34,197,94,0.18)]",
+        warning:
+          "bg-[var(--warning-bg)] text-[var(--warning-text)] border border-[rgba(245,158,11,0.18)]",
+        destructive:
+          "bg-[var(--danger-bg)] text-[var(--danger-text)] border border-[rgba(239,68,68,0.18)]",
       },
     },
     defaultVariants: { variant: "default" },

@@ -5,6 +5,7 @@ import { JOINTS, calculateSeverity } from "../../../lib/romData";
 import { AlertTriangle, CheckCircle } from "lucide-react";
 import type { RomSession, Side } from "../../../lib/romData";
 import { MovementResultRow } from "./jointSideResult/MovementResultRow";
+import { Badge } from "../../../components/redesign/ui/Badge";
 
 interface JointSideResultProps {
   session: RomSession;
@@ -69,8 +70,9 @@ export const JointSideResult: React.FC<JointSideResultProps> = ({
           {joint.name}
           {joint.isSymmetric ? "" : ` — ${side}`}
         </h3>
-        <span
-          className={`badge inline-flex items-center gap-1 ${hasLimitation ? "badge-warning" : "badge-success"}`}
+        <Badge
+          variant={hasLimitation ? "warning" : "success"}
+          className="gap-1"
         >
           {hasLimitation ? (
             <>
@@ -81,7 +83,7 @@ export const JointSideResult: React.FC<JointSideResultProps> = ({
               <CheckCircle size={14} /> 정상
             </>
           )}
-        </span>
+        </Badge>
       </div>
       {results.map((res) => (
         <MovementResultRow key={res.id} res={res} />

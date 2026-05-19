@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { RomGauge } from "../features/results/presentation/RomGauge";
 import { JointSideResult } from "../features/results/presentation/JointSideResult";
 import { AppShell } from "../components/redesign/AppShell";
+import { Button } from "../components/redesign/ui/Button";
+import { Card } from "../components/redesign/ui/Card";
 import type { RomSession } from "../lib/romTypes";
 
 const mockShoulderSession: RomSession = {
@@ -41,14 +43,14 @@ export const Lab: React.FC = () => {
             <h1>Component Lab</h1>
             <p>개별 컴포넌트 디자인 확인 페이지</p>
           </div>
-          <button className="btn btn-outline" onClick={() => navigate("/")}>
+          <Button variant="outline" onClick={() => navigate("/")}>
             메인으로
-          </button>
+          </Button>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
           {/* CASE 1: 정상 (85% 이상) */}
-          <div className="card">
+          <Card className="p-5">
             <h3 className="mb-4">Case 1: 정상 범위</h3>
             <RomGauge
               label="어깨 굴곡 (정상)"
@@ -56,10 +58,10 @@ export const Lab: React.FC = () => {
               normal={180}
               severity="정상"
             />
-          </div>
+          </Card>
 
           {/* CASE 2: 경도 제한 (65% ~ 84%) */}
-          <div className="card">
+          <Card className="p-5">
             <h3 className="mb-4">Case 2: 경도 제한</h3>
             <RomGauge
               label="어깨 신전 (경도)"
@@ -67,10 +69,10 @@ export const Lab: React.FC = () => {
               normal={60}
               severity="경도제한"
             />
-          </div>
+          </Card>
 
           {/* CASE 3: 중등도 제한 (45% ~ 64%) */}
-          <div className="card">
+          <Card className="p-5">
             <h3 className="mb-4">Case 3: 중등도 제한</h3>
             <RomGauge
               label="무릎 굴곡 (중등도)"
@@ -78,10 +80,10 @@ export const Lab: React.FC = () => {
               normal={135}
               severity="중등도제한"
             />
-          </div>
+          </Card>
 
           {/* CASE 4: 심각한 제한 (45% 미만) */}
-          <div className="card">
+          <Card className="p-5">
             <h3 className="mb-4">Case 4: 심각한 제한</h3>
             <RomGauge
               label="고관절 외전 (심각)"
@@ -89,7 +91,7 @@ export const Lab: React.FC = () => {
               normal={45}
               severity="심각한제한"
             />
-          </div>
+          </Card>
         </div>
 
         <div className="mb-12">
