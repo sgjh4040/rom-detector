@@ -1,18 +1,10 @@
 /* index.css — 디자인 시스템 진입점
  *
- * Cascade Layer 전략 (redesign-spike, 2026-05-17):
- *   theme < base < legacy < components < utilities
- *
- * 의도:
- *   - Tailwind preflight (base) 는 가장 낮음 → 레거시 h1/ul/img 스타일이 살아남음
- *   - 레거시 CSS 는 base 보다 위 → 기존 페이지들이 깨지지 않음
- *   - Tailwind utility 와 component 는 최상위 → 신규 페이지의 rounded-lg/mx-auto 등이 항상 이김
- *   - unlayered (redesign-tokens.css 의 :root override) → 최강 → --radius-lg 8px 강제
- *
- * 결과: 신규 페이지는 깨끗하게 동작, 레거시 페이지는 그대로 유지.
+ * Phase 3 (2026-05-20) 완료 후 구조:
+ *   - 모든 legacy CSS 파일 제거 — 이전엔 @layer legacy 로 격리
+ *   - 디자인 토큰만 남음 (CSS 변수)
+ *   - 스타일링은 전부 Tailwind utility + redesign UI 컴포넌트
  */
-
-@layer theme, base, legacy, components, utilities;
 
 @import "tailwindcss";
 
@@ -21,8 +13,6 @@
 @import '@fontsource-variable/geist-mono/index.css';
 @import 'pretendard/dist/web/variable/pretendardvariable.css';
 
-/* 레거시 CSS — 전부 @layer legacy 로 격리 */
-@import './styles/tokens.css'           layer(legacy);
-
-/* === 신규 디자인 시스템 (unlayered, 최우선) === */
+/* === 디자인 토큰 (CSS 변수) === */
+@import './styles/tokens.css';
 @import './styles/redesign-tokens.css';
