@@ -2,7 +2,6 @@
 // 사이드바·다크 글래스 제거, 화이트 BG + 가민 블루 톤.
 import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { ArrowLeft, ArrowRight, Check } from "lucide-react";
 import {
   JOINTS,
   loadRomSession,
@@ -15,6 +14,8 @@ import type { RomSession, Side } from "../lib/romData";
 import { AngleDisplayPanel } from "../features/measurement/presentation/AngleDisplayPanel";
 import { FastInputControls } from "../features/measurement/presentation/FastInputControls";
 import { QualitativeInput } from "../features/measurement/presentation/QualitativeInput";
+import { MeasurementHeader } from "./romMeasurement/MeasurementHeader";
+import { MeasurementFooter } from "./romMeasurement/MeasurementFooter";
 
 export const RomMeasurement: React.FC = () => {
   const navigate = useNavigate();
@@ -127,40 +128,14 @@ export const RomMeasurement: React.FC = () => {
       data-redesign="true"
       className="min-h-svh flex flex-col bg-[var(--color-background)] text-[var(--color-foreground)] font-sans"
     >
-      {/* 상단 헤더 */}
-      <header className="sticky top-0 z-30 border-b border-[var(--color-border)] bg-[var(--color-background)]/95 backdrop-blur">
-        <div className="mx-auto flex max-w-2xl items-center gap-3 px-4 py-3">
-          <button
-            type="button"
-            onClick={handlePrevMovement}
-            aria-label="이전"
-            className="flex size-9 shrink-0 items-center justify-center rounded-md text-[var(--color-muted-foreground)] hover:bg-[var(--color-muted)] hover:text-[var(--color-foreground)] transition-colors"
-          >
-            <ArrowLeft className="size-5" />
-          </button>
-          <div className="min-w-0 flex-1">
-            <div className="truncate text-base font-bold text-[var(--color-foreground)]">
-              {joint.name} <span className="text-[var(--color-muted-foreground)]">· {side}</span>
-            </div>
-            <div className="text-xs text-[var(--color-muted-foreground)]">
-              동작 {currentMovIdx + 1} / {totalMovSteps}
-            </div>
-          </div>
-          <div className="flex shrink-0 items-baseline gap-0.5 font-mono tabular-nums">
-            <span className="text-xl font-bold text-[var(--color-foreground)]">
-              {Math.floor(overallPct)}
-            </span>
-            <span className="text-xs text-[var(--color-muted-foreground)]">%</span>
-          </div>
-        </div>
-        {/* 진행도 바 */}
-        <div className="h-1 w-full bg-[var(--color-muted)]">
-          <div
-            className="h-full bg-[var(--color-accent)] transition-all duration-500"
-            style={{ width: `${overallPct}%` }}
-          />
-        </div>
-      </header>
+      <MeasurementHeader
+        jointName={joint.name}
+        side={side}
+        currentMovIdx={currentMovIdx}
+        totalMovSteps={totalMovSteps}
+        overallPct={overallPct}
+        onPrev={handlePrevMovement}
+      />
 
       {/* 메인 */}
       <main className="flex-1 px-4 pb-24 pt-6">
@@ -191,28 +166,13 @@ export const RomMeasurement: React.FC = () => {
         </div>
       </main>
 
-      {/* 하단 다음 버튼 (sticky) */}
-      <footer className="fixed bottom-0 inset-x-0 z-30 border-t border-[var(--color-border)] bg-[var(--color-background)]/95 backdrop-blur pb-[env(safe-area-inset-bottom)]">
-        <div className="mx-auto flex max-w-2xl gap-2 px-4 py-3">
-          <button
-            type="button"
-            onClick={handlePrevMovement}
-            className="flex h-11 shrink-0 items-center gap-1.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-background)] px-4 text-sm font-bold text-[var(--color-foreground)] hover:bg-[var(--color-muted)] transition-colors"
-          >
-            <ArrowLeft className="size-4" />
-            이전
-          </button>
-          <button
-            type="button"
-            onClick={handleNextMovement}
-            className="flex h-11 flex-1 items-center justify-center gap-1.5 rounded-lg bg-[var(--color-accent)] px-4 text-sm font-bold text-[var(--color-accent-foreground)] hover:bg-[var(--color-accent)]/90 transition-colors"
-          >
-            {isLast && !nextStep && <Check className="size-4" />}
-            {nextLabel}
-            {!isLast || nextStep ? <ArrowRight className="size-4" /> : null}
-          </button>
-        </div>
-      </footer>
+      <MeasurementFooter
+        nextLabel={nextLabel}
+        isLast={isLast}
+        hasNextStep={!!nextStep}
+        onPrev={handlePrevMovement}
+        onNext={handleNextMovement}
+      />
     </div>
   );
 };

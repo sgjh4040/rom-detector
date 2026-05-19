@@ -1,7 +1,7 @@
 // Results.tsx — 측정 결과 평가 리포트 (redesign-spike, Athletic + Garmin tone)
 import React, { useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { AlertTriangle, ArrowLeft, CheckCircle, Dumbbell, FileSearch, Printer, TrendingUp } from "lucide-react";
+import { ArrowLeft, Dumbbell, FileSearch, Printer, TrendingUp } from "lucide-react";
 import {
   loadRomSession,
   addSessionToHistory,
@@ -15,6 +15,8 @@ import { AppShell } from "../components/redesign/AppShell";
 import { Card } from "../components/redesign/ui/Card";
 import { Button } from "../components/redesign/ui/Button";
 import { JointResultCard } from "../components/redesign/results/JointResultCard";
+import { Stat } from "./results/Stat";
+import { SummaryBanner } from "./results/SummaryBanner";
 
 export const Results: React.FC = () => {
   const navigate = useNavigate();
@@ -179,75 +181,5 @@ export const Results: React.FC = () => {
         </Button>
       </div>
     </AppShell>
-  );
-};
-
-// ─────────────────────────────────────────
-const Stat: React.FC<{
-  label: string;
-  value: React.ReactNode;
-  sub?: React.ReactNode;
-  valueColor?: string;
-}> = ({ label, value, sub, valueColor }) => (
-  <div className="flex flex-col gap-1.5 p-4">
-    <div className="text-xs font-semibold text-[var(--color-muted-foreground)]">
-      {label}
-    </div>
-    <div className="flex items-baseline gap-1">
-      <span
-        className="font-mono text-4xl font-bold tabular-nums leading-none"
-        style={{ color: valueColor ?? "var(--color-foreground)" }}
-      >
-        {value}
-      </span>
-      {sub && (
-        <span className="text-sm font-mono font-semibold text-[var(--color-muted-foreground)]">
-          {sub}
-        </span>
-      )}
-    </div>
-  </div>
-);
-
-const SummaryBanner: React.FC<{
-  totalLimited: number;
-  summarySentence: string;
-}> = ({ totalLimited, summarySentence }) => {
-  const isLimited = totalLimited > 0;
-  const accent = isLimited ? "var(--color-destructive)" : "oklch(0.55 0.15 150)";
-
-  return (
-    <div
-      className="rounded-xl border-l-4 p-4"
-      style={{
-        background: `color-mix(in oklch, ${accent} 8%, var(--color-card))`,
-        borderLeftColor: accent,
-        borderTop: `1px solid color-mix(in oklch, ${accent} 20%, transparent)`,
-        borderRight: `1px solid color-mix(in oklch, ${accent} 20%, transparent)`,
-        borderBottom: `1px solid color-mix(in oklch, ${accent} 20%, transparent)`,
-      }}
-    >
-      <div className="flex items-start gap-3">
-        <div
-          className="flex size-9 shrink-0 items-center justify-center rounded-lg"
-          style={{ background: `color-mix(in oklch, ${accent} 18%, transparent)`, color: accent }}
-        >
-          {isLimited ? <AlertTriangle className="size-5" /> : <CheckCircle className="size-5" />}
-        </div>
-        <div className="min-w-0 flex-1">
-          <div
-            className="text-sm font-bold leading-tight"
-            style={{ color: accent }}
-          >
-            {isLimited
-              ? `제한 동작 ${totalLimited}개 발견`
-              : "전 동작 정상 범위 도달"}
-          </div>
-          <p className="mt-1 text-sm font-medium leading-relaxed text-[var(--color-foreground)]">
-            {summarySentence}
-          </p>
-        </div>
-      </div>
-    </div>
   );
 };
