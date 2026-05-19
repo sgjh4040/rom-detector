@@ -3,10 +3,8 @@ import React from "react";
 import type { RomSession } from "../../lib/romTypes";
 import { JOINTS } from "../../lib/romData";
 import { TrendGraph } from "../../features/trends/presentation/TrendGraph";
-import {
-  JointTrendCard,
-  formatDate,
-} from "../../features/trends/presentation/JointTrendCard";
+import { JointTrendCard } from "../../features/trends/presentation/JointTrendCard";
+import { formatDate } from "../../features/trends/presentation/trendsHelpers";
 
 interface ChartsViewProps {
   reversedHistory: RomSession[];

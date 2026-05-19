@@ -1,5 +1,5 @@
 // CesInfo.tsx — CES 참고 페이지 (redesign-spike, Athletic Garmin).
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { AlertCircle, ArrowLeft } from "lucide-react";
 import { ALL_CES_DATA } from "../lib/ces";
@@ -23,15 +23,11 @@ export const CesInfo: React.FC = () => {
     () => (cesData ? Object.keys(cesData.protocol) : []),
     [cesData],
   );
+  // activeMovement 는 selectedMovement 가 currentMovements 에 없을 때 fallback
+  // (관절 전환 시 자동 첫 동작 표시). selectedMovement 자체를 재할당하지 않아 set-state-in-effect 회피.
   const activeMovement = currentMovements.includes(selectedMovement)
     ? selectedMovement
     : currentMovements[0] || "";
-
-  useEffect(() => {
-    if (activeMovement && activeMovement !== selectedMovement) {
-      setSelectedMovement(activeMovement);
-    }
-  }, [activeMovement, selectedMovement]);
 
   if (!cesData)
     return (

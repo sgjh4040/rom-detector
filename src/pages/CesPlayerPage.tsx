@@ -9,10 +9,8 @@ import { BodyAnatomySvg } from "../core/components/BodyAnatomySvg";
 import { MOCK_ROUTINE, PHASE_META } from "../lib/ces/CesPlayerTypes";
 import type { CesRoutine } from "../lib/ces/CesPlayerTypes";
 import { loadRomSession } from "../lib/romTypes";
-import {
-  StoryProgressBar,
-  findNearestExerciseStep,
-} from "./cesPlayerPage/StoryProgressBar";
+import { StoryProgressBar } from "./cesPlayerPage/StoryProgressBar";
+import { findNearestExerciseStep } from "./cesPlayerPage/stepNavigation";
 
 export const CesPlayerPage: React.FC = () => {
   const navigate = useNavigate();

@@ -1,5 +1,5 @@
 // CesProtocol.tsx — CES 재활 프로토콜 메인 페이지 (redesign-spike).
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { Dumbbell } from "lucide-react";
 import { loadRomSession, JOINTS } from "../lib/romData";
@@ -51,11 +51,6 @@ export const CesProtocol: React.FC = () => {
     });
     return list;
   }, [session]);
-
-  useEffect(() => {
-    if (jointSideList.length > 0 && !activeJointSide)
-      setActiveJointSide(jointSideList[0].id);
-  }, [jointSideList, activeJointSide]);
 
   if (!session) {
     return (
@@ -146,7 +141,7 @@ export const CesProtocol: React.FC = () => {
         <main className="flex flex-col gap-5">
           <JointSideHeader
             jointSideList={jointSideList}
-            activeJointSide={activeJointSide}
+            activeJointSide={currentJS.id}
             onChange={(id) => {
               setActiveJointSide(id);
               setActiveIndex(0);

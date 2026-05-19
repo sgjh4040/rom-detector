@@ -4,6 +4,7 @@ import { ChevronDown } from "lucide-react";
 import type { Joint, RomSession, Side } from "../../../lib/romTypes";
 import { TrendGraph } from "./TrendGraph";
 import { SparklineCard } from "./SparklineCard";
+import { formatDate } from "./trendsHelpers";
 import { cn } from "../../../lib/cn";
 
 interface JointTrendCardProps {
@@ -19,11 +20,6 @@ interface MovementSeries {
   data: { label: string; value: number }[];
   normalRange: number;
 }
-
-export const formatDate = (ts: string): string => {
-  const d = new Date(ts);
-  return `${d.getMonth() + 1}/${d.getDate()}`;
-};
 
 export const JointTrendCard: React.FC<JointTrendCardProps> = ({
   joint,

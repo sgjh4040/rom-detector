@@ -1,5 +1,5 @@
 // Trends.tsx — 측정 기록 페이지 (redesign-spike, Athletic Garmin 톤).
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { getPatientHistory, saveRomSession } from "../lib/romData";
@@ -18,8 +18,11 @@ export const Trends: React.FC = () => {
   const [viewMode, setViewMode] = useState<TrendsViewMode>("charts");
   const showCharts = viewMode === "charts";
 
-  const history = patientId ? getPatientHistory(patientId) : [];
-  const reversedHistory = [...history].reverse();
+  const history = useMemo(
+    () => (patientId ? getPatientHistory(patientId) : []),
+    [patientId],
+  );
+  const reversedHistory = useMemo(() => [...history].reverse(), [history]);
 
   const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
     history.length > 0 ? history[0].createdAt : null,

@@ -61,4 +61,5 @@ export const getTargetMuscleIds = (
 /**
  * @deprecated v2 부터 사용 금지. cesRoutineBuilder 호환을 위해 시그니처만 유지.
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const getTargetMuscles = (_name: string): string[] => [];

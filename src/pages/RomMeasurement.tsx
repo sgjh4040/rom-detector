@@ -32,8 +32,12 @@ export const RomMeasurement: React.FC = () => {
     if (!session || !joint) navigate("/");
   }, [session, joint, navigate]);
 
-  useEffect(() => {
-    if (!joint) return;
+  // URL(jointId/side) 변경 시 measurements/activeId 초기화.
+  // React 19 권장 패턴: prev key 비교 + render 단계 setState (useEffect 안에서 setState 회피).
+  const [prevKey, setPrevKey] = useState<string>("");
+  const currentKey = `${jointId}-${side}`;
+  if (joint && prevKey !== currentKey) {
+    setPrevKey(currentKey);
     const initial: Record<string, number> = {};
     joint.movements.forEach((m) => {
       initial[m.id] = 0;
@@ -41,7 +45,7 @@ export const RomMeasurement: React.FC = () => {
     const saved = session?.measurements?.[jointId]?.[side];
     setMeasurements(saved ? { ...initial, ...saved } : initial);
     setActiveId(joint.movements[0].id);
-  }, [jointId, side, joint, session]);
+  }
 
   const handleChange = useCallback(
     (val: string | number) => {
@@ -99,9 +103,11 @@ export const RomMeasurement: React.FC = () => {
       };
       saveRomSession(updated);
       setSession(updated);
-      nextStep
-        ? navigate(`/measure?joint=${nextStep.jointId}&side=${nextStep.side}`)
-        : navigate("/results");
+      if (nextStep) {
+        navigate(`/measure?joint=${nextStep.jointId}&side=${nextStep.side}`);
+      } else {
+        navigate("/results");
+      }
     }
   };
 

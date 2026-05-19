@@ -3,7 +3,7 @@
 import React from "react";
 import { Pointer, CheckCircle } from "lucide-react";
 
-export const STEP_GUIDE = [
+const STEP_GUIDE = [
   "① 팔 끝점 A 클릭",
   "② 관절 중심 클릭",
   "③ 팔 끝점 B 클릭",

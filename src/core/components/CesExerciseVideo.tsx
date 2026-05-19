@@ -44,10 +44,12 @@ export const CesExerciseVideo: React.FC<Props> = ({
     const [isPlaying, setIsPlaying] = useState(false);
 
     // mp4 source 변경 시 처음부터 (단, clickToPlay 면 자동 재생 안 함)
+    // setIsPlaying 은 비디오 DOM API (load/play) 와 함께 호출되어 외부 상태와 동기화 목적임.
     useEffect(() => {
         if (resolved.kind !== 'mp4' || !videoRef.current) return;
         if (useOverlay) {
             videoRef.current.load(); // 새 source 로드만, play 호출 X
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setIsPlaying(false);
             return;
         }
