@@ -28,10 +28,7 @@
 @import './styles/empty_state.css'      layer(legacy);
 @import './styles/utilities.css'        layer(legacy);
 @import './styles/responsive.css'       layer(legacy);
-@import './styles/dashboard.css'        layer(legacy);
-@import './styles/ces_exercise.css'     layer(legacy);
 @import './styles/rom_immersive.css'    layer(legacy);
-@import './styles/neumorphism.css'      layer(legacy);
 
 /* === 신규 디자인 시스템 (unlayered, 최우선) === */
 @import './styles/redesign-tokens.css';

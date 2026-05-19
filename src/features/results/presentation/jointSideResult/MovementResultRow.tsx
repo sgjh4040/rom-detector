@@ -28,7 +28,6 @@ export const MovementResultRow: React.FC<MovementResultRowProps> = ({
 }) => {
   return (
     <div
-      className="file-item"
       style={{
         cursor: "default",
         display: "flex",
@@ -53,7 +52,6 @@ export const MovementResultRow: React.FC<MovementResultRowProps> = ({
         }}
       >
         <p
-          className="file-name"
           style={{
             fontWeight: 800,
             fontSize: "var(--text-sm)",

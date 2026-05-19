@@ -98,6 +98,7 @@ export const CesExerciseVideo: React.FC<Props> = ({
 
             {useOverlay && !isPlaying && (
                 <div
+                    className="group"
                     style={{
                         position: 'absolute',
                         inset: 0,
@@ -110,6 +111,7 @@ export const CesExerciseVideo: React.FC<Props> = ({
                     aria-hidden="true"
                 >
                     <div
+                        className="transition-all duration-200 ease-out group-hover:scale-110 group-hover:shadow-[0_14px_36px_rgba(0,0,0,0.45)]"
                         style={{
                             width: '88px',
                             height: '88px',
@@ -119,9 +121,7 @@ export const CesExerciseVideo: React.FC<Props> = ({
                             alignItems: 'center',
                             justifyContent: 'center',
                             boxShadow: '0 10px 30px rgba(0,0,0,0.35)',
-                            transition: 'transform 0.18s ease-out',
                         }}
-                        className="ces-play-button"
                     >
                         <PlayCircle
                             size={56}

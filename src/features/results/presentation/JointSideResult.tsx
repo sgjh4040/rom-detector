@@ -58,18 +58,14 @@ export const JointSideResult: React.FC<JointSideResultProps> = ({
 
   return (
     <div
-      className="panel"
+      className="rounded-lg border border-white/40 p-5 mb-4 backdrop-blur-2xl"
       style={{
-        marginBottom: "1rem",
-        ...(emphasisTint
-          ? {
-              background: emphasisTint,
-            }
-          : {}),
+        background: emphasisTint ?? "var(--glass-bg-strong)",
+        boxShadow: "var(--shadow-md)",
       }}
     >
-      <div className="panel-header">
-        <h3>
+      <div className="flex justify-between items-center mb-2 px-5">
+        <h3 className="text-[0.9rem] m-0">
           {joint.name}
           {joint.isSymmetric ? "" : ` — ${side}`}
         </h3>
