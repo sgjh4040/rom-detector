@@ -34,7 +34,7 @@ export const ViewSegment: React.FC<ViewSegmentProps> = ({ value, onChange }) => 
             aria-selected={active}
             onClick={() => onChange(item.key)}
             className={cn(
-              "inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-bold transition-all",
+              "inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs font-bold transition-all",
               active
                 ? "bg-[var(--color-card)] text-[var(--color-foreground)] shadow-[0_1px_2px_rgba(0,0,0,0.06)]"
                 : "text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)]",
