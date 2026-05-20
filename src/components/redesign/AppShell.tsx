@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Activity, Home, TrendingUp, Dumbbell, Settings as SettingsIcon } from "lucide-react";
+import { Activity, Home, TrendingUp, Dumbbell, BookOpen, Settings as SettingsIcon } from "lucide-react";
 import { cn } from "../../lib/cn";
 import { getPatients, hasPatientHistory } from "../../lib/patientHistory";
 import { loadRomSession } from "../../lib/romTypes";
@@ -8,16 +8,17 @@ import { loadRomSession } from "../../lib/romTypes";
 type NavItem = { path: string; icon: React.ReactNode; label: string };
 
 const HOME_ITEM: NavItem = { path: "/", icon: <Home className="size-5" />, label: "홈" };
+const CESINFO_ITEM: NavItem = { path: "/cesinfo", icon: <BookOpen className="size-5" />, label: "CES 정보" };
 const SETTINGS_ITEM: NavItem = { path: "/settings", icon: <SettingsIcon className="size-5" />, label: "설정" };
 
-// 옛 main 의 AppLayout 동작 복원:
-// - 환자 없음: 홈/설정
-// - 환자 있음: 홈/측정기록/설정
-// - 환자 있고 측정기록 있음: 홈/측정기록/CES/설정
+// nav 표시 규칙:
+// - 환자 없음: 홈/CES 정보/설정
+// - 환자 있음: +측정기록
+// - 환자 있고 측정기록 있음: +프로토콜 (이전 "CES")
 // activeId 는 마지막 세션 patientId → fallback 으로 첫 번째 환자.
 const buildNav = (): NavItem[] => {
   const patients = getPatients();
-  if (patients.length === 0) return [HOME_ITEM, SETTINGS_ITEM];
+  if (patients.length === 0) return [HOME_ITEM, CESINFO_ITEM, SETTINGS_ITEM];
 
   const activeId = loadRomSession()?.patientId ?? patients[0].id;
   const items: NavItem[] = [HOME_ITEM];
@@ -27,8 +28,9 @@ const buildNav = (): NavItem[] => {
     label: "측정기록",
   });
   if (hasPatientHistory(activeId)) {
-    items.push({ path: "/ces", icon: <Dumbbell className="size-5" />, label: "CES" });
+    items.push({ path: "/ces", icon: <Dumbbell className="size-5" />, label: "프로토콜" });
   }
+  items.push(CESINFO_ITEM);
   items.push(SETTINGS_ITEM);
   return items;
 };
