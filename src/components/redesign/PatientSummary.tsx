@@ -94,7 +94,7 @@ export const PatientSummary: React.FC<PatientSummaryProps> = ({
     <div className="grid grid-cols-3 gap-4 p-5 pt-4">
       <Stat label="VAS 통증" value={vasScore} sub="/ 10" accent />
       <Stat label="측정" value={historyCount} sub="회" />
-      <Stat label="최근" value={fmtLast(lastMeasuredAt)} />
+      <Stat label="최근 측정" value={fmtLast(lastMeasuredAt)} />
     </div>
 
     {/* VAS progress bar — 오렌지 */}
