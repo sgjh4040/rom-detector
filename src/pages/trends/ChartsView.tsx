@@ -29,10 +29,12 @@ export const ChartsView: React.FC<ChartsViewProps> = ({ reversedHistory }) => (
         data={reversedHistory.map((s, idx) => ({
           label: `${idx + 1}회 (${formatDate(s.createdAt)})`,
           value: s.vasScore || 0,
+          subLabel: s.painArea ? `부위: ${s.painArea}` : undefined,
         }))}
         normalRange={10}
         targetValue={0}
         unit=""
+        maxValue={10}
       />
     </div>
 

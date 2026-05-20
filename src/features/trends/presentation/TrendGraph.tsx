@@ -14,6 +14,7 @@ import {
 interface DataPoint {
   label: string;
   value: number;
+  subLabel?: string;
 }
 
 interface TrendGraphProps {
@@ -21,6 +22,7 @@ interface TrendGraphProps {
   normalRange?: number;
   targetValue?: number;
   unit?: string;
+  maxValue?: number;
 }
 
 export const TrendGraph: React.FC<TrendGraphProps> = ({
@@ -28,6 +30,7 @@ export const TrendGraph: React.FC<TrendGraphProps> = ({
   normalRange = 180,
   targetValue,
   unit = "°",
+  maxValue,
 }) => {
   if (data.length === 0) {
     return (
@@ -43,7 +46,7 @@ export const TrendGraph: React.FC<TrendGraphProps> = ({
       ? `목표 ${targetValue}${unit}`
       : `정상 ${normalRange}${unit}`;
   const maxVal = Math.max(...data.map((d) => d.value), normalRange, referenceValue);
-  const yMax = Math.ceil(maxVal * 1.1);
+  const yMax = maxValue ?? Math.ceil(maxVal * 1.1);
 
   // 한 점만 있을 때는 dot 만 보여줘서 차트 형태 유지
   const isSinglePoint = data.length === 1;
@@ -76,23 +79,50 @@ export const TrendGraph: React.FC<TrendGraphProps> = ({
               strokeDasharray: "2 2",
               opacity: 0.3,
             }}
-            contentStyle={{
-              background: "var(--color-card)",
-              border: "1px solid var(--color-border)",
-              borderRadius: 8,
-              padding: "6px 10px",
-              fontSize: 12,
-              fontWeight: 700,
-              color: "var(--color-foreground)",
-              boxShadow: "0 4px 12px rgba(0, 0, 0, 0.08)",
+            content={({ active, payload, label }) => {
+              if (!active || !payload || payload.length === 0) return null;
+              const point = payload[0].payload as DataPoint;
+              return (
+                <div
+                  style={{
+                    background: "var(--color-card)",
+                    border: "1px solid var(--color-border)",
+                    borderRadius: 8,
+                    padding: "6px 10px",
+                    fontSize: 12,
+                    color: "var(--color-foreground)",
+                    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.08)",
+                  }}
+                >
+                  <div
+                    style={{
+                      color: "var(--color-muted-foreground)",
+                      fontWeight: 600,
+                      fontSize: 11,
+                      marginBottom: 2,
+                    }}
+                  >
+                    {label}
+                  </div>
+                  <div style={{ fontWeight: 700 }}>
+                    {point.value}
+                    {unit}
+                  </div>
+                  {point.subLabel && (
+                    <div
+                      style={{
+                        color: "var(--color-muted-foreground)",
+                        fontWeight: 600,
+                        fontSize: 11,
+                        marginTop: 2,
+                      }}
+                    >
+                      {point.subLabel}
+                    </div>
+                  )}
+                </div>
+              );
             }}
-            labelStyle={{
-              color: "var(--color-muted-foreground)",
-              fontWeight: 600,
-              fontSize: 11,
-              marginBottom: 2,
-            }}
-            formatter={(value) => [`${value}${unit}`, "값"]}
           />
           <ReferenceLine
             y={referenceValue}
