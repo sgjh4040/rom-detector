@@ -102,6 +102,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
           {description}
         </p>
       )}
+      {extra && <div className="w-full">{extra}</div>}
       {cta && (
         <button
           type="button"
@@ -115,7 +116,6 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
           {cta.label}
         </button>
       )}
-      {extra && <div className="w-full">{extra}</div>}
     </div>
   );
 

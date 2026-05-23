@@ -18,6 +18,14 @@ import { CesProtocolHeader } from "./cesProtocol/CesProtocolHeader";
 import { CesProtocolSidebar } from "./cesProtocol/CesProtocolSidebar";
 import { CtaButtons } from "./cesProtocol/CtaButtons";
 import { EmptyState } from "../core/components/EmptyState";
+import { STAGE_COLORS } from "../lib/ces/CesPlayerTypes";
+
+const EMPTY_STAGE_PREVIEW = [
+  { label: "억제", color: STAGE_COLORS.inhibit },
+  { label: "신장", color: STAGE_COLORS.lengthen },
+  { label: "활성", color: STAGE_COLORS.activate },
+  { label: "통합", color: STAGE_COLORS.integrate },
+];
 
 export const CesProtocol: React.FC = () => {
   const navigate = useNavigate();
@@ -55,15 +63,29 @@ export const CesProtocol: React.FC = () => {
   if (!session) {
     return (
       <EmptyState
-        size="md"
+        size="lg"
         fullScreen
-        icon={<Dumbbell size={48} strokeWidth={1.8} />}
+        icon={<Dumbbell size={44} strokeWidth={1.8} />}
         title="측정 세션이 없어요"
-        description="ROM 측정을 먼저 완료하면 CES 재활 프로토콜이 표시됩니다."
+        description="ROM 측정을 먼저 완료하면 약점·과활성 분석에 맞춰 CES 4단계 재활 프로토콜이 자동 처방됩니다."
+        extra={
+          <div className="flex flex-wrap items-center justify-center gap-2 mt-1">
+            {EMPTY_STAGE_PREVIEW.map((s) => (
+              <span
+                key={s.label}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold text-white shadow-sm"
+                style={{ backgroundColor: s.color }}
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-white/85" />
+                {s.label}
+              </span>
+            ))}
+          </div>
+        }
         cta={{
-          label: "홈으로 돌아가기",
+          label: "측정 시작하기",
           variant: "pill",
-          onClick: () => navigate("/"),
+          onClick: () => navigate("/measure"),
         }}
       />
     );
