@@ -64,7 +64,7 @@ export interface CesRoutine {
 export const STAGE_COLORS = {
     inhibit: '#ef6c00',   // 딥오렌지 — 억제(풀어주기, 따뜻한 해소)
     lengthen: '#06b6d4',  // 시안 — 신장(늘리기, 차분한 스트레치)
-    activate: '#ec4899',  // 핑크 — 활성(깨우기, 에너지·각성)
+    activate: '#f472b6',  // 핑크(pink-400, 한 단계 톤다운) — 활성(깨우기, 에너지·각성)
     integrate: '#10b981', // 에메랄드 — 통합(합치기, 안정·균형)
 } as const;
 
