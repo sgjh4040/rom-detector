@@ -12,46 +12,46 @@ export const WRIST_CES: JointCesData = {
     protocol: {
         flexion: {
             inhibit: [
-                ex('wr_inh_flex1', '손목 신전근 SMR', '마사지 볼로 전완 뒤쪽 신전근 부위를 30초 압박합니다.', '', { tools: '마사지 볼', holdSeconds: 30 })
+                ex('wr_inh_flex1', '손목 신전근 SMR', '마사지 볼로 전완 뒤쪽 신전근 부위를 30초 압박합니다.', '79.wr_inh_flex1.mp4', { tools: '마사지 볼', holdSeconds: 30 })
             ],
             lengthen: [
-                ex('wr_len_flex1', '손목 신전근 스트레칭', '팔을 앞으로 뻗고 손바닥이 아래를 향하게 한 뒤 반대 손으로 손가락을 몸 쪽으로 30초 당깁니다.', '', { holdSeconds: 30, sets: 2 })
+                ex('wr_len_flex1', '손목 신전근 스트레칭', '팔을 앞으로 뻗고 손바닥이 아래를 향하게 한 뒤 반대 손으로 손가락을 몸 쪽으로 30초 당깁니다.', '80.wr_len_flex1.mp4', { holdSeconds: 30, sets: 2 })
             ],
             activate: [
-                ex('wr_act_flex1', '손목 굴곡 강화 (밴드)', '밴드를 잡고 손목을 손바닥 방향으로 천천히 굽혔다 폅니다.', '', { tools: '탄성 밴드', sets: 3, reps: 15 })
+                ex('wr_act_flex1', '손목 굴곡 강화 (밴드)', '밴드를 잡고 손목을 손바닥 방향으로 천천히 굽혔다 폅니다.', '81.wr_act_flex1.mp4', { tools: '탄성 밴드', sets: 3, reps: 15 })
             ],
         },
         extension: {
             inhibit: [
-                ex('wr_inh_ext1', '손목 굴곡근 SMR', '마사지 볼로 전완 앞쪽 굴곡근 부위를 압박합니다.', '', { tools: '마사지 볼', holdSeconds: 30 })
+                ex('wr_inh_ext1', '손목 굴곡근 SMR', '마사지 볼로 전완 앞쪽 굴곡근 부위를 압박합니다.', '82.wr_inh_ext1.mp4', { tools: '마사지 볼', holdSeconds: 30 })
             ],
             lengthen: [
-                ex('wr_len_ext1', '손목 굴곡근 스트레칭', '팔을 앞으로 뻗고 손등이 위를 향하게 한 뒤 반대 손으로 손가락을 몸 쪽으로 30초 당깁니다.', '', { holdSeconds: 30, sets: 2 })
+                ex('wr_len_ext1', '손목 굴곡근 스트레칭', '팔을 앞으로 뻗고 손등이 위를 향하게 한 뒤 반대 손으로 손가락을 몸 쪽으로 30초 당깁니다.', '83.wr_len_ext1.mp4', { holdSeconds: 30, sets: 2 })
             ],
             activate: [
-                ex('wr_act_ext1', '손목 신전 강화 (밴드)', '밴드를 잡고 손목을 손등 방향으로 천천히 젖혔다 폅니다.', '', { tools: '탄성 밴드', sets: 3, reps: 15 })
+                ex('wr_act_ext1', '손목 신전 강화 (밴드)', '밴드를 잡고 손목을 손등 방향으로 천천히 젖혔다 폅니다.', '84.wr_act_ext1.mp4', { tools: '탄성 밴드', sets: 3, reps: 15 })
             ],
         },
         radial_deviation: {
             inhibit: [
-                ex('wr_inh_rad1', '척측 근육 SMR', '마사지 볼로 전완 척측(새끼손가락 쪽) 근육을 압박합니다.', '', { tools: '마사지 볼', holdSeconds: 30 })
+                ex('wr_inh_rad1', '척측 근육 SMR', '마사지 볼로 전완 척측(새끼손가락 쪽) 근육을 압박합니다.', '85.wr_inh_rad1.mp4', { tools: '마사지 볼', holdSeconds: 30 })
             ],
             lengthen: [
-                ex('wr_len_rad1', '요측 편위 스트레칭', '손목을 엄지 방향으로 부드럽게 기울여 30초 유지합니다.', '', { holdSeconds: 30, sets: 2 })
+                ex('wr_len_rad1', '요측 편위 스트레칭', '손목을 엄지 방향으로 부드럽게 기울여 30초 유지합니다.', '86.wr_len_rad1.mp4', { holdSeconds: 30, sets: 2 })
             ],
             activate: [
-                ex('wr_act_rad1', '요측 편위 강화', '가벼운 아령을 기립자세에서 잡고 손목을 엄지 방향으로 올립니다.', '', { tools: '아령', sets: 3, reps: 12 })
+                ex('wr_act_rad1', '요측 편위 강화', '가벼운 아령을 기립자세에서 잡고 손목을 엄지 방향으로 올립니다.', '87.wr_act_rad1.mp4', { tools: '아령', sets: 3, reps: 12 })
             ],
         },
         ulnar_deviation: {
             inhibit: [
-                ex('wr_inh_uln1', '요측 근육 SMR', '마사지 볼로 전완 요측(엄지손가락 쪽) 근육을 압박합니다.', '', { tools: '마사지 볼', holdSeconds: 30 })
+                ex('wr_inh_uln1', '요측 근육 SMR', '마사지 볼로 전완 요측(엄지손가락 쪽) 근육을 압박합니다.', '88.wr_inh_uln1.mp4', { tools: '마사지 볼', holdSeconds: 30 })
             ],
             lengthen: [
-                ex('wr_len_uln1', '척측 편위 스트레칭', '손목을 새끼 손가락 방향으로 부드럽게 기울여 30초 유지합니다.', '', { holdSeconds: 30, sets: 2 })
+                ex('wr_len_uln1', '척측 편위 스트레칭', '손목을 새끼 손가락 방향으로 부드럽게 기울여 30초 유지합니다.', '89.wr_len_uln1.mp4', { holdSeconds: 30, sets: 2 })
             ],
             activate: [
-                ex('wr_act_uln1', '척측 편위 강화', '가벼운 아령을 기립자세에서 잡고 손목을 소지 방향으로 올립니다.', '', { tools: '아령', sets: 3, reps: 12 })
+                ex('wr_act_uln1', '척측 편위 강화', '가벼운 아령을 기립자세에서 잡고 손목을 소지 방향으로 올립니다.', '90.wr_act_uln1.mp4', { tools: '아령', sets: 3, reps: 12 })
             ],
         },
     },

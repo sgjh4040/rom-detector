@@ -18,7 +18,7 @@ export const KNEE_CES: JointCesData = {
                 ex('kn_len_flex2', '대퇴직근 스트레칭 (런지)', '런지 자세에서 앞발에 무게를 실어 뒷다리 앞쪽을 30초 늘립니다.', '39.kn_len_flex2.mp4', { holdSeconds: 30, sets: 2 })
             ],
             activate: [
-                ex('kn_act_flex1', '햄스트링 컬 (밴드)', '엎드린 자세에서 밴드를 발목에 감고 무릎을 천천히 굽혀 햄스트링 수축합니다.', '40.kn_act_flex1 .mp4', { tools: '탄성 밴드', sets: 3, reps: 15 })
+                ex('kn_act_flex1', '햄스트링 컬 (밴드)', '엎드린 자세에서 밴드를 발목에 감고 무릎을 천천히 굽혀 햄스트링 수축합니다.', '40.kn_act_flex1.mp4', { tools: '탄성 밴드', sets: 3, reps: 15 })
             ],
         },
         extension: {
