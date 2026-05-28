@@ -55,15 +55,16 @@ export const BodyAnatomySvg: React.FC<BodyAnatomySvgProps> = ({
     [highlightIds, cesPhase],
   );
 
-  // Prop 변경 시 즉각 반영 + Flutter 엔진이 늦게 켜지는 케이스 보강 폴링
+  // Prop 변경 시 즉각 반영 + Flutter 엔진이 늦게 켜지는 케이스 보강 폴링.
+  // prod 빌드에서 Flutter atlas 부팅이 3초보다 길어 첫 postMessage 가 listener
+  // 부착 전에 도착해 색칠이 비어보이는 회귀가 있었음 → 폴링 30회 × 500ms = 15초.
   useEffect(() => {
     syncState();
-    // 첫 비어있지 않은 sync 가 들어갈 때까지만 폴링 (Flutter 부팅 늦을 때 보강)
     let count = 0;
     const interval = setInterval(() => {
       syncState(true);
       count++;
-      if (count > 6) clearInterval(interval); // 3초
+      if (count > 30) clearInterval(interval);
     }, 500);
     return () => clearInterval(interval);
   }, [syncState]);
