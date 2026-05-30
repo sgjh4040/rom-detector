@@ -22,10 +22,23 @@ export interface UseCesPlayerReturn {
     skipBreak: () => void;
 }
 
-/** AudioContext로 짧은 Beep음 재생 */
+// 공유 AudioContext — beep 마다 new AudioContext() 하면 브라우저 동시 컨텍스트
+// 리밋(Chrome ~6개)에 걸려 긴 루틴 후반엔 종료음이 조용히 멈추고 리소스도 샌다.
+// lazy 싱글톤으로 하나만 재사용한다.
+let sharedAudioCtx: AudioContext | null = null;
+const getAudioCtx = (): AudioContext | null => {
+    if (typeof AudioContext === 'undefined') return null;
+    if (!sharedAudioCtx) sharedAudioCtx = new AudioContext();
+    return sharedAudioCtx;
+};
+
+/** 공유 AudioContext로 짧은 Beep음 재생 */
 const playBeep = (frequency: number = 880, duration: number = 0.12): void => {
     try {
-        const ctx = new AudioContext();
+        const ctx = getAudioCtx();
+        if (!ctx) return;
+        // 모바일/자동재생 정책으로 suspended 상태면 사용자 제스처 후 재개.
+        if (ctx.state === 'suspended') void ctx.resume();
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
         osc.connect(gain);
@@ -40,13 +53,27 @@ const playBeep = (frequency: number = 880, duration: number = 0.12): void => {
     }
 };
 
-/** 다음 영상 pre-loading */
+/**
+ * 다음 영상 pre-loading. prefetch 는 캐시 데우기 힌트일 뿐 재생과 무관하므로
+ * 항상 "다음 1개"만 head 에 유지한다 — 지나간 영상의 죽은 prefetch 태그가
+ * 누적돼 DOM 블로트 + 불필요 대역폭을 당기던 것 방지.
+ */
+const PREFETCH_ATTR = 'data-ces-prefetch';
+
+/** 언마운트/전환 시 남은 CES prefetch 링크 정리 */
+const clearPrefetchLinks = (): void => {
+    document.querySelectorAll(`link[${PREFETCH_ATTR}]`).forEach((el) => el.remove());
+};
+
 const prefetchVideo = (url: string): void => {
     if (!url) return;
+    // 기존 CES prefetch 링크 제거 (항상 1개만 유지)
+    clearPrefetchLinks();
     const link = document.createElement('link');
     link.rel = 'prefetch';
     link.href = url;
     link.as = 'video';
+    link.setAttribute(PREFETCH_ATTR, '');
     document.head.appendChild(link);
 };
 
@@ -136,10 +163,12 @@ export const useCesPlayer = (routine: CesRoutine, sessionCreatedAt?: string): Us
         }
     }, [countdown, isFinished, isPaused, advanceStep]);
 
-    // 마운트 시 다음 운동 영상 prefetch — 브레이크는 건너뛴다
+    // 마운트 시 다음 운동 영상 prefetch — 브레이크는 건너뛴다.
+    // 언마운트 시 남은 prefetch 링크 정리.
     useEffect(() => {
         const upcoming = findNextVideoUrl(exercises, 1);
         if (upcoming) prefetchVideo(upcoming);
+        return () => clearPrefetchLinks();
     }, [exercises]);
 
     const togglePause = useCallback(() => setIsPaused(p => !p), []);
