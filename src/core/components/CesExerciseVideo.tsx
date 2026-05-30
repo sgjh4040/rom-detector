@@ -55,7 +55,9 @@ export const CesExerciseVideo: React.FC<Props> = ({
         }
         if (autoPlay) {
             videoRef.current.load();
-            void videoRef.current.play();
+            // 모바일 autoplay 차단 / 새 source load 로 인한 play 중단은 정상 동작.
+            // Promise 를 catch 하지 않으면 unhandled rejection 으로 콘솔 오염.
+            videoRef.current.play().catch(() => {});
         }
     }, [resolved.kind, resolved.src, autoPlay, useOverlay]);
 
@@ -70,7 +72,7 @@ export const CesExerciseVideo: React.FC<Props> = ({
     const togglePlay = () => {
         const v = videoRef.current;
         if (!v) return;
-        if (v.paused) void v.play();
+        if (v.paused) v.play().catch(() => {});
         else v.pause();
     };
 
