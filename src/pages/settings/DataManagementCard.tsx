@@ -1,12 +1,14 @@
 // DataManagementCard.tsx — Settings 페이지 데이터 관리 섹션 (redesign-spike).
-import React from "react";
-import { Download, Trash2, FileText } from "lucide-react";
+import React, { useRef } from "react";
+import { Download, Upload, Trash2, FileText } from "lucide-react";
 
 interface DataManagementCardProps {
   patientCount: number;
   totalHistoryCount: number;
   isDeleting: boolean;
   onExport: () => void;
+  /** 사용자가 고른 JSON 파일을 부모로 전달 */
+  onImportFile: (file: File) => void;
   onRequestDeleteAll: () => void;
 }
 
@@ -15,8 +17,19 @@ export const DataManagementCard: React.FC<DataManagementCardProps> = ({
   totalHistoryCount,
   isDeleting,
   onExport,
+  onImportFile,
   onRequestDeleteAll,
-}) => (
+}) => {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) onImportFile(file);
+    // 같은 파일을 다시 골라도 onChange 가 다시 발생하도록 초기화
+    e.target.value = "";
+  };
+
+  return (
   <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-card)] p-5">
     <h2 className="flex items-center gap-2 text-base font-bold tracking-tight text-[var(--color-foreground)]">
       <FileText className="size-4 text-[var(--color-muted-foreground)]" />
@@ -61,6 +74,22 @@ export const DataManagementCard: React.FC<DataManagementCardProps> = ({
       </button>
       <button
         type="button"
+        onClick={() => fileInputRef.current?.click()}
+        className="flex h-10 items-center justify-center gap-1.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-card)] text-sm font-bold text-[var(--color-foreground)] hover:bg-[var(--color-muted)] transition-colors"
+      >
+        <Upload className="size-4" />
+        데이터 가져오기 (JSON)
+      </button>
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="application/json,.json"
+        onChange={handleFileChange}
+        className="hidden"
+        aria-hidden="true"
+      />
+      <button
+        type="button"
         onClick={onRequestDeleteAll}
         disabled={isDeleting}
         className="flex h-10 items-center justify-center gap-1.5 rounded-lg border border-[var(--color-destructive)]/30 bg-[var(--color-card)] text-sm font-bold text-[var(--color-destructive)] hover:bg-[var(--color-destructive)]/10 transition-colors disabled:opacity-50"
@@ -71,8 +100,10 @@ export const DataManagementCard: React.FC<DataManagementCardProps> = ({
     </div>
 
     <p className="mt-3 text-xs leading-relaxed text-[var(--color-muted-foreground)]">
-      환자 정보와 측정 기록은 이 기기에만 저장돼요.
-      앱을 지우거나 브라우저 저장소를 비우면 복구할 수 없어요.
+      환자 정보와 측정 기록은 이 기기에만 저장돼요. 앱을 지우거나 브라우저
+      저장소를 비우면 복구할 수 없으니, 정기적으로 내보내기로 백업하세요.
+      가져오기는 기존 데이터에 병합되며 같은 기록은 중복 추가되지 않아요.
     </p>
-  </div>
-);
+    </div>
+  );
+};

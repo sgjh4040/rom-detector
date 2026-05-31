@@ -10,6 +10,12 @@ import {
   clearAllPatientsAndHistory,
 } from "../lib/romData";
 import { clearCesHistory } from "../features/session/data/cesTimeTracker";
+import {
+  parseImportPayload,
+  summarizeImport,
+  importData,
+  type ImportPayload,
+} from "../lib/dataImport";
 import { AppShell } from "../components/redesign/AppShell";
 import { Button } from "../components/redesign/ui/Button";
 import { DataManagementCard } from "./settings/DataManagementCard";
@@ -52,6 +58,8 @@ export const Settings: React.FC = () => {
   const [patients, setPatients] = useState(getPatients());
   const [isDeleting, setIsDeleting] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  // 가져오기: 파싱된 payload 를 들고 확인 다이얼로그 → 승인 시 병합 적용
+  const [pendingImport, setPendingImport] = useState<ImportPayload | null>(null);
 
   const totalHistoryCount = patients.reduce(
     (sum, p) => sum + getPatientHistory(p.id).length,
@@ -64,6 +72,32 @@ export const Settings: React.FC = () => {
       return;
     }
     exportAllData();
+  };
+
+  const handleImportFile = (file: File) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const payload = parseImportPayload(String(reader.result ?? ""));
+        setPendingImport(payload);
+      } catch (err) {
+        alert(err instanceof Error ? err.message : "파일을 읽을 수 없어요.");
+      }
+    };
+    reader.onerror = () => alert("파일을 읽는 중 오류가 발생했어요.");
+    reader.readAsText(file);
+  };
+
+  const handleConfirmImport = () => {
+    if (!pendingImport) return;
+    const result = importData(pendingImport);
+    setPendingImport(null);
+    setPatients(getPatients());
+    const added = result.patientsAdded + result.patientsUpdated;
+    alert(
+      `가져오기 완료\n환자 ${added}명 (신규 ${result.patientsAdded} · 갱신 ${result.patientsUpdated})\n` +
+        `측정 기록 ${result.sessionsAdded}건 추가 (중복 ${result.sessionsSkipped}건 건너뜀)`,
+    );
   };
 
   const handleDeleteAll = () => {
@@ -111,6 +145,7 @@ export const Settings: React.FC = () => {
           totalHistoryCount={totalHistoryCount}
           isDeleting={isDeleting}
           onExport={handleExport}
+          onImportFile={handleImportFile}
           onRequestDeleteAll={handleDeleteAll}
         />
 
@@ -132,6 +167,20 @@ export const Settings: React.FC = () => {
         variant="danger"
         onConfirm={handleConfirmDeleteAll}
         onCancel={() => setShowDeleteConfirm(false)}
+      />
+
+      <ConfirmDialog
+        open={pendingImport !== null}
+        title="데이터를 가져올까요?"
+        description={
+          pendingImport
+            ? `환자 ${summarizeImport(pendingImport).patientCount}명, 측정 기록 ${summarizeImport(pendingImport).sessionCount}건을 가져옵니다.\n기존 데이터에 병합되며 같은 기록은 중복 추가되지 않아요.`
+            : ""
+        }
+        confirmLabel="가져오기"
+        cancelLabel="취소"
+        onConfirm={handleConfirmImport}
+        onCancel={() => setPendingImport(null)}
       />
     </AppShell>
   );
