@@ -114,8 +114,9 @@ export const useCesPlayer = (routine: CesRoutine, sessionCreatedAt?: string): Us
         .reduce((sum, ex) => sum + ex.durationSeconds, 0)
         + (currentStep.durationSeconds - countdown);
 
-    const progress = Math.min(100, (elapsedTotal / routine.totalDurationSeconds) * 100);
-    const stepProgress = Math.min(100, ((currentStep.durationSeconds - countdown) / currentStep.durationSeconds) * 100);
+    // 0 나눗셈 방어 — totalDurationSeconds/durationSeconds 가 0 이면 NaN 방지.
+    const progress = Math.min(100, (elapsedTotal / (routine.totalDurationSeconds || 1)) * 100);
+    const stepProgress = Math.min(100, ((currentStep.durationSeconds - countdown) / (currentStep.durationSeconds || 1)) * 100);
 
     /** 다음 스텝으로 전환 */
     const advanceStep = useCallback(() => {
