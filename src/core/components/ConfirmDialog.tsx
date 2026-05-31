@@ -54,7 +54,7 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
 
   const isDanger = variant === "danger";
   const confirmBg = isDanger ? "var(--danger)" : "var(--primary)";
-  const confirmHover = isDanger ? "#dc2626" : "#4a5cb0";
+  const confirmHover = isDanger ? "#dc2626" : "var(--primary-dark)";
 
   return createPortal(
     <div

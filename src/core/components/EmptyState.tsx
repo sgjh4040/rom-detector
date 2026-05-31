@@ -107,7 +107,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
         <button
           type="button"
           className={cn(
-            "inline-flex items-center justify-center gap-2 bg-[var(--primary)] text-white border-0 font-extrabold cursor-pointer transition-all mt-2 hover:bg-[#4a5cb0] hover:-translate-y-px hover:shadow-[0_6px_16px_rgba(92,107,192,0.25)]",
+            "inline-flex items-center justify-center gap-2 bg-[var(--primary)] text-white border-0 font-extrabold cursor-pointer transition-all mt-2 hover:bg-[var(--primary-dark)] hover:-translate-y-px hover:shadow-[var(--shadow-primary)]",
             CTA_VARIANT_CLASSES[cta.variant ?? "block"],
           )}
           onClick={cta.onClick}

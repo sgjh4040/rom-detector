@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { ErrorBoundary } from "./core/components/ErrorBoundary";
 import { Index } from "./pages/Index";
 import { RomMeasurement } from "./pages/RomMeasurement";
 import { Results } from "./pages/Results";
@@ -16,23 +17,25 @@ import { CesInfo } from "./pages/CesInfo";
 // "아예 안 넘긴 상태"를 구분할 수 있다.
 const App: React.FC = () => {
   return (
-    <BrowserRouter basename={import.meta.env.BASE_URL}>
-      <Routes>
-        {/* Full-screen pages (레이아웃 래퍼 없음) */}
-        <Route path="/measure" element={<RomMeasurement />} />
-        <Route path="/ces" element={<CesProtocol />} />
-        <Route path="/ces-player" element={<CesPlayerPage />} />
-        <Route path="/ces-flutter" element={<CesFlutterPage />} />
-        <Route path="/cesinfo" element={<CesInfo />} />
+    <ErrorBoundary>
+      <BrowserRouter basename={import.meta.env.BASE_URL}>
+        <Routes>
+          {/* Full-screen pages (레이아웃 래퍼 없음) */}
+          <Route path="/measure" element={<RomMeasurement />} />
+          <Route path="/ces" element={<CesProtocol />} />
+          <Route path="/ces-player" element={<CesPlayerPage />} />
+          <Route path="/ces-flutter" element={<CesFlutterPage />} />
+          <Route path="/cesinfo" element={<CesInfo />} />
 
-        {/* AppLayout은 각 페이지 내부에서 직접 래핑 */}
-        <Route path="/" element={<Index />} />
-        <Route path="/results" element={<Results />} />
-        <Route path="/settings" element={<Settings />} />
-        <Route path="/trends" element={<Trends />} />
-        <Route path="/lab" element={<Lab />} />
-      </Routes>
-    </BrowserRouter>
+          {/* AppLayout은 각 페이지 내부에서 직접 래핑 */}
+          <Route path="/" element={<Index />} />
+          <Route path="/results" element={<Results />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/trends" element={<Trends />} />
+          <Route path="/lab" element={<Lab />} />
+        </Routes>
+      </BrowserRouter>
+    </ErrorBoundary>
   );
 };
 

@@ -46,9 +46,9 @@ CES 4단계: Inhibit(억제) → Lengthen(신장) → Activate(활성) → Integ
 
 ## UI/UX 컨벤션
 - **브레이크포인트:** 모바일 ≤720px, 태블릿 ≤1100px, 데스크톱 >1100px
-- **메인 컬러:** 보라/라벤더 (`var(--primary)` = `#5C6BC0`)
+- **메인 컬러:** 블루 (redesign accent `--color-accent` = `oklch(0.55 0.17 240)` ≈ `#0079C9`). 레거시 `--primary` 토큰도 동일 블루로 통일됨 (구 보라 `#5C6BC0`에서 마이그레이션).
 - **버튼 위계:**
-  - Primary CTA → 보라 채움
+  - Primary CTA → 블루 채움
   - Secondary → outline (투명 + 외곽선)
   - Play/시작 → 그린 `#22C55E`
   - 일시정지 → 앰버 `#F59E0B`

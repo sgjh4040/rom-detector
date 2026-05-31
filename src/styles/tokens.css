@@ -2,14 +2,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap');
 
 :root {
-    /* ── Primary (Indigo Blue) ──────────────────────────── */
-    --primary: #5C6BC0;
-    --primary-dark: #3F51B5;
-    --primary-light: #C5CAE9;
-    --primary-glow: rgba(92, 107, 192, 0.25);
-    --primary-gradient: linear-gradient(135deg, #5C6BC0, #7986CB);
+    /* ── Primary ────────────────────────────────────────────
+       리디자인 accent(redesign-tokens.css --color-accent = oklch(0.55 0.17 240),
+       hex #0079C9)와 통일. 레거시 컴포넌트(EmptyState/ConfirmDialog/RomGauge/
+       ImageAngleMeasurer)가 이 토큰을 쓰므로 여기만 바꾸면 앱 전체 블루로 일치. */
+    --primary: #0079C9;
+    --primary-dark: #0061AF;
+    --primary-light: #C1E3FC;
+    --primary-glow: rgba(0, 121, 201, 0.25);
+    --primary-gradient: linear-gradient(135deg, #0079C9, #2F8ADC);
     /* primary 위에 옅게 깔리는 배경 (10% alpha) — 인라인 hex 통일 (audit #17) */
-    --primary-bg-soft: rgba(92, 107, 192, 0.1);
+    --primary-bg-soft: rgba(0, 121, 201, 0.1);
 
     /* 보조 강조 (그라데이션·아이콘용) — NeumoCircularGauge 등 */
     --accent-purple: #A855F7;
@@ -56,7 +59,7 @@
     --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.06);
     --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.08);
     --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.1);
-    --shadow-primary: 0 4px 20px rgba(92, 107, 192, 0.25);
+    --shadow-primary: 0 4px 20px rgba(0, 121, 201, 0.25);
     --shadow-inset: inset 0 2px 4px rgba(0, 0, 0, 0.04);
 
     /* Legacy aliases */
