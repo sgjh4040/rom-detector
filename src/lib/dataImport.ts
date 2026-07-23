@@ -47,13 +47,23 @@ export const parseImportPayload = (raw: string): ImportPayload => {
   if (!obj.history || typeof obj.history !== 'object') {
     throw new Error('측정 기록(history)을 찾을 수 없어요.');
   }
-  for (const p of obj.patients) {
-    if (!p || typeof (p as Patient).id !== 'string' || typeof (p as Patient).name !== 'string') {
+  const patients = (obj.patients as unknown[]).map((raw) => {
+    const p = raw as Record<string, unknown> | null;
+    if (!p || typeof p.id !== 'string' || typeof p.name !== 'string') {
       throw new Error('환자 데이터에 id 또는 name 이 없어요.');
     }
-  }
+    // age 검증 — 세션 필드명(patientAge)으로 잘못 만든 파일도 age 로 정규화해 받는다.
+    // (age 없는 환자가 저장되면 홈에서 카드 선택이 무반응 크래시하던 회귀 방지)
+    const age = typeof p.age === 'number' ? p.age : p.patientAge;
+    if (typeof age !== 'number' || !Number.isFinite(age)) {
+      throw new Error(`환자(${p.name}) 데이터에 나이(age)가 없어요.`);
+    }
+    const normalized = { ...p, age } as Record<string, unknown>;
+    delete normalized.patientAge;
+    return normalized as unknown as Patient;
+  });
   return {
-    patients: obj.patients as Patient[],
+    patients,
     history: obj.history as Record<string, RomSession[]>,
   };
 };

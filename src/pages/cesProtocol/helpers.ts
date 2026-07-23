@@ -19,6 +19,19 @@ export const STAGES: { id: CesStage; label: string; color: string }[] = [
 ];
 
 /**
+ * 선택된 단계가 비어 있으면 운동이 있는 첫 단계로 폴백.
+ * 제한 동작이 없는(정상 판정) 환자는 통합 운동만 생성되는데, 기본 탭이
+ * 억제(inhibit) 하드코딩이라 빈 화면으로 보이던 회귀 방지. (전 단계 비면 그대로 유지)
+ */
+export const resolveEffectiveStage = (
+  analysis: CesAnalysisResult,
+  active: CesStage,
+): CesStage => {
+  if ((analysis[active]?.length ?? 0) > 0) return active;
+  return STAGES.map((s) => s.id).find((id) => (analysis[id]?.length ?? 0) > 0) ?? active;
+};
+
+/**
  * 운동 → BodyAnatomySvg 에 보낼 Flutter SVG ID 배열.
  *
  * [v4 — 2026-05-12] 매칭 우선순위 3단계.

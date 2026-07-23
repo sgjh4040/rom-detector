@@ -4,7 +4,7 @@ import { getPatients, getPatientHistory } from './patientHistory';
 import type { Patient, RomSession } from './romTypes';
 
 const patient = (id: string, name = '환자'): Patient =>
-  ({ id, name, patientAge: 30 } as unknown as Patient);
+  ({ id, name, age: 30, createdAt: '2026-01-01T00:00:00Z' } as Patient);
 
 const session = (createdAt: string): RomSession =>
   ({
@@ -43,6 +43,25 @@ describe('parseImportPayload', () => {
     expect(() =>
       parseImportPayload(JSON.stringify({ patients: [{ foo: 1 }], history: {} })),
     ).toThrow();
+  });
+
+  it('나이가 없는 환자는 throw', () => {
+    expect(() =>
+      parseImportPayload(
+        JSON.stringify({ patients: [{ id: 'p1', name: '환자' }], history: {} }),
+      ),
+    ).toThrow();
+  });
+
+  it('세션 필드명(patientAge)으로 온 나이를 age 로 정규화한다', () => {
+    const payload = parseImportPayload(
+      JSON.stringify({
+        patients: [{ id: 'p1', name: '환자', patientAge: 42 }],
+        history: {},
+      }),
+    );
+    expect(payload.patients[0].age).toBe(42);
+    expect('patientAge' in payload.patients[0]).toBe(false);
   });
 });
 

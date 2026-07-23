@@ -52,7 +52,8 @@ export const useIndexPageHandlers = (args: UseIndexPageHandlersArgs) => {
 
     args.setPatientId(p.id);
     args.setName(p.name);
-    args.setAge(p.age.toString());
+    // 과거 잘못된 import 등으로 age 가 비어 있어도 크래시 대신 빈 값으로 동작
+    args.setAge(Number.isFinite(p.age) ? p.age.toString() : "");
     args.setPainArea(p.painArea || "");
     // [audit #1] 환자 카드 메타에 표시되는 VAS 는 최신 측정값을 우선.
     // 등록 시점 VAS 는 fallback (측정 기록이 0건일 때만 사용).
@@ -69,7 +70,7 @@ export const useIndexPageHandlers = (args: UseIndexPageHandlersArgs) => {
       saveRomSession({
         patientId: p.id,
         patientName: p.name,
-        patientAge: p.age,
+        patientAge: Number.isFinite(p.age) ? p.age : 0,
         painArea: p.painArea || "",
         vasScore: p.vasScore || 0,
         selectedJointIds: [],

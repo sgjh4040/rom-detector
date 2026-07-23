@@ -8,7 +8,7 @@ import { CesExercisePlayer } from "../core/components/CesExercisePlayer";
 import { buildRoutineFromAnalysis } from "../lib/ces/cesRoutineBuilder";
 import type { CesStage } from "../lib/ces/cesTypes";
 import type { Side } from "../lib/romTypes";
-import { getTargetMuscleIds } from "./cesProtocol/helpers";
+import { getTargetMuscleIds, resolveEffectiveStage, STAGES } from "./cesProtocol/helpers";
 import { useCesProtocolTimer } from "./cesProtocol/useCesProtocolTimer";
 import { StageTabs } from "./cesProtocol/StageTabs";
 import { JointSideHeader } from "./cesProtocol/JointSideHeader";
@@ -18,14 +18,6 @@ import { CesProtocolHeader } from "./cesProtocol/CesProtocolHeader";
 import { CesProtocolSidebar } from "./cesProtocol/CesProtocolSidebar";
 import { CtaButtons } from "./cesProtocol/CtaButtons";
 import { EmptyState } from "../core/components/EmptyState";
-import { STAGE_COLORS } from "../lib/ces/CesPlayerTypes";
-
-const EMPTY_STAGE_PREVIEW = [
-  { label: "억제", color: STAGE_COLORS.inhibit },
-  { label: "신장", color: STAGE_COLORS.lengthen },
-  { label: "활성", color: STAGE_COLORS.activate },
-  { label: "통합", color: STAGE_COLORS.integrate },
-];
 
 export const CesProtocol: React.FC = () => {
   const navigate = useNavigate();
@@ -33,11 +25,6 @@ export const CesProtocol: React.FC = () => {
   const [activeJointSide, setActiveJointSide] = useState("");
   const [activeStage, setActiveStage] = useState<CesStage>("inhibit");
   const [activeIndex, setActiveIndex] = useState(0);
-
-  const { seconds, timerRunning, toggleTimer, resetTimer } = useCesProtocolTimer({
-    activeStage,
-    sessionCreatedAt: session?.createdAt,
-  });
 
   const jointSideList = useMemo(() => {
     if (!session) return [];
@@ -60,6 +47,18 @@ export const CesProtocol: React.FC = () => {
     return list;
   }, [session]);
 
+  // 빈 단계 폴백(effectiveStage)을 타이머 훅보다 먼저 계산 — 폴백된 단계로 시간 누적 (null 안전)
+  const currentJS =
+    jointSideList.find((js) => js.id === activeJointSide) ?? jointSideList[0];
+  const analysis =
+    session && currentJS ? analyzeMuscles(session, currentJS.jid, currentJS.side) : null;
+  const effectiveStage = analysis ? resolveEffectiveStage(analysis, activeStage) : activeStage;
+
+  const { seconds, timerRunning, toggleTimer, resetTimer } = useCesProtocolTimer({
+    activeStage: effectiveStage,
+    sessionCreatedAt: session?.createdAt,
+  });
+
   if (!session) {
     return (
       <EmptyState
@@ -70,7 +69,7 @@ export const CesProtocol: React.FC = () => {
         description="ROM 측정을 먼저 완료하면 약점·과활성 분석에 맞춰 CES 4단계 재활 프로토콜이 자동 처방됩니다."
         extra={
           <div className="flex flex-wrap items-center justify-center gap-2 mt-1">
-            {EMPTY_STAGE_PREVIEW.map((s) => (
+            {STAGES.map((s) => (
               <span
                 key={s.label}
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold text-white shadow-sm"
@@ -90,17 +89,14 @@ export const CesProtocol: React.FC = () => {
       />
     );
   }
-  if (jointSideList.length === 0)
+  if (jointSideList.length === 0 || !analysis)
     return <div className="p-6 text-sm text-[var(--color-muted-foreground)]">Loading…</div>;
 
-  const currentJS =
-    jointSideList.find((js) => js.id === activeJointSide) ?? jointSideList[0];
-  const analysis = analyzeMuscles(session, currentJS.jid, currentJS.side);
-  const exercises = analysis[activeStage];
+  const exercises = analysis[effectiveStage];
   const currentEx = exercises[activeIndex] || exercises[0];
 
   const targetMuscles = currentEx
-    ? getTargetMuscleIds(currentEx, analysis, activeStage)
+    ? getTargetMuscleIds(currentEx, analysis, effectiveStage)
     : [];
 
   const handleStartPlayer = () => {
@@ -114,7 +110,7 @@ export const CesProtocol: React.FC = () => {
   // 데스크톱 사이드바·모바일 메인 양쪽에서 재사용되는 JSX 묶음
   const stageTabsNode = (
     <StageTabs
-      activeStage={activeStage}
+      activeStage={effectiveStage}
       stageCounts={{
         inhibit: analysis.inhibit?.length ?? 0,
         lengthen: analysis.lengthen?.length ?? 0,
@@ -150,7 +146,7 @@ export const CesProtocol: React.FC = () => {
       <div className="mx-auto grid max-w-6xl gap-6 px-4 py-6 pb-24 lg:pb-6 lg:grid-cols-[320px_1fr] lg:items-start">
         <CesProtocolSidebar
           targetMuscles={targetMuscles}
-          activeStage={activeStage}
+          activeStage={effectiveStage}
           seconds={seconds}
           timerRunning={timerRunning}
           toggleTimer={toggleTimer}
@@ -174,7 +170,7 @@ export const CesProtocol: React.FC = () => {
 
           <CesExercisePlayer
             exercises={exercises}
-            stageId={activeStage}
+            stageId={effectiveStage}
             activeIndex={activeIndex}
             onIndexChange={setActiveIndex}
           />
