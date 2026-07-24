@@ -56,7 +56,7 @@ export const WRIST_CES: JointCesData = {
         },
     },
     integrate: [
-        ex('wr_int1', '손목 원형 운동 (Circumduction)', '손목을 천천히 시계방향·반시계방향으로 크게 원을 그립니다.', '', { sets: 2, reps: 10, targetMuscles: ['요측수근굴근', '척측수근굴근', '요측수근신근', '척측수근신근'] }),
-        ex('wr_int2', '그립-릴리즈 복합 운동', '밴드나 공을 꽉 쥐었다 천천히 펴는 동작을 반복합니다.', '', { tools: '마사지 볼 또는 밴드', sets: 3, reps: 15, targetMuscles: ['요측수근굴근', '척측수근굴근', '총지신근'] }),
+        ex('wr_int1', '손목 원형 운동 (Circumduction)', '손목을 천천히 시계방향·반시계방향으로 크게 원을 그립니다.', '09.wr_int1.mp4', { sets: 2, reps: 10, targetMuscles: ['요측수근굴근', '척측수근굴근', '요측수근신근', '척측수근신근'] }),
+        ex('wr_int2', '그립-릴리즈 복합 운동', '밴드나 공을 꽉 쥐었다 천천히 펴는 동작을 반복합니다.', '10.wr_int2.mp4', { tools: '마사지 볼 또는 밴드', sets: 3, reps: 15, targetMuscles: ['요측수근굴근', '척측수근굴근', '총지신근'] }),
     ],
 };

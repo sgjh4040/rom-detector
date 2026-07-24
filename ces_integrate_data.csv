@@ -1,15 +1,15 @@
 Joint,Movement,Category,ID,Title,Description,Tools,Hold Seconds,Sets,Reps,YoutubeID
-Elbow,all,integrate,el_int1,레니게이드 로우,푸시업 자세에서 한 손씩 덤벨을 당겨 올립니다.,덤벨,,3,10,
-Elbow,all,integrate,el_int2,다관절 로우 (밴드),밴드로 팔꿈치 굴곡과 견갑 후인을 동시에 수행합니다.,탄성 밴드,,3,10,
-Hip,all,integrate,hp_int1,밴드 워킹 (측면 보행),밴드를 무릎 위에 감고 옆으로 걸어 중둔근과 고관절 전체 안정화를 훈련합니다.,탄성 밴드,,3,12,
-Hip,all,integrate,hp_int2,스쿼트 투 로우,밴드를 고정하고 스쿼트 하강 시 로우 동작을 더해 하체·고관절 전체 협응을 훈련합니다.,탄성 밴드,,3,10,
-Knee,all,integrate,kn_int1,스텝업,계단 한 칸을 이용해 한발로 올라서고 내려오는 동작으로 무릎 전체 협응을 훈련합니다.,,,3,12,
-Knee,all,integrate,kn_int2,스쿼트,발 너비로 서서 천천히 앉았다 일어서며 무릎·고관절·발목 협응 패턴을 훈련합니다.,,,3,12,
-Shoulder,all,integrate,sh_int1,PNF D2 패턴,"밴드를 이용해 어깨의 굽힘, 벌림, 가쪽돌림 패턴을 시행합니다.",탄성 밴드,,3,10,
-Shoulder,all,integrate,sh_int2,불안정한 지면 푸시업 플러스,"불안정한 지면에서 푸시업, 어깨의 전인 동작을 수행합니다.",,,2,8,
+Elbow,all,integrate,el_int1,레니게이드 로우,푸시업 자세에서 한 손씩 덤벨을 당겨 올립니다.,덤벨,,3,10,01.el_int1.mp4
+Elbow,all,integrate,el_int2,다관절 로우 (밴드),밴드로 팔꿈치 굴곡과 견갑 후인을 동시에 수행합니다.,탄성 밴드,,3,10,02.el_int2.mp4
+Hip,all,integrate,hp_int1,밴드 워킹 (측면 보행),밴드를 무릎 위에 감고 옆으로 걸어 중둔근과 고관절 전체 안정화를 훈련합니다.,탄성 밴드,,3,12,03.hp_int1.mp4
+Hip,all,integrate,hp_int2,스쿼트 투 로우,밴드를 고정하고 스쿼트 하강 시 로우 동작을 더해 하체·고관절 전체 협응을 훈련합니다.,탄성 밴드,,3,10,04.hp_int2.mp4
+Knee,all,integrate,kn_int1,스텝업,계단 한 칸을 이용해 한발로 올라서고 내려오는 동작으로 무릎 전체 협응을 훈련합니다.,,,3,12,05.kn_int1.mp4
+Knee,all,integrate,kn_int2,스쿼트,발 너비로 서서 천천히 앉았다 일어서며 무릎·고관절·발목 협응 패턴을 훈련합니다.,,,3,12,06.kn_int2.mp4
+Shoulder,all,integrate,sh_int1,PNF D2 패턴,"밴드를 이용해 어깨의 굽힘, 벌림, 가쪽돌림 패턴을 시행합니다.",탄성 밴드,,3,10,07.sh_int1.mp4
+Shoulder,all,integrate,sh_int2,불안정한 지면 푸시업 플러스,"불안정한 지면에서 푸시업, 어깨의 전인 동작을 수행합니다.",,,2,8,08.sh_int2.mp4
 Waist,all,integrate,ws_int1,버드독 (Bird-Dog),네발기기 자세에서 반대쪽 팔과 다리를 동시에 뻗어 코어의 안정성을 유지합니다.,,,3,10,
 Waist,all,integrate,ws_int2,플랭크,팔꿈치로 몸을 지탱하며 머리부터 발끝까지 일직선을 유지하여 코어 전체를 통합합니다.,,30,3,,
-Wrist,all,integrate,wr_int1,손목 원형 운동 (Circumduction),손목을 천천히 시계방향·반시계방향으로 크게 원을 그립니다.,,,2,10,
-Wrist,all,integrate,wr_int2,그립-릴리즈 복합 운동,밴드나 공을 꽉 쥐었다 천천히 펴는 동작을 반복합니다.,마사지 볼 또는 밴드,,3,15,
-Ankle,all,integrate,ak_int1,싱글 레그 밸런스,불안정한 지지면에 한 발로 서서 30초 균형 유지 — 눈 감기로 난이도 조절 가능합니다.,,30,3,,
-Ankle,all,integrate,ak_int2,Y밸런스 익스커션,"한발로 중심을 잡고 반대발을 앞, 뒤안쪽, 뒤가쪽으로 최대한 이동해 발목 가동범위의 끝자락까지 이용합니다.",,,2,10,
+Wrist,all,integrate,wr_int1,손목 원형 운동 (Circumduction),손목을 천천히 시계방향·반시계방향으로 크게 원을 그립니다.,,,2,10,09.wr_int1.mp4
+Wrist,all,integrate,wr_int2,그립-릴리즈 복합 운동,밴드나 공을 꽉 쥐었다 천천히 펴는 동작을 반복합니다.,마사지 볼 또는 밴드,,3,15,10.wr_int2.mp4
+Ankle,all,integrate,ak_int1,싱글 레그 밸런스,불안정한 지지면에 한 발로 서서 30초 균형 유지 — 눈 감기로 난이도 조절 가능합니다.,,30,3,,13.ak_int1.mp4
+Ankle,all,integrate,ak_int2,Y밸런스 익스커션,"한발로 중심을 잡고 반대발을 앞, 뒤안쪽, 뒤가쪽으로 최대한 이동해 발목 가동범위의 끝자락까지 이용합니다.",,,2,10,14.ak_int2.mp4

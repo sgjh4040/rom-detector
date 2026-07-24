@@ -56,7 +56,7 @@ export const ELBOW_CES: JointCesData = {
         },
     },
     integrate: [
-        ex('el_int1', '레니게이드 로우', '푸시업 자세에서 한 손씩 덤벨을 당겨 올립니다.', '', { tools: '덤벨', sets: 3, reps: 10, targetMuscles: ['이두근', '삼두근', '광배근', '복직근'] }),
-        ex('el_int2', '다관절 로우 (밴드)', '밴드로 팔꿈치 굴곡과 견갑 후인을 동시에 수행합니다.', '', { tools: '탄성 밴드', sets: 3, reps: 10, targetMuscles: ['이두근', '광배근', '중부승모근'] }),
+        ex('el_int1', '레니게이드 로우', '푸시업 자세에서 한 손씩 덤벨을 당겨 올립니다.', '01.el_int1.mp4', { tools: '덤벨', sets: 3, reps: 10, targetMuscles: ['이두근', '삼두근', '광배근', '복직근'] }),
+        ex('el_int2', '다관절 로우 (밴드)', '밴드로 팔꿈치 굴곡과 견갑 후인을 동시에 수행합니다.', '02.el_int2.mp4', { tools: '탄성 밴드', sets: 3, reps: 10, targetMuscles: ['이두근', '광배근', '중부승모근'] }),
     ],
 };

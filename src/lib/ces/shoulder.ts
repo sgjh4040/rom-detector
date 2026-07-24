@@ -85,7 +85,7 @@ export const SHOULDER_CES: JointCesData = {
         },
     },
     integrate: [
-        ex('sh_int1', 'PNF D2 패턴', '밴드를 이용해 어깨의 굽힘, 벌림, 가쪽돌림 패턴을 시행합니다.', '', { tools: '탄성 밴드', sets: 3, reps: 10, targetMuscles: ['극하근', '삼각근', '상부승모근', '하부승모근'] }),
-        ex('sh_int2', '불안정한 지면 푸시업 플러스', '불안정한 지면에서 푸시업, 어깨의 전인 동작을 수행합니다.', '', { sets: 2, reps: 8, targetMuscles: ['전거근', '대흉근', '삼각근'] }),
+        ex('sh_int1', 'PNF D2 패턴', '밴드를 이용해 어깨의 굽힘, 벌림, 가쪽돌림 패턴을 시행합니다.', '07.sh_int1.mp4', { tools: '탄성 밴드', sets: 3, reps: 10, targetMuscles: ['극하근', '삼각근', '상부승모근', '하부승모근'] }),
+        ex('sh_int2', '불안정한 지면 푸시업 플러스', '불안정한 지면에서 푸시업, 어깨의 전인 동작을 수행합니다.', '08.sh_int2.mp4', { sets: 2, reps: 8, targetMuscles: ['전거근', '대흉근', '삼각근'] }),
     ],
 };
