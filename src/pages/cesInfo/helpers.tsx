@@ -6,8 +6,10 @@ import {
   Activity,
   CheckCircle2,
   User,
-  Crosshair,
-  Watch,
+  BicepsFlexed,
+  Hand,
+  PersonStanding,
+  Bone,
   Footprints,
   MoveVertical,
 } from "lucide-react";
@@ -32,10 +34,10 @@ export const STAGE_LABELS: Record<CesStage, StageLabelMeta> = {
 
 export const JOINT_ICONS: Record<string, React.ReactNode> = {
   shoulder: <User size={18} />,
-  elbow: <Crosshair size={18} />,
-  wrist: <Watch size={18} />,
-  hip: <Activity size={18} />,
-  knee: <Footprints size={18} />,
+  elbow: <BicepsFlexed size={18} />,
+  wrist: <Hand size={18} />,
+  hip: <PersonStanding size={18} />,
+  knee: <Bone size={18} />,
   ankle: <Footprints size={18} />,
   waist: <MoveVertical size={18} />,
 };
