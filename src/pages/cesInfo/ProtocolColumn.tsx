@@ -8,6 +8,8 @@ const PROTOCOL_STAGES = ["inhibit", "lengthen", "activate"] as const;
 
 interface ProtocolColumnProps {
   protocol: MovementProtocol;
+  /** 영상 있는 운동의 재생 버튼 클릭 시 호출 (모달 오픈) */
+  onPlayVideo: (ex: CesExercise) => void;
 }
 
 const MetaTag: React.FC<{ icon: React.ReactNode; children: React.ReactNode }> = ({
@@ -20,7 +22,11 @@ const MetaTag: React.FC<{ icon: React.ReactNode; children: React.ReactNode }> = 
   </span>
 );
 
-const ExerciseStageItem: React.FC<{ ex: CesExercise; idx: number }> = ({ ex, idx }) => (
+const ExerciseStageItem: React.FC<{
+  ex: CesExercise;
+  idx: number;
+  onPlayVideo: (ex: CesExercise) => void;
+}> = ({ ex, idx, onPlayVideo }) => (
   <div className="flex gap-3 rounded-lg border border-[var(--color-border)] bg-[var(--color-card)] p-4">
     <div className="font-mono text-2xl font-bold text-[var(--color-muted-foreground)] opacity-50 leading-none">
       {idx + 1}
@@ -50,12 +56,19 @@ const ExerciseStageItem: React.FC<{ ex: CesExercise; idx: number }> = ({ ex, idx
       </div>
     </div>
     {ex.youtubeId && (
-      <PlayCircle className="size-5 shrink-0 text-[var(--color-destructive)]" />
+      <button
+        type="button"
+        onClick={() => onPlayVideo(ex)}
+        aria-label={`${ex.name} 영상 재생`}
+        className="flex size-9 shrink-0 items-center justify-center self-center rounded-full text-[var(--color-destructive)] transition-all hover:scale-110 hover:bg-[var(--color-muted)]"
+      >
+        <PlayCircle className="size-6" />
+      </button>
     )}
   </div>
 );
 
-export const ProtocolColumn: React.FC<ProtocolColumnProps> = ({ protocol }) => (
+export const ProtocolColumn: React.FC<ProtocolColumnProps> = ({ protocol, onPlayVideo }) => (
   <div className="lg:col-span-8 flex flex-col gap-5">
     {PROTOCOL_STAGES.map((stage) => {
       const meta = STAGE_LABELS[stage];
@@ -75,7 +88,7 @@ export const ProtocolColumn: React.FC<ProtocolColumnProps> = ({ protocol }) => (
           </div>
           <div className="flex flex-col gap-3">
             {protocol[stage].map((ex, idx) => (
-              <ExerciseStageItem key={ex.id} ex={ex} idx={idx} />
+              <ExerciseStageItem key={ex.id} ex={ex} idx={idx} onPlayVideo={onPlayVideo} />
             ))}
           </div>
         </section>

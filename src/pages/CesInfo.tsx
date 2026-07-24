@@ -10,11 +10,14 @@ import { MovementTabs } from "./cesInfo/MovementTabs";
 import { MuscleAnalysisCard } from "./cesInfo/MuscleAnalysisCard";
 import { ProtocolColumn } from "./cesInfo/ProtocolColumn";
 import { IntegrationSection } from "./cesInfo/IntegrationSection";
+import { ExerciseVideoModal } from "./cesInfo/ExerciseVideoModal";
+import type { CesExercise } from "../lib/ces/cesTypes";
 
 export const CesInfo: React.FC = () => {
   const navigate = useNavigate();
   const [selectedJointId, setSelectedJointId] = useState<string>("shoulder");
   const [selectedMovement, setSelectedMovement] = useState<string>("");
+  const [videoExercise, setVideoExercise] = useState<CesExercise | null>(null);
 
   const currentJoint = JOINTS.find((j) => j.id === selectedJointId);
   const cesData = ALL_CES_DATA[selectedJointId];
@@ -102,13 +105,24 @@ export const CesInfo: React.FC = () => {
                   underactive={cesData.muscleMap[activeMovement]?.underactive ?? []}
                 />
               </div>
-              <ProtocolColumn protocol={cesData.protocol[activeMovement]} />
+              <ProtocolColumn
+                protocol={cesData.protocol[activeMovement]}
+                onPlayVideo={setVideoExercise}
+              />
             </div>
           )}
 
-          <IntegrationSection exercises={cesData.integrate} />
+          <IntegrationSection
+            exercises={cesData.integrate}
+            onPlayVideo={setVideoExercise}
+          />
         </main>
       </div>
+
+      <ExerciseVideoModal
+        exercise={videoExercise}
+        onClose={() => setVideoExercise(null)}
+      />
     </div>
   );
 };

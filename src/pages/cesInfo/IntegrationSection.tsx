@@ -1,15 +1,18 @@
 // IntegrationSection.tsx — CesInfo 통합 운동 (Integration) 섹션 (redesign-spike).
 import React from "react";
-import { Activity, Repeat, Hash } from "lucide-react";
+import { Activity, Repeat, Hash, PlayCircle } from "lucide-react";
 import type { CesExercise } from "../../lib/ces/cesTypes";
 import { STAGE_LABELS } from "./helpers";
 
 interface IntegrationSectionProps {
   exercises: CesExercise[];
+  /** 영상 있는 운동의 재생 버튼 클릭 시 호출 (모달 오픈) */
+  onPlayVideo: (ex: CesExercise) => void;
 }
 
 export const IntegrationSection: React.FC<IntegrationSectionProps> = ({
   exercises,
+  onPlayVideo,
 }) => {
   const integrateColor = STAGE_LABELS.integrate.color;
   return (
@@ -31,9 +34,21 @@ export const IntegrationSection: React.FC<IntegrationSectionProps> = ({
               background: `${integrateColor}08`,
             }}
           >
-            <h4 className="text-sm font-bold text-[var(--color-foreground)]">
-              {ex.name}
-            </h4>
+            <div className="flex items-start justify-between gap-2">
+              <h4 className="text-sm font-bold text-[var(--color-foreground)]">
+                {ex.name}
+              </h4>
+              {ex.youtubeId && (
+                <button
+                  type="button"
+                  onClick={() => onPlayVideo(ex)}
+                  aria-label={`${ex.name} 영상 재생`}
+                  className="flex size-8 shrink-0 items-center justify-center rounded-full text-[var(--color-destructive)] transition-all hover:scale-110 hover:bg-[var(--color-muted)]"
+                >
+                  <PlayCircle className="size-5" />
+                </button>
+              )}
+            </div>
             {ex.description && (
               <p className="mt-1 text-sm leading-relaxed text-[var(--color-muted-foreground)]">
                 {ex.description}
