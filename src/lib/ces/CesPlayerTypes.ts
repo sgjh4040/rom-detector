@@ -168,11 +168,11 @@ export const MOCK_ROUTINE: CesRoutine = {
         {
             step: 4,
             kind: 'exercise',
-            exerciseName: '케이블 외회전 투 프레스',
+            exerciseName: 'PNF D2 패턴',
             videoUrl: '',
             durationSeconds: 60,
             cesPhase: 'Integrate',
-            targetSvgIds: ['삼각근', '대흉근', '승모근', '이두근'],
+            targetSvgIds: ['삼각근', '극하근', '승모근'],
         },
         {
             step: 5,

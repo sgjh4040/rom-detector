@@ -34,7 +34,7 @@ export const ANKLE_CES: JointCesData = {
         },
     },
     integrate: [
-        ex('ak_int1', '싱글 레그 밸런스', '한 발로 서서 30초 균형 유지 — 눈 감기로 난이도 조절 가능합니다.', '', { sets: 3, holdSeconds: 30, targetMuscles: ['비복근', '전경골근', '비골근'] }),
-        ex('ak_int2', '미니 밴드 보행', '밴드를 발목에 감고 앞뒤·옆으로 걸어 발목 전체 안정화 근육을 통합 훈련합니다.', '', { tools: '탄성 밴드', sets: 2, reps: 10, targetMuscles: ['중둔근', '비골근', '전경골근'] }),
+        ex('ak_int1', '싱글 레그 밸런스', '불안정한 지지면에 한 발로 서서 30초 균형 유지 — 눈 감기로 난이도 조절 가능합니다.', '', { sets: 3, holdSeconds: 30, targetMuscles: ['비복근', '전경골근', '비골근'] }),
+        ex('ak_int2', 'Y밸런스 익스커션', '한발로 중심을 잡고 반대발을 앞, 뒤안쪽, 뒤가쪽으로 최대한 이동해 발목 가동범위의 끝자락까지 이용합니다.', '', { sets: 2, reps: 10, targetMuscles: ['중둔근', '비골근', '전경골근'] }),
     ],
 };
